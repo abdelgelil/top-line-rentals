@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+:root {
+  --text: #475569;
+  --text-h: #0f172a;
+  --bg: #f8fafc;
+  --border: #e2e8f0;
+  --code-bg: #f1f5f9;
+  --accent: #d97706;
+  --accent-bg: rgba(217, 119, 6, 0.1);
+  --accent-border: rgba(217, 119, 6, 0.3);
+  --social-bg: rgba(241, 245, 249, 0.8);
+  --shadow:
+    rgba(15, 23, 42, 0.08) 0 10px 15px -3px, rgba(15, 23, 42, 0.04) 0 4px 6px -2px;
+
+  --sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --heading: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Consolas, monospace;
+
+  font: 16px/1.5 var(--sans);
+  letter-spacing: -0.011em;
+  color-scheme: light dark;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #94a3b8;
+    --text-h: #f8fafc;
+    --bg: #030712;
+    --border: #1f2937;
+    --code-bg: #0f172a;
+    --accent: #f59e0b;
+    --accent-bg: rgba(245, 158, 11, 0.15);
+    --accent-border: rgba(245, 158, 11, 0.4);
+    --social-bg: rgba(15, 23, 42, 0.6);
+    --shadow:
+      rgba(0, 0, 0, 0.5) 0 10px 15px -3px, rgba(0, 0, 0, 0.3) 0 4px 6px -2px;
+  }
+}
+
+html,
+body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-size: 16px;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--heading);
+  font-weight: 800;
+  color: var(--text-h);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+h1 {
+  font-size: clamp(2.25rem, 4vw, 3.75rem);
+  margin: 1.5rem 0 1rem;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+  margin: 0 0 0.75rem;
+}
+
+p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+code,
+.counter {
+  font-family: var(--mono);
+  display: inline-flex;
+  border-radius: 6px;
+  color: var(--text-h);
+}
+
+code {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  padding: 0.25rem 0.5rem;
+  background: var(--code-bg);
+}
