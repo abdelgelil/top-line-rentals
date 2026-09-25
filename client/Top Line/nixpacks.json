@@ -10,7 +10,9 @@
     "install": {
       "cmd": "npm install --include=optional"
     },
-    "build": { "cmd": "npm run build" }
+    "build": {
+      "cmd": "npm run build"
+    }
   },
   "start": {
     "cmd": "node server.js"
