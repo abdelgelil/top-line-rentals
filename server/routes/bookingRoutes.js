@@ -1,6 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import Booking from '../models/Booking.js';
+import Booking from '../models/booking.js';
 import Apartment from '../models/Apartment.js';
 
 const router = express.Router();
