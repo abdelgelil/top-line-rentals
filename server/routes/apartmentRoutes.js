@@ -241,7 +241,7 @@ router.put('/:id', isAdmin, upload.array('images', 10), async (req, res) => {
 
 /* ==========================================================================
    DELETE /api/apartments/:id - Delete apartment & purge Cloudinary images
-   ========================================================================== />
+   ========================================================================== */
 router.delete('/:id', isAdmin, async (req, res) => {
   try {
     const { id } = req.params;
