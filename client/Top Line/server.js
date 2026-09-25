@@ -8,6 +8,8 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+console.log(`[BOOT] Initializing Express server on 0.0.0.0:${PORT}`);
+
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.get('*', (req, res) => {
@@ -15,5 +17,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`[DOCKER ACTIVE] Express server active on 0.0.0.0:${PORT}`);
+  console.log(`[SUCCESS] Express server listening on http://0.0.0.0:${PORT}`);
 });
