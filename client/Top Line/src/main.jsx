@@ -1,7 +1,9 @@
 import { StrictMode, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ClerkProvider, useAuth } from '@clerk/clerk-react';
+import { BrowserRouter } from 'react-router-dom';
 import { setupAxiosInterceptors } from './source/services/api';
+import { LanguageProvider } from './source/context/LanguageContext';
 import './index.css';
 import App from './App.jsx';
 
@@ -25,7 +27,11 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
       <AxiosAuthInit>
-        <App />
+        <BrowserRouter>
+          <LanguageProvider>
+            <App />
+          </LanguageProvider>
+        </BrowserRouter>
       </AxiosAuthInit>
     </ClerkProvider>
   </StrictMode>,

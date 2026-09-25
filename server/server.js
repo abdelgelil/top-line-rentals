@@ -4,28 +4,92 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-
-import apartmentRoutes from './routes/apartmentRoutes.js';
-import bookingRoutes from './routes/bookingRoutes.js';
-import userRoutes from './routes/userRoutes.js';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import mongoSanitize from 'express-mongo-sanitize';
 
 // Resolve directory paths correctly in ES Module mode
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Attempt to load .env from root, fallback to current folder
+// 1. Load .env BEFORE importing routes
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 dotenv.config({ path: path.resolve(__dirname, './.env') });
 
+// 2. Dynamic Route Imports
+const apartmentRoutes = (await import('./routes/apartmentRoutes.js')).default;
+const bookingRoutes = (await import('./routes/bookingRoutes.js')).default;
+const userRoutes = (await import('./routes/userRoutes.js')).default;
+const messageRoutes = (await import('./routes/messageRoutes.js')).default;
+
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+// --- SECURITY MIDDLEWARE ---
+// A05: Security Misconfiguration - Helmet for HTTP headers
+app.use(helmet({
+  contentSecurityPolicy: false, // Disable CSP by default to avoid breaking frontend images/scripts, enable in production with specific sources
+}));
+
+// A05: CORS Hardening - Explicit origin check
+const allowedOrigins = process.env.CLIENT_URL ? [process.env.CLIENT_URL] : ['http://localhost:5173'];
+app.use(cors({ 
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }, 
+  credentials: true 
+}));
+
+// A03: Injection - Sanitize MongoDB operators from req.body, req.query, req.params
+app.use(mongoSanitize());
+
 app.use(express.json());
+
+// A07: Rate Limiting - Protect critical endpoints from brute-force/DoS
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: { success: false, message: 'Too many requests from this IP, please try again after 15 minutes' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const authLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 10, // Limit sensitive auth requests
+  message: { success: false, message: 'Too many authentication attempts, please try again in an hour' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use('/api/', generalLimiter);
+app.use('/api/users/sync', authLimiter);
+app.use('/api/users/claim-first-admin', authLimiter);
 
 // Register API Endpoints
 app.use('/api/apartments', apartmentRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/messages', messageRoutes);
+
+// Root healthcheck
+app.get('/', (req, res) => {
+  res.send('API running securely...');
+});
+
+// A05: Production Error Handling - Mask stack traces
+app.use((err, req, res, next) => {
+  const isProduction = process.env.NODE_ENV === 'production';
+  console.error(`[Error]: ${err.stack}`);
+  res.status(err.status || 500).json({
+    success: false,
+    message: isProduction ? 'An internal server error occurred' : err.message,
+    ...(isProduction ? {} : { stack: err.stack })
+  });
+});
 
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;

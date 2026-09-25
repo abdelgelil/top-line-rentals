@@ -1,57 +1,78 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL: 'http://localhost:5000/api',
 });
 
-// Interceptor to inject Clerk Session JWT into API requests
+let requestInterceptorId = null;
+
 export const setupAxiosInterceptors = (getToken) => {
-  API.interceptors.request.use(async (config) => {
-    const token = await getToken();
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+  if (requestInterceptorId !== null) {
+    API.interceptors.request.eject(requestInterceptorId);
+  }
+
+  requestInterceptorId = API.interceptors.request.use(
+    async (config) => {
+      try {
+        let token = null;
+        if (typeof getToken === 'function') {
+          token = await getToken();
+        } else {
+          token = localStorage.getItem('token');
+        }
+
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+      } catch (err) {
+        console.error('Failed to attach auth token:', err);
+      }
+      return config;
+    },
+    (error) => Promise.reject(error)
+  );
+
+  return () => {
+    if (requestInterceptorId !== null) {
+      API.interceptors.request.eject(requestInterceptorId);
+      requestInterceptorId = null;
     }
-    return config;
-  }, (error) => {
-    return Promise.reject(error);
+  };
+};
+
+/* ==========================================================================
+   Apartments Endpoints
+   ========================================================================== */
+export const fetchApartments = (tower) => API.get('/apartments', { params: { tower } });
+export const fetchApartmentById = (id) => API.get(`/apartments/${id}`);
+export const createApartment = (formData) =>
+  API.post('/apartments', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
   });
-};
+export const updateApartment = (id, formData) =>
+  API.put(`/apartments/${id}`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+export const deleteApartment = (id) => API.delete(`/apartments/${id}`);
 
-// --- Apartment API Calls ---
+/* ==========================================================================
+   Bookings & Analytics Endpoints
+   ========================================================================== */
+export const createBooking = (bookingData) => API.post('/bookings', bookingData);
+export const fetchUserBookings = (userId) => API.get('/bookings', { params: { userId } });
+export const fetchAllBookings = () => API.get('/bookings');
+export const updateBookingStatus = (id, status) => API.patch(`/bookings/${id}/status`, { status });
+export const deleteBooking = (id) => API.delete(`/bookings/${id}`);
+export const fetchAnalytics = () => API.get('/bookings/analytics');
+export const fetchUserRole = (clerkId) => API.get(`/users/role/${encodeURIComponent(clerkId)}`);
+export const syncUserProfile = (profile) => API.post('/users/sync', profile);
 
-export const fetchApartments = async (towerFilter = '') => {
-  const query = towerFilter && towerFilter !== 'All' ? `?tower=${towerFilter}` : '';
-  const response = await API.get(`/apartments${query}`);
-  return response.data;
-};
+/* ==========================================================================
+   Messages & Contact Endpoints
+   ========================================================================== */
+export const sendContactMessage = (formData) => API.post('/messages', formData);
+export const fetchMessages = () => API.get('/messages');
+export const markMessageAsRead = (id) => API.patch(`/messages/${id}/read`);
 
-export const fetchApartmentById = async (id) => {
-  const response = await API.get(`/apartments/${id}`);
-  return response.data;
-};
-
-// --- Booking API Calls ---
-
-export const createBooking = async (bookingData) => {
-  const response = await API.post('/bookings', bookingData);
-  return response.data;
-};
-
-export const fetchMyBookings = async () => {
-  const response = await API.get('/bookings/my-bookings');
-  return response.data;
-};
-
-// --- User Profile API Calls ---
-
-export const fetchUserProfile = async () => {
-  const response = await API.get('/users/profile');
-  return response.data;
-};
-
-export const updateUserProfile = async (userData) => {
-  const response = await API.put('/users/profile', userData);
-  return response.data;
-};
 
 export default API;

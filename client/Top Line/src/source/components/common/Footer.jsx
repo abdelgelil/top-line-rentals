@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Building2, Phone, Mail, MapPin, ShieldCheck, Heart } from 'lucide-react';
 
 export const Footer = () => {
@@ -9,12 +10,12 @@ export const Footer = () => {
           
           {/* Brand & Bio */}
           <div className="md:col-span-1 space-y-4">
-            <a href="/" className="flex items-center gap-2 text-slate-900 dark:text-white font-bold text-xl tracking-tight">
+            <Link to="/" className="flex items-center gap-2 text-slate-900 dark:text-white font-bold text-xl tracking-tight">
               <div className="p-2 rounded-xl bg-indigo-600/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400">
                 <Building2 className="w-5 h-5" />
               </div>
               <span>TopLine <span className="text-indigo-600 dark:text-indigo-400 font-light">Rentals</span></span>
-            </a>
+            </Link>
             <p className="text-sm leading-relaxed opacity-80">
               Premium coastal residences and luxury tower apartments with seamless booking and hospitality.
             </p>
@@ -24,9 +25,9 @@ export const Footer = () => {
           <div>
             <h4 className="text-slate-900 dark:text-white font-semibold text-base mb-4">Quick Links</h4>
             <ul className="space-y-2.5 text-sm">
-              <li><a href="/" className="hover:text-indigo-500 transition-colors">Home Overview</a></li>
-              <li><a href="/listing" className="hover:text-indigo-500 transition-colors">Available Units</a></li>
-              <li><a href="/admin" className="hover:text-indigo-500 transition-colors">Property Management</a></li>
+              <li><Link to="/" className="hover:text-indigo-500 transition-colors">Home Overview</Link></li>
+              <li><Link to="/apartments" className="hover:text-indigo-500 transition-colors">Available Units</Link></li>
+              <li><Link to="/admin" className="hover:text-indigo-500 transition-colors">Property Management</Link></li>
             </ul>
           </div>
 
