@@ -8,13 +8,11 @@
       "nixPkgs": ["nodejs_24"]
     },
     "install": {
-      "cmd": "cd \"client/Top Line\" && npm install --include=optional --no-save"
+      "cmd": "npm install --include=optional"
     },
-    "build": {
-      "cmd": "cd \"client/Top Line\" && npm run build"
-    }
+    "build": { "cmd": "npm run build" }
   },
   "start": {
-    "cmd": "cd \"client/Top Line\" && npm start"
+    "cmd": "node server.js"
   }
 }

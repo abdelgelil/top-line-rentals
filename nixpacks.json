@@ -1,20 +1,20 @@
 {
   "providers": ["node"],
   "variables": {
-    "NIXPACKS_NODE_VERSION": "20"
+    "NIXPACKS_NODE_VERSION": "24"
   },
   "phases": {
     "setup": {
-      "nixPkgs": ["nodejs_20"]
+      "nixPkgs": ["nodejs_24"]
     },
     "install": {
-      "cmd": "cd \"Top Line\" && npm install"
+      "cmd": "npm install --include=optional"
     },
     "build": {
-      "cmd": "cd \"Top Line\" && npm run build"
+      "cmd": "npm run build"
     }
   },
-  "static": {
-    "directory": "Top Line/dist"
+  "start": {
+    "cmd": "node server.js"
   }
 }
