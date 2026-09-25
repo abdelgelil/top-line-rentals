@@ -73,7 +73,7 @@ const ClientNavbar = () => {
             </div>
           </div>
 
-          <button 
+          <button
             onClick={() => setIsOpen(true)}
             className="md:hidden p-2 rounded-full bg-white/50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 z-50 transition-all active:scale-90 border border-white/50 dark:border-blue-500/10"
           >
@@ -83,18 +83,18 @@ const ClientNavbar = () => {
       </nav>
 
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex justify-end">
-          <div 
-            className="absolute inset-0 bg-black/40 backdrop-blur-md transition-opacity animate-in fade-in duration-300" 
-            onClick={() => setIsOpen(false)} 
+        <div className="fixed inset-0 z-[100] flex justify-end pointer-events-auto">
+          <div
+            className="absolute inset-0 bg-black/40 backdrop-blur-md transition-opacity animate-in fade-in duration-300 pointer-events-auto"
+            onClick={() => setIsOpen(false)}
           />
-          <div className={`relative w-full sm:w-80 h-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-3xl shadow-2xl transition-transform duration-500 ease-out transform ${
+          <div className={`relative w-full sm:w-80 h-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-3xl shadow-2xl transition-transform duration-500 ease-out transform ${
             isOpen ? 'translate-x-0' : 'translate-x-full'
-          } flex flex-col border-l border-blue-100/50 dark:border-blue-500/10 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.6)]`}>
+          } flex flex-col border-l border-blue-100/50 dark:border-blue-500/10 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.6)] pointer-events-auto`}>
             <div className="flex items-center justify-between p-6 border-b border-blue-100/50 dark:border-blue-500/10">
               <span className="text-xl font-bold text-slate-900 dark:text-white">Menu</span>
-              <button 
-                onClick={() => setIsOpen(false)} 
+              <button
+                onClick={() => setIsOpen(false)}
                 className="p-2.5 rounded-full bg-white/50 dark:bg-slate-800/50 text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors border border-blue-100/50 dark:border-blue-500/10"
               >
                 <X className="w-6 h-6" />
@@ -102,9 +102,9 @@ const ClientNavbar = () => {
             </div>
 
             <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-4">
-              <NavLink 
-                to="/apartments" 
-                className={mobileLinkClass} 
+              <NavLink
+                to="/apartments"
+                className={mobileLinkClass}
                 onClick={() => setIsOpen(false)}
               >
                 <Building2 className="w-6 h-6" />
@@ -112,9 +112,9 @@ const ClientNavbar = () => {
               </NavLink>
 
               {isSignedIn && (
-                <NavLink 
-                  to="/my-bookings" 
-                  className={mobileLinkClass} 
+                <NavLink
+                  to="/my-bookings"
+                  className={mobileLinkClass}
                   onClick={() => setIsOpen(false)}
                 >
                   <CalendarCheck className="w-6 h-6" />
@@ -122,9 +122,9 @@ const ClientNavbar = () => {
                 </NavLink>
               )}
 
-              <NavLink 
-                to="/contact" 
-                className={mobileLinkClass} 
+              <NavLink
+                to="/contact"
+                className={mobileLinkClass}
                 onClick={() => setIsOpen(false)}
               >
                 <Mail className="w-6 h-6" />

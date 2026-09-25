@@ -55,14 +55,14 @@ const AdminNavbar = () => {
       </nav>
 
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex justify-end">
+        <div className="fixed inset-0 z-[100] flex justify-end pointer-events-auto">
           <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity animate-in fade-in duration-300"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity animate-in fade-in duration-300 pointer-events-auto"
             onClick={() => setIsOpen(false)}
           />
-          <div className={`relative w-full sm:w-80 h-full bg-slate-900/80 backdrop-blur-3xl shadow-2xl transition-transform duration-500 ease-out transform ${
+          <div className={`relative w-full sm:w-80 h-full bg-slate-900/90 backdrop-blur-3xl shadow-2xl transition-transform duration-500 ease-out transform ${
             isOpen ? 'translate-x-0' : 'translate-x-full'
-          } flex flex-col border-l border-blue-500/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.1)]`}>
+          } flex flex-col border-l border-blue-500/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.1)] pointer-events-auto`}>
             <div className="flex items-center justify-between p-6 border-b border-blue-500/20">
               <span className="text-xl font-bold text-white">Admin Menu</span>
               <button

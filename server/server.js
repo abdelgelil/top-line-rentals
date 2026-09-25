@@ -43,10 +43,12 @@ app.use(cors({
   credentials: true 
 }));
 
-// A03: Injection - Sanitize MongoDB operators from req.body, req.query, req.params
-app.use(mongoSanitize());
-
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// A03: Injection - Sanitize MongoDB operators
+// Temporarily commenting out mongoSanitize due to 'Cannot set property query' conflict with Express 5.x
+// app.use(mongoSanitize());
 
 // A07: Rate Limiting - Protect critical endpoints from brute-force/DoS
 const generalLimiter = rateLimit({
