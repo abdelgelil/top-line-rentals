@@ -1,11 +1,11 @@
 {
   "providers": ["node"],
   "variables": {
-    "NIXPACKS_NODE_VERSION": "24"
+    "NIXPACKS_NODE_VERSION": "20"
   },
   "phases": {
     "setup": {
-      "nixPkgs": ["nodejs_24"]
+      "nixPkgs": ["nodejs_20"]
     },
     "install": {
       "cmd": "npm install --include=optional"
