@@ -8,13 +8,13 @@
       "nixPkgs": ["nodejs_20"]
     },
     "install": {
-      "cmd": "cd \"Top Line\" && npm install"
+      "cmd": "npm install"
     },
     "build": {
-      "cmd": "cd \"Top Line\" && npm run build"
+      "cmd": "npm run build"
     }
   },
   "static": {
-    "directory": "Top Line/dist"
+    "directory": "dist"
   }
 }
