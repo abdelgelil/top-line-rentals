@@ -1,20 +1,20 @@
 {
   "providers": ["node"],
   "variables": {
-    "NIXPACKS_NODE_VERSION": "22"
+    "NIXPACKS_NODE_VERSION": "24"
   },
   "phases": {
     "setup": {
-      "nixPkgs": ["nodejs_22"]
+      "nixPkgs": ["nodejs_24"]
     },
     "install": {
-      "cmd": "npm install --no-package-lock"
+      "cmd": "npm install --include=optional --no-save"
     },
     "build": {
       "cmd": "npm run build"
     }
   },
-  "static": {
-    "directory": "dist"
+  "start": {
+    "cmd": "npx serve -s dist -l $PORT"
   }
 }
