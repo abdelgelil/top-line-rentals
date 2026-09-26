@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import Logo from './Logo';
 import { LanguageToggle } from './LanguageToggle';
 
-const ClientNavbar = () => {  
+const ClientNavbar = () => {
   const { t } = useTranslation();
   const { isSignedIn, user } = useUser();
   const [isOpen, setIsOpen] = useState(false);
