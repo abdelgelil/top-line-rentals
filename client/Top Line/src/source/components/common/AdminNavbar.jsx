@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { UserButton } from '@clerk/clerk-react';
 import { Building2, LayoutDashboard, ShieldCheck, Mail, Menu, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Logo from './Logo';
+import { LanguageToggle } from './LanguageToggle';
 
 const AdminNavbar = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
   const linkClass = ({ isActive }) =>
@@ -30,17 +33,18 @@ const AdminNavbar = () => {
           <div className="hidden md:flex items-center gap-4">
             <NavLink to="/admin" className={linkClass}>
               <LayoutDashboard className="w-4 h-4" />
-              <span>Dashboard</span>
+              <span>{t('nav.adminDashboard')}</span>
             </NavLink>
             <NavLink to="/apartments" className={linkClass}>
               <Building2 className="w-4 h-4" />
-              <span>Apartments</span>
+              <span>{t('nav.apartments')}</span>
             </NavLink>
             <NavLink to="/admin/messages" className={linkClass}>
               <Mail className="w-4 h-4" />
-              <span>Messages</span>
+              <span>{t('nav.messages')}</span>
             </NavLink>
-            <div className="pl-4 border-l border-blue-500/20">
+            <div className="pl-4 border-l border-blue-500/20 flex items-center gap-3">
+              <LanguageToggle />
               <UserButton afterSignOutUrl="/" />
             </div>
           </div>
@@ -74,7 +78,7 @@ const AdminNavbar = () => {
             onClick={() => setIsOpen(false)}
           >
             <LayoutDashboard className="w-4 h-4" />
-            <span>Dashboard</span>
+            <span>{t('nav.adminDashboard')}</span>
           </NavLink>
           <NavLink
             to="/apartments"
@@ -86,7 +90,7 @@ const AdminNavbar = () => {
             onClick={() => setIsOpen(false)}
           >
             <Building2 className="w-4 h-4" />
-            <span>Apartments</span>
+            <span>{t('nav.apartments')}</span>
           </NavLink>
           <NavLink
             to="/admin/messages"
@@ -98,10 +102,11 @@ const AdminNavbar = () => {
             onClick={() => setIsOpen(false)}
           >
             <Mail className="w-4 h-4" />
-            <span>Messages</span>
+            <span>{t('nav.messages')}</span>
           </NavLink>
           <div className="pt-2 mt-2 border-t border-slate-800">
             <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-800/50 border border-blue-500/20">
+              <LanguageToggle />
               <UserButton afterSignOutUrl="/" />
               <span className="text-sm font-medium text-slate-300">Administrator</span>
             </div>

@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { setupAxiosInterceptors } from './source/services/api';
 import { LanguageProvider } from './source/context/LanguageContext';
 import './index.css';
+import './i18n';
 import App from './App.jsx';
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;

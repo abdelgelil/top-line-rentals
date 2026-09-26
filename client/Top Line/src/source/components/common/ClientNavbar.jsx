@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useUser, UserButton } from '@clerk/clerk-react';
 import { Building2, CalendarCheck, Mail, Menu, X, User, LayoutDashboard } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Logo from './Logo';
+import { LanguageToggle } from './LanguageToggle';
 
 const ClientNavbar = () => {
+  const { t } = useTranslation();
   const { isSignedIn, user } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const isAdmin = user?.publicMetadata?.role === 'admin';
@@ -45,24 +48,24 @@ const ClientNavbar = () => {
           <div className="hidden md:flex items-center gap-2">
             <NavLink to="/apartments" className={desktopLinkClass}>
               <Building2 className="w-4 h-4" />
-              <span>Apartments</span>
+              <span>{t('nav.apartments')}</span>
             </NavLink>
 
             {isSignedIn && (
               isAdmin ? (
                 <NavLink to="/admin" className={desktopLinkClass}>
                   <LayoutDashboard className="w-4 h-4" />
-                  <span>Admin Dashboard</span>
+                  <span>{t('nav.adminDashboard')}</span>
                 </NavLink>
               ) : (
                 <>
                   <NavLink to="/my-bookings" className={desktopLinkClass}>
                     <CalendarCheck className="w-4 h-4" />
-                    <span>My Bookings</span>
+                    <span>{t('nav.myBookings')}</span>
                   </NavLink>
                   <NavLink to="/contact" className={desktopLinkClass}>
                     <Mail className="w-4 h-4" />
-                    <span>Contact Us</span>
+                    <span>{t('nav.contact')}</span>
                   </NavLink>
                 </>
               )
@@ -71,11 +74,12 @@ const ClientNavbar = () => {
             {!isSignedIn && (
               <NavLink to="/contact" className={desktopLinkClass}>
                 <Mail className="w-4 h-4" />
-                <span>Contact Us</span>
+                <span>{t('nav.contact')}</span>
               </NavLink>
             )}
 
             <div className="flex items-center gap-3 pl-4 border-l border-blue-100/50 dark:border-blue-500/10">
+              <LanguageToggle />
               {isSignedIn ? (
                 <UserButton afterSignOutUrl="/" />
               ) : (
@@ -118,7 +122,7 @@ const ClientNavbar = () => {
             onClick={() => setIsOpen(false)}
           >
             <Building2 className="w-4 h-4" />
-            <span>Apartments</span>
+            <span>{t('nav.apartments')}</span>
           </NavLink>
 
           {isSignedIn && (
@@ -133,7 +137,7 @@ const ClientNavbar = () => {
                 onClick={() => setIsOpen(false)}
               >
                 <LayoutDashboard className="w-4 h-4" />
-                <span>Admin Dashboard</span>
+                <span>{t('nav.adminDashboard')}</span>
               </NavLink>
             ) : (
               <>
@@ -147,7 +151,7 @@ const ClientNavbar = () => {
                   onClick={() => setIsOpen(false)}
                 >
                   <CalendarCheck className="w-4 h-4" />
-                  <span>My Bookings</span>
+                  <span>{t('nav.myBookings')}</span>
                 </NavLink>
                 <NavLink
                   to="/contact"
@@ -159,7 +163,7 @@ const ClientNavbar = () => {
                   onClick={() => setIsOpen(false)}
                 >
                   <Mail className="w-4 h-4" />
-                  <span>Contact Us</span>
+                  <span>{t('nav.contact')}</span>
                 </NavLink>
               </>
             )
@@ -176,23 +180,27 @@ const ClientNavbar = () => {
               onClick={() => setIsOpen(false)}
             >
               <Mail className="w-4 h-4" />
-              <span>Contact Us</span>
+              <span>{t('nav.contact')}</span>
             </NavLink>
           )}
           <div className="pt-2 mt-2 border-t border-slate-100 dark:border-slate-800">
              {isSignedIn ? (
                 <div className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-500 dark:text-slate-400">
+                  <LanguageToggle />
                   <UserButton afterSignOutUrl="/" />
                   <span className="truncate">{user?.fullName || 'Member'}</span>
                 </div>
               ) : (
-                <Link
-                  to="/auth"
-                  className="block w-full py-2 text-center text-sm font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Sign In
-                </Link>
+                <div className="flex flex-col gap-2">
+                  <LanguageToggle />
+                  <Link
+                    to="/auth"
+                    className="block w-full py-2 text-center text-sm font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Sign In
+                  </Link>
+                </div>
               )}
             </div>
           </div>
