@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { UserButton, useUser } from '@clerk/clerk-react';
 import { Menu, X, Building2, Calendar, Mail } from 'lucide-react';
@@ -20,6 +20,7 @@ const ClientLayout = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
+    <div className="min-h-screen flex flex-col bg-white dark:bg-slate-950">
     <header className="sticky top-0 z-50 w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
 
@@ -121,6 +122,10 @@ const ClientLayout = () => {
         </div>
       )}
     </header>
+    <main className="flex-grow">
+      <Outlet />
+    </main>
+    </div>
   );
 };
 
