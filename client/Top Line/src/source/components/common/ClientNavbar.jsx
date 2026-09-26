@@ -99,95 +99,96 @@ const ClientNavbar = () => {
       </nav>
 
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex justify-end pointer-events-auto">
-          <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-md transition-opacity animate-in fade-in duration-300 pointer-events-auto"
+        <div className="md:hidden absolute top-full right-4 w-64 mt-2 p-3 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-xl rounded-2xl border border-slate-200/50 dark:border-slate-800/50 z-50 flex flex-col gap-1 transition-all animate-in fade-in slide-in-from-top-2 duration-200 pointer-events-auto">
+          <div className="flex justify-end mb-2">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+          <NavLink
+            to="/apartments"
+            className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+              isActive
+                ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400'
+                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+            }`}
             onClick={() => setIsOpen(false)}
-          />
-          <div className={`relative w-full sm:w-80 h-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-3xl shadow-2xl transition-transform duration-500 ease-out transform ${
-            isOpen ? 'translate-x-0' : 'translate-x-full'
-          } flex flex-col border-l border-blue-100/50 dark:border-blue-500/10 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.6)] pointer-events-auto`}>
-            <div className="flex items-center justify-between p-6 border-b border-blue-100/50 dark:border-blue-500/10">
-              <span className="text-xl font-bold text-slate-900 dark:text-white">Menu</span>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="p-2.5 rounded-full bg-white/50 dark:bg-slate-800/50 text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors border border-blue-100/50 dark:border-blue-500/10"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
+          >
+            <Building2 className="w-4 h-4" />
+            <span>Apartments</span>
+          </NavLink>
 
-            <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-4">
+          {isSignedIn && (
+            isAdmin ? (
               <NavLink
-                to="/apartments"
-                className={mobileLinkClass}
+                to="/admin"
+                className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  isActive
+                    ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400'
+                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`}
                 onClick={() => setIsOpen(false)}
               >
-                <Building2 className="w-6 h-6" />
-                <span>Apartments</span>
+                <LayoutDashboard className="w-4 h-4" />
+                <span>Admin Dashboard</span>
               </NavLink>
-
-              {isSignedIn && (
-                isAdmin ? (
-                  <NavLink
-                    to="/admin"
-                    className={mobileLinkClass}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <LayoutDashboard className="w-6 h-6" />
-                    <span>Admin Dashboard</span>
-                  </NavLink>
-                ) : (
-                  <>
-                    <NavLink
-                      to="/my-bookings"
-                      className={mobileLinkClass}
-                      onClick={() => setIsOpen(false)}
-                    >
-                      <CalendarCheck className="w-6 h-6" />
-                      <span>My Bookings</span>
-                    </NavLink>
-                    <NavLink
-                      to="/contact"
-                      className={mobileLinkClass}
-                      onClick={() => setIsOpen(false)}
-                    >
-                      <Mail className="w-6 h-6" />
-                      <span>Contact Us</span>
-                    </NavLink>
-                  </>
-                )
-              )}
-
-              {!isSignedIn && (
+            ) : (
+              <>
                 <NavLink
-                  to="/contact"
-                  className={mobileLinkClass}
+                  to="/my-bookings"
+                  className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    isActive
+                      ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400'
+                      : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  }`}
                   onClick={() => setIsOpen(false)}
                 >
-                  <Mail className="w-6 h-6" />
+                  <CalendarCheck className="w-4 h-4" />
+                  <span>My Bookings</span>
+                </NavLink>
+                <NavLink
+                  to="/contact"
+                  className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    isActive
+                      ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400'
+                      : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <Mail className="w-4 h-4" />
                   <span>Contact Us</span>
                 </NavLink>
-              )}
-            </div>
+              </>
+            )
+          )}
 
-            <div className="p-6 border-t border-blue-100/50 dark:border-blue-500/10 bg-white/30 dark:bg-slate-900/30 backdrop-blur-lg">
-              {isSignedIn ? (
-                <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/50 dark:bg-slate-800/50 border border-blue-100/50 dark:border-blue-500/10 shadow-sm">
+          {!isSignedIn && (
+            <NavLink
+              to="/contact"
+              className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                isActive
+                  ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400'
+                  : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+              onClick={() => setIsOpen(false)}
+            >
+              <Mail className="w-4 h-4" />
+              <span>Contact Us</span>
+            </NavLink>
+          )}
+          <div className="pt-2 mt-2 border-t border-slate-100 dark:border-slate-800">
+             {isSignedIn ? (
+                <div className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-500 dark:text-slate-400">
                   <UserButton afterSignOutUrl="/" />
-                  <div className="flex flex-col overflow-hidden">
-                    <span className="text-sm font-bold text-slate-900 dark:text-white truncate">
-                      {user?.fullName || 'Member'}
-                    </span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400 truncate">
-                      {user?.primaryEmailAddress?.emailAddress}
-                    </span>
-                  </div>
+                  <span className="truncate">{user?.fullName || 'Member'}</span>
                 </div>
               ) : (
                 <Link
                   to="/auth"
-                  className="block w-full py-4 text-center text-base font-semibold bg-gradient-to-r from-blue-600 via-blue-500 to-sky-400 text-white rounded-2xl shadow-lg shadow-blue-500/30 transition-all active:scale-95"
+                  className="block w-full py-2 text-center text-sm font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
                   Sign In

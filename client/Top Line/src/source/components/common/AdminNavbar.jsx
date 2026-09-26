@@ -55,42 +55,55 @@ const AdminNavbar = () => {
       </nav>
 
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex justify-end pointer-events-auto">
-          <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity animate-in fade-in duration-300 pointer-events-auto"
+        <div className="md:hidden absolute top-full right-4 w-64 mt-2 p-3 bg-slate-900/95 backdrop-blur-md shadow-xl rounded-2xl border border-slate-800/50 z-50 flex flex-col gap-1 transition-all animate-in fade-in slide-in-from-top-2 duration-200 pointer-events-auto">
+          <div className="flex justify-end mb-2">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-1 rounded-lg text-slate-400 hover:text-slate-200 transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+          <NavLink
+            to="/admin"
+            className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+              isActive
+                ? 'bg-blue-500/20 text-blue-400'
+                : 'text-slate-300 hover:bg-slate-800'
+            }`}
             onClick={() => setIsOpen(false)}
-          />
-          <div className={`relative w-full sm:w-80 h-full bg-slate-900/90 backdrop-blur-3xl shadow-2xl transition-transform duration-500 ease-out transform ${
-            isOpen ? 'translate-x-0' : 'translate-x-full'
-          } flex flex-col border-l border-blue-500/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.1)] pointer-events-auto`}>
-            <div className="flex items-center justify-between p-6 border-b border-blue-500/20">
-              <span className="text-xl font-bold text-white">Admin Menu</span>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="p-2.5 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-            <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-4">
-              <NavLink to="/admin" className={linkClass} onClick={() => setIsOpen(false)}>
-                <LayoutDashboard className="w-6 h-6" />
-                <span>Dashboard</span>
-              </NavLink>
-              <NavLink to="/apartments" className={linkClass} onClick={() => setIsOpen(false)}>
-                <Building2 className="w-6 h-6" />
-                <span>Apartments</span>
-              </NavLink>
-              <NavLink to="/admin/messages" className={linkClass} onClick={() => setIsOpen(false)}>
-                <Mail className="w-6 h-6" />
-                <span>Messages</span>
-              </NavLink>
-            </div>
-            <div className="p-6 border-t border-blue-500/20 bg-white/5">
-              <div className="flex items-center gap-3 p-4 rounded-2xl bg-slate-800/50 border border-blue-500/20 shadow-sm">
-                <UserButton afterSignOutUrl="/" />
-                <span className="text-sm font-medium text-slate-300">Administrator</span>
-              </div>
+          >
+            <LayoutDashboard className="w-4 h-4" />
+            <span>Dashboard</span>
+          </NavLink>
+          <NavLink
+            to="/apartments"
+            className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+              isActive
+                ? 'bg-blue-500/20 text-blue-400'
+                : 'text-slate-300 hover:bg-slate-800'
+            }`}
+            onClick={() => setIsOpen(false)}
+          >
+            <Building2 className="w-4 h-4" />
+            <span>Apartments</span>
+          </NavLink>
+          <NavLink
+            to="/admin/messages"
+            className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+              isActive
+                ? 'bg-blue-500/20 text-blue-400'
+                : 'text-slate-300 hover:bg-slate-800'
+            }`}
+            onClick={() => setIsOpen(false)}
+          >
+            <Mail className="w-4 h-4" />
+            <span>Messages</span>
+          </NavLink>
+          <div className="pt-2 mt-2 border-t border-slate-800">
+            <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-800/50 border border-blue-500/20">
+              <UserButton afterSignOutUrl="/" />
+              <span className="text-sm font-medium text-slate-300">Administrator</span>
             </div>
           </div>
         </div>
