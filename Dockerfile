@@ -2,14 +2,14 @@ FROM node:24-slim
 
 WORKDIR /app
 
-# Copy dependency manifests first for caching
-COPY package*.json ./
+# Copy dependency manifests from the server directory
+COPY server/package*.json ./
 
-# Install dependencies
+# Install production dependencies
 RUN npm install --omit=dev
 
-# Copy all backend source code
-COPY . .
+# Copy all backend source code from the server directory
+COPY server/ .
 
 EXPOSE 5000
 
