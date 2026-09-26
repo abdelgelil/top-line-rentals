@@ -1,35 +1,25 @@
-# Use Debian-based Node slim image for glibc support
 FROM node:24-slim
 
 WORKDIR /app
 
-# Copy package files using JSON array format for paths with spaces
-COPY ["client/Top Line/package*.json", "./"]
+# Copy root dependency manifests
+COPY package*.json ./
 
-# Install dependencies inside container
-RUN npm install --include=optional
+# Install production dependencies
+RUN npm install
 
-# Copy all source files
-COPY ["client/Top Line/", "./"]
+# Copy backend files and directories
+COPY server.js ./
+COPY server/ ./server/
+COPY config/ ./config/
+COPY controllers/ ./controllers/
+COPY middleware/ ./middleware/
+COPY models/ ./models/
+COPY routes/ ./routes/
+COPY utils/ ./utils/
 
-# Accept build arguments for Vite (baked at build time)
-ARG VITE_CLERK_PUBLISHABLE_KEY
-ARG VITE_CLOUDINARY_CLOUD_NAME
-ARG VITE_CLOUDINARY_UPLOAD_PRESET
-ARG VITE_API_BASE_URL
+EXPOSE 5000
 
-# Expose build arguments to the Vite build process environment
-ENV VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY
-ENV VITE_CLOUDINARY_CLOUD_NAME=$VITE_CLOUDINARY_CLOUD_NAME
-ENV VITE_CLOUDINARY_UPLOAD_PRESET=$VITE_CLOUDINARY_UPLOAD_PRESET
-ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+ENV PORT=5000
 
-# Build static bundle with embedded env vars
-RUN npm run build
-
-# Expose dynamic port matching Express (8080)
-ENV PORT=8080
-EXPOSE 8080
-
-# Start production server using Vite preview for static assets
-CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["node", "server.js"]
