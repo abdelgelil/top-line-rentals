@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 
 // Relative imports matching src/source structure
@@ -21,6 +21,7 @@ const RoleContext = createContext({ role: "", resolved: false });
 
 const RoleAwareLayout = () => {
   const { user, isSignedIn, isLoaded } = useUser();
+  const location = useLocation();
   const [storedRole, setStoredRole] = useState(() => localStorage.getItem("userRole") || "");
   const [roleResolved, setRoleResolved] = useState(false);
 
@@ -88,7 +89,12 @@ const RoleAwareLayout = () => {
   const hasAdminEmail = email.toLowerCase().endsWith("@toplinerentals.com");
   const effectiveRole = hasAdminEmail ? "admin" : clerkRole || storedRole.toLowerCase();
   const isAdmin = isSignedIn && effectiveRole === "admin";
-  const Layout = isLoaded && isAdmin ? AdminLayout : ClientLayout;
+  const isAdminRoute = location.pathname.startsWith("/admin");
+  const Layout = isLoaded && (isAdmin || isAdminRoute) ? AdminLayout : ClientLayout;
+
+  if (location.pathname === "/" && isAdmin && roleResolved) {
+    return <Navigate to="/admin/analytics" replace />;
+  }
 
   return (
     <RoleContext.Provider value={{ role: effectiveRole, resolved: roleResolved }}>
