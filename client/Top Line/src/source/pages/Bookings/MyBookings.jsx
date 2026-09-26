@@ -5,7 +5,7 @@ import { useUser } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
 import { cancelBooking, fetchUserBookings } from '../../services/api';
 import toast from 'react-hot-toast';
-import { Calendar, Clock, Users, MapPin, ChevronRight, Home, MessageCircle } from 'lucide-react';
+import { Calendar, Clock, Users, MapPin, ChevronRight, Home, MessageCircle, Info } from 'lucide-react';
 
 export default function MyBookings() {
   const { user, isLoaded, isSignedIn } = useUser();
@@ -49,7 +49,41 @@ export default function MyBookings() {
   };
 
   const handleCancelBooking = async (booking) => {
-    if (!window.confirm(i18n.t('Are you sure you want to cancel this booking?'))) return;
+    const confirmed = await new Promise((resolve) => {
+      let answered = false;
+      const answer = (value, toastId) => {
+        if (answered) return;
+        answered = true;
+        toast.dismiss(toastId);
+        resolve(value);
+      };
+
+      toast.custom((toastItem) => (
+        <div className="w-[min(360px,calc(100vw-32px))] rounded-xl border border-slate-700 bg-slate-900 px-3 py-2.5 text-slate-100 shadow-xl">
+          <div className="flex items-start gap-2">
+            <Info className="mt-0.5 h-4 w-4 shrink-0 text-sky-400" />
+            <p className="text-xs font-medium">{i18n.t('Are you sure you want to cancel this booking?')}</p>
+          </div>
+          <div className="mt-3 flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={() => answer(false, toastItem.id)}
+              className="rounded-lg border border-slate-600 px-3 py-1.5 text-xs text-slate-300 hover:bg-slate-800"
+            >
+              {i18n.t('Keep Booking')}
+            </button>
+            <button
+              type="button"
+              onClick={() => answer(true, toastItem.id)}
+              className="rounded-lg bg-rose-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-rose-500"
+            >
+              {i18n.t('Yes, cancel')}
+            </button>
+          </div>
+        </div>
+      ), { duration: Infinity });
+    });
+    if (!confirmed) return;
 
     setCancellingId(booking._id);
     try {

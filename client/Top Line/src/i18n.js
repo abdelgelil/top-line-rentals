@@ -138,6 +138,7 @@ const homeKeys = {
 
 Object.assign(arabic, {
   'Cancel Booking': 'إلغاء الحجز', 'Canceling...': 'جارٍ إلغاء الحجز...',
+  'Keep Booking': 'الاحتفاظ بالحجز', 'Yes, cancel': 'نعم، ألغِ الحجز',
   'Are you sure you want to cancel this booking?': 'هل أنت متأكد من رغبتك في إلغاء هذا الحجز؟',
   'Booking canceled successfully.': 'تم إلغاء الحجز بنجاح.', 'Failed to cancel booking.': 'تعذر إلغاء الحجز.',
   'Apartment available for these dates': 'الشقة متاحة لهذه التواريخ',

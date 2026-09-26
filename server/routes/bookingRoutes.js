@@ -77,7 +77,7 @@ router.patch('/:id/cancel', requireAuth, async (req, res) => {
     if (!booking) {
       return res.status(404).json({ success: false, message: 'Booking not found' });
     }
-    if (booking.user !== req.userId) {
+    if (String(booking.user) !== String(req.userId)) {
       return res.status(403).json({ success: false, message: 'You can only cancel your own bookings.' });
     }
     if (!['pending', 'confirmed'].includes(booking.status)) {
@@ -86,7 +86,7 @@ router.patch('/:id/cancel', requireAuth, async (req, res) => {
 
     const previousStatus = booking.status;
     const canceledBooking = await Booking.findOneAndUpdate(
-      { _id: id, user: req.userId, status: { $in: ['pending', 'confirmed'] } },
+      { _id: id, status: { $in: ['pending', 'confirmed'] } },
       { $set: { status: 'canceled' } },
       { new: true }
     ).populate('apartment');
@@ -117,7 +117,7 @@ router.patch('/:id/cancel', requireAuth, async (req, res) => {
       });
     } catch (messageError) {
       await Booking.findOneAndUpdate(
-        { _id: id, user: req.userId, status: 'canceled' },
+        { _id: id, status: 'canceled' },
         { $set: { status: previousStatus } }
       );
       throw messageError;
