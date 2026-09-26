@@ -75,6 +75,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('--- SUBMIT EVENT FIRED ---');
 
     const data = new FormData();
     data.append('title', formData.title);
