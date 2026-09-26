@@ -123,7 +123,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-slate-500 space-y-4">
-        <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
         <p className="font-medium">Loading luxury details...</p>
       </div>
     );
@@ -151,11 +151,11 @@ export function ApartmentDetails({ currentUser: propUser }) {
         
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-            <span className="hover:text-amber-600 cursor-pointer transition-colors">Apartments</span>
+            <span className="hover:text-blue-600 cursor-pointer transition-colors">Apartments</span>
             <ChevronRight className="w-4 h-4" />
             <span className="text-slate-900 dark:text-white font-medium">{apartment.title}</span>
           </div>
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/30 px-3 py-1 rounded-full">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 px-3 py-1 rounded-full">
             <ShieldCheck className="w-3 h-3" /> Verified Listing
           </div>
         </div>
@@ -230,7 +230,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
                       key={idx}
                       onClick={() => setActiveImageIndex(idx)}
                       className={`h-1.5 rounded-full transition-all duration-300 ${
-                        activeImageIndex === idx ? 'w-8 bg-amber-500' : 'w-1.5 bg-slate-300 dark:bg-slate-700 hover:bg-slate-400'
+                        activeImageIndex === idx ? 'w-8 bg-blue-600' : 'w-1.5 bg-slate-300 dark:bg-slate-700 hover:bg-slate-400'
                       }`}
                     />
                   ))}
@@ -241,14 +241,14 @@ export function ApartmentDetails({ currentUser: propUser }) {
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 text-sm font-bold uppercase tracking-widest">
-                    
+                  <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 text-sm font-bold uppercase tracking-widest">
+
                   </div>
                   <h1 className="text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
                     {apartment.title}
                   </h1>
                 </div>
-                <div className="flex items-center gap-2 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 px-4 py-2 rounded-full text-sm font-bold shadow-sm">
+                <div className="flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-4 py-2 rounded-full text-sm font-bold shadow-sm">
                   <Star className="w-4 h-4 fill-current" />
                   <span>Premium Luxury Listing</span>
                 </div>
