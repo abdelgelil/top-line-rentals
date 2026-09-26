@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Building2, Mail, Phone, MapPin, ShieldCheck, Heart } from 'lucide-react';
+import { Building2, Mail, Phone, MapPin, ShieldCheck } from 'lucide-react';
 
 const Footer = () => {
   const { t, i18n } = useTranslation();
@@ -47,9 +47,19 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-between gap-4 pt-7 text-xs text-slate-500 sm:flex-row">
-          <p>© {new Date().getFullYear()} TopLine Rentals. {t('footer.allRightsReserved')}</p>
-          <p className="flex items-center gap-1.5">{t('footer.craftedWith')} <Heart className="inline h-3.5 w-3.5 fill-rose-500 text-rose-500" /></p>
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-slate-800/60 pt-8 text-xs text-slate-500 sm:flex-row">
+          <p>© {new Date().getFullYear()} TopLine Rentals. {t('footer.allRightsReserved', 'All rights reserved.')}</p>
+          <div className="flex items-center gap-1.5 text-slate-400">
+            <span>{t('footer.developedBy', 'Developed with quality & care by')}</span>
+            <a
+              href="https://github.com/abdelgelil"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold tracking-wide text-blue-400 underline decoration-blue-500/40 underline-offset-4 transition-all duration-200 hover:text-blue-300 hover:decoration-blue-400"
+            >
+              Ahmed Abdelgelil
+            </a>
+          </div>
         </div>
       </div>
     </footer>

@@ -239,6 +239,7 @@ resources.en.translation.footer = {
   supportNote: 'Questions about a reservation or property? Our team is here to help.',
   allRightsReserved: 'All rights reserved.',
   craftedWith: 'Made with care for your stay.',
+  developedBy: 'Developed with quality & care by',
 };
 resources.ar.translation.footer = {
   aboutText: 'إقامات ساحلية مميزة مع حجوزات سهلة وضيافة تهتم بكل التفاصيل.',
@@ -250,6 +251,7 @@ resources.ar.translation.footer = {
   supportNote: 'هل لديك سؤال عن حجز أو عقار؟ فريقنا هنا لمساعدتك.',
   allRightsReserved: 'جميع الحقوق محفوظة.',
   craftedWith: 'صُنع بعناية من أجل إقامتك.',
+  developedBy: 'طُوّر بالجودة والعناية على يد',
 };
 
 i18n.use(LanguageDetector).use(initReactI18next).init({
