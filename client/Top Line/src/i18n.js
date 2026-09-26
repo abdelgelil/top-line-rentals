@@ -137,6 +137,9 @@ const homeKeys = {
 };
 
 Object.assign(arabic, {
+  'Booking status updated.': 'تم تحديث حالة الحجز.', 'Reservation deleted.': 'تم حذف الحجز.', 'Apartment deleted.': 'تم حذف الشقة.',
+  'Message sent successfully.': 'تم إرسال الرسالة بنجاح.', 'Failed to send your message. Please try again.': 'تعذر إرسال رسالتك. يرجى المحاولة مرة أخرى.',
+  'Booking request submitted.': 'تم إرسال طلب الحجز.', 'Message marked as read.': 'تم تحديد الرسالة كمقروءة.', 'Failed to update the message.': 'تعذر تحديث الرسالة.',
   'Guest': 'ضيف', 'Max': 'بحد أقصى', 'Area': 'المساحة', 'Type': 'النوع', 'Luxury Suite': 'جناح فاخر',
   'Infinity Pool': 'مسبح إنفينيتي', 'Fitness Center': 'مركز لياقة بدنية', 'Secure Parking': 'موقف سيارات آمن',
   'Private Beach Access': 'دخول خاص إلى الشاطئ', 'Spa & Wellness': 'منتجع صحي وعافية', 'No Smoking Indoors': 'ممنوع التدخين داخل الوحدة',

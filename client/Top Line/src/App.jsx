@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 import { useTranslation } from "react-i18next";
+import { Toaster } from 'react-hot-toast';
 
 // Relative imports matching src/source structure
 import { ClientLayout } from "./source/components/common/ClientLayout";
@@ -126,8 +127,27 @@ const ProtectedAdminRoute = ({ children }) => {
 };
 
 function App() {
-  useTranslation();
+  const { i18n: activeI18n } = useTranslation();
   return (
+    <>
+    <Toaster
+      position={activeI18n.dir(activeI18n.language) === 'rtl' ? 'top-left' : 'top-right'}
+      toastOptions={{
+        duration: 3200,
+        style: {
+          background: '#0f172a',
+          color: '#e2e8f0',
+          border: '1px solid rgba(148, 163, 184, 0.18)',
+          borderRadius: '12px',
+          padding: '10px 12px',
+          fontSize: '13px',
+          maxWidth: 'min(360px, calc(100vw - 32px))',
+        },
+        iconTheme: { primary: '#60a5fa', secondary: '#0f172a' },
+        success: { iconTheme: { primary: '#38bdf8', secondary: '#0f172a' } },
+        error: { iconTheme: { primary: '#f87171', secondary: '#0f172a' } },
+      }}
+    />
     <Routes>
       <Route element={<RoleAwareLayout />}>
             <Route path="/" element={<Home />} />
@@ -161,6 +181,7 @@ function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
+    </>
   );
 }
 

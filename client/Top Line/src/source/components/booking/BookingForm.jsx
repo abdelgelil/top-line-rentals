@@ -1,4 +1,5 @@
 import i18n from "../../../i18n.js";
+import toast from 'react-hot-toast';
 import React, { useState } from "react";
 import { SignInButton, useUser } from "@clerk/clerk-react";
 import { createBooking } from "../../services/api";
@@ -78,13 +79,14 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
 
       if (response.data.success) {
         if (onSuccess) onSuccess(response.data.data);
-        alert(i18n.t('Booking reserved successfully!'));
+        toast.success(i18n.t('Booking reserved successfully!'));
       }
     } catch (err) {
       console.error('Booking submission failed:', err);
       const serverMessage =
         err.response?.data?.message || err.response?.data?.error || 'Booking request failed.';
       setError(serverMessage);
+      toast.error(serverMessage);
     } finally {
       setLoading(false);
     }

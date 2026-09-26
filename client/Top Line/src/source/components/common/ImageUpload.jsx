@@ -1,4 +1,5 @@
 import i18n from "../../../i18n.js";
+import toast from 'react-hot-toast';
 import React, { useState } from 'react';
 
 export default function ImageUpload({ onImageUploaded }) {
@@ -31,7 +32,7 @@ export default function ImageUpload({ onImageUploaded }) {
       }
     } catch (err) {
       console.error('Cloudinary Upload Failed:', err);
-      alert(i18n.t('Failed to upload image to Cloudinary'));
+      toast.error(i18n.t('Failed to upload image to Cloudinary'));
     } finally {
       setLoading(false);
     }

@@ -1,4 +1,5 @@
 import i18n from "../../../i18n.js";
+import toast from 'react-hot-toast';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import API from '../../services/api';
@@ -21,11 +22,11 @@ export const Checkout = () => {
       });
 
       if (response.data.success) {
-        alert(i18n.t('Booking confirmed!'));
+        toast.success(i18n.t('Booking confirmed!'));
         navigate('/');
       }
     } catch (error) {
-      alert(error.response?.data?.message || i18n.t('Booking creation failed'));
+      toast.error(error.response?.data?.message || i18n.t('Booking creation failed'));
     } finally {
       setLoading(false);
     }

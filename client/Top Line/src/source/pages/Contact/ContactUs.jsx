@@ -1,4 +1,5 @@
 import i18n from "../../../i18n.js";
+import toast from 'react-hot-toast';
 import React, { useState } from 'react';
 import {
   Mail,
@@ -38,6 +39,7 @@ export const ContactUs = () => {
     try {
       await sendContactMessage(formState);
       setSubmitStatus('success');
+      toast.success(i18n.t('Message sent successfully.'));
       setFormState({
         fullName: '',
         email: '',
@@ -47,6 +49,7 @@ export const ContactUs = () => {
       });
     } catch (err) {
       setSubmitStatus('error');
+      toast.error(i18n.t('Failed to send your message. Please try again.'));
     } finally {
       setIsSubmitting(false);
     }

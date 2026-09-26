@@ -1,4 +1,5 @@
 import i18n from "../../../../i18n.js";
+import toast from 'react-hot-toast';
 import React, { useState, useEffect } from 'react';
 import { 
   Mail, 
@@ -41,8 +42,10 @@ export const AdminMessages = () => {
     try {
       await markMessageAsRead(id);
       setMessages(prev => prev.map(m => m._id === id ? { ...m, isRead: true } : m));
+      toast.success(i18n.t('Message marked as read.'));
     } catch (err) {
       console.error('Error marking as read:', err);
+      toast.error(i18n.t('Failed to update the message.'));
     }
   };
 

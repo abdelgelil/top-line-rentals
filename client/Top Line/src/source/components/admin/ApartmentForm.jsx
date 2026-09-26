@@ -1,4 +1,5 @@
 import i18n from "../../../i18n.js";
+import toast from 'react-hot-toast';
 import React, { useState, useEffect } from 'react';
 import { X, Trash2 } from 'lucide-react';
 import { createApartment, updateApartment } from '../../services/api';
@@ -110,7 +111,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
         : await createApartment(data);
 
       console.log('Apartment saved successfully:', response.data);
-      alert(i18n.t(initialData ? 'Apartment updated successfully!' : 'Apartment created successfully!'));
+      toast.success(i18n.t(initialData ? 'Apartment updated successfully!' : 'Apartment created successfully!'));
       
       if (onSubmit) {
         await onSubmit(response.data?.data || response.data);
@@ -119,7 +120,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
     } catch (err) {
       console.error('Save Apartment Error:', err);
       const serverMessage = err.response?.data?.message || err.response?.data?.error || err.message;
-      alert(`${i18n.t('Failed to save apartment:')} ${serverMessage}`);
+      toast.error(`${i18n.t('Failed to save apartment:')} ${serverMessage}`);
     } finally {
       setLoading(false);
     }

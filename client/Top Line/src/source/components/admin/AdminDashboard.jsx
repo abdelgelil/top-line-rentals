@@ -1,4 +1,5 @@
 import i18n from "../../../i18n.js";
+import toast from 'react-hot-toast';
 import { translateText } from '../../../utils/translateContent.js';
 import React, { useEffect, useState, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -100,9 +101,10 @@ const AdminDashboard = () => {
           prev.map((b) => (b._id === bookingId ? response.data.data : b))
         );
         loadAnalytics(); // Refresh KPI metrics
+        toast.success(i18n.t('Booking status updated.'));
       }
     } catch (err) {
-      alert(i18n.t('Failed to update booking status.'));
+      toast.error(i18n.t('Failed to update booking status.'));
     }
   };
 
@@ -111,9 +113,10 @@ const AdminDashboard = () => {
     try {
       await deleteBooking(bookingId);
       setBookings((prev) => prev.filter((b) => b._id !== bookingId));
+      toast.success(i18n.t('Reservation deleted.'));
       loadAnalytics();
     } catch (err) {
-      alert(i18n.t('Failed to delete reservation document.'));
+      toast.error(i18n.t('Failed to delete reservation document.'));
     }
   };
 
@@ -122,8 +125,9 @@ const AdminDashboard = () => {
     try {
       await deleteApartment(id);
       setApartments((prev) => prev.filter((a) => a._id !== id));
+      toast.success(i18n.t('Apartment deleted.'));
     } catch (err) {
-      alert(i18n.t('Failed to delete apartment.'));
+      toast.error(i18n.t('Failed to delete apartment.'));
     }
   };
 

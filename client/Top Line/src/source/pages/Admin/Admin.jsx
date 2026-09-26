@@ -1,4 +1,5 @@
 import i18n from "../../../i18n.js";
+import toast from 'react-hot-toast';
 import { translateText } from '../../../utils/translateContent.js';
 import React, { useState, useEffect } from 'react';
 import { Building, Plus, Calendar, Edit, Trash2, Layers, Search } from 'lucide-react';
@@ -71,9 +72,10 @@ export const Admin = () => {
     try {
       await deleteApartment(id);
       loadApartments();
+      toast.success(i18n.t('Apartment deleted.'));
     } catch (err) {
       console.error('Failed to delete apartment:', err);
-      alert(i18n.t('Failed to delete apartment.'));
+      toast.error(i18n.t('Failed to delete apartment.'));
     }
   };
 

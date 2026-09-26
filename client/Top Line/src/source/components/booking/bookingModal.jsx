@@ -1,4 +1,5 @@
 import i18n from "../../../i18n.js";
+import toast from 'react-hot-toast';
 import { translateText } from '../../../utils/translateContent.js';
 import React, { useState } from 'react';
 import { Calendar, Users, Phone, Mail, User, CheckCircle2 } from 'lucide-react';
@@ -42,9 +43,11 @@ export const BookingModal = ({ apartment, onClose }) => {
 
       await createBooking(payload);
       setSuccess(true);
+      toast.success(i18n.t('Booking request submitted.'));
     } catch (err) {
       console.error('Booking submission failed:', err);
       setError(err?.response?.data?.message || i18n.t('Failed to submit reservation. Please try again.'));
+      toast.error(err?.response?.data?.message || i18n.t('Failed to submit reservation. Please try again.'));
     } finally {
       setLoading(false);
     }
