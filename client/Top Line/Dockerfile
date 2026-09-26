@@ -2,14 +2,14 @@ FROM node:24-slim
 
 WORKDIR /app
 
-# Copy package manifests
-COPY package*.json ./
+# Copy package manifests from the context relative to the root
+COPY ["client/Top Line/package*.json", "./"]
 
 # Install dependencies
 RUN npm install
 
-# Copy application source
-COPY . .
+# Copy application source from the context relative to the root
+COPY ["client/Top Line/", "./"]
 
 # Build arguments for Vite
 ARG VITE_API_BASE_URL
