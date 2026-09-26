@@ -6,7 +6,7 @@ import path from 'path';
 // https://vite.dev/config/
 export default defineConfig({
   envDir: '../', // Reads .env from root
-  root: __dirname,
+  root: import.meta.dirname,
   plugins: [
     react(),
     tailwindcss(),
@@ -25,7 +25,7 @@ export default defineConfig({
     port: 5173
   },
   build: {
-    outDir: path.resolve(__dirname, 'dist'),
+    outDir: path.resolve(import.meta.dirname, 'dist'),
     emptyOutDir: true,
   },
 });
