@@ -2,21 +2,14 @@ FROM node:24-slim
 
 WORKDIR /app
 
-# Copy root dependency manifests
+# Copy dependency manifests first for caching
 COPY package*.json ./
 
-# Install production dependencies
-RUN npm install
+# Install dependencies
+RUN npm install --omit=dev
 
-# Copy backend files and directories
-COPY server.js ./
-COPY server/ ./server/
-COPY config/ ./config/
-COPY controllers/ ./controllers/
-COPY middleware/ ./middleware/
-COPY models/ ./models/
-COPY routes/ ./routes/
-COPY utils/ ./utils/
+# Copy all backend source code
+COPY . .
 
 EXPOSE 5000
 
