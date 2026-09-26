@@ -1,3 +1,4 @@
+import i18n from "../../../i18n.js";
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -22,8 +23,7 @@ const Logo = ({ className = '', showText = true }) => {
       </div>
       
       {showText && (
-        <span className="text-xl font-black tracking-tight text-slate-900 dark:text-white">
-          TopLine <span className="text-blue-600 dark:text-blue-400">Rentals</span>
+        <span className="text-xl font-black tracking-tight text-slate-900 dark:text-white">{' '}{i18n.t("TopLine")}{' '}<span className="text-blue-600 dark:text-blue-400">{i18n.t("Rentals")}</span>
         </span>
       )}
     </div>

@@ -1,3 +1,4 @@
+import i18n from "../../../i18n.js";
 import React, { useState } from 'react';
 import { Calendar, Users, Phone, Mail, User, CheckCircle2 } from 'lucide-react';
 import { createBooking } from '../../services/api'; // Replace with your backend booking service
@@ -42,7 +43,7 @@ export const BookingModal = ({ apartment, onClose }) => {
       setSuccess(true);
     } catch (err) {
       console.error('Booking submission failed:', err);
-      setError(err?.response?.data?.message || 'Failed to submit reservation. Please try again.');
+      setError(err?.response?.data?.message || i18n.t('Failed to submit reservation. Please try again.'));
     } finally {
       setLoading(false);
     }
@@ -54,28 +55,21 @@ export const BookingModal = ({ apartment, onClose }) => {
         <div className="w-16 h-16 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center mx-auto">
           <CheckCircle2 className="w-10 h-10" />
         </div>
-        <h3 className="text-2xl font-bold text-slate-900 dark:text-white">Reservation Received!</h3>
-        <p className="text-sm text-slate-500">
-          Thank you, <span className="font-semibold text-slate-800 dark:text-slate-200">{formData.fullName}</span>. Your reservation request for <span className="font-semibold text-slate-800 dark:text-slate-200">{apartment.title}</span> has been saved. Our team will contact you directly via phone or email shortly.
-        </p>
+        <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{i18n.t("Reservation Received!")}</h3>
+        <p className="text-sm text-slate-500">{' '}{i18n.t("Thank you,")}{' '}<span className="font-semibold text-slate-800 dark:text-slate-200">{formData.fullName}</span>{i18n.t(". Your reservation request for")}{' '}<span className="font-semibold text-slate-800 dark:text-slate-200">{apartment.title}</span>{' '}{i18n.t("has been saved. Our team will contact you directly via phone or email shortly.")}{' '}</p>
         <button
           onClick={onClose}
           className="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-xl hover:opacity-90 transition-all text-sm mt-4"
-        >
-          Done
-        </button>
+        >{' '}{i18n.t("Done")}{' '}</button>
       </div>
     );
   }
 
   return (
     <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl max-w-lg mx-auto border border-slate-200 dark:border-slate-800 shadow-2xl">
-      <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-1">
-        Reserve {apartment.title}
+      <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-1">{' '}{i18n.t("Reserve")}{' '}{apartment.title}
       </h2>
-      <p className="text-xs text-slate-500 mb-6">
-        Enter your details below to confirm your stay request.
-      </p>
+      <p className="text-xs text-slate-500 mb-6">{' '}{i18n.t("Enter your details below to confirm your stay request.")}{' '}</p>
 
       {error && (
         <div className="mb-4 p-3 bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 rounded-xl text-xs font-semibold">
@@ -85,7 +79,7 @@ export const BookingModal = ({ apartment, onClose }) => {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Full Name</label>
+          <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">{i18n.t("Full Name")}</label>
           <div className="relative">
             <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
             <input
@@ -94,7 +88,7 @@ export const BookingModal = ({ apartment, onClose }) => {
               name="fullName"
               value={formData.fullName}
               onChange={handleChange}
-              placeholder="John Doe"
+              placeholder={i18n.t("John Doe")}
               className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white focus:outline-none"
             />
           </div>
@@ -102,7 +96,7 @@ export const BookingModal = ({ apartment, onClose }) => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Phone Number</label>
+            <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">{i18n.t("Phone Number")}</label>
             <div className="relative">
               <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
               <input
@@ -118,7 +112,7 @@ export const BookingModal = ({ apartment, onClose }) => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Email Address</label>
+            <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">{i18n.t("Email Address")}</label>
             <div className="relative">
               <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
               <input
@@ -127,7 +121,7 @@ export const BookingModal = ({ apartment, onClose }) => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="john@example.com"
+                placeholder={i18n.t("john@example.com")}
                 className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white focus:outline-none"
               />
             </div>
@@ -136,7 +130,7 @@ export const BookingModal = ({ apartment, onClose }) => {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Check-In</label>
+            <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">{i18n.t("Check-In")}</label>
             <input
               required
               type="date"
@@ -148,7 +142,7 @@ export const BookingModal = ({ apartment, onClose }) => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Check-Out</label>
+            <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">{i18n.t("Check-Out")}</label>
             <input
               required
               type="date"
@@ -161,7 +155,7 @@ export const BookingModal = ({ apartment, onClose }) => {
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Guests</label>
+          <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">{i18n.t("Guests")}</label>
           <select
             name="guests"
             value={formData.guests}

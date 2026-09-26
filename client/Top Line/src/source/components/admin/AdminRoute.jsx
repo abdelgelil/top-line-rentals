@@ -1,3 +1,4 @@
+import i18n from "../../../i18n.js";
 import React from 'react';
 import { useUser } from '@clerk/clerk-react';
 import { Navigate } from 'react-router-dom';
@@ -7,9 +8,7 @@ const AdminRoute = ({ children }) => {
 
   if (!isLoaded) {
     return (
-      <div className="flex justify-center items-center min-h-[60vh] text-slate-500 font-medium">
-        Authenticating...
-      </div>
+      <div className="flex justify-center items-center min-h-[60vh] text-slate-500 font-medium">{' '}{i18n.t("Authenticating...")}{' '}</div>
     );
   }
 

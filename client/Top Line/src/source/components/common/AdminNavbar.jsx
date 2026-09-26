@@ -1,3 +1,4 @@
+import i18n from "../../../i18n.js";
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { UserButton } from '@clerk/clerk-react';
@@ -26,8 +27,7 @@ const AdminNavbar = () => {
               <Logo />
             </Link>
             <span className="hidden sm:flex px-2 py-0.5 text-[10px] uppercase font-extrabold tracking-wider bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-md items-center gap-1">
-              <ShieldCheck className="w-3 h-3" /> Admin Portal
-            </span>
+              <ShieldCheck className="w-3 h-3" />{' '}{i18n.t("Admin Portal")}{' '}</span>
           </div>
 
           <div className="hidden md:flex items-center gap-4">
@@ -37,15 +37,15 @@ const AdminNavbar = () => {
             </NavLink>
             <NavLink to="/admin/apartments" className={linkClass}>
               <Building2 className="w-4 h-4" />
-              <span>Manage Apartments</span>
+              <span>{i18n.t("Manage Apartments")}</span>
             </NavLink>
             <NavLink to="/admin/reservations" className={linkClass}>
               <CalendarCheck className="w-4 h-4" />
-              <span>Bookings</span>
+              <span>{i18n.t("Bookings")}</span>
             </NavLink>
             <Link to="/apartments" className={linkClass({ isActive: false })}>
               <ExternalLink className="w-4 h-4" />
-              <span>View Public Site</span>
+              <span>{i18n.t("View Public Site")}</span>
             </Link>
             <div className="pl-4 border-l border-blue-500/20 flex items-center gap-3">
               <LanguageToggle />
@@ -94,7 +94,7 @@ const AdminNavbar = () => {
             onClick={() => setIsOpen(false)}
           >
             <Building2 className="w-4 h-4" />
-            <span>Manage Apartments</span>
+            <span>{i18n.t("Manage Apartments")}</span>
           </NavLink>
           <NavLink
             to="/admin/reservations"
@@ -106,17 +106,17 @@ const AdminNavbar = () => {
             onClick={() => setIsOpen(false)}
           >
             <CalendarCheck className="w-4 h-4" />
-            <span>Bookings</span>
+            <span>{i18n.t("Bookings")}</span>
           </NavLink>
           <Link to="/apartments" className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800" onClick={() => setIsOpen(false)}>
             <ExternalLink className="w-4 h-4" />
-            <span>View Public Site</span>
+            <span>{i18n.t("View Public Site")}</span>
           </Link>
           <div className="pt-2 mt-2 border-t border-slate-800">
             <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-800/50 border border-blue-500/20">
               <LanguageToggle />
               <UserButton afterSignOutUrl="/" />
-              <span className="text-sm font-medium text-slate-300">Administrator</span>
+              <span className="text-sm font-medium text-slate-300">{i18n.t("Administrator")}</span>
             </div>
           </div>
         </div>

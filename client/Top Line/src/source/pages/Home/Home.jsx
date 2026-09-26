@@ -1,3 +1,4 @@
+import i18n from "../../../i18n.js";
 import React, { useState, useEffect } from 'react';
 import { Sparkles, Building2, Shield, Waves } from 'lucide-react';
 import { fetchApartments } from '../../services/api';
@@ -56,16 +57,12 @@ export const Home = () => {
       <section className="w-full pt-8 md:pt-16 px-4 sm:px-8 lg:px-12 text-center space-y-6">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-700 dark:text-blue-400 text-xs sm:text-sm font-bold tracking-wide">
           <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-          <span>Luxury Coastal Living</span>
+          <span>{i18n.t("Luxury Coastal Living")}</span>
         </div>
 
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-slate-900 dark:text-white tracking-tight max-w-5xl mx-auto leading-tight">
-          Find Your Perfect Residence in The Towers
-        </h1>
+        <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-slate-900 dark:text-white tracking-tight max-w-5xl mx-auto leading-tight">{' '}{i18n.t("Find Your Perfect Residence in The Towers")}{' '}</h1>
 
-        <p className="text-sm sm:text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
-          Book fully serviced apartments with panoramic Mediterranean views and private beach access.
-        </p>
+        <p className="text-sm sm:text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">{' '}{i18n.t("Book fully serviced apartments with panoramic Mediterranean views and private beach access.")}{' '}</p>
 
         <div className="pt-4">
           <SearchFilterBar
@@ -88,10 +85,8 @@ export const Home = () => {
       <section className="w-full px-4 sm:px-8 lg:px-12 space-y-8">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Available Residences</h2>
-            <p className="text-xs sm:text-sm text-slate-500">
-              Showing {filteredApartments.length} handpicked premium suites
-            </p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">{i18n.t("Available Residences")}</h2>
+            <p className="text-xs sm:text-sm text-slate-500">{' '}{i18n.t("Showing")}{' '}{filteredApartments.length}{' '}{i18n.t("handpicked premium suites")}{' '}</p>
           </div>
 
           <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0">
@@ -119,17 +114,15 @@ export const Home = () => {
           </div>
         ) : filteredApartments.length === 0 ? (
           <div className="text-center py-16 space-y-3 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
-            <p className="text-slate-900 dark:text-white font-bold text-lg">No residences available</p>
-            <p className="text-slate-500 text-sm">Try clearing your amenity filters or selecting another tower location.</p>
+            <p className="text-slate-900 dark:text-white font-bold text-lg">{i18n.t("No residences available")}</p>
+            <p className="text-slate-500 text-sm">{i18n.t("Try clearing your amenity filters or selecting another tower location.")}</p>
             <button
               onClick={() => {
                 setTowerFilter('All');
                 setSelectedAmenities([]);
               }}
               className="mt-2 px-5 py-2 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 font-bold text-xs hover:bg-blue-500/20 transition-all"
-            >
-              Reset Filters
-            </button>
+            >{' '}{i18n.t("Reset Filters")}{' '}</button>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -147,30 +140,24 @@ export const Home = () => {
             <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center mx-auto sm:mx-0">
               <Waves className="w-6 h-6" />
             </div>
-            <h4 className="text-lg font-bold text-white">Panoramic Views</h4>
-            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-              Every apartment features unobstructed Mediterranean horizons and private high-floor balconies.
-            </p>
+            <h4 className="text-lg font-bold text-white">{i18n.t("Panoramic Views")}</h4>
+            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">{' '}{i18n.t("Every apartment features unobstructed Mediterranean horizons and private high-floor balconies.")}{' '}</p>
           </div>
 
           <div className="space-y-3">
             <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center mx-auto sm:mx-0">
               <Shield className="w-6 h-6" />
             </div>
-            <h4 className="text-lg font-bold text-white">24/7 Concierge</h4>
-            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-              Enjoy private parking, round-the-clock security, and room service upon request.
-            </p>
+            <h4 className="text-lg font-bold text-white">{i18n.t("24/7 Concierge")}</h4>
+            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">{' '}{i18n.t("Enjoy private parking, round-the-clock security, and room service upon request.")}{' '}</p>
           </div>
 
           <div className="space-y-3">
             <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center mx-auto sm:mx-0">
               <Building2 className="w-6 h-6" />
             </div>
-            <h4 className="text-lg font-bold text-white">Prime Access</h4>
-            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-              Direct indoor elevator access to luxury shopping centers, cinema, and dining.
-            </p>
+            <h4 className="text-lg font-bold text-white">{i18n.t("Prime Access")}</h4>
+            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">{' '}{i18n.t("Direct indoor elevator access to luxury shopping centers, cinema, and dining.")}{' '}</p>
           </div>
         </div>
       </section>

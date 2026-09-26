@@ -1,3 +1,4 @@
+import i18n from "../../../i18n.js";
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Bed, ShieldCheck } from 'lucide-react';
@@ -15,15 +16,14 @@ export const ApartmentCard = ({ unit }) => {
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute top-4 right-4 bg-slate-900/80 backdrop-blur-md border border-white/20 text-sky-400 font-bold px-3 py-1 rounded-full text-xs shadow-md">
-          ${unit.pricePerNight || unit.price} / night
-        </div>
+          ${unit.pricePerNight || unit.price}{' '}{i18n.t("/ night")}{' '}</div>
       </div>
 
       {/* Card Body */}
       <div className="p-6 flex flex-col justify-between flex-grow space-y-4">
         <div>
           <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
-            {unit.tower || 'Tower Residence'}
+            {i18n.t(unit.tower || 'Tower Residence')}
           </span>
           <h3 className="text-xl font-bold text-slate-900 dark:text-white mt-1">
             {unit.title || unit.name}
@@ -37,11 +37,11 @@ export const ApartmentCard = ({ unit }) => {
         <div className="flex items-center gap-4 text-xs text-slate-600 dark:text-slate-400 border-t border-slate-100 dark:border-slate-800 pt-4">
           <div className="flex items-center gap-1.5">
             <Users className="w-4 h-4 text-blue-500 dark:text-sky-400" />
-            <span>{unit.maxGuests || 2} Guests</span>
+            <span>{unit.maxGuests || 2}{' '}{i18n.t("Guests")}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <Bed className="w-4 h-4 text-blue-500 dark:text-sky-400" />
-            <span>{unit.bedrooms || 1} Beds</span>
+            <span>{unit.bedrooms || 1}{' '}{i18n.t("Beds")}</span>
           </div>
         </div>
 
@@ -49,9 +49,7 @@ export const ApartmentCard = ({ unit }) => {
         <Link
           to={`/apartments/${apartmentId}`}
           className="w-full mt-2 py-3 bg-slate-900 hover:bg-slate-800 dark:bg-blue-600 dark:hover:bg-blue-500 text-white font-bold text-xs rounded-xl text-center shadow-md transition-all block"
-        >
-          View & Book Residence
-        </Link>
+        >{' '}{i18n.t("View & Book Residence")}{' '}</Link>
       </div>
     </div>
   );

@@ -2,69 +2,222 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-// Translation dictionaries
-const resources = {
-  en: {
-    translation: {
-      nav: {
-        home: "Home",
-        apartments: "Apartments",
-        myBookings: "My Bookings",
-        adminDashboard: "Admin Dashboard",
-        addApartment: "Add Apartment",
-        logout: "Logout",
-        language: "Language"
-      },
-      common: {
-        search: "Search",
-        filter: "Filter",
-        price: "Price",
-        details: "View Details",
-        bookNow: "Book Now",
-        status: "Status",
-        actions: "Actions"
-      }
-    }
-  },
-  ar: {
-    translation: {
-      nav: {
-        home: "الرئيسية",
-        apartments: "الوحدات والشقق",
-        myBookings: "حجوزاتي",
-        adminDashboard: "لوحة التحكم",
-        addApartment: "إضافة شقة",
-        logout: "تسجيل الخروج",
-        language: "اللغة"
-      },
-      common: {
-        search: "بحث",
-        filter: "تصفية",
-        price: "السعر",
-        details: "عرض التفاصيل",
-        bookNow: "احجز الآن",
-        status: "الحالة",
-        actions: "الإجراءات"
-      }
-    }
-  }
+const english = {
+  'Home': 'Home', 'Apartments': 'Apartments', 'My Bookings': 'My Bookings',
+  'Admin Dashboard': 'Admin Dashboard', 'Add Apartment': 'Add Apartment',
+  'Logout': 'Logout', 'Language': 'Language', 'Search': 'Search', 'Filter': 'Filter',
+  'Price': 'Price', 'View Details': 'View Details', 'Book Now': 'Book Now',
+  'Status': 'Status', 'Actions': 'Actions', 'Contact Us': 'Contact Us',
+  'Luxury Coastal Living': 'Luxury Coastal Living',
+  'Find Your Perfect Residence in The Towers': 'Find Your Perfect Residence in The Towers',
+  'Book fully serviced apartments with panoramic Mediterranean views and private beach access.': 'Book fully serviced apartments with panoramic Mediterranean views and private beach access.',
+  'Available Residences': 'Available Residences', 'handpicked premium suites': 'handpicked premium suites',
+  'All Towers': 'All Towers', 'San Stefano Tower': 'San Stefano Tower', 'Four Seasons Tower': 'Four Seasons Tower',
+  'Reset Filters': 'Reset Filters', 'No residences match your current filters': 'No residences match your current filters',
+  'Try clearing your amenity filters or selecting another tower location.': 'Try clearing your amenity filters or selecting another tower location.',
+  'Panoramic Views': 'Panoramic Views', 'Every apartment features unobstructed Mediterranean horizons and private high-floor balconies.': 'Every apartment features unobstructed Mediterranean horizons and private high-floor balconies.',
+  '24/7 Concierge': '24/7 Concierge', 'Enjoy private parking, round-the-clock security, and room service upon request.': 'Enjoy private parking, round-the-clock security, and room service upon request.',
+  'Prime Access': 'Prime Access', 'Direct indoor elevator access to luxury shopping centers, cinema, and dining.': 'Direct indoor elevator access to luxury shopping centers, cinema, and dining.',
+  'Loading session...': 'Loading session...', 'Loading authentication status...': 'Loading authentication status...',
+  'Checking permissions...': 'Checking permissions...', 'Apartments': 'Apartments',
+  'Tower Location': 'Tower Location', 'Check-In & Check-Out': 'Check-In & Check-Out', 'Guests': 'Guests', 'Search Units': 'Search Units',
+  'All Towers': 'All Towers', 'Tower 1': 'Tower 1', 'Tower 2': 'Tower 2', 'Tower 3': 'Tower 3',
+  'View & Book Residence': 'View & Book Residence', 'Beds': 'Beds', '/ night': '/ night',
+  'Loading luxury details...': 'Loading luxury details...', 'Apartment not found.': 'Apartment not found.',
+  'View All': 'View All', 'Photos': 'Photos', 'Premium Luxury Listing': 'Premium Luxury Listing',
+  'Property Overview': 'Property Overview', 'No Image': 'No Image', 'Verified Listing': 'Verified Listing',
+  'Loading messages...': 'Loading messages...', 'Inbox': 'Inbox', 'Unread': 'Unread',
+  'No messages found in your inbox.': 'No messages found in your inbox.', 'Back to Inbox': 'Back to Inbox',
+  'Registered User': 'Registered User', 'Message Detail': 'Message Detail', 'No Message Selected': 'No Message Selected',
+  'Select a conversation from the inbox to view the details and sender information.': 'Select a conversation from the inbox to view the details and sender information.',
+  'Access Required': 'Access Required', 'Please sign in to view and manage your luxury property reservations.': 'Please sign in to view and manage your luxury property reservations.',
+  'No Bookings Found': 'No Bookings Found', 'Dates': 'Dates', 'Duration': 'Duration', 'Total Investment': 'Total Investment',
+  'Price per night': 'Price per night', 'Total Estimate': 'Total Estimate', 'Sign in to reserve this apartment.': 'Sign in to reserve this apartment.',
+  'Sign In to Book': 'Sign In to Book', 'Loading sign-in status...': 'Loading sign-in status...',
+  'Full Name': 'Full Name', 'Email Address': 'Email Address', '(Optional)': '(Optional)', 'Phone Number': 'Phone Number',
+  'Check-In': 'Check-In', 'Check-Out': 'Check-Out', 'Reserve Now': 'Reserve Now', 'Confirm Reservation': 'Confirm Reservation',
+  'Reservation Received!': 'Reservation Received!', 'Send a Message': 'Send a Message', 'Send Message': 'Send Message',
+  'Message Sent!': 'Message Sent!', 'Something went wrong': 'Something went wrong', 'Subject': 'Subject', 'Message': 'Message',
+  'Reservation Inquiry': 'Reservation Inquiry', 'Alamein City Compound Info': 'Alamein City Compound Info', 'Property Support': 'Property Support',
+  'Other': 'Other', 'About TopLine Rentals': 'About TopLine Rentals', 'Alamein City Expansion': 'Alamein City Expansion',
+  'Quick Links': 'Quick Links', 'Home Overview': 'Home Overview', 'Available Units': 'Available Units', 'Property Management': 'Property Management',
+  'Host Guarantee': 'Host Guarantee', 'Verified Listings': 'Verified Listings', 'Direct Owner Pricing': 'Direct Owner Pricing',
+  'Instant Reservation': 'Instant Reservation', 'Contact & Support': 'Contact & Support', 'San Stefano Towers, Alexandria': 'San Stefano Towers, Alexandria',
+  'All rights reserved.': 'All rights reserved.', 'Apartment Image (Cloudinary)': 'Apartment Image (Cloudinary)',
+  'Uploading to Cloudinary...': 'Uploading to Cloudinary...', 'Cloudinary URL Generated': 'Cloudinary URL Generated',
+  'Admin Management': 'Admin Management', 'Manage Apartments': 'Manage Apartments', 'Bookings': 'Bookings', 'View Public Site': 'View Public Site',
+  'Administrator': 'Administrator', 'Listed Apartments': 'Listed Apartments', '+ Add New Apartment': '+ Add New Apartment',
+  'Loading Apartments...': 'Loading Apartments...', 'No apartments found.': 'No apartments found.', 'Delete Apartment': 'Delete Apartment',
+  'Edit Apartment': 'Edit Apartment', 'Delete Reservation Document': 'Delete Reservation Document',
+  'Loading platform analytics...': 'Loading platform analytics...', 'Total Bookings': 'Total Bookings',
+  'All-time reservations': 'All-time reservations', 'Confirmed Bookings': 'Confirmed Bookings', 'Successful stays': 'Successful stays',
+  'Pending Review': 'Pending Review', 'Awaiting action': 'Awaiting action', 'Total Revenue': 'Total Revenue',
+  'Confirmed revenue': 'Confirmed revenue', 'No client activity recorded yet.': 'No client activity recorded yet.',
+  'Client Info': 'Client Info', 'Confirmed Stays': 'Confirmed Stays', 'Last Activity': 'Last Activity',
+  'Loading Reservations...': 'Loading Reservations...', 'Guest Name': 'Guest Name', 'Email / Phone': 'Email / Phone',
+  'Apartment': 'Apartment', 'Total Price': 'Total Price', 'No phone provided': 'No phone provided', 'Tower:': 'Tower:',
+  'Edit': 'Edit', 'Delete': 'Delete', 'Confirm': 'Confirm', 'Cancel': 'Cancel', 'N/A': 'N/A',
+  'Confirm Your Reservation': 'Confirm Your Reservation', 'Apartment ID:': 'Apartment ID:', 'Total Price:': 'Total Price:',
+  'Best Rate Guaranteed': 'Best Rate Guaranteed', 'Reserve Residence': 'Reserve Residence', 'Total': 'Total',
+  'No instant charge. Free cancellation up to 48 hours prior.': 'No instant charge. Free cancellation up to 48 hours prior.',
+  'Apartment created successfully!': 'Apartment created successfully!', 'Apartment updated successfully!': 'Apartment updated successfully!',
+  'Failed to save apartment:': 'Failed to save apartment:', 'Are you sure you want to delete this apartment?': 'Are you sure you want to delete this apartment?',
+  'Are you sure you want to permanently delete this reservation document?': 'Are you sure you want to permanently delete this reservation document?',
+  'Failed to update booking status.': 'Failed to update booking status.', 'Failed to delete reservation document.': 'Failed to delete reservation document.',
+  'Failed to delete apartment.': 'Failed to delete apartment.', 'Booking reserved successfully!': 'Booking reserved successfully!',
+  'Please select both Check-In and Check-Out dates.': 'Please select both Check-In and Check-Out dates.',
+  'Check-Out date must be after Check-In date.': 'Check-Out date must be after Check-In date.', 'Invalid apartment selection.': 'Invalid apartment selection.',
+  'Failed to upload image to Cloudinary': 'Failed to upload image to Cloudinary', 'English': 'English', 'العربية': 'العربية',
 };
 
-i18n
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    resources,
-    fallbackLng: 'en',
-    interpolation: {
-      escapeValue: false
-    }
-  });
+const arabic = {
+  'Home': 'الرئيسية', 'Apartments': 'الشقق', 'My Bookings': 'حجوزاتي', 'Admin Dashboard': 'لوحة الإدارة',
+  'Add Apartment': 'إضافة شقة', 'Logout': 'تسجيل الخروج', 'Language': 'اللغة', 'Search': 'بحث', 'Filter': 'تصفية',
+  'Price': 'السعر', 'View Details': 'عرض التفاصيل', 'Book Now': 'احجز الآن', 'Status': 'الحالة', 'Actions': 'الإجراءات',
+  'Contact Us': 'اتصل بنا', 'Luxury Coastal Living': 'إقامة ساحلية فاخرة',
+  'Find Your Perfect Residence in The Towers': 'اعثر على إقامتك المثالية في الأبراج',
+  'Book fully serviced apartments with panoramic Mediterranean views and private beach access.': 'احجز شققاً مجهزة بالكامل بإطلالات بانورامية على البحر المتوسط وإمكانية دخول الشاطئ الخاص.',
+  'Available Residences': 'الوحدات المتاحة', 'handpicked premium suites': 'أجنحة فاخرة مختارة بعناية',
+  'All Towers': 'جميع الأبراج', 'San Stefano Tower': 'برج سان ستيفانو', 'Four Seasons Tower': 'برج فور سيزونز',
+  'Reset Filters': 'إعادة ضبط عوامل التصفية', 'No residences match your current filters': 'لا توجد وحدات تطابق عوامل التصفية الحالية',
+  'Try clearing your amenity filters or selecting another tower location.': 'جرّب مسح عوامل تصفية المرافق أو اختيار برج آخر.',
+  'Panoramic Views': 'إطلالات بانورامية', 'Every apartment features unobstructed Mediterranean horizons and private high-floor balconies.': 'تتميز كل شقة بإطلالات مفتوحة على البحر المتوسط وشرفات خاصة في الطوابق العليا.',
+  '24/7 Concierge': 'خدمة كونسيرج على مدار الساعة', 'Enjoy private parking, round-the-clock security, and room service upon request.': 'استمتع بمواقف خاصة وأمن على مدار الساعة وخدمة الغرف عند الطلب.',
+  'Prime Access': 'موقع متميز', 'Direct indoor elevator access to luxury shopping centers, cinema, and dining.': 'وصول مباشر بالمصعد إلى مراكز التسوق الفاخرة والسينما والمطاعم.',
+  'Loading session...': 'جارٍ تحميل الجلسة...', 'Loading authentication status...': 'جارٍ التحقق من تسجيل الدخول...',
+  'Checking permissions...': 'جارٍ التحقق من الصلاحيات...', 'Tower Location': 'موقع البرج', 'Check-In & Check-Out': 'تاريخ الوصول والمغادرة',
+  'Guests': 'الضيوف', 'Search Units': 'ابحث عن الوحدات', 'Tower 1': 'البرج ١', 'Tower 2': 'البرج ٢', 'Tower 3': 'البرج ٣',
+  'View & Book Residence': 'عرض الوحدة وحجزها', 'Beds': 'أسرّة', '/ night': '/ الليلة', 'Loading luxury details...': 'جارٍ تحميل تفاصيل الوحدة...',
+  'Apartment not found.': 'لم يتم العثور على الشقة.', 'Premium Luxury Listing': 'وحدة فاخرة مميزة', 'Property Overview': 'نبذة عن العقار',
+  'Verified Listing': 'وحدة موثقة', 'Loading messages...': 'جارٍ تحميل الرسائل...', 'Inbox': 'صندوق الوارد', 'Unread': 'غير مقروءة',
+  'No messages found in your inbox.': 'لا توجد رسائل في صندوق الوارد.', 'Back to Inbox': 'العودة إلى صندوق الوارد',
+  'Registered User': 'مستخدم مسجل', 'Message Detail': 'تفاصيل الرسالة', 'No Message Selected': 'لم يتم اختيار رسالة',
+  'Select a conversation from the inbox to view the details and sender information.': 'اختر محادثة من صندوق الوارد لعرض التفاصيل ومعلومات المرسل.',
+  'Access Required': 'يلزم تسجيل الدخول', 'Please sign in to view and manage your luxury property reservations.': 'يرجى تسجيل الدخول لعرض حجوزاتك وإدارتها.',
+  'No Bookings Found': 'لا توجد حجوزات', 'Dates': 'التواريخ', 'Duration': 'المدة', 'Total Investment': 'الإجمالي',
+  'Price per night': 'السعر لليلة', 'Total Estimate': 'الإجمالي التقديري', 'Sign in to reserve this apartment.': 'سجّل الدخول لحجز هذه الشقة.',
+  'Sign In to Book': 'سجّل الدخول للحجز', 'Loading sign-in status...': 'جارٍ التحقق من تسجيل الدخول...', 'Full Name': 'الاسم الكامل',
+  'Email Address': 'البريد الإلكتروني', '(Optional)': '(اختياري)', 'Phone Number': 'رقم الهاتف', 'Check-In': 'تاريخ الوصول', 'Check-Out': 'تاريخ المغادرة',
+  'Reserve Now': 'احجز الآن', 'Confirm Reservation': 'تأكيد الحجز', 'Reservation Received!': 'تم استلام طلب الحجز!',
+  'Send a Message': 'أرسل رسالة', 'Send Message': 'إرسال الرسالة', 'Message Sent!': 'تم إرسال الرسالة!', 'Something went wrong': 'حدث خطأ ما',
+  'Subject': 'الموضوع', 'Message': 'الرسالة', 'Reservation Inquiry': 'استفسار عن حجز', 'Alamein City Compound Info': 'معلومات مجمع العلمين',
+  'Property Support': 'دعم العقار', 'Other': 'أخرى', 'About TopLine Rentals': 'عن توب لاين رينتالز', 'Alamein City Expansion': 'التوسع في مدينة العلمين',
+  'Quick Links': 'روابط سريعة', 'Home Overview': 'الصفحة الرئيسية', 'Available Units': 'الوحدات المتاحة', 'Property Management': 'إدارة العقارات',
+  'Host Guarantee': 'ضمان المضيف', 'Verified Listings': 'وحدات موثقة', 'Direct Owner Pricing': 'أسعار مباشرة من المالك', 'Instant Reservation': 'حجز فوري',
+  'Contact & Support': 'التواصل والدعم', 'San Stefano Towers, Alexandria': 'أبراج سان ستيفانو، الإسكندرية', 'All rights reserved.': 'جميع الحقوق محفوظة.',
+  'Apartment Image (Cloudinary)': 'صورة الشقة (كلاوديناري)', 'Uploading to Cloudinary...': 'جارٍ الرفع إلى كلاوديناري...', 'Cloudinary URL Generated': 'تم إنشاء رابط كلاوديناري',
+  'Admin Management': 'إدارة المشرفين', 'Manage Apartments': 'إدارة الشقق', 'Bookings': 'الحجوزات', 'View Public Site': 'عرض الموقع العام', 'Administrator': 'المسؤول',
+  'Listed Apartments': 'الشقق المعروضة', '+ Add New Apartment': '+ إضافة شقة جديدة', 'Loading Apartments...': 'جارٍ تحميل الشقق...', 'No apartments found.': 'لم يتم العثور على شقق.',
+  'Delete Apartment': 'حذف الشقة', 'Edit Apartment': 'تعديل الشقة', 'Delete Reservation Document': 'حذف سجل الحجز',
+  'Loading platform analytics...': 'جارٍ تحميل إحصائيات المنصة...', 'Total Bookings': 'إجمالي الحجوزات', 'All-time reservations': 'الحجوزات منذ البداية',
+  'Confirmed Bookings': 'الحجوزات المؤكدة', 'Successful stays': 'الإقامات المكتملة', 'Pending Review': 'بانتظار المراجعة', 'Awaiting action': 'بانتظار الإجراء',
+  'Total Revenue': 'إجمالي الإيرادات', 'Confirmed revenue': 'الإيرادات المؤكدة', 'No client activity recorded yet.': 'لا يوجد نشاط للعملاء حتى الآن.',
+  'Client Info': 'معلومات العميل', 'Confirmed Stays': 'الإقامات المؤكدة', 'Last Activity': 'آخر نشاط', 'Loading Reservations...': 'جارٍ تحميل الحجوزات...',
+  'Guest Name': 'اسم الضيف', 'Email / Phone': 'البريد الإلكتروني / الهاتف', 'Apartment': 'الشقة', 'Total Price': 'السعر الإجمالي', 'No phone provided': 'لم يتم تقديم رقم هاتف',
+  'Confirm': 'تأكيد', 'Cancel': 'إلغاء', 'N/A': 'غير متاح', 'Confirm Your Reservation': 'تأكيد الحجز', 'Apartment ID:': 'رقم الشقة:', 'Total Price:': 'السعر الإجمالي:',
+  'Best Rate Guaranteed': 'أفضل سعر مضمون', 'Reserve Residence': 'احجز الوحدة', 'Total': 'الإجمالي', 'No instant charge. Free cancellation up to 48 hours prior.': 'لا يتم الخصم فوراً. إلغاء مجاني حتى ٤٨ ساعة قبل الموعد.',
+  'Apartment created successfully!': 'تمت إضافة الشقة بنجاح!', 'Apartment updated successfully!': 'تم تحديث الشقة بنجاح!', 'Are you sure you want to delete this apartment?': 'هل أنت متأكد من حذف هذه الشقة؟',
+  'Are you sure you want to permanently delete this reservation document?': 'هل أنت متأكد من حذف سجل الحجز نهائياً؟', 'Failed to update booking status.': 'تعذر تحديث حالة الحجز.',
+  'Failed to delete reservation document.': 'تعذر حذف سجل الحجز.', 'Failed to delete apartment.': 'تعذر حذف الشقة.', 'Booking reserved successfully!': 'تم تسجيل الحجز بنجاح!',
+  'Please select both Check-In and Check-Out dates.': 'يرجى تحديد تاريخ الوصول والمغادرة.', 'Check-Out date must be after Check-In date.': 'يجب أن يكون تاريخ المغادرة بعد تاريخ الوصول.',
+  'Invalid apartment selection.': 'اختيار الشقة غير صالح.', 'Failed to upload image to Cloudinary': 'تعذر رفع الصورة إلى كلاوديناري', 'English': 'English', 'العربية': 'العربية',
+};
 
-// Automatically handle RTL / LTR document direction switching
-i18n.on('languageChanged', (lng) => {
-  document.documentElement.dir = lng === 'ar' ? 'rtl' : 'ltr';
-  document.documentElement.lang = lng;
+const homeKeys = {
+  home: 'Home', apartments: 'Apartments', adminPortal: 'Admin Portal', bookNow: 'Book Now', tagline: 'Luxury Coastal Living',
+  heroTitle: 'Find Your Perfect Residence in The Towers',
+  heroSubtitle: 'Book fully serviced apartments with panoramic Mediterranean views and private beach access.',
+  availableResidences: 'Available Residences', handpickedSuites: 'handpicked premium suites', allTowers: 'All Towers',
+  sanStefano: 'San Stefano Tower', fourSeasons: 'Four Seasons Tower', resetFilters: 'Reset Filters',
+  noResidences: 'No residences match your current filters',
+  noResidencesSub: 'Try clearing your amenity filters or selecting another tower location.',
+  panoramicViews: 'Panoramic Views', panoramicViewsDesc: 'Every apartment features unobstructed Mediterranean horizons and private high-floor balconies.',
+  concierge: '24/7 Concierge', conciergeDesc: 'Enjoy private parking, round-the-clock security, and room service upon request.',
+  primeAccess: 'Prime Access', primeAccessDesc: 'Direct indoor elevator access to luxury shopping centers, cinema, and dining.'
+};
+
+Object.assign(arabic, {
+  'Guest': 'ضيف', 'Max': 'بحد أقصى', 'Area': 'المساحة', 'Type': 'النوع', 'Luxury Suite': 'جناح فاخر',
+  'Infinity Pool': 'مسبح إنفينيتي', 'Fitness Center': 'مركز لياقة بدنية', 'Secure Parking': 'موقف سيارات آمن',
+  'Private Beach Access': 'دخول خاص إلى الشاطئ', 'Spa & Wellness': 'منتجع صحي وعافية', 'No Smoking Indoors': 'ممنوع التدخين داخل الوحدة',
+  'No Parties': 'ممنوع إقامة الحفلات', 'Check-in after 2PM': 'تسجيل الوصول بعد الساعة ٢ ظهراً',
+  'Quiet hours 10PM-8AM': 'ساعات الهدوء من ١٠ مساءً حتى ٨ صباحاً', 'ID Required for Entry': 'يلزم إبراز الهوية للدخول',
+  'Tower Residence': 'وحدة في البرج', 'Residence': 'وحدة سكنية', 'Hotline': 'الخط الساخن', 'Email Support': 'دعم البريد الإلكتروني',
+  'Headquarters': 'المقر الرئيسي', 'Working Hours': 'ساعات العمل', 'Alamein City, Mediterranean Coast': 'مدينة العلمين، ساحل البحر المتوسط',
+  'Sun - Thu: 9am - 6pm': 'الأحد - الخميس: ٩ صباحاً - ٦ مساءً', 'Pending': 'قيد الانتظار', 'cancelled': 'ملغي',
+  'Read': 'مقروءة', 'New Message': 'رسالة جديدة', 'Saving Apartment...': 'جارٍ حفظ الشقة...', 'Update Apartment': 'تحديث الشقة',
+  'Save Apartment': 'حفظ الشقة', 'Add New Apartment': 'إضافة شقة جديدة', 'Tower Residence': 'وحدة في البرج',
+  'Admin Portal': 'بوابة المشرف', 'Add or update admin access for business owners without touching the database.': 'إضافة أو تحديث صلاحيات المشرف لأصحاب الأعمال دون تعديل قاعدة البيانات.',
+  'Alamein City': 'مدينة العلمين', 'Delete': 'حذف', 'Engineered with': 'صُمم بواسطة', 'Enter full name': 'أدخل الاسم الكامل',
+  'Loading apartments...': 'جارٍ تحميل الشقق...', 'No Image': 'لا توجد صورة', 'Photos': 'الصور',
+  'Please try again later or contact us via phone.': 'يرجى المحاولة لاحقاً أو التواصل معنا هاتفياً.',
+  'Rentals': 'للتأجير', 'Reserve': 'احجز', 'Send Another Message': 'إرسال رسالة أخرى', 'Thank you,': 'شكراً لك،',
+  'Title *': 'العنوان *', 'TopLine': 'توب لاين',
+  'TopLine Rentals is a premier provider of luxury rental property listings and apartment management. We specialize in curating high-end residences designed for both short-term stays and extended luxury living, ensuring every guest experiences the pinnacle of coastal sophistication.': 'تُعد توب لاين رينتالز وجهة رائدة لإعلانات العقارات الفاخرة وإدارة الشقق. نختار بعناية وحدات راقية للإقامات القصيرة والطويلة لنمنح كل ضيف تجربة ساحلية مميزة.',
+  'TopLine Rentals. All rights reserved.': 'توب لاين رينتالز. جميع الحقوق محفوظة.', 'Tower': 'البرج', 'Tower:': 'البرج:',
+  'We are proud to announce our expansion into the modern compound development in': 'يسعدنا الإعلان عن توسعنا إلى مشروع المجمع الحديث في',
+  'confirmed': 'مؤكد', 'has been saved. Our team will contact you directly via phone or email shortly.': 'تم حفظ طلبك. سيتواصل معك فريقنا قريباً عبر الهاتف أو البريد الإلكتروني.',
+  '✓ Cloudinary URL Generated': '✓ تم إنشاء رابط كلاوديناري',
+  '. This flagship project offers an unparalleled blend of coastal residences, resort-style amenities, and strategic investment opportunities along the Mediterranean coast.': 'يقدم هذا المشروع الرائد مزيجاً فريداً من الوحدات الساحلية ومرافق المنتجعات والفرص الاستثمارية المميزة على ساحل البحر المتوسط.',
+  '. Your reservation request for': '. تم حفظ طلب حجزك لـ',
+  'Amenities': 'المرافق', 'Analytics': 'الإحصائيات', 'Bath': 'حمام', 'Bathrooms': 'الحمامات', 'Bed': 'سرير',
+  'Bedrooms': 'غرف النوم', 'Building Amenities': 'مرافق المبنى', 'Cleaning & Prep Fee': 'رسوم التنظيف والتجهيز',
+  'Clients with the highest frequency of reservation activity.': 'العملاء الأكثر تكراراً للحجوزات.',
+  'Coastal Living': 'إقامة ساحلية', 'Concierge & Service Fee': 'رسوم خدمة الكونسيرج', 'Description': 'الوصف',
+  'Detailed description...': 'وصف تفصيلي...', 'Done': 'تم', 'e.g. Luxury Sea View Suite': 'مثال: جناح فاخر بإطلالة بحرية',
+  'Enter details below to confirm your stay request.': 'أدخل بياناتك أدناه لتأكيد طلب الإقامة.',
+  'Explore Residences': 'استكشف الوحدات', 'Floor': 'الطابق', 'for luxury living': 'لإقامة فاخرة',
+  'Frequent Visitors & VIP Clients': 'الزوار المتكررون والعملاء المميزون', 'Get in Touch': 'تواصل معنا',
+  'Grant Admin Access by Email': 'منح صلاحية المشرف عبر البريد الإلكتروني', 'House Rules': 'قواعد المنزل',
+  'How can we help you?': 'كيف يمكننا مساعدتك؟', 'Images': 'الصور', 'John Doe': 'الاسم الكامل',
+  'Last Activity': 'آخر نشاط', 'Manage and track your active luxury apartment bookings and residency details.': 'إدارة ومتابعة حجوزات الشقق الفاخرة وتفاصيل الإقامة.',
+  'Manage listings, view reservations, and update features.': 'إدارة الوحدات ومراجعة الحجوزات وتحديث التفاصيل.',
+  'Monitor frequent visitor metrics, client bookings, and apartment inventory.': 'تابع مؤشرات الزوار وحجوزات العملاء ومخزون الشقق.',
+  'My Reservations': 'حجوزاتي', 'No reservations found': 'لا توجد حجوزات',
+  'No reservations found in database.': 'لا توجد حجوزات في قاعدة البيانات.', 'No residences available': 'لا توجد وحدات متاحة',
+  'owner@toplinerentals.com': 'owner@toplinerentals.com', 'Placeholder': 'عنصر نائب', 'Premium coastal residences and luxury tower apartments with seamless booking and hospitality.': 'وحدات ساحلية فاخرة وشقق راقية في الأبراج مع حجز وخدمة ضيافة سلسة.',
+  'Price per Night ($) *': 'السعر لليلة (دولار) *', 'Reservations Overview': 'نظرة عامة على الحجوزات',
+  'Resort Amenities': 'مرافق المنتجع', 'Search title...': 'ابحث بالعنوان...', 'Showing': 'عرض', 'Sign In': 'تسجيل الدخول',
+  'Sign In Now': 'سجّل الدخول الآن', 'Size (sqm)': 'المساحة (م²)', 'sqm': 'م²', 'Support': 'الدعم',
+  'Thank you for reaching out. Our reservation team will get back to you shortly.': 'شكراً لتواصلك معنا. سيعاود فريق الحجوزات التواصل معك قريباً.',
+  'There are currently no bookings matching the selected filter.': 'لا توجد حجوزات تطابق عامل التصفية المحدد حالياً.',
+  'Track active reservations, user contacts, and apartment assignments.': 'تابع الحجوزات النشطة وبيانات العملاء وتخصيص الشقق.',
+  'Try Again': 'حاول مرة أخرى', 'Toggle Language': 'تغيير اللغة', 'Toggle Menu': 'فتح القائمة',
+  'Uploaded preview': 'معاينة الصورة المرفوعة', 'View All': 'عرض كل', 'Whether you\'re planning a coastal getaway or exploring investment opportunities in Alamein City, our reservation specialists are here to help.': 'سواء كنت تخطط لعطلة ساحلية أو تبحث عن فرص استثمارية في مدينة العلمين، يسعد فريق الحجوزات بمساعدتك.',
+  'WiFi, Pool, Sea View': 'واي فاي، مسبح، إطلالة بحرية',
+  'You haven\'t reserved any residences yet. Start exploring our luxury towers.': 'لم تحجز أي وحدة بعد. ابدأ باستكشاف أبراجنا الفاخرة.',
+  'Customer Contact': 'بيانات العميل', 'Dates & Guests': 'التواريخ والضيوف', 'Reservations Overview': 'نظرة عامة على الحجوزات',
+  'Showing': 'عرض', 'Authenticating...': 'جارٍ التحقق...', 'Admin Portal & Analytics': 'بوابة المشرف والإحصائيات',
+  'Apartments (': 'الشقق (', 'Reservations (': 'الحجوزات (', 'reservation(s)': 'حجز',
+  'Enter your details below to confirm your stay request.': 'أدخل بياناتك أدناه لتأكيد طلب الإقامة.',
+  'Booking confirmed!': 'تم تأكيد الحجز!', 'Booking creation failed': 'تعذر إنشاء الحجز.',
+  'Unable to load your bookings. Please try again later.': 'تعذر تحميل حجوزاتك. يرجى المحاولة مرة أخرى لاحقاً.',
+  'Failed to load apartments. Please try refreshing.': 'تعذر تحميل الشقق. يرجى تحديث الصفحة.',
+  'Failed to save apartment:': 'تعذر حفظ الشقة:', 'Failed to submit reservation. Please try again.': 'تعذر إرسال طلب الحجز. يرجى المحاولة مرة أخرى.',
 });
+
+const flatArabic = Object.fromEntries(Object.entries(arabic));
+const flatEnglish = Object.fromEntries(Object.entries(english));
+const resources = {
+  en: { translation: { ...flatEnglish, ...Object.fromEntries(Object.entries(homeKeys).map(([k,v]) => [k,v])), nav: { home: 'Home', apartments: 'Apartments', myBookings: 'My Bookings', adminDashboard: 'Admin Dashboard', addApartment: 'Add Apartment', logout: 'Logout', language: 'Language', contact: 'Contact Us' }, common: { search: 'Search', filter: 'Filter', price: 'Price', details: 'View Details', bookNow: 'Book Now', status: 'Status', actions: 'Actions' } } },
+  ar: { translation: { ...flatArabic, ...Object.fromEntries(Object.entries(homeKeys).map(([k,v]) => [k,flatArabic[v] || v])), nav: { home: 'الرئيسية', apartments: 'الشقق', myBookings: 'حجوزاتي', adminDashboard: 'لوحة الإدارة', addApartment: 'إضافة شقة', logout: 'تسجيل الخروج', language: 'اللغة', contact: 'اتصل بنا' }, common: { search: 'بحث', filter: 'تصفية', price: 'السعر', details: 'عرض التفاصيل', bookNow: 'احجز الآن', status: 'الحالة', actions: 'الإجراءات' } } }
+};
+
+i18n.use(LanguageDetector).use(initReactI18next).init({
+  resources,
+  fallbackLng: 'en',
+  supportedLngs: ['en', 'ar'],
+  interpolation: { escapeValue: false },
+  detection: { order: ['localStorage', 'navigator'], caches: ['localStorage'], lookupLocalStorage: 'topline_lang', convertDetectedLanguage: (lng) => lng.toLowerCase().startsWith('ar') ? 'ar' : 'en' },
+});
+
+const updateDirection = (language) => {
+  const lang = language?.toLowerCase().startsWith('ar') ? 'ar' : 'en';
+  if (typeof document === 'undefined') return;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.documentElement.lang = lang;
+};
+updateDirection(i18n.resolvedLanguage || i18n.language);
+i18n.on('languageChanged', updateDirection);
 
 export default i18n;

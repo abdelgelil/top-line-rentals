@@ -1,3 +1,4 @@
+import i18n from "../../../i18n.js";
 import React, { useState, useEffect } from 'react';
 import { Calendar, User, Phone, Mail, Building, Clock, CheckCircle2, XCircle } from 'lucide-react';
 import * as apiServices from '../../services/api';
@@ -40,12 +41,8 @@ export const AdminBookings = () => {
       {/* Header & Status Filters */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
-            Reservations Overview
-          </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            Track active reservations, user contacts, and apartment assignments.
-          </p>
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">{' '}{i18n.t("Reservations Overview")}{' '}</h2>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{' '}{i18n.t("Track active reservations, user contacts, and apartment assignments.")}{' '}</p>
         </div>
 
         <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-1.5 rounded-xl self-start">
@@ -74,8 +71,8 @@ export const AdminBookings = () => {
         </div>
       ) : filteredBookings.length === 0 ? (
         <div className="text-center py-16 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
-          <p className="text-slate-800 dark:text-slate-200 font-semibold text-base">No reservations found</p>
-          <p className="text-slate-400 text-xs mt-1">There are currently no bookings matching the selected filter.</p>
+          <p className="text-slate-800 dark:text-slate-200 font-semibold text-base">{i18n.t("No reservations found")}</p>
+          <p className="text-slate-400 text-xs mt-1">{i18n.t("There are currently no bookings matching the selected filter.")}</p>
         </div>
       ) : (
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
@@ -83,11 +80,11 @@ export const AdminBookings = () => {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                  <th className="p-4 pl-6">Apartment</th>
-                  <th className="p-4">Customer Contact</th>
-                  <th className="p-4">Dates & Guests</th>
-                  <th className="p-4">Total Price</th>
-                  <th className="p-4">Status</th>
+                  <th className="p-4 pl-6">{i18n.t("Apartment")}</th>
+                  <th className="p-4">{i18n.t("Customer Contact")}</th>
+                  <th className="p-4">{i18n.t("Dates & Guests")}</th>
+                  <th className="p-4">{i18n.t("Total Price")}</th>
+                  <th className="p-4">{i18n.t("Status")}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
@@ -142,7 +139,7 @@ export const AdminBookings = () => {
                             <Calendar className="w-3.5 h-3.5 text-slate-400" />
                             <span>{b.checkIn} → {b.checkOut}</span>
                           </div>
-                          <p className="text-slate-400 pl-5">{b.guests || 1} Guests</p>
+                          <p className="text-slate-400 pl-5">{b.guests || 1}{' '}{i18n.t("Guests")}</p>
                         </div>
                       </td>
 
@@ -165,7 +162,7 @@ export const AdminBookings = () => {
                           {b.status === 'confirmed' && <CheckCircle2 className="w-3.5 h-3.5" />}
                           {b.status === 'cancelled' && <XCircle className="w-3.5 h-3.5" />}
                           {b.status !== 'confirmed' && b.status !== 'cancelled' && <Clock className="w-3.5 h-3.5" />}
-                          <span className="capitalize">{b.status || 'Pending'}</span>
+                          <span className="capitalize">{i18n.t(b.status || 'Pending')}</span>
                         </span>
                       </td>
 

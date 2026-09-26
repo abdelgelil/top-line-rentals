@@ -1,3 +1,4 @@
+import i18n from "../../../i18n.js";
 import React, { useState, useEffect } from 'react';
 import { X, Trash2 } from 'lucide-react';
 import { createApartment, updateApartment } from '../../services/api';
@@ -109,7 +110,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
         : await createApartment(data);
 
       console.log('Apartment saved successfully:', response.data);
-      alert(initialData ? 'Apartment updated successfully!' : 'Apartment created successfully!');
+      alert(i18n.t(initialData ? 'Apartment updated successfully!' : 'Apartment created successfully!'));
       
       if (onSubmit) {
         await onSubmit(response.data?.data || response.data);
@@ -118,7 +119,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
     } catch (err) {
       console.error('Save Apartment Error:', err);
       const serverMessage = err.response?.data?.message || err.response?.data?.error || err.message;
-      alert(`Failed to save apartment: ${serverMessage}`);
+      alert(`${i18n.t('Failed to save apartment:')} ${serverMessage}`);
     } finally {
       setLoading(false);
     }
@@ -131,7 +132,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
         {/* Fixed Header */}
         <div className="flex items-center justify-between border-b px-5 py-3 bg-gray-50">
           <h2 className="text-base font-semibold text-gray-800">
-            {initialData ? 'Edit Apartment' : 'Add New Apartment'}
+            {i18n.t(initialData ? 'Edit Apartment' : 'Add New Apartment')}
           </h2>
           <button
             type="button"
@@ -146,16 +147,14 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-5 space-y-3 text-sm">
           {/* Title */}
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">
-              Title *
-            </label>
+            <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Title *")}{' '}</label>
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
               required
-              placeholder="e.g. Luxury Sea View Suite"
+              placeholder={i18n.t("e.g. Luxury Sea View Suite")}
               className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none"
             />
           </div>
@@ -163,24 +162,20 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
           {/* Tower & Price */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">
-                Tower
-              </label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Tower")}{' '}</label>
               <select
                 name="tower"
                 value={formData.tower}
                 onChange={handleChange}
                 className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none"
               >
-                <option value="Tower 1">Tower 1</option>
-                <option value="Tower 2">Tower 2</option>
-                <option value="Tower 3">Tower 3</option>
+                <option value="Tower 1">{i18n.t("Tower 1")}</option>
+                <option value="Tower 2">{i18n.t("Tower 2")}</option>
+                <option value="Tower 3">{i18n.t("Tower 3")}</option>
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">
-                Price per Night ($) *
-              </label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Price per Night ($) *")}{' '}</label>
               <input
                 type="number"
                 name="pricePerNight"
@@ -196,9 +191,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
           {/* Floor, Bedrooms, Bathrooms, Guests */}
           <div className="grid grid-cols-4 gap-2">
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">
-                Floor
-              </label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Floor")}{' '}</label>
               <input
                 type="number"
                 name="floor"
@@ -209,9 +202,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">
-                Bedrooms
-              </label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Bedrooms")}{' '}</label>
               <input
                 type="number"
                 name="bedrooms"
@@ -222,9 +213,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">
-                Bathrooms
-              </label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Bathrooms")}{' '}</label>
               <input
                 type="number"
                 name="bathrooms"
@@ -235,9 +224,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">
-                Guests
-              </label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Guests")}{' '}</label>
               <input
                 type="number"
                 name="guests"
@@ -252,9 +239,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
           {/* Size & Amenities */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">
-                Size (sqm)
-              </label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Size (sqm)")}{' '}</label>
               <input
                 type="number"
                 name="sizeSqM"
@@ -265,15 +250,13 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">
-                Amenities
-              </label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Amenities")}{' '}</label>
               <input
                 type="text"
                 name="amenities"
                 value={formData.amenities}
                 onChange={handleChange}
-                placeholder="WiFi, Pool, Sea View"
+                placeholder={i18n.t("WiFi, Pool, Sea View")}
                 className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none"
               />
             </div>
@@ -281,24 +264,20 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
 
           {/* Description */}
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">
-              Description
-            </label>
+            <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Description")}{' '}</label>
             <textarea
               name="description"
               rows={2}
               value={formData.description}
               onChange={handleChange}
-              placeholder="Detailed description..."
+              placeholder={i18n.t("Detailed description...")}
               className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none resize-none"
             />
           </div>
 
           {/* Images */}
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">
-              Images
-            </label>
+            <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Images")}{' '}</label>
             <input
               type="file"
               multiple
@@ -336,15 +315,13 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
               type="button"
               onClick={onClose}
               className="px-3 py-1.5 rounded-md border border-gray-300 text-xs font-medium text-gray-700 hover:bg-gray-100"
-            >
-              Cancel
-            </button>
+            >{' '}{i18n.t("Cancel")}{' '}</button>
             <button
               type="submit"
               disabled={loading}
               className="px-3 py-1.5 rounded-md bg-blue-600 text-xs font-medium text-white hover:bg-blue-700 disabled:opacity-50"
             >
-              {loading ? 'Saving Apartment...' : (initialData ? 'Update Apartment' : 'Save Apartment')}
+              {i18n.t(loading ? 'Saving Apartment...' : (initialData ? 'Update Apartment' : 'Save Apartment'))}
             </button>
           </div>
         </form>

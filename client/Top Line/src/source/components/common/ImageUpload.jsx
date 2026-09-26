@@ -1,3 +1,4 @@
+import i18n from "../../../i18n.js";
 import React, { useState } from 'react';
 
 export default function ImageUpload({ onImageUploaded }) {
@@ -30,7 +31,7 @@ export default function ImageUpload({ onImageUploaded }) {
       }
     } catch (err) {
       console.error('Cloudinary Upload Failed:', err);
-      alert('Failed to upload image to Cloudinary');
+      alert(i18n.t('Failed to upload image to Cloudinary'));
     } finally {
       setLoading(false);
     }
@@ -38,7 +39,7 @@ export default function ImageUpload({ onImageUploaded }) {
 
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-medium">Apartment Image (Cloudinary)</label>
+      <label className="block text-sm font-medium">{i18n.t("Apartment Image (Cloudinary)")}</label>
       <input 
         type="file" 
         accept="image/*"
@@ -46,12 +47,12 @@ export default function ImageUpload({ onImageUploaded }) {
         className="w-full text-sm border p-2 rounded-lg bg-transparent"
       />
 
-      {loading && <p className="text-xs text-blue-500">Uploading to Cloudinary...</p>}
+      {loading && <p className="text-xs text-blue-500">{i18n.t("Uploading to Cloudinary...")}</p>}
 
       {preview && (
         <div className="mt-2">
-          <img src={preview} alt="Uploaded preview" className="h-32 w-full object-cover rounded-lg border" />
-          <p className="text-xs text-green-600 mt-1">✓ Cloudinary URL Generated</p>
+          <img src={preview} alt={i18n.t("Uploaded preview")} className="h-32 w-full object-cover rounded-lg border" />
+          <p className="text-xs text-green-600 mt-1">{i18n.t("✓ Cloudinary URL Generated")}</p>
         </div>
       )}
     </div>

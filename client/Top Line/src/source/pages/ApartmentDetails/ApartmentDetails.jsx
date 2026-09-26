@@ -1,3 +1,4 @@
+import i18n from "../../../i18n.js";
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
@@ -124,7 +125,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-slate-500 space-y-4">
         <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
-        <p className="font-medium">Loading luxury details...</p>
+        <p className="font-medium">{i18n.t("Loading luxury details...")}</p>
       </div>
     );
   }
@@ -133,7 +134,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-red-500 space-y-4">
         <Info className="w-12 h-12" />
-        <p className="text-xl font-semibold">Apartment not found.</p>
+        <p className="text-xl font-semibold">{i18n.t("Apartment not found.")}</p>
       </div>
     );
   }
@@ -151,13 +152,12 @@ export function ApartmentDetails({ currentUser: propUser }) {
         
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-            <span className="hover:text-blue-600 cursor-pointer transition-colors">Apartments</span>
+            <span className="hover:text-blue-600 cursor-pointer transition-colors">{i18n.t("Apartments")}</span>
             <ChevronRight className="w-4 h-4" />
             <span className="text-slate-900 dark:text-white font-medium">{apartment.title}</span>
           </div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 px-3 py-1 rounded-full">
-            <ShieldCheck className="w-3 h-3" /> Verified Listing
-          </div>
+            <ShieldCheck className="w-3 h-3" />{' '}{i18n.t("Verified Listing")}{' '}</div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -185,7 +185,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
                     <img 
                       src="https://via.placeholder.com/800x600?text=No+Image" 
                       className="w-full h-[400px] sm:h-[550px] object-cover flex-shrink-0" 
-                      alt="Placeholder" 
+                      alt={i18n.t("Placeholder")} 
                     />
                   )}
                 </div>
@@ -216,7 +216,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
                       className="flex items-center gap-2 bg-white/90 dark:bg-black/70 text-slate-900 dark:text-white px-4 py-2 rounded-full text-xs font-bold shadow-xl backdrop-blur-md hover:bg-white dark:hover:bg-black transition-all border border-white/20"
                     >
                       <ImageIcon className="w-4 h-4" />
-                      <span>View All {images.length} Photos</span>
+                      <span>{i18n.t("View All")}{' '}{images.length}{' '}{i18n.t("Photos")}</span>
                     </button>
                   </div>
                 )}
@@ -250,23 +250,23 @@ export function ApartmentDetails({ currentUser: propUser }) {
                 </div>
                 <div className="flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-4 py-2 rounded-full text-sm font-bold shadow-sm">
                   <Star className="w-4 h-4 fill-current" />
-                  <span>Premium Luxury Listing</span>
+                  <span>{i18n.t("Premium Luxury Listing")}</span>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {[
-                  { icon: Building, label: 'Tower', value: apartment.tower || 'Tower 1' },
-                  { icon: Users, label: 'Guests', value: `${apartment.guests || 2} Max` },
-                  { icon: Maximize, label: 'Area', value: `${apartment.sizeSqM || 'N/A'} m²` },
-                  { icon: Bed, label: 'Type', value: 'Luxury Suite' },
+                  { icon: Building, label: 'Tower', value: i18n.t(apartment.tower || 'Tower 1') },
+                  { icon: Users, label: 'Guests', value: `${apartment.guests || 2} ${i18n.t('Max')}` },
+                  { icon: Maximize, label: 'Area', value: `${apartment.sizeSqM || 'N/A'} ${i18n.t('sqm')}` },
+                  { icon: Bed, label: 'Type', value: i18n.t('Luxury Suite') },
                 ].map((stat, i) => (
                   <div key={i} className="flex items-center gap-3 p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
                     <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400">
                       <stat.icon className="w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-[10px] font-bold text-slate-400 uppercase">{stat.label}</p>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase">{i18n.t(stat.label)}</p>
                       <p className="text-sm font-bold text-slate-900 dark:text-white">{stat.value}</p>
                     </div>
                   </div>
@@ -278,7 +278,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
               <section className="space-y-6">
                 <div className="flex items-center gap-3 text-slate-900 dark:text-white font-bold text-2xl">
                   <div className="w-1 h-8 bg-blue-600 rounded-full" />
-                  <h2>Property Overview</h2>
+                  <h2>{i18n.t("Property Overview")}</h2>
                 </div>
                 <p className="text-slate-600 dark:text-slate-300 leading-loose text-lg max-w-4xl">
                   {apartment.description}
@@ -288,28 +288,24 @@ export function ApartmentDetails({ currentUser: propUser }) {
               <section className="grid grid-cols-1 sm:grid-cols-2 gap-12 p-8 rounded-[2rem] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
                 <div className="space-y-6">
                   <h3 className="font-bold text-slate-900 dark:text-white text-xl flex items-center gap-2">
-                    <CheckCircle2 className="w-6 h-6 text-blue-600" />
-                    Building Amenities
-                  </h3>
+                    <CheckCircle2 className="w-6 h-6 text-blue-600" />{' '}{i18n.t("Building Amenities")}{' '}</h3>
                   <ul className="grid grid-cols-1 gap-4">
                     {['Infinity Pool', 'Fitness Center', '24/7 Concierge', 'Secure Parking', 'Private Beach Access', 'Spa & Wellness'].map((item) => (
                       <li key={item} className="flex items-center gap-3 text-slate-600 dark:text-slate-400 group cursor-default">
                         <div className="w-2 h-2 rounded-full bg-blue-600 group-hover:scale-150 transition-transform" />
-                        <span className="text-sm transition-colors group-hover:text-slate-900 dark:group-hover:text-white">{item}</span>
+                      <span className="text-sm transition-colors group-hover:text-slate-900 dark:group-hover:text-white">{i18n.t(item)}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
                 <div className="space-y-6">
                   <h3 className="font-bold text-slate-900 dark:text-white text-xl flex items-center gap-2">
-                    <CheckCircle2 className="w-6 h-6 text-blue-600" />
-                    House Rules
-                  </h3>
+                    <CheckCircle2 className="w-6 h-6 text-blue-600" />{' '}{i18n.t("House Rules")}{' '}</h3>
                   <ul className="grid grid-cols-1 gap-4">
                     {['No Smoking Indoors', 'No Parties', 'Check-in after 2PM', 'Quiet hours 10PM-8AM', 'ID Required for Entry'].map((item) => (
                       <li key={item} className="flex items-center gap-3 text-slate-600 dark:text-slate-400 group cursor-default">
                         <div className="w-2 h-2 rounded-full bg-blue-600 group-hover:scale-150 transition-transform" />
-                        <span className="text-sm transition-colors group-hover:text-slate-900 dark:group-hover:text-white">{item}</span>
+                      <span className="text-sm transition-colors group-hover:text-slate-900 dark:group-hover:text-white">{i18n.t(item)}</span>
                       </li>
                     ))}
                   </ul>

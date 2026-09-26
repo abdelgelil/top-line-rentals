@@ -1,3 +1,4 @@
+import i18n from "../../../i18n.js";
 import React, { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -29,7 +30,7 @@ const ClientLayout = () => {
           <div className="p-2 bg-blue-600 text-white rounded-xl shadow-md shadow-blue-500/20">
             <Building2 className="w-5 h-5" />
           </div>
-          <span>TopLine <span className="text-blue-600 dark:text-blue-400">Rentals</span></span>
+          <span>{i18n.t("TopLine")}{' '}<span className="text-blue-600 dark:text-blue-400">{i18n.t("Rentals")}</span></span>
         </Link>
 
         {/* Desktop Navigation Links */}
@@ -64,9 +65,7 @@ const ClientLayout = () => {
             <Link
               to="/sign-in"
               className="px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold shadow-md shadow-blue-500/20 transition-all"
-            >
-              Sign In
-            </Link>
+            >{' '}{i18n.t("Sign In")}{' '}</Link>
           )}
         </div>
 
@@ -80,7 +79,7 @@ const ClientLayout = () => {
             onClick={() => setIsOpen(!isOpen)}
             type="button"
             className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none transition-colors"
-            aria-label="Toggle Menu"
+            aria-label={i18n.t("Toggle Menu")}
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -115,9 +114,7 @@ const ClientLayout = () => {
               to="/sign-in"
               onClick={() => setIsOpen(false)}
               className="mt-2 text-center py-2.5 rounded-xl bg-blue-600 text-white font-semibold text-sm shadow-sm"
-            >
-              Sign In
-            </Link>
+            >{' '}{i18n.t("Sign In")}{' '}</Link>
           )}
         </div>
       )}

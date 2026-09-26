@@ -1,3 +1,4 @@
+import i18n from "../../../i18n.js";
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -28,10 +29,8 @@ export default function AdminSettings() {
   return (
     <div className="max-w-xl bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
       <div>
-        <h2 className="text-xl font-bold text-slate-900 dark:text-white">Admin Management</h2>
-        <p className="text-xs text-slate-500 mt-1">
-          Add or update admin access for business owners without touching the database.
-        </p>
+        <h2 className="text-xl font-bold text-slate-900 dark:text-white">{i18n.t("Admin Management")}</h2>
+        <p className="text-xs text-slate-500 mt-1">{' '}{i18n.t("Add or update admin access for business owners without touching the database.")}{' '}</p>
       </div>
 
       {msg.text && (
@@ -46,13 +45,11 @@ export default function AdminSettings() {
 
       <form onSubmit={handleGrantAdmin} className="space-y-4">
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-1">
-            Grant Admin Access by Email
-          </label>
+          <label className="block text-xs font-semibold text-slate-500 mb-1">{' '}{i18n.t("Grant Admin Access by Email")}{' '}</label>
           <input
             type="email"
             required
-            placeholder="owner@toplinerentals.com"
+            placeholder={i18n.t("owner@toplinerentals.com")}
             value={newAdminEmail}
             onChange={(e) => setNewAdminEmail(e.target.value)}
             className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-transparent text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-900 dark:text-white"

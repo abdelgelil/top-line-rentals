@@ -1,3 +1,4 @@
+import i18n from "../../../i18n.js";
 import React, { useState } from "react";
 import { SignInButton, useUser } from "@clerk/clerk-react";
 import { createBooking } from "../../services/api";
@@ -35,7 +36,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
     if (!isSignedIn) return;
 
     if (!checkIn || !checkOut) {
-      setError('Please select both Check-In and Check-Out dates.');
+      setError(i18n.t('Please select both Check-In and Check-Out dates.'));
       return;
     }
 
@@ -45,13 +46,13 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
     const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
     if (isNaN(nights) || nights <= 0) {
-      setError('Check-Out date must be after Check-In date.');
+      setError(i18n.t('Check-Out date must be after Check-In date.'));
       return;
     }
 
     const apartmentId = apartment?._id || apartment?.id;
     if (!apartmentId) {
-      setError('Invalid apartment selection.');
+      setError(i18n.t('Invalid apartment selection.'));
       return;
     }
 
@@ -77,7 +78,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
 
       if (response.data.success) {
         if (onSuccess) onSuccess(response.data.data);
-        alert('Booking reserved successfully!');
+        alert(i18n.t('Booking reserved successfully!'));
       }
     } catch (err) {
       console.error('Booking submission failed:', err);
@@ -97,17 +98,17 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
       <div className="p-6 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
         <div className="flex justify-between items-end">
           <div className="flex flex-col">
-            <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Price per night</p>
+            <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">{i18n.t("Price per night")}</p>
             <div className="flex items-baseline gap-1">
               <span className="text-3xl font-black text-slate-900 dark:text-white">
                 ${apartment?.pricePerNight || apartment?.price || '0'}
               </span>
-              <span className="text-slate-500 dark:text-slate-400 text-sm">/ night</span>
+              <span className="text-slate-500 dark:text-slate-400 text-sm">{i18n.t("/ night")}</span>
             </div>
           </div>
           {total > 0 && (
             <div className="text-right">
-              <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Total Estimate</p>
+              <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">{i18n.t("Total Estimate")}</p>
               <span className="text-xl font-bold text-amber-600 dark:text-amber-400">${total}</span>
             </div>
           )}
@@ -116,17 +117,15 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
 
       {/* Form */}
       {!isLoaded ? (
-        <div className="p-6 text-center text-sm text-slate-500">Loading sign-in status...</div>
+        <div className="p-6 text-center text-sm text-slate-500">{i18n.t("Loading sign-in status...")}</div>
       ) : !isSignedIn ? (
         <div className="p-6 space-y-4 text-center">
-          <p className="text-sm text-slate-600 dark:text-slate-300">Sign in to reserve this apartment.</p>
+          <p className="text-sm text-slate-600 dark:text-slate-300">{i18n.t("Sign in to reserve this apartment.")}</p>
           <SignInButton mode="modal" forceRedirectUrl={window.location.href}>
             <button
               type="button"
               className="w-full py-4 rounded-2xl bg-slate-900 dark:bg-amber-600 text-white font-bold text-sm hover:bg-slate-800 dark:hover:bg-amber-700 transition-colors"
-            >
-              Sign In to Book
-            </button>
+            >{' '}{i18n.t("Sign In to Book")}{' '}</button>
           </SignInButton>
         </div>
       ) : <form onSubmit={handleBooking} className="p-6 space-y-5">
@@ -138,7 +137,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
 
         <div className="space-y-4">
           <div className="relative">
-            <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 block">Full Name</label>
+            <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 block">{i18n.t("Full Name")}</label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input
@@ -147,13 +146,13 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
                 value={guestName}
                 onChange={(e) => setGuestName(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-sm"
-                placeholder="Enter full name"
+                placeholder={i18n.t("Enter full name")}
               />
             </div>
           </div>
 
           <div className="relative">
-            <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 block">Email Address <span className="text-slate-400 font-normal">(Optional)</span></label>
+            <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 block">{i18n.t("Email Address")}{' '}<span className="text-slate-400 font-normal">{i18n.t("(Optional)")}</span></label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input
@@ -161,13 +160,13 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
                 value={guestEmail}
                 onChange={(e) => setGuestEmail(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-sm"
-                placeholder="email@example.com"
+                placeholder={i18n.t("email@example.com")}
               />
             </div>
           </div>
 
           <div className="relative">
-            <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 block">Phone Number</label>
+            <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 block">{i18n.t("Phone Number")}</label>
             <div className="relative">
               <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input
@@ -183,7 +182,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="relative">
-              <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 block">Check-In</label>
+              <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 block">{i18n.t("Check-In")}</label>
               <div className="relative">
                 <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
@@ -196,7 +195,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
               </div>
             </div>
             <div className="relative">
-              <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 block">Check-Out</label>
+              <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 block">{i18n.t("Check-Out")}</label>
               <div className="relative">
                 <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
@@ -211,7 +210,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
           </div>
 
           <div className="relative">
-            <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 block">Guests</label>
+            <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 block">{i18n.t("Guests")}</label>
             <div className="relative">
               <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input
@@ -236,7 +235,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
           ) : (
             <>
               <CreditCard className="w-4 h-4" />
-              <span>Reserve Now</span>
+              <span>{i18n.t("Reserve Now")}</span>
             </>
           )}
         </button>

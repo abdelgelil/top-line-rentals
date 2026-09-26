@@ -1,6 +1,8 @@
+import i18n from "./i18n.js";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
+import { useTranslation } from "react-i18next";
 
 // Relative imports matching src/source structure
 import { ClientLayout } from "./source/components/common/ClientLayout";
@@ -110,9 +112,7 @@ const ProtectedAdminRoute = ({ children }) => {
 
   if (!isLoaded || (isSignedIn && !resolved)) {
     return (
-      <div className="flex justify-center items-center h-screen text-slate-500">
-        Loading session...
-      </div>
+      <div className="flex justify-center items-center h-screen text-slate-500">{' '}{i18n.t("Loading session...")}{' '}</div>
     );
   }
 
@@ -126,6 +126,7 @@ const ProtectedAdminRoute = ({ children }) => {
 };
 
 function App() {
+  useTranslation();
   return (
     <Routes>
       <Route element={<RoleAwareLayout />}>

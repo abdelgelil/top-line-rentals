@@ -1,3 +1,4 @@
+import i18n from "../../../i18n.js";
 import React, { useEffect, useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
@@ -17,7 +18,7 @@ export default function MyBookings() {
         if (active) setBookings(data?.data || []);
       })
       .catch(() => {
-        if (active) setError('Unable to load your bookings. Please try again later.');
+        if (active) setError(i18n.t('Unable to load your bookings. Please try again later.'));
       });
     return () => { active = false; };
   }, [isLoaded, isSignedIn, user?.id]);
@@ -55,11 +56,9 @@ export default function MyBookings() {
         <div className="w-20 h-20 bg-blue-100 dark:bg-blue-500/20 rounded-full flex items-center justify-center mx-auto">
           <Home className="w-10 h-10 text-blue-600" />
         </div>
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Access Required</h2>
-        <p className="text-slate-600 dark:text-slate-400">Please sign in to view and manage your luxury property reservations.</p>
-        <Link className="block w-full py-3 bg-gradient-to-r from-blue-600 to-sky-500 text-white font-bold rounded-xl transition-all hover:shadow-lg hover:shadow-blue-500/30" to="/auth">
-          Sign In Now
-        </Link>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{i18n.t("Access Required")}</h2>
+        <p className="text-slate-600 dark:text-slate-400">{i18n.t("Please sign in to view and manage your luxury property reservations.")}</p>
+        <Link className="block w-full py-3 bg-gradient-to-r from-blue-600 to-sky-500 text-white font-bold rounded-xl transition-all hover:shadow-lg hover:shadow-blue-500/30" to="/auth">{' '}{i18n.t("Sign In Now")}{' '}</Link>
       </div>
     </div>
   );
@@ -73,12 +72,8 @@ export default function MyBookings() {
       <div className="max-w-5xl mx-auto px-4 py-12 space-y-10">
         {/* Page Header */}
         <header className="text-center space-y-3">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-blue-500 to-sky-400 bg-clip-text text-transparent">
-            My Reservations
-          </h1>
-          <p className="text-slate-600 dark:text-slate-400 text-sm md:text-base max-w-2xl mx-auto">
-            Manage and track your active luxury apartment bookings and residency details.
-          </p>
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-blue-500 to-sky-400 bg-clip-text text-transparent">{' '}{i18n.t("My Reservations")}{' '}</h1>
+          <p className="text-slate-600 dark:text-slate-400 text-sm md:text-base max-w-2xl mx-auto">{' '}{i18n.t("Manage and track your active luxury apartment bookings and residency details.")}{' '}</p>
         </header>
 
         {error && (
@@ -93,17 +88,13 @@ export default function MyBookings() {
               <Calendar className="w-12 h-12 opacity-50" />
             </div>
             <div className="space-y-2">
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-white">No Bookings Found</h3>
-              <p className="text-slate-500 dark:text-slate-400 max-w-sm">
-                You haven't reserved any residences yet. Start exploring our luxury towers.
-              </p>
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{i18n.t("No Bookings Found")}</h3>
+              <p className="text-slate-500 dark:text-slate-400 max-w-sm">{' '}{i18n.t("You haven't reserved any residences yet. Start exploring our luxury towers.")}{' '}</p>
             </div>
             <Link 
               to="/apartments" 
               className="px-8 py-3 bg-gradient-to-r from-blue-600 to-sky-500 text-white font-bold rounded-xl shadow-lg shadow-blue-500/20 transition-all hover:scale-105 active:scale-95"
-            >
-              Explore Residences
-            </Link>
+            >{' '}{i18n.t("Explore Residences")}{' '}</Link>
           </div>
         )}
 
@@ -125,7 +116,7 @@ export default function MyBookings() {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute top-2 left-2 px-2 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-md text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase">
-                    {booking.apartment?.tower || 'Residence'}
+                    {i18n.t(booking.apartment?.tower || 'Residence')}
                   </div>
                 </div>
 
@@ -153,7 +144,7 @@ export default function MyBookings() {
                         <Calendar className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-[10px] text-slate-500 uppercase font-bold">Dates</span>
+                        <span className="text-[10px] text-slate-500 uppercase font-bold">{i18n.t("Dates")}</span>
                         <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                           {booking.checkIn ? new Date(booking.checkIn).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'TBD'} 
                           <span className="mx-1 text-slate-400">—</span> 
@@ -167,7 +158,7 @@ export default function MyBookings() {
                         <Clock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-[10px] text-slate-500 uppercase font-bold">Duration</span>
+                        <span className="text-[10px] text-slate-500 uppercase font-bold">{i18n.t("Duration")}</span>
                         <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                           {nights ? `${nights} Nights` : 'TBD'}
                         </span>
@@ -179,7 +170,7 @@ export default function MyBookings() {
                         <Users className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-[10px] text-slate-500 uppercase font-bold">Guests</span>
+                        <span className="text-[10px] text-slate-500 uppercase font-bold">{i18n.t("Guests")}</span>
                         <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                           {booking.guests || 'Not specified'}
                         </span>
@@ -192,18 +183,16 @@ export default function MyBookings() {
                       <Link 
                         to={`/apartments/${booking.apartment?._id || booking.apartment?.id}`}
                         className="flex items-center gap-2 px-4 py-2 bg-blue-50/80 dark:bg-slate-800 text-blue-600 dark:text-blue-300 rounded-xl text-xs font-bold transition-all hover:bg-blue-100 dark:hover:bg-slate-700 group/btn"
-                      >
-                        View Details <ChevronRight className="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform" />
+                      >{' '}{i18n.t("View Details")}{' '}<ChevronRight className="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform" />
                       </Link>
                       <Link 
                         to="/contact" 
                         className="flex items-center gap-2 px-4 py-2 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 rounded-xl text-xs font-bold transition-colors"
                       >
-                        <MessageCircle className="w-3 h-3" /> Support
-                      </Link>
+                        <MessageCircle className="w-3 h-3" />{' '}{i18n.t("Support")}{' '}</Link>
                     </div>
                     <div className="text-right">
-                      <span className="text-[10px] text-slate-500 uppercase font-bold block">Total Investment</span>
+                      <span className="text-[10px] text-slate-500 uppercase font-bold block">{i18n.t("Total Investment")}</span>
                       <span className="text-2xl font-black text-blue-600 dark:text-sky-400">
                         ${booking.totalPrice?.toLocaleString() || '—'}
                       </span>

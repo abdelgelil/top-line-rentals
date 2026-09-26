@@ -1,3 +1,4 @@
+import i18n from "../../../../i18n.js";
 import React, { useState, useEffect } from 'react';
 import { 
   Mail, 
@@ -50,7 +51,7 @@ export const AdminMessages = () => {
       <div className="flex items-center justify-center h-full text-slate-500">
         <div className="flex flex-col items-center gap-2">
           <div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
-          <p>Loading messages...</p>
+          <p>{i18n.t("Loading messages...")}</p>
         </div>
       </div>
     );
@@ -64,18 +65,17 @@ export const AdminMessages = () => {
         <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/50">
           <div className="flex items-center gap-2">
             <Mail className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-            <h2 className="font-bold text-slate-900 dark:text-white">Inbox</h2>
+            <h2 className="font-bold text-slate-900 dark:text-white">{i18n.t("Inbox")}</h2>
           </div>
           <span className="px-2 py-1 rounded-lg bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-bold">
-            {messages.filter(m => !m.isRead).length} Unread
-          </span>
+            {messages.filter(m => !m.isRead).length}{' '}{i18n.t("Unread")}{' '}</span>
         </div>
 
         <div className="flex-1 overflow-y-auto">
           {messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full p-8 text-center space-y-3">
               <MessageSquare className="w-12 h-12 text-slate-300 dark:text-slate-700" />
-              <p className="text-slate-500 dark:text-slate-400 text-sm">No messages found in your inbox.</p>
+              <p className="text-slate-500 dark:text-slate-400 text-sm">{i18n.t("No messages found in your inbox.")}</p>
             </div>
           ) : (
             <div className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -121,13 +121,12 @@ export const AdminMessages = () => {
                 onClick={() => setSelectedMessage(null)}
                 className="lg:hidden flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
               >
-                <ArrowLeft className="w-4 h-4" /> Back to Inbox
-              </button>
+                <ArrowLeft className="w-4 h-4" />{' '}{i18n.t("Back to Inbox")}{' '}</button>
               <div className="flex items-center gap-3 ml-auto">
                 <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                   selectedMessage.isRead ? 'bg-slate-100 dark:bg-slate-800 text-slate-500' : 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'
                 }`}>
-                  {selectedMessage.isRead ? 'Read' : 'New Message'}
+                  {i18n.t(selectedMessage.isRead ? 'Read' : 'New Message')}
                 </span>
               </div>
             </div>
@@ -142,9 +141,7 @@ export const AdminMessages = () => {
                   <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
                     {selectedMessage.fullName}
                     {selectedMessage.userId && (
-                      <span className="px-2 py-0.5 text-[10px] bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded uppercase font-bold tracking-tighter">
-                        Registered User
-                      </span>
+                      <span className="px-2 py-0.5 text-[10px] bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded uppercase font-bold tracking-tighter">{' '}{i18n.t("Registered User")}{' '}</span>
                     )}
                   </h3>
                   <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
@@ -159,7 +156,7 @@ export const AdminMessages = () => {
               <div className="space-y-4">
                 <div className="flex items-center gap-2 text-slate-400 dark:text-slate-500">
                   <MessageSquare className="w-4 h-4" />
-                  <span className="text-xs font-bold uppercase tracking-widest">Message Detail</span>
+                  <span className="text-xs font-bold uppercase tracking-widest">{i18n.t("Message Detail")}</span>
                 </div>
                 <div className="p-6 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
                   <div className="mb-4 pb-4 border-b border-slate-100 dark:border-slate-700">
@@ -178,10 +175,8 @@ export const AdminMessages = () => {
               <Mail className="w-10 h-10 text-slate-300 dark:text-slate-600" />
             </div>
             <div className="space-y-2">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white">No Message Selected</h3>
-              <p className="text-slate-500 dark:text-slate-400 text-sm max-w-xs mx-auto">
-                Select a conversation from the inbox to view the details and sender information.
-              </p>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">{i18n.t("No Message Selected")}</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm max-w-xs mx-auto">{' '}{i18n.t("Select a conversation from the inbox to view the details and sender information.")}{' '}</p>
             </div>
           </div>
         )}

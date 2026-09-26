@@ -1,3 +1,4 @@
+import i18n from "../../../i18n.js";
 import React, { useEffect, useState, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ApartmentForm from './ApartmentForm';
@@ -100,28 +101,28 @@ const AdminDashboard = () => {
         loadAnalytics(); // Refresh KPI metrics
       }
     } catch (err) {
-      alert('Failed to update booking status.');
+      alert(i18n.t('Failed to update booking status.'));
     }
   };
 
   const handleDeleteBooking = async (bookingId) => {
-    if (!window.confirm('Are you sure you want to permanently delete this reservation document?')) return;
+    if (!window.confirm(i18n.t('Are you sure you want to permanently delete this reservation document?'))) return;
     try {
       await deleteBooking(bookingId);
       setBookings((prev) => prev.filter((b) => b._id !== bookingId));
       loadAnalytics();
     } catch (err) {
-      alert('Failed to delete reservation document.');
+      alert(i18n.t('Failed to delete reservation document.'));
     }
   };
 
   const handleDeleteApartment = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this apartment?')) return;
+    if (!window.confirm(i18n.t('Are you sure you want to delete this apartment?'))) return;
     try {
       await deleteApartment(id);
       setApartments((prev) => prev.filter((a) => a._id !== id));
     } catch (err) {
-      alert('Failed to delete apartment.');
+      alert(i18n.t('Failed to delete apartment.'));
     }
   };
 
@@ -138,12 +139,8 @@ const AdminDashboard = () => {
       {/* Tab Navigation Header */}
       <div className="sm:flex sm:items-center sm:justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white sm:text-3xl">
-            Admin Portal & Analytics
-          </h1>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Monitor frequent visitor metrics, client bookings, and apartment inventory.
-          </p>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white sm:text-3xl">{' '}{i18n.t("Admin Portal & Analytics")}{' '}</h1>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{' '}{i18n.t("Monitor frequent visitor metrics, client bookings, and apartment inventory.")}{' '}</p>
         </div>
 
         {/* Navigation Switch Buttons */}
@@ -156,9 +153,7 @@ const AdminDashboard = () => {
                 ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
             }`}
-          >
-            Analytics
-          </button>
+          >{' '}{i18n.t("Analytics")}{' '}</button>
           <button
             type="button"
             onClick={() => navigate('/admin/reservations')}
@@ -167,8 +162,7 @@ const AdminDashboard = () => {
                 ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
             }`}
-          >
-            Reservations ({bookings.length})
+          >{' '}{i18n.t("Reservations (")}{bookings.length})
           </button>
           <button
             type="button"
@@ -178,9 +172,7 @@ const AdminDashboard = () => {
                 ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
             }`}
-          >
-            Manage Apartments
-          </button>
+          >{' '}{i18n.t("Manage Apartments")}{' '}</button>
         </div>
       </div>
 
@@ -188,73 +180,63 @@ const AdminDashboard = () => {
       {activeTab === 'analytics' && (
         <div className="space-y-8">
           {loadingAnalytics || !analytics ? (
-            <div className="text-center py-12 text-slate-500">Loading platform analytics...</div>
+            <div className="text-center py-12 text-slate-500">{i18n.t("Loading platform analytics...")}</div>
           ) : (
             <>
               {/* KPI Stat Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Bookings</p>
+                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{i18n.t("Total Bookings")}</p>
                   <h3 className="text-3xl font-black text-slate-900 dark:text-white mt-2">
                     {analytics?.metrics?.totalBookings ?? 0}
                   </h3>
-                  <span className="text-xs text-slate-400">All-time reservations</span>
+                  <span className="text-xs text-slate-400">{i18n.t("All-time reservations")}</span>
                 </div>
 
                 <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                  <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
-                    Confirmed Bookings
-                  </p>
+                  <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">{' '}{i18n.t("Confirmed Bookings")}{' '}</p>
                   <h3 className="text-3xl font-black text-emerald-600 dark:text-emerald-400 mt-2">
                     {analytics?.metrics?.confirmedBookings ?? 0}
                   </h3>
-                  <span className="text-xs text-slate-400">Successful stays</span>
+                  <span className="text-xs text-slate-400">{i18n.t("Successful stays")}</span>
                 </div>
 
                 <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                  <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider">
-                    Pending Review
-                  </p>
+                  <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider">{' '}{i18n.t("Pending Review")}{' '}</p>
                   <h3 className="text-3xl font-black text-amber-600 dark:text-amber-400 mt-2">
                     {analytics?.metrics?.pendingBookings ?? 0}
                   </h3>
-                  <span className="text-xs text-slate-400">Awaiting action</span>
+                  <span className="text-xs text-slate-400">{i18n.t("Awaiting action")}</span>
                 </div>
 
                 <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                  <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
-                    Total Revenue
-                  </p>
+                  <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">{' '}{i18n.t("Total Revenue")}{' '}</p>
                   <h3 className="text-3xl font-black text-indigo-600 dark:text-indigo-400 mt-2">
                     ${(analytics?.metrics?.totalRevenue ?? 0).toLocaleString()}
                   </h3>
-                  <span className="text-xs text-slate-400">Confirmed revenue</span>
+                  <span className="text-xs text-slate-400">{i18n.t("Confirmed revenue")}</span>
                 </div>
               </div>
 
               {/* Top / Frequent Clients */}
               <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
                 <div className="px-6 py-5 border-b border-slate-200 dark:border-slate-800">
-                  <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-                    Frequent Visitors & VIP Clients
-                  </h2>
-                  <p className="text-xs text-slate-500">
-                    Clients with the highest frequency of reservation activity.
-                  </p>
+                  <h2 className="text-lg font-bold text-slate-900 dark:text-white">{' '}{i18n.t("Frequent Visitors & VIP Clients")}{' '}</h2>
+                  <p className="text-xs text-slate-500">{' '}{i18n.t("Clients with the highest frequency of reservation activity.")}{' '}</p>
                 </div>
 
                 {!analytics?.topClients || analytics.topClients.length === 0 ? (
-                  <div className="p-6 text-center text-slate-500">No client activity recorded yet.</div>
+                  <div className="p-6 text-center text-slate-500">{i18n.t("No client activity recorded yet.")}</div>
                 ) : (
                   <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-800 text-left text-sm">
                       <thead className="bg-slate-50 dark:bg-slate-800/50">
                         <tr>
-                          <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">Client Info</th>
-                          <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">Total Bookings</th>
-                          <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">Confirmed Stays</th>
-                          <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">Total Revenue</th>
-                          <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">Last Activity</th>
+                          <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">{i18n.t("Client Info")}</th>
+                          <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">{i18n.t("Total Bookings")}</th>
+                          <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">{i18n.t("Confirmed Stays")}</th>
+                          <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">{i18n.t("Total Revenue")}</th>
+                          <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">{i18n.t("Last Activity")}</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
@@ -274,11 +256,9 @@ const AdminDashboard = () => {
                               </div>
                             </td>
                             <td className="px-6 py-4 font-bold text-slate-900 dark:text-white">
-                              {client.totalBookings} reservation(s)
-                            </td>
+                              {client.totalBookings}{' '}{i18n.t("reservation(s)")}{' '}</td>
                             <td className="px-6 py-4 text-emerald-600 font-semibold">
-                              {client.confirmedBookings} confirmed
-                            </td>
+                              {client.confirmedBookings}{' '}{i18n.t("confirmed")}{' '}</td>
                             <td className="px-6 py-4 font-semibold text-slate-900 dark:text-white">
                               ${client.totalSpent?.toLocaleString() ?? 0}
                             </td>
@@ -301,25 +281,23 @@ const AdminDashboard = () => {
       {activeTab === 'bookings' && (
         <>
           {loadingBookings ? (
-            <div className="text-center py-12 text-slate-500">Loading Reservations...</div>
+            <div className="text-center py-12 text-slate-500">{i18n.t("Loading Reservations...")}</div>
           ) : bookings.length === 0 ? (
-            <div className="bg-white dark:bg-slate-900 shadow rounded-lg p-6 text-center text-slate-500">
-              No reservations found in database.
-            </div>
+            <div className="bg-white dark:bg-slate-900 shadow rounded-lg p-6 text-center text-slate-500">{' '}{i18n.t("No reservations found in database.")}{' '}</div>
           ) : (
             <div className="bg-white dark:bg-slate-900 shadow-sm rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-800 text-left text-sm">
                   <thead className="bg-slate-50 dark:bg-slate-800/50">
                     <tr>
-                      <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">Guest Name</th>
-                      <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">Email / Phone</th>
-                      <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">Apartment</th>
-                      <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">Check-In</th>
-                      <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">Check-Out</th>
-                      <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">Total Price</th>
-                      <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">Status</th>
-                      <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200 text-right">Actions</th>
+                      <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">{i18n.t("Guest Name")}</th>
+                      <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">{i18n.t("Email / Phone")}</th>
+                      <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">{i18n.t("Apartment")}</th>
+                      <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">{i18n.t("Check-In")}</th>
+                      <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">{i18n.t("Check-Out")}</th>
+                      <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">{i18n.t("Total Price")}</th>
+                      <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200">{i18n.t("Status")}</th>
+                      <th className="px-6 py-4 font-semibold text-slate-700 dark:text-slate-200 text-right">{i18n.t("Actions")}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900">
@@ -337,7 +315,7 @@ const AdminDashboard = () => {
                             {b.apartment?.title || 'Deleted/Unknown Apartment'}
                           </div>
                           {b.apartment?.tower && (
-                            <div className="text-xs text-slate-500">Tower: {b.apartment.tower}</div>
+                            <div className="text-xs text-slate-500">{i18n.t("Tower:")}{' '}{b.apartment.tower}</div>
                           )}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-slate-600 dark:text-slate-300">
@@ -359,7 +337,7 @@ const AdminDashboard = () => {
                                 : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
                             }`}
                           >
-                            {b.status}
+                            {i18n.t(b.status)}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right">
@@ -369,24 +347,18 @@ const AdminDashboard = () => {
                                 <button
                                   onClick={() => handleStatusChange(b._id, 'confirmed')}
                                   className="px-3 py-1.5 text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-sm transition-colors"
-                                >
-                                  Confirm
-                                </button>
+                                >{' '}{i18n.t("Confirm")}{' '}</button>
                                 <button
                                   onClick={() => handleStatusChange(b._id, 'cancelled')}
                                   className="px-3 py-1.5 text-xs font-medium text-white bg-amber-600 hover:bg-amber-700 rounded-lg shadow-sm transition-colors"
-                                >
-                                  Cancel
-                                </button>
+                                >{' '}{i18n.t("Cancel")}{' '}</button>
                               </>
                             )}
                             <button
                               onClick={() => handleDeleteBooking(b._id)}
                               className="px-3 py-1.5 text-xs font-medium text-white bg-rose-600 hover:bg-rose-700 rounded-lg shadow-sm transition-colors"
-                              title="Delete Reservation Document"
-                            >
-                              Delete
-                            </button>
+                              title={i18n.t("Delete Reservation Document")}
+                            >{' '}{i18n.t("Delete")}{' '}</button>
                           </div>
                         </td>
                       </tr>
@@ -403,21 +375,17 @@ const AdminDashboard = () => {
       {activeTab === 'apartments' && (
         <>
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold text-slate-900 dark:text-white">Listed Apartments</h2>
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white">{i18n.t("Listed Apartments")}</h2>
             <button
               onClick={() => setShowAddModal(true)}
               className="px-4 py-2 bg-slate-900 text-white dark:bg-white dark:text-slate-900 rounded-lg font-medium text-sm hover:opacity-90 transition-opacity"
-            >
-              + Add New Apartment
-            </button>
+            >{' '}{i18n.t("+ Add New Apartment")}{' '}</button>
           </div>
 
           {loadingApartments ? (
-            <div className="text-center py-12 text-slate-500">Loading Apartments...</div>
+            <div className="text-center py-12 text-slate-500">{i18n.t("Loading Apartments...")}</div>
           ) : apartments.length === 0 ? (
-            <div className="bg-white dark:bg-slate-900 shadow rounded-lg p-6 text-center text-slate-500">
-              No apartments found.
-            </div>
+            <div className="bg-white dark:bg-slate-900 shadow rounded-lg p-6 text-center text-slate-500">{' '}{i18n.t("No apartments found.")}{' '}</div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {apartments.map((apt) => (
@@ -435,17 +403,15 @@ const AdminDashboard = () => {
                     <h3 className="font-bold text-lg text-slate-900 dark:text-white">{apt.title}</h3>
                     <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">{apt.description}</p>
                     <div className="flex justify-between items-center text-sm font-semibold text-slate-700 dark:text-slate-300 pt-2">
-                      <span>{apt.tower || 'Tower 1'}</span>
-                      <span>${apt.pricePerNight || apt.price} / night</span>
+                      <span>{i18n.t(apt.tower || 'Tower 1')}</span>
+                      <span>${apt.pricePerNight || apt.price}{' '}{i18n.t("/ night")}</span>
                     </div>
                   </div>
                   <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/30 flex justify-end">
                     <button
                       onClick={() => handleDeleteApartment(apt._id)}
                       className="px-3 py-1.5 text-xs font-medium text-white bg-rose-600 hover:bg-rose-700 rounded-lg"
-                    >
-                      Delete Apartment
-                    </button>
+                    >{' '}{i18n.t("Delete Apartment")}{' '}</button>
                   </div>
                 </div>
               ))}
