@@ -97,7 +97,11 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
       data.append('images', file);
     });
 
-    await onSubmit(data);
+    try {
+      await onSubmit(data);
+    } catch (err) {
+      console.error('Form submission error:', err);
+    }
   };
 
   return (

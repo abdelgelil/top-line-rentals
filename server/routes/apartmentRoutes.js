@@ -55,6 +55,9 @@ router.get('/:id', async (req, res) => {
    ========================================================================== */
 router.post('/', requireAuth, requireAdmin, upload.array('images', 10), async (req, res) => {
   try {
+    console.log('Incoming apartment payload:', req.body);
+    console.log('Incoming images count:', req.files?.length);
+
     const {
       title,
       description,
