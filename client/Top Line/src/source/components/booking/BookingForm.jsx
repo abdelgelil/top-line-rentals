@@ -111,7 +111,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
           {total > 0 && (
             <div className="text-right">
               <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">{i18n.t("Total Estimate")}</p>
-              <span className="text-xl font-bold text-amber-600 dark:text-amber-400">${total}</span>
+              <span className="text-xl font-bold text-blue-600 dark:text-blue-400">${total}</span>
             </div>
           )}
         </div>
@@ -126,7 +126,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
           <SignInButton mode="modal" forceRedirectUrl={window.location.href}>
             <button
               type="button"
-              className="w-full py-4 rounded-2xl bg-slate-900 dark:bg-amber-600 text-white font-bold text-sm hover:bg-slate-800 dark:hover:bg-amber-700 transition-colors"
+              className="w-full py-4 rounded-2xl bg-slate-900 dark:bg-blue-600 text-white font-bold text-sm hover:bg-slate-800 dark:hover:bg-blue-700 transition-colors"
             >{' '}{i18n.t("Sign In to Book")}{' '}</button>
           </SignInButton>
         </div>
@@ -147,7 +147,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
                 required
                 value={guestName}
                 onChange={(e) => setGuestName(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-sm"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm"
                 placeholder={i18n.t("Enter full name")}
               />
             </div>
@@ -161,7 +161,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
                 type="email"
                 value={guestEmail}
                 onChange={(e) => setGuestEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-sm"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm"
                 placeholder={i18n.t("email@example.com")}
               />
             </div>
@@ -176,7 +176,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
                 required
                 value={guestPhone}
                 onChange={(e) => setGuestPhone(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-sm"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm"
                 placeholder="+1 234 567 890"
               />
             </div>
@@ -192,7 +192,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
                   required
                   value={checkIn}
                   onChange={(e) => setCheckIn(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-sm"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm"
                 />
               </div>
             </div>
@@ -205,7 +205,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
                   required
                   value={checkOut}
                   onChange={(e) => setCheckOut(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-sm"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm"
                 />
               </div>
             </div>
@@ -221,7 +221,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
                 max={apartment?.guests || 10}
                 value={guests}
                 onChange={(e) => setGuests(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-sm"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm"
               />
             </div>
           </div>
@@ -230,7 +230,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
         <button 
           type="submit" 
           disabled={loading}
-          className="w-full py-4 rounded-2xl bg-slate-900 dark:bg-amber-600 text-white font-bold text-sm transition-all hover:bg-slate-800 dark:hover:bg-amber-700 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg"
+          className="w-full py-4 rounded-2xl bg-slate-900 dark:bg-blue-600 text-white font-bold text-sm transition-all hover:bg-slate-800 dark:hover:bg-blue-700 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg"
         >
           {loading ? (
             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

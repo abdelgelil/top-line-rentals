@@ -74,7 +74,7 @@ export default function AdminSettings({ onClose }) {
             placeholder={i18n.t("Enter registered email")}
             value={newAdminEmail}
             onChange={(e) => setNewAdminEmail(e.target.value)}
-            className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-transparent text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-900 dark:text-white"
+            className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-transparent text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white"
           />
         </div>
 
@@ -85,7 +85,7 @@ export default function AdminSettings({ onClose }) {
             placeholder={i18n.t("Enter registered phone number with country code")}
             value={newAdminPhone}
             onChange={(e) => setNewAdminPhone(e.target.value)}
-            className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-transparent text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-900 dark:text-white"
+            className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-transparent text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white"
           />
           <p className="mt-1 text-[11px] text-slate-500">{i18n.t("If both are entered, they must belong to the same account.")}</p>
         </div>
@@ -93,7 +93,7 @@ export default function AdminSettings({ onClose }) {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition-all disabled:opacity-50"
+          className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all disabled:opacity-50"
         >
           {loading ? i18n.t('Updating...') : i18n.t('Make Admin')}
         </button>

@@ -153,7 +153,7 @@ const AdminDashboard = () => {
           <button
             type="button"
             onClick={() => setShowAddAdminModal(true)}
-            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-amber-600 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-amber-700"
+            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700"
           >
             <span aria-hidden="true">+</span>{i18n.t('Add New Admin')}
           </button>
@@ -231,8 +231,8 @@ const AdminDashboard = () => {
                 </div>
 
                 <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                  <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider">{' '}{i18n.t("Pending Review")}{' '}</p>
-                  <h3 className="text-3xl font-black text-amber-600 dark:text-amber-400 mt-2">
+                  <p className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">{' '}{i18n.t("Pending Review")}{' '}</p>
+                  <h3 className="text-3xl font-black text-blue-600 dark:text-blue-400 mt-2">
                     {analytics?.metrics?.pendingBookings ?? 0}
                   </h3>
                   <span className="text-xs text-slate-400">{i18n.t("Awaiting action")}</span>
@@ -363,7 +363,7 @@ const AdminDashboard = () => {
                                 ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
                                 : ['cancelled', 'canceled'].includes(b.status)
                                 ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
-                                : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
+                                : 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300'
                             }`}
                           >
                             {i18n.t(b.status)}
@@ -384,7 +384,7 @@ const AdminDashboard = () => {
                                 >{' '}{i18n.t("Confirm")}{' '}</button>
                                 <button
                                   onClick={() => handleStatusChange(b._id, 'cancelled')}
-                                  className="px-3 py-1.5 text-xs font-medium text-white bg-amber-600 hover:bg-amber-700 rounded-lg shadow-sm transition-colors"
+                                  className="px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors"
                                 >{' '}{i18n.t("Cancel")}{' '}</button>
                               </>
                             )}

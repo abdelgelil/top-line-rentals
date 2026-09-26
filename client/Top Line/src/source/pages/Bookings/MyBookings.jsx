@@ -189,7 +189,7 @@ export default function MyBookings() {
                       </div>
                     </div>
                     <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${statusStyles}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${statusStyles.includes('emerald') ? 'bg-emerald-500' : statusStyles.includes('amber') ? 'bg-amber-500' : 'bg-rose-500'}`}></span>
+                      <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${statusStyles.includes('emerald') ? 'bg-emerald-500' : statusStyles.includes('blue') ? 'bg-blue-500' : 'bg-rose-500'}`}></span>
                       {i18n.t(booking.status || 'Pending')}
                     </div>
                   </div>

@@ -84,7 +84,7 @@ const ImageLightbox = ({ images, initialIndex, onClose }) => {
             key={idx}
             onClick={() => setCurrentIndex(idx)}
             className={`relative w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
-              currentIndex === idx ? 'border-amber-500 scale-110' : 'border-transparent opacity-50 hover:opacity-100'
+              currentIndex === idx ? 'border-blue-500 scale-110' : 'border-transparent opacity-50 hover:opacity-100'
             }`}
           >
             <img src={img} className="w-full h-full object-cover" alt={`Thumb ${idx}`} />

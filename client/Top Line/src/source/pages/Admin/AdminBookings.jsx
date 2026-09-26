@@ -100,14 +100,14 @@ export const AdminBookings = () => {
                       {/* Apartment Info */}
                       <td className="p-4 pl-6">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+                          <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
                             <Building className="w-5 h-5" />
                           </div>
                           <div>
                             <p className="font-bold text-slate-900 dark:text-white line-clamp-1">
                               {translateText(apartment.title || 'Apartment Unit')}
                             </p>
-                            <span className="text-xs text-amber-600 dark:text-amber-400 font-semibold">
+                            <span className="text-xs text-blue-600 dark:text-blue-400 font-semibold">
                               {translateText(apartment.tower || 'Tower 1')}
                             </span>
                           </div>
@@ -159,7 +159,7 @@ export const AdminBookings = () => {
                             ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' 
                             : ['cancelled', 'canceled'].includes(b.status)
                             ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
-                            : 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
+                            : 'bg-blue-500/10 text-blue-600 dark:text-blue-400'
                         }`}>
                           {b.status === 'confirmed' && <CheckCircle2 className="w-3.5 h-3.5" />}
                           {b.status === 'cancelled' && <XCircle className="w-3.5 h-3.5" />}
