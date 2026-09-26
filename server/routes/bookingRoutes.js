@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import Booking from '../models/booking.js';
 import Apartment from '../models/Apartment.js';
+import Message from '../models/Message.js';
 import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -14,7 +15,7 @@ router.get('/analytics', async (req, res) => {
     const totalBookings = await Booking.countDocuments();
     const confirmedBookings = await Booking.countDocuments({ status: 'confirmed' });
     const pendingBookings = await Booking.countDocuments({ status: 'pending' });
-    const cancelledBookings = await Booking.countDocuments({ status: 'cancelled' });
+    const cancelledBookings = await Booking.countDocuments({ status: { $in: ['cancelled', 'canceled'] } });
 
     const revenueAgg = await Booking.aggregate([
       { $match: { status: 'confirmed' } },
@@ -59,6 +60,73 @@ router.get('/analytics', async (req, res) => {
   } catch (error) {
     console.error('Error calculating analytics:', error);
     return res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+/* =======================================================================
+   PATCH /api/bookings/:id/cancel - Cancel the signed-in user's reservation
+   ======================================================================= */
+router.patch('/:id/cancel', requireAuth, async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ success: false, message: 'Invalid booking ID' });
+  }
+
+  try {
+    const booking = await Booking.findById(id).populate('apartment');
+    if (!booking) {
+      return res.status(404).json({ success: false, message: 'Booking not found' });
+    }
+    if (booking.user !== req.userId) {
+      return res.status(403).json({ success: false, message: 'You can only cancel your own bookings.' });
+    }
+    if (!['pending', 'confirmed'].includes(booking.status)) {
+      return res.status(409).json({ success: false, message: 'This booking can no longer be canceled.' });
+    }
+
+    const previousStatus = booking.status;
+    const canceledBooking = await Booking.findOneAndUpdate(
+      { _id: id, user: req.userId, status: { $in: ['pending', 'confirmed'] } },
+      { $set: { status: 'canceled' } },
+      { new: true }
+    ).populate('apartment');
+
+    if (!canceledBooking) {
+      return res.status(409).json({ success: false, message: 'This booking has already changed.' });
+    }
+
+    const apartmentTitle = canceledBooking.apartment?.title || 'Unknown apartment';
+    const checkIn = new Date(canceledBooking.checkIn).toLocaleDateString('en-CA');
+    const checkOut = new Date(canceledBooking.checkOut).toLocaleDateString('en-CA');
+    const content = [
+      `${canceledBooking.guestName} (${canceledBooking.guestEmail}) canceled a reservation.`,
+      `Apartment: ${apartmentTitle}`,
+      `Reserved dates: ${checkIn} to ${checkOut}`,
+    ].join('\n');
+
+    try {
+      await Message.create({
+        fullName: canceledBooking.guestName,
+        email: canceledBooking.guestEmail,
+        phone: canceledBooking.guestPhone || 'Not provided',
+        subject: 'Booking Cancellation Alert',
+        message: content,
+        type: 'cancellation_alert',
+        apartmentTitle,
+        bookingId: canceledBooking._id,
+      });
+    } catch (messageError) {
+      await Booking.findOneAndUpdate(
+        { _id: id, user: req.userId, status: 'canceled' },
+        { $set: { status: previousStatus } }
+      );
+      throw messageError;
+    }
+
+    return res.json({ success: true, data: canceledBooking, message: 'Booking canceled and admin notified.' });
+  } catch (error) {
+    console.error('Booking cancellation failed:', error);
+    return res.status(500).json({ success: false, message: 'Failed to cancel booking.' });
   }
 });
 

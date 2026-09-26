@@ -67,6 +67,7 @@ export const deleteApartment = (id) => API.delete(`/apartments/${id}`);
    ========================================================================== */
 export const createBooking = (bookingData) => API.post('/bookings', bookingData);
 export const fetchUserBookings = (userId) => API.get('/bookings', { params: { userId } });
+export const cancelBooking = (id) => API.patch(`/bookings/${id}/cancel`);
 export const fetchAllBookings = () => API.get('/bookings');
 export const updateBookingStatus = (id, status) => API.patch(`/bookings/${id}/status`, { status });
 export const deleteBooking = (id) => API.delete(`/bookings/${id}`);

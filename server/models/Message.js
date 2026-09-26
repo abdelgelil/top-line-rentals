@@ -15,7 +15,8 @@ const messageSchema = new mongoose.Schema({
   },
   subject: {
     type: String,
-    required: true
+    required: true,
+    default: 'Contact Message'
   },
   message: {
     type: String,
@@ -29,6 +30,20 @@ const messageSchema = new mongoose.Schema({
   isRead: {
     type: Boolean,
     default: false
+  },
+  type: {
+    type: String,
+    enum: ['contact', 'cancellation_alert'],
+    default: 'contact'
+  },
+  apartmentTitle: {
+    type: String,
+    default: ''
+  },
+  bookingId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Booking',
+    default: null
   }
 }, { timestamps: true });
 

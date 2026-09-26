@@ -137,6 +137,12 @@ const homeKeys = {
 };
 
 Object.assign(arabic, {
+  'Cancel Booking': 'إلغاء الحجز', 'Canceling...': 'جارٍ إلغاء الحجز...',
+  'Are you sure you want to cancel this booking?': 'هل أنت متأكد من رغبتك في إلغاء هذا الحجز؟',
+  'Booking canceled successfully.': 'تم إلغاء الحجز بنجاح.', 'Failed to cancel booking.': 'تعذر إلغاء الحجز.',
+  'Apartment available for these dates': 'الشقة متاحة لهذه التواريخ',
+  'Cancellation Alert': 'تنبيه إلغاء حجز', 'Booking Cancellation Alert': 'تنبيه إلغاء حجز', 'Apartment:': 'الشقة:',
+  'Messages': 'الرسائل', 'canceled': 'ملغي', 'cancelled': 'ملغي',
   'Booking status updated.': 'تم تحديث حالة الحجز.', 'Reservation deleted.': 'تم حذف الحجز.', 'Apartment deleted.': 'تم حذف الشقة.',
   'Message sent successfully.': 'تم إرسال الرسالة بنجاح.', 'Failed to send your message. Please try again.': 'تعذر إرسال رسالتك. يرجى المحاولة مرة أخرى.',
   'Booking request submitted.': 'تم إرسال طلب الحجز.', 'Message marked as read.': 'تم تحديد الرسالة كمقروءة.', 'Failed to update the message.': 'تعذر تحديث الرسالة.',

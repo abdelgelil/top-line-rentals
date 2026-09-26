@@ -33,6 +33,7 @@ export const AdminBookings = () => {
 
   const filteredBookings = bookings.filter((b) => {
     if (filterStatus === 'All') return true;
+    if (filterStatus === 'Cancelled') return ['cancelled', 'canceled'].includes(b.status?.toLowerCase());
     return b.status?.toLowerCase() === filterStatus.toLowerCase();
   });
 
@@ -156,7 +157,7 @@ export const AdminBookings = () => {
                         <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${
                           b.status === 'confirmed' 
                             ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' 
-                            : b.status === 'cancelled'
+                            : ['cancelled', 'canceled'].includes(b.status)
                             ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
                             : 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
                         }`}>
@@ -164,6 +165,11 @@ export const AdminBookings = () => {
                           {b.status === 'cancelled' && <XCircle className="w-3.5 h-3.5" />}
                           {b.status !== 'confirmed' && b.status !== 'cancelled' && <Clock className="w-3.5 h-3.5" />}
                           <span className="capitalize">{i18n.t(b.status || 'Pending')}</span>
+                          {['cancelled', 'canceled'].includes(b.status) && (
+                            <span className="block mt-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+                              {i18n.t('Apartment available for these dates')}
+                            </span>
+                          )}
                         </span>
                       </td>
 

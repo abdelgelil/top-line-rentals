@@ -3,13 +3,15 @@ import { translateText } from '../../../utils/translateContent.js';
 import React, { useEffect, useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
-import { fetchUserBookings } from '../../services/api';
+import { cancelBooking, fetchUserBookings } from '../../services/api';
+import toast from 'react-hot-toast';
 import { Calendar, Clock, Users, MapPin, ChevronRight, Home, MessageCircle } from 'lucide-react';
 
 export default function MyBookings() {
   const { user, isLoaded, isSignedIn } = useUser();
   const [bookings, setBookings] = useState([]);
   const [error, setError] = useState('');
+  const [cancellingId, setCancellingId] = useState(null);
 
   useEffect(() => {
     if (!isLoaded || !isSignedIn || !user?.id) return;
@@ -39,9 +41,28 @@ export default function MyBookings() {
       case 'pending':
         return 'bg-blue-500/10 text-blue-600 border-blue-500/30';
       case 'cancelled':
+      case 'canceled':
         return 'bg-rose-500/10 text-rose-600 border-rose-500/30';
       default:
         return 'bg-slate-500/10 text-slate-600 border-slate-500/30';
+    }
+  };
+
+  const handleCancelBooking = async (booking) => {
+    if (!window.confirm(i18n.t('Are you sure you want to cancel this booking?'))) return;
+
+    setCancellingId(booking._id);
+    try {
+      const { data } = await cancelBooking(booking._id);
+      const updatedBooking = data?.data;
+      setBookings((current) => current.map((item) => item._id === booking._id
+        ? { ...item, ...updatedBooking, apartment: updatedBooking?.apartment || item.apartment }
+        : item));
+      toast.success(i18n.t('Booking canceled successfully.'));
+    } catch (err) {
+      toast.error(err.response?.data?.message || i18n.t('Failed to cancel booking.'));
+    } finally {
+      setCancellingId(null);
     }
   };
 
@@ -135,7 +156,7 @@ export default function MyBookings() {
                     </div>
                     <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${statusStyles}`}>
                       <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${statusStyles.includes('emerald') ? 'bg-emerald-500' : statusStyles.includes('amber') ? 'bg-amber-500' : 'bg-rose-500'}`}></span>
-                      {booking.status || 'Pending'}
+                      {i18n.t(booking.status || 'Pending')}
                     </div>
                   </div>
 
@@ -192,6 +213,18 @@ export default function MyBookings() {
                       >
                         <MessageCircle className="w-3 h-3" />{' '}{i18n.t("Support")}{' '}</Link>
                     </div>
+                    {['pending', 'confirmed'].includes(booking.status?.toLowerCase()) && (
+                      <div className="flex justify-end">
+                        <button
+                          type="button"
+                          onClick={() => handleCancelBooking(booking)}
+                          disabled={cancellingId === booking._id}
+                          className="px-4 py-2 rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50 dark:border-rose-900/50 dark:hover:bg-rose-950/30 text-xs font-bold transition-colors disabled:opacity-50"
+                        >
+                          {cancellingId === booking._id ? i18n.t('Canceling...') : i18n.t('Cancel Booking')}
+                        </button>
+                      </div>
+                    )}
                     <div className="text-right">
                       <span className="text-[10px] text-slate-500 uppercase font-bold block">{i18n.t("Total Investment")}</span>
                       <span className="text-2xl font-black text-blue-600 dark:text-sky-400">

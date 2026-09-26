@@ -337,13 +337,18 @@ const AdminDashboard = () => {
                             className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold capitalize ${
                               b.status === 'confirmed'
                                 ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
-                                : b.status === 'cancelled'
+                                : ['cancelled', 'canceled'].includes(b.status)
                                 ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
                                 : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
                             }`}
                           >
                             {i18n.t(b.status)}
                           </span>
+                          {['cancelled', 'canceled'].includes(b.status) && (
+                            <span className="block mt-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+                              {i18n.t('Apartment available for these dates')}
+                            </span>
+                          )}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right">
                           <div className="flex items-center justify-end gap-2">

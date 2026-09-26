@@ -2,7 +2,7 @@ import i18n from "../../../i18n.js";
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { UserButton } from '@clerk/clerk-react';
-import { Building2, LayoutDashboard, ShieldCheck, CalendarCheck, Menu, X, ExternalLink } from 'lucide-react';
+import { Building2, LayoutDashboard, ShieldCheck, CalendarCheck, Mail, Menu, X, ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Logo from './Logo';
 import { LanguageToggle } from './LanguageToggle';
@@ -42,6 +42,10 @@ const AdminNavbar = () => {
             <NavLink to="/admin/reservations" className={linkClass}>
               <CalendarCheck className="w-4 h-4" />
               <span>{i18n.t("Bookings")}</span>
+            </NavLink>
+            <NavLink to="/admin/messages" className={linkClass}>
+              <Mail className="w-4 h-4" />
+              <span>{i18n.t('Messages')}</span>
             </NavLink>
             <Link to="/apartments" className={linkClass({ isActive: false })}>
               <ExternalLink className="w-4 h-4" />
@@ -107,6 +111,16 @@ const AdminNavbar = () => {
           >
             <CalendarCheck className="w-4 h-4" />
             <span>{i18n.t("Bookings")}</span>
+          </NavLink>
+          <NavLink
+            to="/admin/messages"
+            className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+              isActive ? 'bg-blue-500/20 text-blue-400' : 'text-slate-300 hover:bg-slate-800'
+            }`}
+            onClick={() => setIsOpen(false)}
+          >
+            <Mail className="w-4 h-4" />
+            <span>{i18n.t('Messages')}</span>
           </NavLink>
           <Link to="/apartments" className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800" onClick={() => setIsOpen(false)}>
             <ExternalLink className="w-4 h-4" />

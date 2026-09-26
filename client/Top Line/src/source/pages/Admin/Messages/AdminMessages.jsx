@@ -96,9 +96,16 @@ export const AdminMessages = () => {
                   } ${!msg.isRead ? 'bg-blue-50/30 dark:bg-blue-900/10' : ''}`}
                 >
                   <div className="flex justify-between items-start mb-1">
-                    <span className={`text-xs font-bold ${!msg.isRead ? 'text-amber-600 dark:text-amber-400' : 'text-slate-400'}`}>
-                      {msg.subject}
-                    </span>
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className={`text-xs font-bold truncate ${!msg.isRead ? 'text-amber-600 dark:text-amber-400' : 'text-slate-400'}`}>
+                        {msg.subject}
+                      </span>
+                      {msg.type === 'cancellation_alert' && (
+                        <span className="shrink-0 rounded bg-rose-100 px-1.5 py-0.5 text-[9px] font-bold uppercase text-rose-700 dark:bg-rose-900/30 dark:text-rose-300">
+                          {i18n.t('Cancellation Alert')}
+                        </span>
+                      )}
+                    </div>
                     <span className="text-[10px] text-slate-400 uppercase">{new Date(msg.createdAt).toLocaleDateString()}</span>
                   </div>
                   <div className="flex items-center justify-between">
@@ -164,6 +171,9 @@ export const AdminMessages = () => {
                 <div className="p-6 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
                   <div className="mb-4 pb-4 border-b border-slate-100 dark:border-slate-700">
                     <h4 className="text-lg font-bold text-slate-900 dark:text-white">{selectedMessage.subject}</h4>
+                    {selectedMessage.type === 'cancellation_alert' && selectedMessage.apartmentTitle && (
+                      <p className="mt-1 text-xs font-medium text-slate-500">{i18n.t('Apartment:')} {selectedMessage.apartmentTitle}</p>
+                    )}
                   </div>
                   <p className="text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">
                     {selectedMessage.message}
