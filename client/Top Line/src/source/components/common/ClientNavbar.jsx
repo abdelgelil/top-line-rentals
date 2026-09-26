@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useUser, UserButton } from '@clerk/clerk-react';
-import { Building2, CalendarCheck, Mail, Menu, X, User } from 'lucide-react';
+import { Building2, CalendarCheck, Mail, Menu, X, User, LayoutDashboard } from 'lucide-react';
 import Logo from './Logo';
 
 const ClientNavbar = () => {
   const { isSignedIn, user } = useUser();
   const [isOpen, setIsOpen] = useState(false);
+  const isAdmin = user?.publicMetadata?.role === 'admin';
 
   useEffect(() => {
     if (isOpen) {
@@ -48,16 +49,31 @@ const ClientNavbar = () => {
             </NavLink>
 
             {isSignedIn && (
-              <NavLink to="/my-bookings" className={desktopLinkClass}>
-                <CalendarCheck className="w-4 h-4" />
-                <span>My Bookings</span>
-              </NavLink>
+              isAdmin ? (
+                <NavLink to="/admin" className={desktopLinkClass}>
+                  <LayoutDashboard className="w-4 h-4" />
+                  <span>Admin Dashboard</span>
+                </NavLink>
+              ) : (
+                <>
+                  <NavLink to="/my-bookings" className={desktopLinkClass}>
+                    <CalendarCheck className="w-4 h-4" />
+                    <span>My Bookings</span>
+                  </NavLink>
+                  <NavLink to="/contact" className={desktopLinkClass}>
+                    <Mail className="w-4 h-4" />
+                    <span>Contact Us</span>
+                  </NavLink>
+                </>
+              )
             )}
 
-            <NavLink to="/contact" className={desktopLinkClass}>
-              <Mail className="w-4 h-4" />
-              <span>Contact Us</span>
-            </NavLink>
+            {!isSignedIn && (
+              <NavLink to="/contact" className={desktopLinkClass}>
+                <Mail className="w-4 h-4" />
+                <span>Contact Us</span>
+              </NavLink>
+            )}
 
             <div className="flex items-center gap-3 pl-4 border-l border-blue-100/50 dark:border-blue-500/10">
               {isSignedIn ? (
@@ -112,24 +128,47 @@ const ClientNavbar = () => {
               </NavLink>
 
               {isSignedIn && (
+                isAdmin ? (
+                  <NavLink
+                    to="/admin"
+                    className={mobileLinkClass}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <LayoutDashboard className="w-6 h-6" />
+                    <span>Admin Dashboard</span>
+                  </NavLink>
+                ) : (
+                  <>
+                    <NavLink
+                      to="/my-bookings"
+                      className={mobileLinkClass}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <CalendarCheck className="w-6 h-6" />
+                      <span>My Bookings</span>
+                    </NavLink>
+                    <NavLink
+                      to="/contact"
+                      className={mobileLinkClass}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <Mail className="w-6 h-6" />
+                      <span>Contact Us</span>
+                    </NavLink>
+                  </>
+                )
+              )}
+
+              {!isSignedIn && (
                 <NavLink
-                  to="/my-bookings"
+                  to="/contact"
                   className={mobileLinkClass}
                   onClick={() => setIsOpen(false)}
                 >
-                  <CalendarCheck className="w-6 h-6" />
-                  <span>My Bookings</span>
+                  <Mail className="w-6 h-6" />
+                  <span>Contact Us</span>
                 </NavLink>
               )}
-
-              <NavLink
-                to="/contact"
-                className={mobileLinkClass}
-                onClick={() => setIsOpen(false)}
-              >
-                <Mail className="w-6 h-6" />
-                <span>Contact Us</span>
-              </NavLink>
             </div>
 
             <div className="p-6 border-t border-blue-100/50 dark:border-blue-500/10 bg-white/30 dark:bg-slate-900/30 backdrop-blur-lg">
