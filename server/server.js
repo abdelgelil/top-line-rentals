@@ -24,8 +24,12 @@ const messageRoutes = (await import('./routes/messageRoutes.js')).default;
 
 const app = express();
 
-// Tell Express to trust the proxy (Required for Railway/Heroku/etc. when using express-rate-limit)
+// CRITICAL: Trust proxy MUST be set before any rate limiters or security middleware
+// This resolves ERR_ERL_UNEXPECTED_X_FORWARDED_FOR on Railway/Heroku
 app.set('trust proxy', 1);
+
+// Tell Express to trust the proxy (Required for Railway/Heroku/etc. when using express-rate-limit)
+// app.set('trust proxy', 1);
 
 // --- CORS CONFIGURATION ---
 const allowedOrigins = [
