@@ -2,10 +2,11 @@ FROM node:20-alpine AS build
 
 WORKDIR /app
 
-COPY package*.json ./
+# Railway Metal uses the repo root as the build context.
+COPY ["client/Top Line/package.json", "client/Top Line/package-lock.json", "./"]
 RUN npm ci
 
-COPY . .
+COPY ["client/Top Line/", "./"]
 
 # Pass build-time Vite environment variables
 ARG VITE_CLERK_PUBLISHABLE_KEY
@@ -16,7 +17,7 @@ RUN VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY VITE_API_BASE_URL=$VI
 FROM nginx:alpine
 
 COPY --from=build /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY ["client/Top Line/nginx.conf", "/etc/nginx/conf.d/default.conf"]
 
 EXPOSE 8080
 
