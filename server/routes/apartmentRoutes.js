@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import Apartment from '../models/Apartment.js';
 import { uploadToCloudinary, deleteFromCloudinary } from '../config/cloudinary.js';
 import multer from 'multer';
+import { requireAuth, requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -11,23 +12,6 @@ const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
 });
-
-// --- ADMIN MIDDLEWARE ---
-// A01: Broken Access Control - Server-side role validation
-const isAdmin = async (req, res, next) => {
-  try {
-    const clerkId = req.headers['x-clerk-user-id']; 
-    if (!clerkId) return res.status(401).json({ success: false, message: 'Unauthorized: Missing User Identity' });
-
-    const user = await mongoose.model('User').findOne({ clerkId });
-    if (!user || user.role !== 'admin') {
-      return res.status(403).json({ success: false, message: 'Access denied. Admin privileges required.' });
-    }
-    next();
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
 
 /* ==========================================================================
    GET /api/apartments - Fetch all apartments
@@ -69,7 +53,7 @@ router.get('/:id', async (req, res) => {
 /* ==========================================================================
    POST /api/apartments - Create new apartment
    ========================================================================== */
-router.post('/', isAdmin, upload.array('images', 10), async (req, res) => {
+router.post('/', requireAuth, requireAdmin, upload.array('images', 10), async (req, res) => {
   try {
     const {
       title,
@@ -151,7 +135,7 @@ router.post('/', isAdmin, upload.array('images', 10), async (req, res) => {
 /* ==========================================================================
    PUT /api/apartments/:id - Update existing apartment
    ========================================================================== */
-router.put('/:id', isAdmin, upload.array('images', 10), async (req, res) => {
+router.put('/:id', requireAuth, requireAdmin, upload.array('images', 10), async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -242,7 +226,7 @@ router.put('/:id', isAdmin, upload.array('images', 10), async (req, res) => {
 /* ==========================================================================
    DELETE /api/apartments/:id - Delete apartment & purge Cloudinary images
    ========================================================================== */
-router.delete('/:id', isAdmin, async (req, res) => {
+router.delete('/:id', requireAuth, requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
 
