@@ -1,71 +1,59 @@
-import i18n from "../../../i18n.js";
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Building2, Phone, Mail, MapPin, ShieldCheck, Heart } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Building2, Mail, Phone, MapPin, ShieldCheck, Heart } from 'lucide-react';
 
-export const Footer = () => {
+const Footer = () => {
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.dir(i18n.resolvedLanguage || i18n.language) === 'rtl';
+
   return (
-    <footer className="mt-20 px-4 md:px-8 max-w-7xl mx-auto pb-10">
-      <div className="backdrop-blur-xl bg-white/20 dark:bg-slate-900/30 border border-white/30 dark:border-white/10 shadow-2xl rounded-3xl p-8 md:p-12 text-slate-700 dark:text-slate-300">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
-          
-          {/* Brand & Bio */}
-          <div className="md:col-span-1 space-y-4">
-            <Link to="/" className="flex items-center gap-2 text-slate-900 dark:text-white font-bold text-xl tracking-tight">
-              <div className="p-2 rounded-xl bg-indigo-600/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400">
-                <Building2 className="w-5 h-5" />
-              </div>
-              <span>{i18n.t("TopLine")}{' '}<span className="text-indigo-600 dark:text-indigo-400 font-light">{i18n.t("Rentals")}</span></span>
+    <footer dir={isRtl ? 'rtl' : 'ltr'} className="mt-auto border-t border-slate-800 bg-slate-900 pt-14 pb-8 text-slate-300 transition-colors duration-300">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-10 border-b border-slate-800/80 pb-10 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="space-y-4">
+            <Link to="/" className="flex w-fit items-center gap-2.5">
+              <span className="rounded-xl border border-blue-500/30 bg-blue-600/20 p-2 text-blue-400"><Building2 className="h-6 w-6" /></span>
+              <span className="text-xl font-bold tracking-wide text-white">TopLine <span className="text-blue-400">Rentals</span></span>
             </Link>
-            <p className="text-sm leading-relaxed opacity-80">{' '}{i18n.t("Premium coastal residences and luxury tower apartments with seamless booking and hospitality.")}{' '}</p>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h4 className="text-slate-900 dark:text-white font-semibold text-base mb-4">{i18n.t("Quick Links")}</h4>
-            <ul className="space-y-2.5 text-sm">
-              <li><Link to="/" className="hover:text-indigo-500 transition-colors">{i18n.t("Home Overview")}</Link></li>
-              <li><Link to="/apartments" className="hover:text-indigo-500 transition-colors">{i18n.t("Available Units")}</Link></li>
-              <li><Link to="/admin" className="hover:text-indigo-500 transition-colors">{i18n.t("Property Management")}</Link></li>
-            </ul>
-          </div>
-
-          {/* Guarantees */}
-          <div>
-            <h4 className="text-slate-900 dark:text-white font-semibold text-base mb-4">{i18n.t("Host Guarantee")}</h4>
-            <ul className="space-y-2.5 text-sm opacity-80">
-              <li className="flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-emerald-500" />{' '}{i18n.t("Verified Listings")}</li>
-              <li className="flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-emerald-500" />{' '}{i18n.t("Direct Owner Pricing")}</li>
-              <li className="flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-emerald-500" />{' '}{i18n.t("Instant Reservation")}</li>
-            </ul>
-          </div>
-
-          {/* Contact Details */}
-          <div>
-            <h4 className="text-slate-900 dark:text-white font-semibold text-base mb-4">{i18n.t("Contact & Support")}</h4>
-            <div className="space-y-3 text-sm">
-              <div className="flex items-center gap-2.5 opacity-80">
-                <MapPin className="w-4 h-4 text-indigo-500 shrink-0" />
-                <span>{i18n.t("San Stefano Towers, Alexandria")}</span>
-              </div>
-              <div className="flex items-center gap-2.5 opacity-80">
-                <Phone className="w-4 h-4 text-indigo-500 shrink-0" />
-                <span>+20 100 000 0000</span>
-              </div>
-              <div className="flex items-center gap-2.5 opacity-80">
-                <Mail className="w-4 h-4 text-indigo-500 shrink-0" />
-                <span>{i18n.t("support@toplinerentals.com")}</span>
-              </div>
+            <p className="max-w-sm text-sm leading-relaxed text-slate-400">{t('footer.aboutText')}</p>
+            <div className="flex w-fit items-center gap-2 rounded-full border border-blue-800/50 bg-blue-950/50 px-3 py-1.5 text-xs text-blue-300">
+              <ShieldCheck className="h-4 w-4" /> <span>{t('footer.verifiedProperties')}</span>
             </div>
           </div>
 
+          <div className="space-y-4">
+            <h2 className="text-base font-semibold tracking-wide text-white">{t('footer.quickLinks')}</h2>
+            <ul className="space-y-2.5 text-sm">
+              <li><Link className="transition-colors hover:text-blue-400" to="/">{t('nav.home')}</Link></li>
+              <li><Link className="transition-colors hover:text-blue-400" to="/apartments">{t('nav.apartments')}</Link></li>
+              <li><Link className="transition-colors hover:text-blue-400" to="/my-bookings">{t('nav.myBookings')}</Link></li>
+              <li><Link className="transition-colors hover:text-blue-400" to="/contact">{t('nav.contact')}</Link></li>
+            </ul>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-base font-semibold tracking-wide text-white">{t('footer.contactUs')}</h2>
+            <ul className="space-y-3 text-sm text-slate-400">
+              <li className="flex items-center gap-3"><MapPin className="h-4 w-4 shrink-0 text-blue-400" /><span>{t('footer.address')}</span></li>
+              <li className="flex items-center gap-3"><Phone className="h-4 w-4 shrink-0 text-blue-400" /><a dir="ltr" href="tel:+201000000000" className="hover:text-blue-300">+20 100 000 0000</a></li>
+              <li className="flex items-center gap-3"><Mail className="h-4 w-4 shrink-0 text-blue-400" /><a href="mailto:support@toplinerentals.com" className="hover:text-blue-300">support@toplinerentals.com</a></li>
+            </ul>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-base font-semibold tracking-wide text-white">{t('footer.support')}</h2>
+            <p className="text-sm leading-relaxed text-slate-400">{t('footer.supportNote')}</p>
+          </div>
         </div>
 
-        <div className="pt-6 border-t border-white/20 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs opacity-70">
-          <p>© {new Date().getFullYear()}{' '}{i18n.t("TopLine Rentals. All rights reserved.")}</p>
-          <p className="flex items-center gap-1">{' '}{i18n.t("Engineered with")}{' '}<Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />{' '}{i18n.t("for luxury living")}{' '}</p>
+        <div className="flex flex-col items-center justify-between gap-4 pt-7 text-xs text-slate-500 sm:flex-row">
+          <p>© {new Date().getFullYear()} TopLine Rentals. {t('footer.allRightsReserved')}</p>
+          <p className="flex items-center gap-1.5">{t('footer.craftedWith')} <Heart className="inline h-3.5 w-3.5 fill-rose-500 text-rose-500" /></p>
         </div>
       </div>
     </footer>
   );
 };
+
+export default Footer;

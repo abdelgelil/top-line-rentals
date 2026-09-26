@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { UserButton, useUser } from '@clerk/clerk-react';
 import { Menu, X, Building2, Calendar, Mail } from 'lucide-react';
 import { LanguageToggle } from './LanguageToggle';
+import Footer from './Footer';
 
 const ClientLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -122,6 +123,7 @@ const ClientLayout = () => {
     <main className="flex-grow">
       <Outlet />
     </main>
+    <Footer />
     </div>
   );
 };

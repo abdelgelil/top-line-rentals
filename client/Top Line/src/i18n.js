@@ -229,6 +229,29 @@ const resources = {
   ar: { translation: { ...flatArabic, ...Object.fromEntries(Object.entries(homeKeys).map(([k,v]) => [k,flatArabic[v] || v])), nav: { home: 'الرئيسية', apartments: 'الشقق', myBookings: 'حجوزاتي', adminDashboard: 'لوحة الإدارة', addApartment: 'إضافة شقة', logout: 'تسجيل الخروج', language: 'اللغة', contact: 'اتصل بنا' }, common: { search: 'بحث', filter: 'تصفية', price: 'السعر', details: 'عرض التفاصيل', bookNow: 'احجز الآن', status: 'الحالة', actions: 'الإجراءات' } } }
 };
 
+resources.en.translation.footer = {
+  aboutText: 'Premium coastal residences with seamless bookings and thoughtful hospitality.',
+  verifiedProperties: 'Verified properties',
+  quickLinks: 'Quick Links',
+  contactUs: 'Contact Us',
+  address: 'San Stefano Towers, Alexandria',
+  support: 'Customer Care',
+  supportNote: 'Questions about a reservation or property? Our team is here to help.',
+  allRightsReserved: 'All rights reserved.',
+  craftedWith: 'Made with care for your stay.',
+};
+resources.ar.translation.footer = {
+  aboutText: 'إقامات ساحلية مميزة مع حجوزات سهلة وضيافة تهتم بكل التفاصيل.',
+  verifiedProperties: 'عقارات موثقة',
+  quickLinks: 'روابط سريعة',
+  contactUs: 'تواصل معنا',
+  address: 'أبراج سان ستيفانو، الإسكندرية',
+  support: 'خدمة العملاء',
+  supportNote: 'هل لديك سؤال عن حجز أو عقار؟ فريقنا هنا لمساعدتك.',
+  allRightsReserved: 'جميع الحقوق محفوظة.',
+  craftedWith: 'صُنع بعناية من أجل إقامتك.',
+};
+
 i18n.use(LanguageDetector).use(initReactI18next).init({
   resources,
   fallbackLng: 'en',
