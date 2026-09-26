@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { UserButton } from '@clerk/clerk-react';
-import { Building2, LayoutDashboard, ShieldCheck, Mail, Menu, X } from 'lucide-react';
+import { Building2, LayoutDashboard, ShieldCheck, CalendarCheck, Menu, X, ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Logo from './Logo';
 import { LanguageToggle } from './LanguageToggle';
@@ -31,18 +31,22 @@ const AdminNavbar = () => {
           </div>
 
           <div className="hidden md:flex items-center gap-4">
-            <NavLink to="/admin" className={linkClass}>
+            <NavLink to="/admin/analytics" className={linkClass}>
               <LayoutDashboard className="w-4 h-4" />
               <span>{t('nav.adminDashboard')}</span>
             </NavLink>
-            <NavLink to="/apartments" className={linkClass}>
+            <NavLink to="/admin/apartments" className={linkClass}>
               <Building2 className="w-4 h-4" />
-              <span>{t('nav.apartments')}</span>
+              <span>Manage Apartments</span>
             </NavLink>
-            <NavLink to="/admin/messages" className={linkClass}>
-              <Mail className="w-4 h-4" />
-              <span>{t('nav.messages')}</span>
+            <NavLink to="/admin/reservations" className={linkClass}>
+              <CalendarCheck className="w-4 h-4" />
+              <span>Bookings</span>
             </NavLink>
+            <Link to="/apartments" className={linkClass({ isActive: false })}>
+              <ExternalLink className="w-4 h-4" />
+              <span>View Public Site</span>
+            </Link>
             <div className="pl-4 border-l border-blue-500/20 flex items-center gap-3">
               <LanguageToggle />
               <UserButton afterSignOutUrl="/" />
@@ -69,7 +73,7 @@ const AdminNavbar = () => {
             </button>
           </div>
           <NavLink
-            to="/admin"
+            to="/admin/analytics"
             className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
               isActive
                 ? 'bg-blue-500/20 text-blue-400'
@@ -81,7 +85,7 @@ const AdminNavbar = () => {
             <span>{t('nav.adminDashboard')}</span>
           </NavLink>
           <NavLink
-            to="/apartments"
+            to="/admin/apartments"
             className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
               isActive
                 ? 'bg-blue-500/20 text-blue-400'
@@ -90,10 +94,10 @@ const AdminNavbar = () => {
             onClick={() => setIsOpen(false)}
           >
             <Building2 className="w-4 h-4" />
-            <span>{t('nav.apartments')}</span>
+            <span>Manage Apartments</span>
           </NavLink>
           <NavLink
-            to="/admin/messages"
+            to="/admin/reservations"
             className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
               isActive
                 ? 'bg-blue-500/20 text-blue-400'
@@ -101,9 +105,13 @@ const AdminNavbar = () => {
             }`}
             onClick={() => setIsOpen(false)}
           >
-            <Mail className="w-4 h-4" />
-            <span>{t('nav.messages')}</span>
+            <CalendarCheck className="w-4 h-4" />
+            <span>Bookings</span>
           </NavLink>
+          <Link to="/apartments" className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800" onClick={() => setIsOpen(false)}>
+            <ExternalLink className="w-4 h-4" />
+            <span>View Public Site</span>
+          </Link>
           <div className="pt-2 mt-2 border-t border-slate-800">
             <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-800/50 border border-blue-500/20">
               <LanguageToggle />

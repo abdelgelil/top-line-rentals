@@ -15,7 +15,7 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const tabFromPath = location.pathname.endsWith('/reservations')
     ? 'bookings'
-    : location.pathname.endsWith('/add-apartment')
+    : (location.pathname.endsWith('/add-apartment') || location.pathname.endsWith('/apartments'))
       ? 'apartments'
       : 'analytics';
   const activeTab = tabFromPath;
@@ -37,7 +37,7 @@ const AdminDashboard = () => {
     if (location.pathname === '/admin') {
       navigate('/admin/analytics', { replace: true });
     }
-    setShowAddModal(location.pathname.endsWith('/add-apartment'));
+    setShowAddModal(false);
   }, [location.pathname, navigate]);
 
   // Data Fetchers with useCallback
@@ -130,7 +130,7 @@ const AdminDashboard = () => {
       setApartments((current) => [apartment, ...current]);
     }
     setShowAddModal(false);
-    navigate('/admin/analytics');
+    navigate('/admin/apartments');
   };
 
   return (
@@ -172,14 +172,14 @@ const AdminDashboard = () => {
           </button>
           <button
             type="button"
-            onClick={() => navigate('/admin/add-apartment')}
+            onClick={() => navigate('/admin/apartments')}
             className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
               activeTab === 'apartments'
                 ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
             }`}
           >
-            Add Apartment
+            Manage Apartments
           </button>
         </div>
       </div>
@@ -456,7 +456,7 @@ const AdminDashboard = () => {
           {showAddModal && (
             <ApartmentForm
               isOpen
-              onClose={() => navigate('/admin/analytics')}
+              onClose={() => setShowAddModal(false)}
               onSubmit={handleCreateApartment}
             />
           )}

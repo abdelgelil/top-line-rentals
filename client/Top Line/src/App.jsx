@@ -151,7 +151,8 @@ function App() {
             <Route path="analytics" element={<AdminDashboard />} />
             <Route path="reservations" element={<AdminDashboard />} />
             <Route path="messages" element={<AdminMessages />} />
-            <Route path="add-apartment" element={<AdminDashboard />} />
+            <Route path="apartments" element={<AdminDashboard />} />
+            <Route path="add-apartment" element={<Navigate to="apartments" replace />} />
             <Route path="*" element={<Navigate to="analytics" replace />} />
           </Route>
 
