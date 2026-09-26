@@ -31,5 +31,5 @@ RUN npm run build
 ENV PORT=8080
 EXPOSE 8080
 
-# Start production Express server
-CMD ["node", "server.js"]
+# Start production server using Vite preview for static assets
+CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "8080"]
