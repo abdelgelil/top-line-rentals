@@ -24,12 +24,8 @@ const messageRoutes = (await import('./routes/messageRoutes.js')).default;
 
 const app = express();
 
-// CRITICAL: Trust proxy MUST be set before any rate limiters or security middleware
-// This resolves ERR_ERL_UNEXPECTED_X_FORWARDED_FOR on Railway/Heroku
+// 1. MUST be the first line after app initialization
 app.set('trust proxy', 1);
-
-// Tell Express to trust the proxy (Required for Railway/Heroku/etc. when using express-rate-limit)
-// app.set('trust proxy', 1);
 
 // --- CORS CONFIGURATION ---
 const allowedOrigins = [
@@ -81,6 +77,7 @@ const generalLimiter = rateLimit({
   message: { success: false, message: 'Too many requests from this IP, please try again after 15 minutes' },
   standardHeaders: true,
   legacyHeaders: false,
+  validate: { trustProxy: false }, // Disable proxy validation to stop the ValidationError
 });
 
 const authLimiter = rateLimit({
@@ -89,6 +86,7 @@ const authLimiter = rateLimit({
   message: { success: false, message: 'Too many authentication attempts, please try again in an hour' },
   standardHeaders: true,
   legacyHeaders: false,
+  validate: { trustProxy: false }, // Disable proxy validation to stop the ValidationError
 });
 
 app.use('/api/', generalLimiter);
