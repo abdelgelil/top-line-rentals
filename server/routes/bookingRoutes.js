@@ -1,9 +1,10 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import { requireAuth } from '@clerk/express';
 import Booking from '../models/booking.js';
 import Apartment from '../models/Apartment.js';
 import Message from '../models/Message.js';
-import { requireAuth } from '../middleware/auth.js';
+import { requireAuth as ensureVerifiedUser } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -66,7 +67,7 @@ router.get('/analytics', async (req, res) => {
 /* =======================================================================
    PATCH /api/bookings/:id/cancel - Cancel the signed-in user's reservation
    ======================================================================= */
-router.patch('/:id/cancel', requireAuth, async (req, res) => {
+router.patch('/:id/cancel', requireAuth(), ensureVerifiedUser, async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ success: false, message: 'Invalid booking ID' });
@@ -123,7 +124,11 @@ router.patch('/:id/cancel', requireAuth, async (req, res) => {
       throw messageError;
     }
 
-    return res.json({ success: true, data: canceledBooking, message: 'Booking canceled and admin notified.' });
+    return res.status(200).json({
+      success: true,
+      message: 'Reservation canceled successfully',
+      data: canceledBooking,
+    });
   } catch (error) {
     console.error('Booking cancellation failed:', error);
     return res.status(500).json({ success: false, message: 'Failed to cancel booking.' });
@@ -133,7 +138,7 @@ router.patch('/:id/cancel', requireAuth, async (req, res) => {
 /* ==========================================================================
    POST /api/bookings - Create new reservation
    ========================================================================== */
-router.post('/', requireAuth, async (req, res) => {
+router.post('/', ensureVerifiedUser, async (req, res) => {
   try {
     const {
       apartment,
