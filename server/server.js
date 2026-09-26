@@ -6,7 +6,6 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
-import mongoSanitize from 'express-mongo-sanitize';
 
 // Resolve directory paths correctly in ES Module mode
 const __filename = fileURLToPath(import.meta.url);
@@ -24,7 +23,7 @@ const messageRoutes = (await import('./routes/messageRoutes.js')).default;
 
 const app = express();
 
-// 1. MUST be the first line after app initialization
+// Required when deployed behind proxies like Railway/Nginx
 app.set('trust proxy', 1);
 
 // --- CORS CONFIGURATION ---
@@ -47,7 +46,7 @@ app.use((req, res, next) => {
   );
   res.setHeader(
     'Access-Control-Allow-Headers',
-    'X-Requested-With, Content-Type, Authorization, Accept'
+    'X-Requested-With, Content-Type, Authorization, Accept, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'
   );
 
   if (req.method === 'OPTIONS') {
@@ -57,43 +56,51 @@ app.use((req, res, next) => {
   next();
 });
 
-// --- SECURITY MIDDLEWARE ---
-// A05: Security Misconfiguration - Helmet for HTTP headers
-app.use(helmet({
-  contentSecurityPolicy: false, // Disable CSP by default to avoid breaking frontend images/scripts, enable in production with specific sources
-}));
+// --- SECURITY & BODY PARSING MIDDLEWARE ---
+app.use(
+  helmet({
+    contentSecurityPolicy: false, // Prevents blocking external image hosts like Cloudinary
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  })
+);
 
+// High payload limits for image base64/form payloads
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// A03: Injection - Sanitize MongoDB operators
-// Temporarily commenting out mongoSanitize due to 'Cannot set property query' conflict with Express 5.x
-// app.use(mongoSanitize());
+// Serve static upload directory (fallback if storing images locally)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// A07: Rate Limiting - Protect critical endpoints from brute-force/DoS
+// --- RATE LIMITING ---
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
-  message: { success: false, message: 'Too many requests from this IP, please try again after 15 minutes' },
+  max: 200, // Elevated request allowance to support image batch uploads
+  message: {
+    success: false,
+    message: 'Too many requests from this IP, please try again after 15 minutes',
+  },
   standardHeaders: true,
   legacyHeaders: false,
-  validate: { trustProxy: false }, // Disable proxy validation to stop the ValidationError
+  validate: { trustProxy: false },
 });
 
 const authLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 10, // Limit sensitive auth requests
-  message: { success: false, message: 'Too many authentication attempts, please try again in an hour' },
+  max: 20,
+  message: {
+    success: false,
+    message: 'Too many authentication attempts, please try again in an hour',
+  },
   standardHeaders: true,
   legacyHeaders: false,
-  validate: { trustProxy: false }, // Disable proxy validation to stop the ValidationError
+  validate: { trustProxy: false },
 });
 
 app.use('/api/', generalLimiter);
 app.use('/api/users/sync', authLimiter);
 app.use('/api/users/claim-first-admin', authLimiter);
 
-// Register API Endpoints
+// --- REGISTER API ENDPOINTS ---
 app.use('/api/apartments', apartmentRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/users', userRoutes);
@@ -104,14 +111,23 @@ app.get('/', (req, res) => {
   res.send('API running securely...');
 });
 
-// A05: Production Error Handling - Mask stack traces
+// --- GLOBAL ERROR HANDLING MIDDLEWARE ---
 app.use((err, req, res, next) => {
   const isProduction = process.env.NODE_ENV === 'production';
-  console.error(`[Error]: ${err.stack}`);
+  console.error(`[Express Error Handler]: ${err.stack || err.message}`);
+
+  // Multer File Size Limit Error Handling
+  if (err.code === 'LIMIT_FILE_SIZE') {
+    return res.status(413).json({
+      success: false,
+      message: 'One or more image files are too large. Maximum size per file is 10MB.',
+    });
+  }
+
   res.status(err.status || 500).json({
     success: false,
-    message: isProduction ? 'An internal server error occurred' : err.message,
-    ...(isProduction ? {} : { stack: err.stack })
+    message: err.message || 'An internal server error occurred',
+    ...(isProduction ? {} : { stack: err.stack }),
   });
 });
 
@@ -119,13 +135,16 @@ const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
 
 if (!MONGO_URI) {
-  console.error('FATAL ERROR: MONGO_URI is not defined in your .env file.');
+  console.error('FATAL ERROR: MONGO_URI is not defined in environment variables.');
   process.exit(1);
 }
 
-mongoose.connect(MONGO_URI)
+mongoose
+  .connect(MONGO_URI)
   .then(() => {
     console.log('MongoDB connected successfully');
     app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
   })
   .catch((err) => console.error('Database connection error:', err));
+
+export default app;

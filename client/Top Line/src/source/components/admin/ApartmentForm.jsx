@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { X, Trash2 } from 'lucide-react';
+import { useAuth } from '@clerk/clerk-react';
+import axios from 'axios';
 
 const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
+  const { getToken } = useAuth();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     tower: 'Tower 1',
@@ -75,40 +79,69 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('--- SUBMIT EVENT FIRED ---');
-
-    const data = new FormData();
-    data.append('title', formData.title);
-    data.append('tower', formData.tower);
-    data.append('pricePerNight', formData.pricePerNight);
-    data.append('floor', formData.floor);
-    data.append('bedrooms', formData.bedrooms);
-    data.append('bathrooms', formData.bathrooms);
-    data.append('guests', formData.guests);
-    data.append('sizeSqM', formData.sizeSqM);
-    data.append('description', formData.description);
-
-    const amenitiesArray = formData.amenities
-      ? formData.amenities.split(',').map((s) => s.trim()).filter(Boolean)
-      : [];
-    data.append('amenities', JSON.stringify(amenitiesArray));
-    data.append('existingImages', JSON.stringify(existingImages));
-
-    selectedFiles.forEach((file) => {
-      data.append('images', file);
-    });
+    console.log('--- SUBMIT APARTMENT FIRED ---');
+    setLoading(true);
 
     try {
-      await onSubmit(data);
+      const token = await getToken();
+      const data = new FormData();
+      
+      data.append('title', formData.title);
+      data.append('tower', formData.tower);
+      data.append('pricePerNight', formData.pricePerNight);
+      data.append('floor', formData.floor);
+      data.append('bedrooms', formData.bedrooms);
+      data.append('bathrooms', formData.bathrooms);
+      data.append('guests', formData.guests);
+      data.append('sizeSqM', formData.sizeSqM);
+      data.append('description', formData.description);
+
+      const amenitiesArray = formData.amenities
+        ? formData.amenities.split(',').map((s) => s.trim()).filter(Boolean)
+        : [];
+      data.append('amenities', JSON.stringify(amenitiesArray));
+      data.append('existingImages', JSON.stringify(existingImages));
+
+      selectedFiles.forEach((file) => {
+        data.append('images', file);
+      });
+
+      const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://top-line-rentals-production.up.railway.app';
+      const cleanBase = API_URL.replace(/\/$/, '');
+      const endpoint = cleanBase.endsWith('/api') 
+        ? `${cleanBase}/apartments` 
+        : `${cleanBase}/api/apartments`;
+
+      console.log('Posting form data to:', endpoint);
+
+      const response = await axios.post(endpoint, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true,
+      });
+
+      console.log('Apartment created successfully:', response.data);
+      alert('Apartment created successfully!');
+      
+      if (onSubmit) {
+        await onSubmit(response.data);
+      }
+      onClose();
     } catch (err) {
-      console.error('Form submission error:', err);
+      console.error('Save Apartment Error:', err);
+      const serverMessage = err.response?.data?.message || err.response?.data?.error || err.message;
+      alert(`Failed to save apartment: ${serverMessage}`);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
       <div className="relative flex flex-col w-full max-w-lg max-h-[85vh] rounded-xl bg-white shadow-2xl overflow-hidden">
-        
+
         {/* Fixed Header */}
         <div className="flex items-center justify-between border-b px-5 py-3 bg-gray-50">
           <h2 className="text-base font-semibold text-gray-800">
@@ -322,9 +355,10 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
             </button>
             <button
               type="submit"
-              className="px-3 py-1.5 rounded-md bg-blue-600 text-xs font-medium text-white hover:bg-blue-700"
+              disabled={loading}
+              className="px-3 py-1.5 rounded-md bg-blue-600 text-xs font-medium text-white hover:bg-blue-700 disabled:opacity-50"
             >
-              {initialData ? 'Update Apartment' : 'Save Apartment'}
+              {loading ? 'Saving Apartment...' : (initialData ? 'Update Apartment' : 'Save Apartment')}
             </button>
           </div>
         </form>
