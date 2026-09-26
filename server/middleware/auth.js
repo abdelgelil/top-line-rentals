@@ -1,5 +1,5 @@
 import { verifyToken } from '@clerk/backend';
-import { clerkClient as clerkClientExport } from '@clerk/express';
+import { getAuth, clerkClient as clerkClientExport } from '@clerk/express';
 
 function getClerkClient() {
   if (typeof clerkClientExport === 'function') {
@@ -11,39 +11,82 @@ function getClerkClient() {
   return clerkClientExport;
 }
 
-// Middleware to enforce authentication
+function readAuthState(req) {
+  try {
+    return getAuth(req);
+  } catch (error) {
+    console.error('getAuth error:', error.message);
+    return null;
+  }
+}
+
+function payloadFromVerifyResult(result) {
+  if (!result) return null;
+  if (result.sub) return result;
+  if (result.data?.sub) return result.data;
+  return null;
+}
+
 export const requireAuth = async (req, res, next) => {
   try {
+    const auth = readAuthState(req);
+    const middlewareUserId = auth?.userId || (auth?.isAuthenticated ? auth.userId : null);
+
+    if (middlewareUserId) {
+      req.userId = middlewareUserId;
+      req.auth = { userId: middlewareUserId };
+      return next();
+    }
+
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(401).json({ success: false, message: 'Unauthorized: Missing bearer token' });
     }
 
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split(' ')[1]?.trim();
+    if (!token || token === 'undefined' || token === 'null') {
+      return res.status(401).json({ success: false, message: 'Unauthorized: Missing bearer token' });
+    }
+
+    if (!process.env.CLERK_SECRET_KEY && !process.env.CLERK_JWT_KEY) {
+      console.error('Auth Verification Error: CLERK_SECRET_KEY is not set');
+      return res.status(500).json({
+        success: false,
+        message: 'Server authentication is not configured',
+      });
+    }
+
     const verifyOptions = {
       secretKey: process.env.CLERK_SECRET_KEY,
+      clockSkewInMs: 15_000,
     };
     if (process.env.CLERK_JWT_KEY) {
       verifyOptions.jwtKey = process.env.CLERK_JWT_KEY;
     }
 
-    const session = await verifyToken(token, verifyOptions);
+    const result = await verifyToken(token, verifyOptions);
+    const errors = result?.errors;
+    if (errors && (Array.isArray(errors) ? errors.length : true)) {
+      const first = Array.isArray(errors) ? errors[0] : errors;
+      console.error('Auth Verification Error:', first?.reason || first?.message || first);
+      return res.status(401).json({ success: false, message: 'Unauthorized: Authentication failed' });
+    }
 
-    if (!session || !session.sub) {
+    const session = payloadFromVerifyResult(result);
+    if (!session?.sub) {
+      console.error('Auth Verification Error: token payload missing sub');
       return res.status(401).json({ success: false, message: 'Unauthorized: Invalid token' });
     }
 
-    // Attach Clerk userId to request context
     req.userId = session.sub;
     req.auth = { userId: session.sub };
     next();
   } catch (error) {
-    console.error('Auth Verification Error:', error.message);
+    console.error('Auth Verification Error:', error.reason || error.message);
     return res.status(401).json({ success: false, message: 'Unauthorized: Authentication failed' });
   }
 };
 
-// Middleware to restrict access to Admins only
 export const requireAdmin = async (req, res, next) => {
   try {
     if (!req.userId) {

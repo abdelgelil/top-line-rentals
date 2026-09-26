@@ -23,9 +23,13 @@ export const setupAxiosInterceptors = (getToken) => {
   requestInterceptorId = API.interceptors.request.use(
     async (config) => {
       try {
+        if (typeof FormData !== 'undefined' && config.data instanceof FormData) {
+          delete config.headers['Content-Type'];
+        }
+
         let token = null;
         if (typeof getToken === 'function') {
-          token = await getToken();
+          token = await getToken({ skipCache: true });
         } else {
           token = localStorage.getItem('token');
         }
@@ -54,17 +58,8 @@ export const setupAxiosInterceptors = (getToken) => {
    ========================================================================== */
 export const fetchApartments = (tower) => API.get('/apartments', { params: { tower } });
 export const fetchApartmentById = (id) => API.get(`/apartments/${id}`);
-export const createApartment = (formData, token) =>
-  API.post('/apartments', formData, {
-    headers: { 
-      'Content-Type': 'multipart/form-data',
-      Authorization: `Bearer ${token}` 
-    },
-  });
-export const updateApartment = (id, formData) =>
-  API.put(`/apartments/${id}`, formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
+export const createApartment = (formData) => API.post('/apartments', formData);
+export const updateApartment = (id, formData) => API.put(`/apartments/${id}`, formData);
 export const deleteApartment = (id) => API.delete(`/apartments/${id}`);
 
 /* ==========================================================================

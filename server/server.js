@@ -102,8 +102,17 @@ app.use('/api/', generalLimiter);
 app.use('/api/users/sync', authLimiter);
 app.use('/api/users/claim-first-admin', authLimiter);
 
+if (!process.env.CLERK_SECRET_KEY) {
+  console.error('WARNING: CLERK_SECRET_KEY is not set. Admin API routes will return 401.');
+}
+
 // Parses Clerk session JWTs from Authorization Bearer tokens / cookies
-app.use(clerkMiddleware());
+app.use(
+  clerkMiddleware({
+    secretKey: process.env.CLERK_SECRET_KEY,
+    publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
+  })
+);
 
 // --- REGISTER API ENDPOINTS ---
 app.use('/api/apartments', apartmentRoutes);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Trash2 } from 'lucide-react';
 import { useAuth } from '@clerk/clerk-react';
-import axios from 'axios';
+import { createApartment, updateApartment } from '../../services/api';
 
 const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
   const { getToken } = useAuth();
