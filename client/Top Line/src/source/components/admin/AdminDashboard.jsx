@@ -4,6 +4,7 @@ import { translateText } from '../../../utils/translateContent.js';
 import React, { useEffect, useState, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ApartmentForm from './ApartmentForm';
+import AdminSettings from './AdminSettings';
 import { 
   fetchAllBookings, 
   updateBookingStatus, 
@@ -35,6 +36,7 @@ const AdminDashboard = () => {
   const [apartments, setApartments] = useState([]);
   const [loadingApartments, setLoadingApartments] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showAddAdminModal, setShowAddAdminModal] = useState(false);
   
   useEffect(() => {
     if (location.pathname === '/admin') {
@@ -143,9 +145,18 @@ const AdminDashboard = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Tab Navigation Header */}
       <div className="sm:flex sm:items-center sm:justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white sm:text-3xl">{' '}{i18n.t("Admin Portal & Analytics")}{' '}</h1>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{' '}{i18n.t("Monitor frequent visitor metrics, client bookings, and apartment inventory.")}{' '}</p>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white sm:text-3xl">{' '}{i18n.t("Admin Portal & Analytics")}{' '}</h1>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{' '}{i18n.t("Monitor frequent visitor metrics, client bookings, and apartment inventory.")}{' '}</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowAddAdminModal(true)}
+            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-amber-600 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-amber-700"
+          >
+            <span aria-hidden="true">+</span>{i18n.t('Add New Admin')}
+          </button>
         </div>
 
         {/* Navigation Switch Buttons */}
@@ -180,6 +191,19 @@ const AdminDashboard = () => {
           >{' '}{i18n.t("Manage Apartments")}{' '}</button>
         </div>
       </div>
+
+      {showAddAdminModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setShowAddAdminModal(false);
+          }}
+        >
+          <div className="w-full max-w-xl" role="dialog" aria-modal="true" aria-label={i18n.t('Add New Admin')}>
+            <AdminSettings onClose={() => setShowAddAdminModal(false)} />
+          </div>
+        </div>
+      )}
 
       {/* TAB 1: ANALYTICS OVERVIEW */}
       {activeTab === 'analytics' && (

@@ -2,7 +2,7 @@ import i18n from "../../../i18n.js";
 import React, { useState } from 'react';
 import API from '../../services/api';
 
-export default function AdminSettings() {
+export default function AdminSettings({ onClose }) {
   const [newAdminEmail, setNewAdminEmail] = useState('');
   const [newAdminPhone, setNewAdminPhone] = useState('');
   const [loading, setLoading] = useState(false);
@@ -39,9 +39,21 @@ export default function AdminSettings() {
 
   return (
     <div className="max-w-xl bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
-      <div>
-        <h2 className="text-xl font-bold text-slate-900 dark:text-white">{i18n.t("Admin Management")}</h2>
-        <p className="text-xs text-slate-500 mt-1">{' '}{i18n.t("Promote an existing registered account by verified email, phone number, or both.")}{' '}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white">{i18n.t("Admin Management")}</h2>
+          <p className="text-xs text-slate-500 mt-1">{' '}{i18n.t("Promote an existing registered account by verified email, phone number, or both.")}{' '}</p>
+        </div>
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label={i18n.t('Close')}
+            className="rounded-lg px-2 py-1 text-xl leading-none text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-white"
+          >
+            ×
+          </button>
+        )}
       </div>
 
       {msg.text && (
