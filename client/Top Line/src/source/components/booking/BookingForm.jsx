@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { SignInButton, useUser } from "@clerk/clerk-react";
 import { createBooking } from "../../services/api";
 import { Calendar, Users, Phone, Mail, User, CreditCard } from "lucide-react";
 
 const BookingForm = ({ apartment, currentUser, onSuccess }) => {
+  const { isLoaded, isSignedIn } = useUser();
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
   const [guests, setGuests] = useState(1);
@@ -29,6 +31,8 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
   const handleBooking = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (!isSignedIn) return;
 
     if (!checkIn || !checkOut) {
       setError('Please select both Check-In and Check-Out dates.');
@@ -111,7 +115,21 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
       </div>
 
       {/* Form */}
-      <form onSubmit={handleBooking} className="p-6 space-y-5">
+      {!isLoaded ? (
+        <div className="p-6 text-center text-sm text-slate-500">Loading sign-in status...</div>
+      ) : !isSignedIn ? (
+        <div className="p-6 space-y-4 text-center">
+          <p className="text-sm text-slate-600 dark:text-slate-300">Sign in to reserve this apartment.</p>
+          <SignInButton mode="modal" forceRedirectUrl={window.location.href}>
+            <button
+              type="button"
+              className="w-full py-4 rounded-2xl bg-slate-900 dark:bg-amber-600 text-white font-bold text-sm hover:bg-slate-800 dark:hover:bg-amber-700 transition-colors"
+            >
+              Sign In to Book
+            </button>
+          </SignInButton>
+        </div>
+      ) : <form onSubmit={handleBooking} className="p-6 space-y-5">
         {error && (
           <div className="p-3 rounded-xl bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-xs font-medium border border-red-100 dark:border-red-900/30">
             {error}
@@ -222,7 +240,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
             </>
           )}
         </button>
-      </form>
+      </form>}
     </div>
   );
 };

@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import Booking from '../models/booking.js';
 import Apartment from '../models/Apartment.js';
+import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -64,13 +65,11 @@ router.get('/analytics', async (req, res) => {
 /* ==========================================================================
    POST /api/bookings - Create new reservation
    ========================================================================== */
-router.post('/', async (req, res) => {
+router.post('/', requireAuth, async (req, res) => {
   try {
     const {
       apartment,
       apartmentId,
-      user,
-      userId,
       guestName,
       guestEmail,
       guestPhone,
@@ -81,7 +80,7 @@ router.post('/', async (req, res) => {
     } = req.body;
 
     const targetApartmentId = apartment || apartmentId;
-    const targetUserId = user || userId || null;
+    const targetUserId = req.userId;
 
     if (!targetApartmentId || !mongoose.Types.ObjectId.isValid(targetApartmentId)) {
       return res.status(400).json({
