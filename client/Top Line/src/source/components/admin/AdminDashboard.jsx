@@ -7,7 +7,6 @@ import {
   deleteBooking,
   fetchApartments, 
   deleteApartment, 
-  createApartment,
   fetchAnalytics
 } from '../../services/api';
 
@@ -126,19 +125,12 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleCreateApartment = async (formData) => {
-    try {
-      const token = await getToken();
-      const response = await createApartment(formData, token);
-      if (response?.data?.success || response?.status === 201) {
-        alert('Apartment created successfully!');
-        setShowAddModal(false);
-        navigate('/admin/analytics');
-        loadApartments();
-      }
-    } catch (err) {
-      alert('Failed to create apartment.');
+  const handleCreateApartment = (apartment) => {
+    if (apartment) {
+      setApartments((current) => [apartment, ...current]);
     }
+    setShowAddModal(false);
+    navigate('/admin/analytics');
   };
 
   return (

@@ -112,7 +112,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
       alert(initialData ? 'Apartment updated successfully!' : 'Apartment created successfully!');
       
       if (onSubmit) {
-        await onSubmit(response.data);
+        await onSubmit(response.data?.data || response.data);
       }
       onClose();
     } catch (err) {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Building, Plus, Calendar, Edit, Trash2, Layers, Search } from 'lucide-react';
 import { AdminBookings } from './AdminBookings';
 import ApartmentForm from '../../components/admin/ApartmentForm';
-import { fetchApartments, createApartment, updateApartment, deleteApartment } from '../../services/api';
+import { fetchApartments, deleteApartment } from '../../services/api';
 
 export const Admin = () => {
   const [activeTab, setActiveTab] = useState('apartments'); // 'apartments' | 'bookings'
@@ -13,7 +13,6 @@ export const Admin = () => {
   // Modal & Form states
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingApartment, setEditingApartment] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Search & Filter state
   const [searchTerm, setSearchTerm] = useState('');
@@ -55,22 +54,13 @@ export const Admin = () => {
     setEditingApartment(null);
   };
 
-  const handleFormSubmit = async (formData) => {
-    setIsSubmitting(true);
-    try {
-      if (editingApartment?._id) {
-        await updateApartment(editingApartment._id, formData);
-      } else {
-        await createApartment(formData);
-      }
-      handleCloseModal();
-      loadApartments();
-    } catch (err) {
-      console.error('Failed to save apartment:', err);
-      alert(err?.response?.data?.message || 'Error saving apartment. Please try again.');
-    } finally {
-      setIsSubmitting(false);
+  const handleFormSubmit = (apartment) => {
+    if (apartment) {
+      setApartments((current) => editingApartment
+        ? current.map((item) => item._id === apartment._id ? apartment : item)
+        : [apartment, ...current]);
     }
+    handleCloseModal();
   };
 
   const handleDeleteApartment = async (id) => {
@@ -262,7 +252,6 @@ export const Admin = () => {
           onClose={handleCloseModal}
           onSubmit={handleFormSubmit}
           initialData={editingApartment}
-          isLoading={isSubmitting}
         />
       </div>
     </div>
