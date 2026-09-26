@@ -24,6 +24,9 @@ const messageRoutes = (await import('./routes/messageRoutes.js')).default;
 
 const app = express();
 
+// Tell Express to trust the proxy (Required for Railway/Heroku/etc. when using express-rate-limit)
+app.set('trust proxy', 1);
+
 // --- CORS CONFIGURATION ---
 const allowedOrigins = [
   process.env.FRONTEND_URL,
