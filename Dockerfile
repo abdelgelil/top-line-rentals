@@ -3,13 +3,13 @@ FROM node:24-alpine
 
 WORKDIR /app
 
-# Copy package files using JSON array format for space-padded paths
+# Copy package files from the Top Line directory
 COPY ["client/Top Line/package*.json", "./"]
 
 # Install dependencies inside container
 RUN npm install --include=optional
 
-# Copy all source files
+# Copy all source files from Top Line
 COPY ["client/Top Line/", "./"]
 
 # Build the Vite static assets
