@@ -24,39 +24,37 @@ const messageRoutes = (await import('./routes/messageRoutes.js')).default;
 
 const app = express();
 
+// --- EMERGENCY CORS GLOBAL REFLECTOR ---
+// This middleware must be at the VERY TOP of the chain to resolve preflight failures
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, PUT, DELETE, PATCH, OPTIONS'
+  );
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-Requested-With, Content-Type, Authorization, Accept'
+  );
+
+  // Instantly resolve browser preflight OPTIONS requests before hitting routes/auth
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+
+  next();
+});
+
 // --- SECURITY MIDDLEWARE ---
 // A05: Security Misconfiguration - Helmet for HTTP headers
 app.use(helmet({
   contentSecurityPolicy: false, // Disable CSP by default to avoid breaking frontend images/scripts, enable in production with specific sources
 }));
 
-// A05: CORS Hardening - Explicit origin check
-const allowedOrigins = [
-  'https://steadfast-blessing-production-ffff.up.railway.app',
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'http://localhost:5000',
-  process.env.CLIENT_URL,
-  process.env.FRONTEND_URL,
-].filter(Boolean);
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps, curl, or Postman)
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Blocked by CORS policy'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
-  optionsSuccessStatus: 200
-};
-
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
