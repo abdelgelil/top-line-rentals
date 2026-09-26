@@ -1,4 +1,5 @@
 import i18n from "../../../i18n.js";
+import { translateText } from '../../../utils/translateContent.js';
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
@@ -154,7 +155,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
           <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
             <span className="hover:text-blue-600 cursor-pointer transition-colors">{i18n.t("Apartments")}</span>
             <ChevronRight className="w-4 h-4" />
-            <span className="text-slate-900 dark:text-white font-medium">{apartment.title}</span>
+            <span className="text-slate-900 dark:text-white font-medium">{translateText(apartment.title)}</span>
           </div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 px-3 py-1 rounded-full">
             <ShieldCheck className="w-3 h-3" />{' '}{i18n.t("Verified Listing")}{' '}</div>
@@ -245,7 +246,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
 
                   </div>
                   <h1 className="text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-                    {apartment.title}
+                    {translateText(apartment.title)}
                   </h1>
                 </div>
                 <div className="flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-4 py-2 rounded-full text-sm font-bold shadow-sm">
@@ -256,7 +257,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {[
-                  { icon: Building, label: 'Tower', value: i18n.t(apartment.tower || 'Tower 1') },
+                  { icon: Building, label: 'Tower', value: translateText(apartment.tower || 'Tower 1') },
                   { icon: Users, label: 'Guests', value: `${apartment.guests || 2} ${i18n.t('Max')}` },
                   { icon: Maximize, label: 'Area', value: `${apartment.sizeSqM || 'N/A'} ${i18n.t('sqm')}` },
                   { icon: Bed, label: 'Type', value: i18n.t('Luxury Suite') },
@@ -281,7 +282,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
                   <h2>{i18n.t("Property Overview")}</h2>
                 </div>
                 <p className="text-slate-600 dark:text-slate-300 leading-loose text-lg max-w-4xl">
-                  {apartment.description}
+                  {translateText(apartment.description)}
                 </p>
               </section>
 

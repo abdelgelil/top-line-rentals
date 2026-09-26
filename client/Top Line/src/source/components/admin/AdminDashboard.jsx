@@ -1,4 +1,5 @@
 import i18n from "../../../i18n.js";
+import { translateText } from '../../../utils/translateContent.js';
 import React, { useEffect, useState, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ApartmentForm from './ApartmentForm';
@@ -312,10 +313,10 @@ const AdminDashboard = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="font-semibold text-slate-800 dark:text-slate-200">
-                            {b.apartment?.title || 'Deleted/Unknown Apartment'}
+                            {translateText(b.apartment?.title || 'Deleted/Unknown Apartment')}
                           </div>
                           {b.apartment?.tower && (
-                            <div className="text-xs text-slate-500">{i18n.t("Tower:")}{' '}{b.apartment.tower}</div>
+                            <div className="text-xs text-slate-500">{i18n.t("Tower:")}{' '}{translateText(b.apartment.tower)}</div>
                           )}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-slate-600 dark:text-slate-300">
@@ -395,15 +396,15 @@ const AdminDashboard = () => {
                 >
                   <img
                     src={apt.images?.[0] || 'https://via.placeholder.com/400x250'}
-                    alt={apt.title}
+                    alt={translateText(apt.title)}
                     onError={(e) => { e.target.src = 'https://via.placeholder.com/400x250'; }}
                     className="w-full h-48 object-cover"
                   />
                   <div className="p-4 space-y-2">
-                    <h3 className="font-bold text-lg text-slate-900 dark:text-white">{apt.title}</h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">{apt.description}</p>
+                    <h3 className="font-bold text-lg text-slate-900 dark:text-white">{translateText(apt.title)}</h3>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">{translateText(apt.description)}</p>
                     <div className="flex justify-between items-center text-sm font-semibold text-slate-700 dark:text-slate-300 pt-2">
-                      <span>{i18n.t(apt.tower || 'Tower 1')}</span>
+                      <span>{translateText(apt.tower || 'Tower 1')}</span>
                       <span>${apt.pricePerNight || apt.price}{' '}{i18n.t("/ night")}</span>
                     </div>
                   </div>

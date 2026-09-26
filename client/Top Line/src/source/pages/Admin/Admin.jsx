@@ -1,4 +1,5 @@
 import i18n from "../../../i18n.js";
+import { translateText } from '../../../utils/translateContent.js';
 import React, { useState, useEffect } from 'react';
 import { Building, Plus, Calendar, Edit, Trash2, Layers, Search } from 'lucide-react';
 import { AdminBookings } from './AdminBookings';
@@ -183,20 +184,20 @@ export const Admin = () => {
                       {apt.images && apt.images.length > 0 ? (
                         <img
                           src={apt.images[0]}
-                          alt={apt.title}
+                          alt={translateText(apt.title)}
                           className="w-full h-full object-cover"
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">{' '}{i18n.t("No Image")}{' '}</div>
                       )}
                       <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-md text-xs font-semibold text-gray-700 shadow-sm">
-                        {apt.tower}
+                        {translateText(apt.tower)}
                       </span>
                     </div>
 
                     <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
                       <div>
-                        <h3 className="font-semibold text-lg text-gray-900 line-clamp-1">{apt.title}</h3>
+                        <h3 className="font-semibold text-lg text-gray-900 line-clamp-1">{translateText(apt.title)}</h3>
                         <p className="text-blue-600 font-bold text-lg mt-1">
                           ${apt.pricePerNight}{' '}
                           <span className="text-xs text-gray-500 font-normal">{i18n.t("/ night")}</span>

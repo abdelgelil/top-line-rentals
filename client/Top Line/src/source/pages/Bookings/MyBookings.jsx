@@ -1,4 +1,5 @@
 import i18n from "../../../i18n.js";
+import { translateText } from '../../../utils/translateContent.js';
 import React, { useEffect, useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
@@ -112,11 +113,11 @@ export default function MyBookings() {
                 <div className="relative w-full md:w-40 h-32 md:h-32 shrink-0 overflow-hidden rounded-2xl shadow-lg">
                   <img 
                     src={booking.apartment?.images?.[0] || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267'} 
-                    alt={booking.apartment?.title}
+                    alt={translateText(booking.apartment?.title)}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute top-2 left-2 px-2 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-md text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase">
-                    {i18n.t(booking.apartment?.tower || 'Residence')}
+                    {translateText(booking.apartment?.tower || 'Residence')}
                   </div>
                 </div>
 
@@ -125,11 +126,11 @@ export default function MyBookings() {
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="space-y-1">
                       <h2 className="text-xl font-bold text-slate-900 dark:text-white leading-tight">
-                        {booking.apartment?.title || 'Luxury Apartment'}
+                        {translateText(booking.apartment?.title || 'Luxury Apartment')}
                       </h2>
                       <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 text-xs font-medium">
                         <MapPin className="w-3 h-3" />
-                        <span>{booking.apartment?.location || 'The Towers, Coastal District'}</span>
+                        <span>{translateText(booking.apartment?.location || 'The Towers, Coastal District')}</span>
                       </div>
                     </div>
                     <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${statusStyles}`}>

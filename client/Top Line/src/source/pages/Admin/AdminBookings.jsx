@@ -1,4 +1,5 @@
 import i18n from "../../../i18n.js";
+import { translateText } from '../../../utils/translateContent.js';
 import React, { useState, useEffect } from 'react';
 import { Calendar, User, Phone, Mail, Building, Clock, CheckCircle2, XCircle } from 'lucide-react';
 import * as apiServices from '../../services/api';
@@ -103,10 +104,10 @@ export const AdminBookings = () => {
                           </div>
                           <div>
                             <p className="font-bold text-slate-900 dark:text-white line-clamp-1">
-                              {apartment.title || 'Apartment Unit'}
+                              {translateText(apartment.title || 'Apartment Unit')}
                             </p>
                             <span className="text-xs text-amber-600 dark:text-amber-400 font-semibold">
-                              {apartment.tower || 'Tower 1'}
+                              {translateText(apartment.tower || 'Tower 1')}
                             </span>
                           </div>
                         </div>

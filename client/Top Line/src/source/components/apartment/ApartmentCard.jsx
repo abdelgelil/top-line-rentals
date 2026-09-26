@@ -1,4 +1,5 @@
 import i18n from "../../../i18n.js";
+import { translateText } from '../../../utils/translateContent.js';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Bed, ShieldCheck } from 'lucide-react';
@@ -12,7 +13,7 @@ export const ApartmentCard = ({ unit }) => {
       <div className="relative h-64 overflow-hidden">
         <img
           src={unit.images?.[0] || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267'}
-          alt={unit.title || unit.name}
+          alt={translateText(unit.title || unit.name)}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute top-4 right-4 bg-slate-900/80 backdrop-blur-md border border-white/20 text-sky-400 font-bold px-3 py-1 rounded-full text-xs shadow-md">
@@ -23,13 +24,13 @@ export const ApartmentCard = ({ unit }) => {
       <div className="p-6 flex flex-col justify-between flex-grow space-y-4">
         <div>
           <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
-            {i18n.t(unit.tower || 'Tower Residence')}
+            {translateText(unit.tower || 'Tower Residence')}
           </span>
           <h3 className="text-xl font-bold text-slate-900 dark:text-white mt-1">
-            {unit.title || unit.name}
+            {translateText(unit.title || unit.name)}
           </h3>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 line-clamp-2">
-            {unit.description || 'Luxury serviced suite with beach access.'}
+            {translateText(unit.description || 'Luxury serviced suite with beach access.')}
           </p>
         </div>
 
