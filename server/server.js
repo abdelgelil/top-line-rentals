@@ -24,12 +24,18 @@ const messageRoutes = (await import('./routes/messageRoutes.js')).default;
 
 const app = express();
 
-// --- EMERGENCY CORS GLOBAL REFLECTOR ---
-// This middleware must be at the VERY TOP of the chain to resolve preflight failures
+// --- CORS CONFIGURATION ---
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'https://steadfast-blessing-production-ffff.up.railway.app',
+  'http://localhost:5173',
+  'http://localhost:3000',
+].filter(Boolean);
+
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  if (origin) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
+  if (!origin || allowedOrigins.includes(origin)) {
+    if (origin) res.setHeader('Access-Control-Allow-Origin', origin);
   }
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader(
@@ -41,7 +47,6 @@ app.use((req, res, next) => {
     'X-Requested-With, Content-Type, Authorization, Accept'
   );
 
-  // Instantly resolve browser preflight OPTIONS requests before hitting routes/auth
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
   }
