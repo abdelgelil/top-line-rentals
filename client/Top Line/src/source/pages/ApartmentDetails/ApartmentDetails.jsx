@@ -262,7 +262,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
                   { icon: Bed, label: 'Type', value: 'Luxury Suite' },
                 ].map((stat, i) => (
                   <div key={i} className="flex items-center gap-3 p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
-                    <div className="p-2 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400">
+                    <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400">
                       <stat.icon className="w-5 h-5" />
                     </div>
                     <div>
@@ -277,7 +277,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
             <div className="grid grid-cols-1 gap-12 pt-4">
               <section className="space-y-6">
                 <div className="flex items-center gap-3 text-slate-900 dark:text-white font-bold text-2xl">
-                  <div className="w-1 h-8 bg-amber-500 rounded-full" />
+                  <div className="w-1 h-8 bg-blue-600 rounded-full" />
                   <h2>Property Overview</h2>
                 </div>
                 <p className="text-slate-600 dark:text-slate-300 leading-loose text-lg max-w-4xl">
@@ -288,13 +288,13 @@ export function ApartmentDetails({ currentUser: propUser }) {
               <section className="grid grid-cols-1 sm:grid-cols-2 gap-12 p-8 rounded-[2rem] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
                 <div className="space-y-6">
                   <h3 className="font-bold text-slate-900 dark:text-white text-xl flex items-center gap-2">
-                    <CheckCircle2 className="w-6 h-6 text-amber-500" />
+                    <CheckCircle2 className="w-6 h-6 text-blue-600" />
                     Building Amenities
                   </h3>
                   <ul className="grid grid-cols-1 gap-4">
                     {['Infinity Pool', 'Fitness Center', '24/7 Concierge', 'Secure Parking', 'Private Beach Access', 'Spa & Wellness'].map((item) => (
                       <li key={item} className="flex items-center gap-3 text-slate-600 dark:text-slate-400 group cursor-default">
-                        <div className="w-2 h-2 rounded-full bg-amber-500 group-hover:scale-150 transition-transform" /> 
+                        <div className="w-2 h-2 rounded-full bg-blue-600 group-hover:scale-150 transition-transform" />
                         <span className="text-sm transition-colors group-hover:text-slate-900 dark:group-hover:text-white">{item}</span>
                       </li>
                     ))}
@@ -302,13 +302,13 @@ export function ApartmentDetails({ currentUser: propUser }) {
                 </div>
                 <div className="space-y-6">
                   <h3 className="font-bold text-slate-900 dark:text-white text-xl flex items-center gap-2">
-                    <CheckCircle2 className="w-6 h-6 text-amber-500" />
+                    <CheckCircle2 className="w-6 h-6 text-blue-600" />
                     House Rules
                   </h3>
                   <ul className="grid grid-cols-1 gap-4">
                     {['No Smoking Indoors', 'No Parties', 'Check-in after 2PM', 'Quiet hours 10PM-8AM', 'ID Required for Entry'].map((item) => (
                       <li key={item} className="flex items-center gap-3 text-slate-600 dark:text-slate-400 group cursor-default">
-                        <div className="w-2 h-2 rounded-full bg-amber-500 group-hover:scale-150 transition-transform" /> 
+                        <div className="w-2 h-2 rounded-full bg-blue-600 group-hover:scale-150 transition-transform" />
                         <span className="text-sm transition-colors group-hover:text-slate-900 dark:group-hover:text-white">{item}</span>
                       </li>
                     ))}
