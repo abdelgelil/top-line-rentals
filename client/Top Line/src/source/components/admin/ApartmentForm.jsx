@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { X, Trash2 } from 'lucide-react';
-import { useAuth } from '@clerk/clerk-react';
-import axios from 'axios';
 import { createApartment, updateApartment } from '../../services/api';
 
 const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
 
-  const { getToken } = useAuth();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -85,7 +82,6 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
     setLoading(true);
 
     try {
-      const token = await getToken();
       const data = new FormData();
       
       data.append('title', formData.title);
@@ -108,24 +104,12 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
         data.append('images', file);
       });
 
-      const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://top-line-rentals-production.up.railway.app';
-      const cleanBase = API_URL.replace(/\/$/, '');
-      const endpoint = cleanBase.endsWith('/api') 
-        ? `${cleanBase}/apartments` 
-        : `${cleanBase}/api/apartments`;
+      const response = initialData?._id
+        ? await updateApartment(initialData._id, data)
+        : await createApartment(data);
 
-      console.log('Posting form data to:', endpoint);
-
-      const response = await axios.post(endpoint, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
-        },
-        withCredentials: true,
-      });
-
-      console.log('Apartment created successfully:', response.data);
-      alert('Apartment created successfully!');
+      console.log('Apartment saved successfully:', response.data);
+      alert(initialData ? 'Apartment updated successfully!' : 'Apartment created successfully!');
       
       if (onSubmit) {
         await onSubmit(response.data);
