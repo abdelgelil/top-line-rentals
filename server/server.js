@@ -13,7 +13,13 @@ const __dirname = path.dirname(__filename);
 
 // 1. Load .env BEFORE importing routes
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
 dotenv.config({ path: path.resolve(__dirname, './.env') });
+
+const cleanEnv = (value) => (typeof value === 'string' ? value.trim().replace(/^['"]|['"]$/g, '') : value);
+for (const key of ['CLERK_SECRET_KEY', 'CLERK_PUBLISHABLE_KEY', 'CLERK_JWT_KEY']) {
+  if (process.env[key]) process.env[key] = cleanEnv(process.env[key]);
+}
 
 const { clerkMiddleware } = await import('@clerk/express');
 
