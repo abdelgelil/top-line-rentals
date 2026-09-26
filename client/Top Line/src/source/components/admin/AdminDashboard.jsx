@@ -128,7 +128,8 @@ const AdminDashboard = () => {
 
   const handleCreateApartment = async (formData) => {
     try {
-      const response = await createApartment(formData);
+      const token = await getToken();
+      const response = await createApartment(formData, token);
       if (response?.data?.success || response?.status === 201) {
         alert('Apartment created successfully!');
         setShowAddModal(false);

@@ -54,9 +54,12 @@ export const setupAxiosInterceptors = (getToken) => {
    ========================================================================== */
 export const fetchApartments = (tower) => API.get('/apartments', { params: { tower } });
 export const fetchApartmentById = (id) => API.get(`/apartments/${id}`);
-export const createApartment = (formData) =>
+export const createApartment = (formData, token) =>
   API.post('/apartments', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
+    headers: { 
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${token}` 
+    },
   });
 export const updateApartment = (id, formData) =>
   API.put(`/apartments/${id}`, formData, {
