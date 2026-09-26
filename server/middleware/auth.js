@@ -1,4 +1,15 @@
-import { clerkClient } from '@clerk/express';
+import { verifyToken } from '@clerk/backend';
+import { clerkClient as clerkClientExport } from '@clerk/express';
+
+function getClerkClient() {
+  if (typeof clerkClientExport === 'function') {
+    return clerkClientExport({
+      secretKey: process.env.CLERK_SECRET_KEY,
+      publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
+    });
+  }
+  return clerkClientExport;
+}
 
 // Middleware to enforce authentication
 export const requireAuth = async (req, res, next) => {
@@ -9,7 +20,14 @@ export const requireAuth = async (req, res, next) => {
     }
 
     const token = authHeader.split(' ')[1];
-    const session = await clerkClient.verifyToken(token);
+    const verifyOptions = {
+      secretKey: process.env.CLERK_SECRET_KEY,
+    };
+    if (process.env.CLERK_JWT_KEY) {
+      verifyOptions.jwtKey = process.env.CLERK_JWT_KEY;
+    }
+
+    const session = await verifyToken(token, verifyOptions);
 
     if (!session || !session.sub) {
       return res.status(401).json({ success: false, message: 'Unauthorized: Invalid token' });
@@ -17,6 +35,7 @@ export const requireAuth = async (req, res, next) => {
 
     // Attach Clerk userId to request context
     req.userId = session.sub;
+    req.auth = { userId: session.sub };
     next();
   } catch (error) {
     console.error('Auth Verification Error:', error.message);
@@ -31,8 +50,10 @@ export const requireAdmin = async (req, res, next) => {
       return res.status(401).json({ success: false, message: 'Unauthorized' });
     }
 
-    const user = await clerkClient.users.getUser(req.userId);
-    const isAdmin = user.publicMetadata?.role === 'admin' || user.emailAddresses?.some(e => e.emailAddress.endsWith('@toplinerentals.com'));
+    const user = await getClerkClient().users.getUser(req.userId);
+    const isAdmin =
+      user.publicMetadata?.role === 'admin' ||
+      user.emailAddresses?.some((e) => e.emailAddress.endsWith('@toplinerentals.com'));
 
     if (!isAdmin) {
       return res.status(403).json({ success: false, message: 'Forbidden: Admin privilege required' });

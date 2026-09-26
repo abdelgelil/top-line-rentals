@@ -15,6 +15,8 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 dotenv.config({ path: path.resolve(__dirname, './.env') });
 
+const { clerkMiddleware } = await import('@clerk/express');
+
 // 2. Dynamic Route Imports
 const apartmentRoutes = (await import('./routes/apartmentRoutes.js')).default;
 const bookingRoutes = (await import('./routes/bookingRoutes.js')).default;
@@ -99,6 +101,9 @@ const authLimiter = rateLimit({
 app.use('/api/', generalLimiter);
 app.use('/api/users/sync', authLimiter);
 app.use('/api/users/claim-first-admin', authLimiter);
+
+// Parses Clerk session JWTs from Authorization Bearer tokens / cookies
+app.use(clerkMiddleware());
 
 // --- REGISTER API ENDPOINTS ---
 app.use('/api/apartments', apartmentRoutes);
