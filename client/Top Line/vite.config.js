@@ -11,6 +11,19 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  preview: {
+    host: '0.0.0.0',
+    port: 8080,
+    allowedHosts: [
+      'steadfast-blessing-production-ffff.up.railway.app',
+      '.up.railway.app',
+      'all'
+    ]
+  },
+  server: {
+    host: '0.0.0.0',
+    port: 5173
+  },
   build: {
     outDir: path.resolve(__dirname, 'dist'),
     emptyOutDir: true,
