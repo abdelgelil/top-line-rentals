@@ -32,22 +32,31 @@ app.use(helmet({
 
 // A05: CORS Hardening - Explicit origin check
 const allowedOrigins = [
+  'https://steadfast-blessing-production-ffff.up.railway.app',
   'http://localhost:5173',
   'http://localhost:3000',
-  'https://steadfast-blessing-production-ffff.up.railway.app',
+  'http://localhost:5000',
   process.env.CLIENT_URL,
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
-app.use(
-  cors({
-    origin: true, // Dynamically allow origin to resolve production mismatches
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  })
-);
-app.options('*', cors()); // Enable preflight across all routes
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, or Postman)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Blocked by CORS policy'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
