@@ -6,7 +6,7 @@ import User from '../models/User.js';
 const CLOCK_SKEW_MS = 15_000;
 const jwksCache = new Map();
 
-function getClerkClient() {
+export function getClerkClient() {
   if (typeof clerkClientExport === 'function') {
     return clerkClientExport({
       secretKey: process.env.CLERK_SECRET_KEY,

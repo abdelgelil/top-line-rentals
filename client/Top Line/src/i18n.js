@@ -46,6 +46,13 @@ const english = {
   'All rights reserved.': 'All rights reserved.', 'Apartment Image (Cloudinary)': 'Apartment Image (Cloudinary)',
   'Uploading to Cloudinary...': 'Uploading to Cloudinary...', 'Cloudinary URL Generated': 'Cloudinary URL Generated',
   'Admin Management': 'Admin Management', 'Manage Apartments': 'Manage Apartments', 'Bookings': 'Bookings', 'View Public Site': 'View Public Site',
+  'Promote an existing registered account by verified email, phone number, or both.': 'Promote an existing registered account by verified email, phone number, or both.',
+  'Email Address (optional)': 'Email Address (optional)', 'Phone Number (optional)': 'Phone Number (optional)',
+  'Enter registered email': 'Enter registered email', 'Enter registered phone number': 'Enter registered phone number',
+  'Enter registered phone number with country code': 'Enter registered phone number with country code',
+  'If both are entered, they must belong to the same account.': 'If both are entered, they must belong to the same account.',
+  'Enter an email address, phone number, or both': 'Enter an email address, phone number, or both',
+  'Updating...': 'Updating...', 'Make Admin': 'Make Admin',
   'Administrator': 'Administrator', 'Listed Apartments': 'Listed Apartments', '+ Add New Apartment': '+ Add New Apartment',
   'Loading Apartments...': 'Loading Apartments...', 'No apartments found.': 'No apartments found.', 'Delete Apartment': 'Delete Apartment',
   'Edit Apartment': 'Edit Apartment', 'Delete Reservation Document': 'Delete Reservation Document',
@@ -71,6 +78,13 @@ const english = {
 };
 
 const arabic = {
+  'Promote an existing registered account by verified email, phone number, or both.': 'منح صلاحية المشرف لحساب مسجل باستخدام البريد المؤكد أو رقم الهاتف أو كليهما.',
+  'Email Address (optional)': 'البريد الإلكتروني (اختياري)', 'Phone Number (optional)': 'رقم الهاتف (اختياري)',
+  'Enter registered email': 'أدخل البريد المسجل', 'Enter registered phone number': 'أدخل رقم الهاتف المسجل',
+  'Enter registered phone number with country code': 'أدخل رقم الهاتف المسجل مع رمز الدولة',
+  'If both are entered, they must belong to the same account.': 'يجب أن يعود البريد ورقم الهاتف للحساب نفسه عند إدخالهما معًا.',
+  'Enter an email address, phone number, or both': 'أدخل البريد الإلكتروني أو رقم الهاتف أو كليهما',
+  'Updating...': 'جارٍ التحديث...', 'Make Admin': 'تعيين مشرف',
   'Home': 'الرئيسية', 'Apartments': 'الشقق', 'My Bookings': 'حجوزاتي', 'Admin Dashboard': 'لوحة الإدارة',
   'Add Apartment': 'إضافة شقة', 'Logout': 'تسجيل الخروج', 'Language': 'اللغة', 'Search': 'بحث', 'Filter': 'تصفية',
   'Price': 'السعر', 'View Details': 'عرض التفاصيل', 'Book Now': 'احجز الآن', 'Status': 'الحالة', 'Actions': 'الإجراءات',
