@@ -2,6 +2,7 @@ import Apartment from '../models/Apartment.js';
 
 export const getApartments = async (req, res) => {
   try {
+    console.log("📥 Incoming GET request to /api/apartments with query:", req.query);
     const { towerId, guests, checkIn, checkOut } = req.query;
 
     const apartments = await Apartment.findAll({
@@ -16,6 +17,7 @@ export const getApartments = async (req, res) => {
       data: apartments
     });
   } catch (error) {
+    console.error(`[ApartmentController.getApartments Error]: ${error.message}`);
     res.status(500).json({
       success: false,
       message: error.message
