@@ -79,11 +79,16 @@ router.post('/forgot-password', resetLimiter, async (req, res) => {
     user.resetOtp = hashOtp(otp);
     user.resetOtpExpires = new Date(Date.now() + 10 * 60 * 1000);
     await user.save();
-    await sendOTP({ email: targetEmail, otpCode: otp, purpose: 'password reset' });
+    try {
+      await sendOTP({ email: targetEmail, otpCode: otp, purpose: 'password reset' });
+    } catch (emailError) {
+      console.error('[forgot-password] Email delivery failed:', emailError.message || emailError);
+      return res.status(500).json({ message: 'Could not send a reset code. Please ensure email is configured and try again.' });
+    }
     return res.json({ success: true, message: 'A password reset code has been sent to your email address.' });
   } catch (error) {
-    console.error('Password reset email failed:', error.message);
-    return res.status(503).json({ message: 'Could not send a reset code. Try again shortly.' });
+    console.error('[forgot-password] Unexpected error:', error.message || error);
+    return res.status(500).json({ message: 'An unexpected error occurred. Please try again.' });
   }
 });
 

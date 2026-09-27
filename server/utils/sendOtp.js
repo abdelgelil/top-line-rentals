@@ -26,18 +26,27 @@ function getTransporter() {
 }
 
 export const sendOTP = async ({ email, otpCode, purpose = 'verification' }) => {
-  if (process.env.NODE_ENV === 'development') {
-    console.log(`[DEV OTP] ${purpose} code for ${email}: ${otpCode}`);
-    return { success: true, delivered: false, development: true };
-  }
+  try {
+    if (!email || !otpCode) {
+      throw new Error('Email and OTP code are required.');
+    }
 
-  const mailer = getTransporter();
-  await mailer.sendMail({
-    from: `Top Line Rentals <${process.env.EMAIL_USER}>`,
-    to: email,
-    subject: `Your Top Line ${purpose} code`,
-    text: `Your ${purpose} code is ${otpCode}. It expires in 10 minutes. If you did not request it, you can ignore this email.`,
-    html: `<p>Your Top Line ${purpose} code is:</p><p style="font-size:24px;font-weight:700;letter-spacing:6px">${otpCode}</p><p>This code expires in 10 minutes. If you did not request it, you can ignore this email.</p>`,
-  });
-  return { success: true, delivered: true };
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`[DEV OTP] ${purpose} code for ${email}: ${otpCode}`);
+      return { success: true, delivered: false, development: true };
+    }
+
+    const mailer = getTransporter();
+    await mailer.sendMail({
+      from: `Top Line Rentals <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: `Your Top Line ${purpose} code`,
+      text: `Your ${purpose} code is ${otpCode}. It expires in 10 minutes. If you did not request it, you can ignore this email.`,
+      html: `<p>Your Top Line ${purpose} code is:</p><p style="font-size:24px;font-weight:700;letter-spacing:6px">${otpCode}</p><p>This code expires in 10 minutes. If you did not request it, you can ignore this email.</p>`,
+    });
+    return { success: true, delivered: true };
+  } catch (error) {
+    console.error(`[sendOTP] Failed to send ${purpose} email to ${email}:`, error.message || error);
+    throw error;
+  }
 };
