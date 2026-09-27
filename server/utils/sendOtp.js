@@ -4,25 +4,21 @@ let transporter;
 
 function getTransporter() {
   if (transporter) return transporter;
-  const { EMAIL_USER, EMAIL_PASS } = process.env;
-  if (!EMAIL_USER || !EMAIL_PASS) throw new Error('Email verification is not configured.');
-  const transportOptions = process.env.EMAIL_HOST
-    ? {
-        host: process.env.EMAIL_HOST,
-        port: Number(process.env.EMAIL_PORT || 465),
-        secure: process.env.EMAIL_SECURE !== 'false',
-      }
-    : {
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-      };
+  const user = typeof process.env.EMAIL_USER === 'string' ? process.env.EMAIL_USER.trim() : '';
+  const pass = typeof process.env.EMAIL_PASS === 'string' ? process.env.EMAIL_PASS.trim().replace(/\s+/g, '') : '';
+  if (!user || !pass) {
+    console.error('[sendOTP Error] EMAIL_USER or EMAIL_PASS environment variables are missing.');
+    throw new Error('Server email configuration is missing credentials.');
+  }
+
   transporter = nodemailer.createTransport({
-    ...transportOptions,
-    connectionTimeout: 10_000,
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    connectionTimeout: 15_000,
     greetingTimeout: 5_000,
-    socketTimeout: 10_000,
-    auth: { user: EMAIL_USER, pass: EMAIL_PASS },
+    socketTimeout: 15_000,
+    auth: { user, pass },
   });
   return transporter;
 }
@@ -39,16 +35,25 @@ export const sendOTP = async ({ email, otpCode, purpose = 'verification' }) => {
     }
 
     const mailer = getTransporter();
-    await mailer.sendMail({
-      from: `Top Line Rentals <${process.env.EMAIL_USER}>`,
+    const user = process.env.EMAIL_USER.trim();
+    console.log(`[sendOTP] Attempting to send OTP email to ${email}...`);
+    const info = await mailer.sendMail({
+      from: `TopLine Rentals <${user}>`,
       to: email,
-      subject: `Your Top Line ${purpose} code`,
+      subject: purpose === 'password reset' ? 'Your Password Reset OTP Code' : `Your Top Line ${purpose} code`,
       text: `Your ${purpose} code is ${otpCode}. It expires in 10 minutes. If you did not request it, you can ignore this email.`,
-      html: `<p>Your Top Line ${purpose} code is:</p><p style="font-size:24px;font-weight:700;letter-spacing:6px">${otpCode}</p><p>This code expires in 10 minutes. If you did not request it, you can ignore this email.</p>`,
+      html: `<div style="font-family:Arial,sans-serif;padding:20px;border:1px solid #ddd;border-radius:8px"><h2 style="color:#1e293b">Password Reset Request</h2><p>Your verification code is:</p><h1 style="color:#2563eb;letter-spacing:5px;font-size:32px">${otpCode}</h1><p>This code is valid for 10 minutes.</p></div>`,
     });
+    console.log(`[sendOTP Success] Email sent: ${info.messageId}`);
     return { success: true, delivered: true };
   } catch (error) {
-    console.error(`[sendOTP] Failed to send ${purpose} email to ${email}:`, error.message || error);
+    console.error(`[sendOTP Error] Failed to send ${purpose} email to ${email}:`, {
+      message: error.message || String(error),
+      code: error.code,
+      command: error.command,
+      responseCode: error.responseCode,
+      response: error.response,
+    });
     throw error;
   }
 };
