@@ -100,7 +100,7 @@ export const ContactUs = () => {
             {[
               { icon: Phone, label: 'Hotline', value: '+1 (555) 000-0000', color: 'blue' },
               { icon: Mail, label: 'Email Support', value: 'reservations@toplinerentals.com', color: 'blue' },
-              { icon: MapPin, label: 'Headquarters', value: 'Alamein City, Mediterranean Coast', color: 'blue' },
+              { icon: MapPin, label: 'Headquarters', value: 'Alexandria, Cleopatra', color: 'blue' },
               { icon: Clock, label: 'Working Hours', value: 'Sun - Thu: 9am - 6pm', color: 'blue' },
             ].map((item, idx) => (
               <div key={idx} className="p-6 rounded-2xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-blue-100/60 dark:border-blue-500/20 flex flex-col gap-3 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-blue-500/5">
