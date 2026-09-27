@@ -27,17 +27,17 @@ const AdminNavbar = () => {
   }, [isOpen]);
 
   const linkClass = ({ isActive }) =>
-    `flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+    `flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium transition-colors duration-200 ${
       isActive 
         ? 'text-blue-400 bg-blue-500/20 font-semibold shadow-inner' 
         : 'text-slate-300 hover:text-white hover:bg-white/10'
     }`;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 px-4 py-4 pointer-events-none">
-      <nav className="max-w-7xl mx-auto pointer-events-auto bg-slate-900/60 dark:bg-slate-900/60 backdrop-blur-2xl border border-blue-500/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] rounded-full px-6 py-2 transition-all duration-500 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.1)]">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+    <div className="pointer-events-none fixed inset-x-0 top-0 z-50 px-4 py-3 sm:px-6">
+      <nav className="pointer-events-auto mx-auto w-full max-w-[1600px] rounded-2xl border border-slate-700/80 bg-slate-900 shadow-[0_12px_36px_rgba(15,23,42,0.24)] sm:rounded-full">
+        <div className="flex min-h-[68px] items-center justify-between gap-4 px-4 py-2 sm:px-5">
+          <div className="flex shrink-0 items-center gap-3">
             <Link to="/admin" className="hover:opacity-90 transition-opacity">
               <Logo />
             </Link>
@@ -45,7 +45,7 @@ const AdminNavbar = () => {
               <ShieldCheck className="w-3 h-3" />{' '}{i18n.t("Admin Portal")}{' '}</span>
           </div>
 
-          <div className="hidden xl:flex items-center gap-4">
+          <div className="hidden 2xl:flex min-w-0 flex-1 items-center justify-center gap-1">
             <NavLink to="/admin/analytics" className={linkClass}>
               <LayoutDashboard className="w-4 h-4" />
               <span>{t('nav.adminDashboard')}</span>
@@ -66,13 +66,13 @@ const AdminNavbar = () => {
               <ExternalLink className="w-4 h-4" />
               <span>{i18n.t("View Public Site")}</span>
             </Link>
-            <div className="pl-4 border-l border-blue-500/20 flex items-center gap-3">
+            <div className="ml-2 flex shrink-0 items-center gap-3 border-l border-slate-700 pl-4">
               <LanguageToggle />
-              <div className="hidden lg:block max-w-36 truncate text-right text-sm font-semibold text-slate-100">{user?.name || user?.phone}</div>
+              <div className="hidden max-w-40 truncate text-right text-sm font-semibold text-slate-100 2xl:block">{user?.name || user?.phone}</div>
               <button
                 type="button"
                 onClick={signOut}
-                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-rose-400/30 bg-rose-500/10 px-4 text-sm font-semibold text-rose-200 transition-colors hover:border-rose-400/50 hover:bg-rose-500/20 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-400/30"
+                className="inline-flex min-h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-rose-400/30 bg-rose-500/10 px-3 text-sm font-semibold text-rose-200 transition-colors hover:border-rose-400/50 hover:bg-rose-500/20 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-400/30"
               >
                 <LogOut className="h-4 w-4" aria-hidden="true" />
                 <span>{i18n.t('nav.logout')}</span>
@@ -85,7 +85,7 @@ const AdminNavbar = () => {
             type="button"
             aria-label={i18n.t(isOpen ? 'Close menu' : 'Open menu')}
             aria-expanded={isOpen}
-            className="xl:hidden flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/10 text-slate-200 transition-colors hover:bg-white/15 hover:text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-400/40 active:scale-95"
+            className="2xl:hidden flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/10 text-slate-200 transition-colors hover:bg-white/15 hover:text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-400/40 active:scale-95"
           >
             {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -93,7 +93,7 @@ const AdminNavbar = () => {
       </nav>
 
       {isOpen && (
-        <div className="pointer-events-auto fixed inset-0 z-[60] xl:hidden">
+        <div className="pointer-events-auto fixed inset-0 z-[60] 2xl:hidden">
           <button
             type="button"
             aria-label={i18n.t('Close menu', 'Close menu')}
