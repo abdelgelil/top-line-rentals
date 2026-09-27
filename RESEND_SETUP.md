@@ -17,7 +17,7 @@ Set `NODE_ENV=development`. If `RESEND_API_KEY` is missing, requests log the res
 
 ## Recovery API
 
-`POST /api/auth/forgot-password` accepts `{ "identifier": "phone-or-username", "targetEmail": "reachable-email" }`. The supplied destination can differ from the user's profile email.
+`POST /api/auth/forgot-password` accepts `{ "identifier": "phone-or-username", "targetEmail": "reachable-email" }`. The destination email can differ from the user's profile email.
 
 `POST /api/auth/reset-password` accepts `{ "identifier": "phone-or-username", "otp": "123456", "newPassword": "..." }`.
 

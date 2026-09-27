@@ -87,7 +87,13 @@ router.post('/forgot-password', resetLimiter, async (req, res) => {
     try {
       await sendOTP({ email: targetEmail, otpCode: otp, purpose: 'password reset' });
     } catch (emailError) {
-      console.error('[forgot-password] Email delivery failed:', emailError.message || emailError);
+      console.error('[forgot-password] Email delivery failed:', {
+        message: emailError.message || String(emailError),
+        name: emailError.name,
+        code: emailError.code,
+        statusCode: emailError.statusCode,
+        cause: emailError.cause?.message,
+      });
       user.resetOtp = undefined;
       user.resetOtpExpires = undefined;
       await user.save().catch((clearError) => console.error('[forgot-password] Could not clear unsent reset code:', clearError.message));
