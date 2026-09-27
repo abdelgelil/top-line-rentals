@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import User from './models/User.js';
 
 // Resolve directory paths correctly in ES Module mode
 const __filename = fileURLToPath(import.meta.url);
@@ -89,8 +90,10 @@ const authLimiter = rateLimit({
 });
 
 app.use('/api/', generalLimiter);
-app.use('/api/auth/request-otp', authLimiter);
-app.use('/api/auth/verify-otp', authLimiter);
+app.use('/api/auth/login', authLimiter);
+app.use('/api/auth/register', authLimiter);
+app.use('/api/auth/forgot-password', authLimiter);
+app.use('/api/auth/reset-password', authLimiter);
 app.use('/api/users/make-admin', authLimiter);
 app.use('/api/users/claim-first-admin', authLimiter);
 
@@ -148,7 +151,18 @@ if (!MONGO_URI) {
 
 async function startServer() {
   try {
+    mongoose.set('autoIndex', false);
     await mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 15_000 });
+    // Older releases required email and created a non-sparse unique index. Convert it
+    // before accepting requests so accounts without email can coexist.
+    const usersCollectionExists = await mongoose.connection.db.listCollections({ name: 'users' }).hasNext();
+    if (!usersCollectionExists) await mongoose.connection.db.createCollection('users');
+    const userCollection = mongoose.connection.collection('users');
+    const indexes = await userCollection.listIndexes().toArray();
+    const emailIndex = indexes.find((index) => index.key?.email === 1);
+    if (emailIndex && !emailIndex.sparse) await userCollection.dropIndex(emailIndex.name);
+    await User.collection.createIndex({ phone: 1 }, { unique: true });
+    await User.collection.createIndex({ email: 1 }, { unique: true, sparse: true });
     console.log('MongoDB connected successfully');
 
     const server = app.listen(PORT, '0.0.0.0', () => {
