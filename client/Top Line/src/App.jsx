@@ -21,6 +21,7 @@ const ResetPasswordPage = lazy(() => import("./source/pages/Auth/AuthPages").the
 const ContactUs = lazy(() => import("./source/pages/Contact/ContactUs").then(({ ContactUs: component }) => ({ default: component })));
 const AdminDashboard = lazy(() => import("./source/components/admin/AdminDashboard"));
 const AdminMessages = lazy(() => import("./source/pages/Admin/Messages/AdminMessages").then(({ AdminMessages: component }) => ({ default: component })));
+const AdminReviews = lazy(() => import("./source/pages/Admin/AdminReviews"));
 const ApartmentDetails = lazy(() => import("./source/pages/ApartmentDetails/ApartmentDetails"));
 const MyBookings = lazy(() => import("./source/pages/Bookings/MyBookings"));
 const Favorites = lazy(() => import("./source/pages/Favorites"));
@@ -154,6 +155,7 @@ function App() {
           >
             <Route index element={<Navigate to="analytics" replace />} />
             <Route path="messages" element={<AdminMessages />} />
+            <Route path="reviews" element={<AdminReviews />} />
             <Route path="apartments/:id/edit" element={<AdminEditApartment />} />
             <Route path="add-apartment" element={<Navigate to="apartments" replace />} />
             <Route path="*" element={<AdminDashboard />} />

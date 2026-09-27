@@ -2,7 +2,7 @@ import i18n from "../../../i18n.js";
 import React, { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Building2, LayoutDashboard, ShieldCheck, CalendarCheck, Mail, Menu, X, ExternalLink, LogOut, UserRound } from 'lucide-react';
+import { Building2, LayoutDashboard, ShieldCheck, CalendarCheck, Mail, Menu, X, ExternalLink, LogOut, UserRound, Star } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Logo from './Logo';
 import { LanguageToggle } from './LanguageToggle';
@@ -61,6 +61,10 @@ const AdminNavbar = () => {
             <NavLink to="/admin/messages" className={linkClass}>
               <Mail className="w-4 h-4" />
               <span>{i18n.t('Messages')}</span>
+            </NavLink>
+            <NavLink to="/admin/reviews" className={linkClass}>
+              <Star className="w-4 h-4" />
+              <span>{i18n.t('Guest Reviews')}</span>
             </NavLink>
             <Link to="/apartments" className={linkClass({ isActive: false })}>
               <ExternalLink className="w-4 h-4" />
@@ -175,6 +179,16 @@ const AdminNavbar = () => {
           >
             <Mail className="w-4 h-4" />
             <span>{i18n.t('Messages')}</span>
+          </NavLink>
+          <NavLink
+            to="/admin/reviews"
+            className={({ isActive }) => `flex min-h-12 items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-400/40 ${
+              isActive ? 'bg-blue-50 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300' : 'text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
+            }`}
+            onClick={() => setIsOpen(false)}
+          >
+            <Star className="w-4 h-4" />
+            <span>{i18n.t('Guest Reviews')}</span>
           </NavLink>
           <Link to="/apartments" className="flex min-h-12 items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-400/40 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white" onClick={() => setIsOpen(false)}>
             <ExternalLink className="w-4 h-4" />

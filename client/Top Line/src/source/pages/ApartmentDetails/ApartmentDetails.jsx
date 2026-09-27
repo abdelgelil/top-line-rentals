@@ -1,9 +1,9 @@
 import i18n from "../../../i18n.js";
 import { translateText } from '../../../utils/translateContent.js';
 import React, { useEffect, useState, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { fetchApartmentById } from '../../services/api';
+import { fetchApartmentById, fetchApartmentReviews, fetchEligibleReviews, submitReview } from '../../services/api';
 import BookingForm from '../../components/booking/BookingForm';
 import { formatCurrency } from '../../utils/formatters';
 import OptimizedImage from '../../components/common/OptimizedImage';
@@ -22,6 +22,7 @@ import {
   MapPin,
   ShieldCheck
 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const ImageLightbox = ({ images, initialIndex, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
@@ -108,6 +109,50 @@ export function ApartmentDetails({ currentUser: propUser }) {
   const [loading, setLoading] = useState(true);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [reviews, setReviews] = useState([]);
+  const [averageRating, setAverageRating] = useState(null);
+  const [eligibleBookings, setEligibleBookings] = useState([]);
+  const [reviewRating, setReviewRating] = useState(5);
+  const [reviewComment, setReviewComment] = useState('');
+  const [reviewSubmitting, setReviewSubmitting] = useState(false);
+
+  const loadReviews = useCallback(() => {
+    if (!id) return;
+    fetchApartmentReviews(id).then(({ data }) => {
+      setReviews(data?.data || []);
+      setAverageRating(data?.averageRating ?? null);
+    }).catch(() => {});
+  }, [id]);
+
+  useEffect(() => { loadReviews(); }, [loadReviews]);
+
+  useEffect(() => {
+    let active = true;
+    if (!currentUser?.id) {
+      setEligibleBookings([]);
+      return undefined;
+    }
+    fetchEligibleReviews(id)
+      .then(({ data }) => { if (active) setEligibleBookings(data?.data || []); })
+      .catch(() => { if (active) setEligibleBookings([]); });
+    return () => { active = false; };
+  }, [id, currentUser?.id]);
+
+  const handleReviewSubmit = async (event) => {
+    event.preventDefault();
+    if (!eligibleBookings.length || reviewSubmitting) return;
+    setReviewSubmitting(true);
+    try {
+      await submitReview({ bookingId: eligibleBookings[0]._id, rating: reviewRating, comment: reviewComment });
+      setEligibleBookings((current) => current.slice(1));
+      setReviewComment('');
+      toast.success(i18n.t('Your review was submitted for approval.'));
+    } catch (error) {
+      toast.error(error.response?.data?.message || i18n.t('Unable to submit your review.'));
+    } finally {
+      setReviewSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     fetchApartmentById(id)
@@ -327,6 +372,54 @@ export function ApartmentDetails({ currentUser: propUser }) {
                 </div>
               </section>
             </div>
+
+            <section className="space-y-6" aria-labelledby="apartment-reviews-title">
+              <div className="flex flex-wrap items-end justify-between gap-3">
+                <div>
+                  <h2 id="apartment-reviews-title" className="text-2xl font-bold text-slate-900 dark:text-white">{i18n.t('Guest Reviews')}</h2>
+                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{reviews.length ? `${averageRating.toFixed(1)} / 5 · ${reviews.length} ${i18n.t('reviews')}` : i18n.t('No reviews yet')}</p>
+                </div>
+                {averageRating !== null && <div className="flex items-center gap-1 rounded-full bg-amber-50 px-3 py-2 font-bold text-amber-700 dark:bg-amber-500/10 dark:text-amber-300"><Star className="h-4 w-4 fill-current" />{averageRating.toFixed(1)}</div>}
+              </div>
+
+              {eligibleBookings.length > 0 && (
+                <form onSubmit={handleReviewSubmit} className="space-y-4 rounded-2xl border border-blue-100 bg-white p-5 shadow-sm dark:border-blue-900/50 dark:bg-slate-900">
+                  <h3 className="font-semibold text-slate-900 dark:text-white">{i18n.t('Review your completed stay')}</h3>
+                  <div className="flex items-center gap-1" role="radiogroup" aria-label={i18n.t('Rating')}>
+                    {[1, 2, 3, 4, 5].map((rating) => (
+                      <button key={rating} type="button" role="radio" aria-checked={reviewRating === rating} aria-label={`${rating} ${i18n.t('stars')}`} onClick={() => setReviewRating(rating)} className="rounded p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                        <Star className={`h-6 w-6 ${rating <= reviewRating ? 'fill-amber-400 text-amber-400' : 'text-slate-300 dark:text-slate-600'}`} />
+                      </button>
+                    ))}
+                  </div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    {i18n.t('Your review')}
+                    <textarea required minLength={5} maxLength={1000} value={reviewComment} onChange={(event) => setReviewComment(event.target.value)} rows={4} className="mt-2 w-full rounded-xl border border-slate-300 bg-white p-3 text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+                  </label>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">{i18n.t('Reviews appear after admin approval.')}</p>
+                  <button disabled={reviewSubmitting} type="submit" className="min-h-11 rounded-xl bg-blue-700 px-5 font-semibold text-white transition hover:bg-blue-800 disabled:opacity-60">{reviewSubmitting ? i18n.t('Submitting...') : i18n.t('Submit review')}</button>
+                </form>
+              )}
+              {!currentUser?.id && <p className="text-sm text-slate-600 dark:text-slate-400"><Link to="/sign-in" className="font-semibold text-blue-700 hover:underline dark:text-blue-300">{i18n.t('Sign in')}</Link>{' '}{i18n.t('to review after a completed stay.')}</p>}
+              {eligibleBookings.length === 0 && currentUser?.id && <p className="text-sm text-slate-500 dark:text-slate-400">{i18n.t('Reviews are available after a confirmed stay is completed.')}</p>}
+
+              {reviews.length > 0 ? (
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {reviews.map((review) => (
+                    <article key={review._id} className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <h3 className="font-semibold text-slate-900 dark:text-white">{review.guestName}</h3>
+                          <time className="text-xs text-slate-500 dark:text-slate-400" dateTime={review.createdAt}>{new Date(review.createdAt).toLocaleDateString()}</time>
+                        </div>
+                        <span className="inline-flex items-center gap-1 font-bold text-amber-600 dark:text-amber-300"><Star className="h-4 w-4 fill-current" />{review.rating}</span>
+                      </div>
+                      <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-slate-700 dark:text-slate-300">{review.comment}</p>
+                    </article>
+                  ))}
+                </div>
+              ) : <p className="rounded-2xl border border-dashed border-slate-300 p-6 text-center text-slate-500 dark:border-slate-700">{i18n.t('Be the first guest to share a review.')}</p>}
+            </section>
           </div>
 
           <div className="lg:col-span-1">

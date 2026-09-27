@@ -23,6 +23,7 @@ const userRoutes = (await import('./routes/userRoutes.js')).default;
 const favoriteRoutes = (await import('./routes/favoriteRoutes.js')).default;
 const authRoutes = (await import('./routes/authRoutes.js')).default;
 const messageRoutes = (await import('./routes/messageRoutes.js')).default;
+const reviewRoutes = (await import('./routes/reviewRoutes.js')).default;
 
 const app = express();
 
@@ -117,6 +118,7 @@ app.use('/api/bookings', bookingRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/messages', messageRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 // Root healthcheck
 app.get('/', (req, res) => {

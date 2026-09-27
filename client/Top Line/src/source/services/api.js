@@ -138,6 +138,17 @@ export const deleteBooking = async (id) => {
 };
 export const fetchAnalytics = () => cachedGet('admin:analytics', () => API.get('/bookings/analytics'));
 
+/* ==========================================================================
+   Guest Reviews
+   ========================================================================== */
+export const fetchApartmentReviews = (apartmentId) =>
+  API.get(`/reviews/apartment/${encodeURIComponent(apartmentId)}`, { skipAuth: true });
+export const fetchEligibleReviews = (apartmentId) =>
+  API.get(`/reviews/eligible/${encodeURIComponent(apartmentId)}`);
+export const submitReview = (review) => API.post('/reviews', review);
+export const fetchReviewsForModeration = () => API.get('/reviews/admin');
+export const setReviewApproval = (id, approved) => API.patch(`/reviews/${id}/approval`, { approved });
+
 export const prefetchAdminData = () => {
   fetchAnalytics();
   const later = typeof requestIdleCallback === 'function'
