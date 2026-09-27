@@ -1,9 +1,9 @@
 import i18n from "../../../i18n.js";
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
-import { Menu, X, Building2, Calendar, Mail, CircleHelp } from 'lucide-react';
+import { Menu, X, Building2, Calendar, Mail, CircleHelp, LogOut, UserRound } from 'lucide-react';
 import { LanguageToggle } from './LanguageToggle';
 import Footer from './Footer';
 import HelpModal from './HelpModal';
@@ -24,6 +24,20 @@ const ClientLayout = () => {
 
   const isActive = (path) => location.pathname === path;
   const closeHelp = useCallback(() => setIsHelpOpen(false), []);
+
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') setIsOpen(false);
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen]);
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-slate-950">
@@ -71,7 +85,20 @@ const ClientLayout = () => {
           <LanguageToggle />
 
           {isSignedIn ? (
-            <button onClick={signOut} className="min-h-12 rounded-full px-4 text-base font-semibold text-slate-700 dark:text-slate-200">{user?.name || user?.phone} · {i18n.t('nav.logout')}</button>
+            <div className="flex items-center gap-3 border-l border-slate-200 pl-3 dark:border-slate-700">
+              <div className="hidden lg:block text-right leading-tight">
+                <p className="max-w-36 truncate text-sm font-semibold text-slate-800 dark:text-slate-100">{user?.name || user?.phone}</p>
+                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{i18n.t('nav.account', 'Your account')}</p>
+              </div>
+              <button
+                type="button"
+                onClick={signOut}
+                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-rose-200 bg-rose-50 px-4 text-sm font-semibold text-rose-700 transition-colors hover:border-rose-300 hover:bg-rose-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-500/30 dark:border-rose-900/70 dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-950/70"
+              >
+                <LogOut className="h-4 w-4" aria-hidden="true" />
+                <span>{i18n.t('nav.logout')}</span>
+              </button>
+            </div>
           ) : (
             <Link
               to="/sign-in"
@@ -84,58 +111,106 @@ const ClientLayout = () => {
         <div className="flex items-center gap-2 md:hidden">
           <LanguageToggle />
 
-          {isSignedIn && <button onClick={signOut} className="min-h-12 rounded-xl px-3 text-sm font-semibold" aria-label={i18n.t('nav.logout')}>{i18n.t('nav.logout')}</button>}
-
           <button
             onClick={() => setIsOpen(!isOpen)}
             type="button"
+            aria-expanded={isOpen}
+            aria-label={i18n.t(isOpen ? 'Close menu' : 'Toggle Menu')}
             className="flex h-12 w-12 items-center justify-center rounded-xl text-slate-700 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:text-slate-200 dark:hover:bg-slate-800"
-            aria-label={i18n.t("Toggle Menu")}
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </div>
 
-      {/* Compact Mobile Dropdown Menu */}
+      {/* Mobile navigation drawer */}
       {isOpen && (
-        <div className="md:hidden absolute top-16 right-4 left-4 p-3 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl z-50 flex flex-col gap-1 transition-all">
-          {navLinks.map((link) => {
-            const Icon = link.icon;
-            const active = isActive(link.path);
-            return (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => setIsOpen(false)}
-                className={`flex min-h-12 items-center gap-3 px-4 py-3 rounded-xl text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 ${
-                  active
-                    ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400'
-                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                <span>{link.label}</span>
-              </Link>
-            );
-          })}
-
+        <div className="fixed inset-0 z-[60] md:hidden">
           <button
             type="button"
-            onClick={() => { setIsOpen(false); setIsHelpOpen(true); }}
-            className="flex min-h-12 items-center gap-3 rounded-xl px-4 py-3 text-base font-semibold text-slate-700 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:text-slate-200 dark:hover:bg-slate-800"
+            aria-label={i18n.t('Close menu', 'Close menu')}
+            className="absolute inset-0 h-full w-full bg-slate-950/45 backdrop-blur-[2px]"
+            onClick={() => setIsOpen(false)}
+          />
+          <aside
+            role="dialog"
+            aria-modal="true"
+            aria-label={i18n.t('nav.menu', 'Navigation menu')}
+            className="absolute inset-y-0 right-0 flex w-[min(22rem,88vw)] flex-col border-l border-slate-200 bg-white shadow-2xl dark:border-slate-800 dark:bg-slate-900 rtl:right-auto rtl:left-0 rtl:border-l-0 rtl:border-r"
           >
-            <CircleHelp className="h-5 w-5" aria-hidden="true" />
-            <span>{t('accessibility.helpShort')}</span>
-          </button>
-
-          {!isSignedIn && (
-            <Link
-              to="/sign-in"
-              onClick={() => setIsOpen(false)}
-              className="mt-2 flex min-h-12 items-center justify-center rounded-xl bg-blue-700 px-5 py-3 text-base font-bold text-white shadow-sm focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50"
-            >{' '}{i18n.t("Sign In")}{' '}</Link>
-          )}
+            <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 dark:border-slate-800">
+              <span className="text-sm font-bold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">{i18n.t('nav.menu', 'Menu')}</span>
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                aria-label={i18n.t('Close menu', 'Close menu')}
+                className="flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/40 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            {isSignedIn && (
+              <div className="mx-4 mt-4 flex items-center gap-3 rounded-2xl border border-blue-100 bg-blue-50/70 p-4 dark:border-blue-900/60 dark:bg-blue-950/30">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-blue-700 shadow-sm dark:bg-slate-800 dark:text-blue-300">
+                  <UserRound className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-xs font-medium text-slate-500 dark:text-slate-400">{i18n.t('nav.signedInAs', 'Signed in as')}</p>
+                  <p className="mt-1 truncate text-sm font-semibold text-slate-900 dark:text-white">{user?.name || user?.phone}</p>
+                </div>
+              </div>
+            )}
+            <nav className="flex-1 space-y-1 overflow-y-auto px-4 py-5">
+              {navLinks.map((link) => {
+                const Icon = link.icon;
+                const active = isActive(link.path);
+                return (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    onClick={() => setIsOpen(false)}
+                    className={`flex min-h-12 items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/40 ${
+                      active
+                        ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300'
+                        : 'text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    <Icon className="h-5 w-5" />
+                    <span>{link.label}</span>
+                  </Link>
+                );
+              })}
+              <button
+                type="button"
+                onClick={() => { setIsOpen(false); setIsHelpOpen(true); }}
+                className="flex min-h-12 w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/40 dark:text-slate-200 dark:hover:bg-slate-800"
+              >
+                <CircleHelp className="h-5 w-5" aria-hidden="true" />
+                <span>{t('accessibility.helpShort')}</span>
+              </button>
+            </nav>
+            <div className="space-y-3 border-t border-slate-100 p-4 dark:border-slate-800">
+              <LanguageToggle />
+              {isSignedIn ? (
+                <button
+                  type="button"
+                  onClick={() => { setIsOpen(false); signOut(); }}
+                  className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 text-sm font-semibold text-rose-700 transition-colors hover:bg-rose-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-500/30 dark:border-rose-900/70 dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-950/70"
+                >
+                  <LogOut className="h-4 w-4" aria-hidden="true" />
+                  <span>{i18n.t('nav.logout')}</span>
+                </button>
+              ) : (
+                <Link
+                  to="/sign-in"
+                  onClick={() => setIsOpen(false)}
+                  className="flex min-h-12 items-center justify-center rounded-xl bg-blue-700 px-5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/40"
+                >
+                  {i18n.t('Sign In')}
+                </Link>
+              )}
+            </div>
+          </aside>
         </div>
       )}
     </header>
