@@ -70,16 +70,17 @@ router.post('/login', authLimiter, async (req, res) => {
 
 router.post('/forgot-password', resetLimiter, async (req, res) => {
   try {
-    const email = typeof req.body.email === 'string' ? req.body.email.trim().toLowerCase() : '';
-    if (!emailPattern.test(email)) return res.status(400).json({ message: 'Enter a valid email address.' });
-    const user = await User.findOne({ email });
-    if (!user) return res.json({ success: true, message: 'If an account exists for that email, a reset code has been sent.' });
+    const identifier = typeof req.body.identifier === 'string' ? req.body.identifier.trim() : '';
+    const targetEmail = typeof req.body.targetEmail === 'string' ? req.body.targetEmail.trim().toLowerCase() : '';
+    if (!identifier || !emailPattern.test(targetEmail)) return res.status(400).json({ message: 'Enter an account phone number or username and a valid email address.' });
+    const user = await User.findOne({ $or: [{ phone: normalizePhone(identifier) }, { username: identifier }] });
+    if (!user) return res.status(404).json({ message: 'No account found with this phone number or username.' });
     const otp = String(crypto.randomInt(0, 1_000_000)).padStart(6, '0');
     user.resetOtp = hashOtp(otp);
     user.resetOtpExpires = new Date(Date.now() + 10 * 60 * 1000);
     await user.save();
-    await sendOTP({ email: user.email, otpCode: otp, purpose: 'password reset' });
-    return res.json({ success: true, message: 'If an account exists for that email, a reset code has been sent.' });
+    await sendOTP({ email: targetEmail, otpCode: otp, purpose: 'password reset' });
+    return res.json({ success: true, message: 'A password reset code has been sent to your email address.' });
   } catch (error) {
     console.error('Password reset email failed:', error.message);
     return res.status(503).json({ message: 'Could not send a reset code. Try again shortly.' });
@@ -88,22 +89,21 @@ router.post('/forgot-password', resetLimiter, async (req, res) => {
 
 router.post('/reset-password', resetLimiter, async (req, res) => {
   try {
-    const email = typeof req.body.email === 'string' ? req.body.email.trim().toLowerCase() : '';
+    const identifier = typeof req.body.identifier === 'string' ? req.body.identifier.trim() : '';
     const otp = String(req.body.otp || '').trim();
     const newPassword = typeof req.body.newPassword === 'string' ? req.body.newPassword : '';
-    if (!emailPattern.test(email) || !/^\d{6}$/.test(otp)) return res.status(400).json({ message: 'Enter a valid email and six-digit code.' });
+    if (!identifier || !/^\d{6}$/.test(otp)) return res.status(400).json({ message: 'Enter an account phone number or username and a six-digit code.' });
     if (newPassword.length < 8 || newPassword.length > 128) return res.status(400).json({ message: 'Use a password between 8 and 128 characters.' });
-    const user = await User.findOne({ email }).select('+password +resetOtp +resetOtpExpires');
+    const user = await User.findOne({ $or: [{ phone: normalizePhone(identifier) }, { username: identifier }] }).select('+password +resetOtp +resetOtpExpires');
     if (!user || !user.resetOtp || !user.resetOtpExpires || user.resetOtpExpires <= new Date()) return res.status(400).json({ message: 'This reset code is invalid or expired. Request a new one.' });
     const submittedHash = Buffer.from(hashOtp(otp));
     const storedHash = Buffer.from(user.resetOtp);
     if (submittedHash.length !== storedHash.length || !crypto.timingSafeEqual(submittedHash, storedHash)) return res.status(400).json({ message: 'This reset code is invalid or expired. Request a new one.' });
-    user.username ||= user.name || user.phone;
     user.password = await bcrypt.hash(newPassword, 12);
     user.resetOtp = undefined;
     user.resetOtpExpires = undefined;
     await user.save();
-    return res.json({ success: true, message: 'Password reset successfully. You can now sign in.' });
+    return res.json({ success: true, message: 'Password updated successfully. You can now log in.' });
   } catch (error) {
     console.error('Password reset failed:', error.message);
     return res.status(500).json({ message: 'Could not reset your password.' });

@@ -53,25 +53,26 @@ export function SignUpPage() { return <PasswordAuthForm registering />; }
 export function ResetPasswordPage() {
   const { t } = useTranslation();
   const [step, setStep] = useState('email');
-  const [email, setEmail] = useState('');
+  const [identifier, setIdentifier] = useState('');
+  const [targetEmail, setTargetEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [busy, setBusy] = useState(false);
 
   const sendCode = async (event) => {
     event.preventDefault(); setBusy(true);
-    try { await API.post('/auth/forgot-password', { email }, { skipAuth: true }); setStep('reset'); toast.success(t('auth.resetCodeSent')); }
+    try { await API.post('/auth/forgot-password', { identifier, targetEmail }, { skipAuth: true }); setStep('reset'); toast.success(t('auth.resetCodeSent')); }
     catch (error) { toast.error(error.response?.data?.message || t('auth.sendFailed')); }
     finally { setBusy(false); }
   };
   const resetPassword = async (event) => {
     event.preventDefault(); setBusy(true);
-    try { await API.post('/auth/reset-password', { email, otp, newPassword }, { skipAuth: true }); toast.success(t('auth.passwordReset')); window.location.assign('/sign-in'); }
+    try { await API.post('/auth/reset-password', { identifier, otp, newPassword }, { skipAuth: true }); toast.success(t('auth.passwordReset')); window.location.assign('/sign-in'); }
     catch (error) { toast.error(error.response?.data?.message || t('auth.resetFailed')); }
     finally { setBusy(false); }
   };
   return <AuthShell title={t('auth.resetPassword')} hint={t(step === 'email' ? 'auth.resetEmailHint' : 'auth.resetCodeHint')} footer={<>{t('auth.haveAccount')} <Link className="font-bold text-blue-700 underline underline-offset-4 dark:text-blue-300" to="/sign-in">{t('auth.signIn')}</Link></>}>
-    {step === 'email' ? <form className="mt-8 space-y-5" onSubmit={sendCode}><div><label htmlFor="reset-email" className="text-base font-semibold text-slate-800 dark:text-slate-200">{t('auth.email')}</label><input id="reset-email" className={fieldClass} type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} /></div><button disabled={busy} className="min-h-14 w-full rounded-xl bg-blue-700 px-5 text-lg font-bold text-white disabled:opacity-60">{busy ? t('auth.pleaseWait') : t('auth.sendCode')}</button></form>
+    {step === 'email' ? <form className="mt-8 space-y-5" onSubmit={sendCode}><div><label htmlFor="reset-identifier" className="text-base font-semibold text-slate-800 dark:text-slate-200">{t('auth.accountIdentifier')}</label><input id="reset-identifier" className={fieldClass} autoComplete="username" required value={identifier} onChange={(e) => setIdentifier(e.target.value)} /></div><div><label htmlFor="reset-target-email" className="text-base font-semibold text-slate-800 dark:text-slate-200">{t('auth.targetEmail')}</label><input id="reset-target-email" className={fieldClass} type="email" autoComplete="email" required value={targetEmail} onChange={(e) => setTargetEmail(e.target.value)} /></div><button disabled={busy} className="min-h-14 w-full rounded-xl bg-blue-700 px-5 text-lg font-bold text-white disabled:opacity-60">{busy ? t('auth.pleaseWait') : t('auth.sendCode')}</button></form>
       : <form className="mt-8 space-y-5" onSubmit={resetPassword}><div><label htmlFor="reset-code" className="text-base font-semibold text-slate-800 dark:text-slate-200">{t('auth.verificationCode')}</label><input id="reset-code" className={`${fieldClass} text-center tracking-[0.5em]`} inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} required value={otp} onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))} /></div><div><label htmlFor="new-password" className="text-base font-semibold text-slate-800 dark:text-slate-200">{t('auth.newPassword')}</label><input id="new-password" className={fieldClass} type="password" autoComplete="new-password" minLength={8} maxLength={128} required value={newPassword} onChange={(e) => setNewPassword(e.target.value)} /></div><button disabled={busy || otp.length !== 6} className="min-h-14 w-full rounded-xl bg-blue-700 px-5 text-lg font-bold text-white disabled:opacity-60">{busy ? t('auth.pleaseWait') : t('auth.resetPassword')}</button></form>}
   </AuthShell>;
 }
