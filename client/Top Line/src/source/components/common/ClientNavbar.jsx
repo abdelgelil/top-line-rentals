@@ -13,14 +13,20 @@ const ClientNavbar = () => {
   const isAdmin = user?.publicMetadata?.role === 'admin';
 
   useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
     if (isOpen) {
       document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
     }
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = previousOverflow;
     };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    const handleKeyDown = (event) => { if (event.key === 'Escape') setIsOpen(false); };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isOpen]);
 
   const desktopLinkClass = ({ isActive }) =>
@@ -102,21 +108,26 @@ const ClientNavbar = () => {
         </div>
       </nav>
 
-      {isOpen && (
-        <div className="md:hidden absolute top-full right-4 w-64 mt-2 p-3 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-xl rounded-2xl border border-slate-200/50 dark:border-slate-800/50 z-50 flex flex-col gap-1 transition-all animate-in fade-in slide-in-from-top-2 duration-200 pointer-events-auto">
-          <div className="flex justify-end mb-2">
+      <div className={`md:hidden fixed inset-0 z-[60] transition-opacity duration-300 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`} aria-hidden={!isOpen} inert={!isOpen}>
+        <button type="button" tabIndex={isOpen ? 0 : -1} aria-label={t('Close menu')} onClick={() => setIsOpen(false)} className="absolute inset-0 h-full w-full bg-black/60 backdrop-blur-sm" />
+        <aside role="dialog" aria-modal="true" aria-label={t('nav.menu', 'Navigation menu')} className={`absolute inset-y-0 right-0 flex w-[min(22rem,88vw)] flex-col border-l border-slate-200 bg-white shadow-2xl transition-transform duration-300 ease-in-out dark:border-slate-800 dark:bg-slate-900 rtl:right-auto rtl:left-0 rtl:border-l-0 rtl:border-r ${isOpen ? 'translate-x-0' : 'translate-x-full rtl:-translate-x-full'}`}>
+          <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 dark:border-slate-800">
+            <Link to="/" onClick={() => setIsOpen(false)}><Logo /></Link>
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+              type="button"
+              aria-label={t('Close menu')}
+              className="flex h-11 w-11 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
             >
-              <X className="w-4 h-4" />
+              <X className="w-6 h-6" />
             </button>
           </div>
+          <nav className="flex-1 space-y-1 overflow-y-auto p-4">
           <NavLink
             to="/apartments"
-            className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={({ isActive }) => `flex min-h-12 items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors ${
               isActive
-                ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400'
+                ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-semibold'
                 : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}
             onClick={() => setIsOpen(false)}
@@ -129,9 +140,9 @@ const ClientNavbar = () => {
             isAdmin ? (
               <NavLink
                 to="/admin"
-                className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={({ isActive }) => `flex min-h-12 items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors ${
                   isActive
-                    ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400'
+                    ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-semibold'
                     : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                 }`}
                 onClick={() => setIsOpen(false)}
@@ -143,9 +154,9 @@ const ClientNavbar = () => {
               <>
                 <NavLink
                   to="/my-bookings"
-                  className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  className={({ isActive }) => `flex min-h-12 items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors ${
                     isActive
-                      ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400'
+                      ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-semibold'
                       : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                   onClick={() => setIsOpen(false)}
@@ -172,9 +183,9 @@ const ClientNavbar = () => {
           {!isSignedIn && (
             <NavLink
               to="/contact"
-              className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+              className={({ isActive }) => `flex min-h-12 items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors ${
                 isActive
-                  ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400'
+                  ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-semibold'
                   : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
               }`}
               onClick={() => setIsOpen(false)}
@@ -183,19 +194,21 @@ const ClientNavbar = () => {
               <span>{t('nav.contact')}</span>
             </NavLink>
           )}
-          <div className="pt-2 mt-2 border-t border-slate-100 dark:border-slate-800">
+          </nav>
+          <div className="mt-auto border-t border-slate-100 p-4 dark:border-slate-800">
              {isSignedIn ? (
                 <div className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-500 dark:text-slate-400">
                   <LanguageToggle />
-                  <button onClick={signOut} className="min-h-12 rounded-lg px-3 text-sm font-semibold" aria-label={t('nav.logout')}>{t('nav.logout')}</button>
-                  <span className="truncate">{user?.fullName || 'Member'}</span>
+                  <User className="h-5 w-5 shrink-0" />
+                  <span className="min-w-0 flex-1 truncate">{user?.fullName || user?.name || 'Member'}</span>
+                  <button onClick={() => { setIsOpen(false); signOut(); }} className="min-h-11 rounded-xl px-3 text-sm font-semibold text-rose-600 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40" aria-label={t('nav.logout')}>{t('nav.logout')}</button>
                 </div>
               ) : (
                 <div className="flex flex-col gap-2">
                   <LanguageToggle />
                   <Link
                     to="/sign-in"
-                    className="block w-full py-2 text-center text-sm font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="block w-full rounded-xl bg-blue-600 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-blue-700"
                     onClick={() => setIsOpen(false)}
                   >
                     Sign In
@@ -204,8 +217,8 @@ const ClientNavbar = () => {
               )}
             </div>
           </div>
-        </div>
-      )}
+        </aside>
+      </div>
     </div>
   );
 };
