@@ -52,7 +52,7 @@ const Footer = () => {
           <div className="flex items-center gap-1.5 text-slate-400">
             <span>{t('footer.developedBy', 'Developed with quality & care by')}</span>
             <a
-              href="https://github.com/abdelgelil"
+              href="https://www.linkedin.com/in/ahmed-abdelgelil-23bb1a2ab"
               target="_blank"
               rel="noopener noreferrer"
               className="font-semibold tracking-wide text-blue-400 underline decoration-blue-500/40 underline-offset-4 transition-all duration-200 hover:text-blue-300 hover:decoration-blue-400"
