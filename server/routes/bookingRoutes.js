@@ -98,6 +98,30 @@ router.get('/analytics', async (req, res) => {
 });
 
 /* =======================================================================
+   GET /api/bookings/apartment/:id - Public date availability only
+   ======================================================================= */
+router.get('/apartment/:id', async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ success: false, message: 'Invalid apartment ID' });
+  }
+
+  try {
+    const bookings = await Booking.find({
+      apartment: id,
+      status: { $in: ['pending', 'confirmed'] },
+    })
+      .select('checkIn checkOut')
+      .lean();
+
+    return res.json({ success: true, data: bookings });
+  } catch (error) {
+    console.error('Error fetching apartment availability:', error);
+    return res.status(500).json({ success: false, message: 'Unable to check apartment availability.' });
+  }
+});
+
+/* =======================================================================
    PATCH /api/bookings/:id/cancel - Cancel the signed-in user's reservation
    ======================================================================= */
 router.patch('/:id/cancel', bookingActionLimiter, requireAuth(), ensureVerifiedUser, async (req, res) => {

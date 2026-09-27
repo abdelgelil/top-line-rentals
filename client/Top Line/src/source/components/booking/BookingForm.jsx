@@ -1,10 +1,11 @@
 import i18n from "../../../i18n.js";
 import toast from 'react-hot-toast';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SignInButton, useUser } from "@clerk/clerk-react";
-import { createBooking } from "../../services/api";
+import { createBooking, fetchApartmentBookings } from "../../services/api";
 import { formatCurrency } from '../../utils/formatters';
-import { Calendar, Users, Phone, Mail, User, CreditCard } from "lucide-react";
+import DateRangePicker, { dateRangeOverlaps, hasBookedNight } from './DateRangePicker';
+import { Users, Phone, Mail, User, CreditCard } from "lucide-react";
 
 const getStayNights = (checkIn, checkOut) => {
   if (!checkIn || !checkOut) return 0;
@@ -16,15 +17,10 @@ const getStayNights = (checkIn, checkOut) => {
   return Number.isInteger(nights) && nights > 0 ? nights : 0;
 };
 
-const getLocalDateString = () => {
-  const now = new Date();
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-};
-
 const BookingForm = ({ apartment, currentUser, onSuccess }) => {
   const { isLoaded, isSignedIn } = useUser();
-  const [checkIn, setCheckIn] = useState('');
-  const [checkOut, setCheckOut] = useState('');
+  const [checkInDate, setCheckInDate] = useState('');
+  const [checkOutDate, setCheckOutDate] = useState('');
   const [guests, setGuests] = useState(1);
   const [guestName, setGuestName] = useState(
     currentUser?.fullName || currentUser?.name || currentUser?.firstName || ''
@@ -35,11 +31,54 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
   const [guestPhone, setGuestPhone] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const apartmentId = apartment?._id || apartment?.id;
+  const [availability, setAvailability] = useState({ apartmentId: null, loading: true, ranges: [], error: '' });
 
-  const calculateTotal = () => {
-    const pricePerNight = Number(apartment?.pricePerNight || apartment?.price || 0);
-    return getStayNights(checkIn, checkOut) * pricePerNight;
+  useEffect(() => {
+    if (!apartmentId) return;
+    let active = true;
+    fetchApartmentBookings(apartmentId)
+      .then(({ data }) => {
+        if (!active) return;
+        setAvailability({
+          apartmentId,
+          loading: false,
+          ranges: (data?.data || []).map(({ checkIn, checkOut }) => ({
+            checkIn: String(checkIn || '').slice(0, 10),
+            checkOut: String(checkOut || '').slice(0, 10),
+          })).filter(({ checkIn, checkOut }) => checkIn && checkOut),
+          error: '',
+        });
+      })
+      .catch(() => {
+        if (!active) return;
+        setAvailability({ apartmentId, loading: false, ranges: [], error: i18n.t('booking.availabilityFailed') });
+      });
+    return () => { active = false; };
+  }, [apartmentId]);
+
+  const availabilityLoading = availability.apartmentId !== apartmentId || availability.loading;
+  const availabilityError = availability.apartmentId === apartmentId ? availability.error : '';
+  const bookedRanges = availability.apartmentId === apartmentId ? availability.ranges : [];
+  const retryAvailability = () => {
+    if (!apartmentId) return;
+    setAvailability({ apartmentId, loading: true, ranges: [], error: '' });
+    fetchApartmentBookings(apartmentId)
+      .then(({ data }) => setAvailability({
+        apartmentId,
+        loading: false,
+        ranges: (data?.data || []).map(({ checkIn, checkOut }) => ({
+          checkIn: String(checkIn || '').slice(0, 10),
+          checkOut: String(checkOut || '').slice(0, 10),
+        })).filter(({ checkIn, checkOut }) => checkIn && checkOut),
+        error: '',
+      }))
+      .catch(() => setAvailability({ apartmentId, loading: false, ranges: [], error: i18n.t('booking.availabilityFailed') }));
   };
+
+  const nightsCount = getStayNights(checkInDate, checkOutDate);
+  const pricePerNight = Number(apartment?.pricePerNight || apartment?.price || 0);
+  const totalPrice = nightsCount * pricePerNight;
 
   const handleBooking = async (e) => {
     e.preventDefault();
@@ -47,28 +86,33 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
 
     if (!isSignedIn) return;
 
-    if (!checkIn || !checkOut) {
+    if (!checkInDate || !checkOutDate) {
       setError(i18n.t('Please select both Check-In and Check-Out dates.'));
       return;
     }
 
-    const nights = getStayNights(checkIn, checkOut);
-    const start = new Date(`${checkIn}T00:00:00.000Z`);
-    const end = new Date(`${checkOut}T00:00:00.000Z`);
+    const nights = getStayNights(checkInDate, checkOutDate);
+    const start = new Date(`${checkInDate}T00:00:00.000Z`);
+    const end = new Date(`${checkOutDate}T00:00:00.000Z`);
 
     if (isNaN(nights) || nights <= 0) {
       setError(i18n.t('Check-Out date must be after Check-In date.'));
       return;
     }
 
-    const apartmentId = apartment?._id || apartment?.id;
     if (!apartmentId) {
       setError(i18n.t('Invalid apartment selection.'));
       return;
     }
 
-    const pricePerNight = Number(apartment?.pricePerNight || apartment?.price || 0);
-    const totalPrice = nights * pricePerNight;
+    if (availabilityLoading || availabilityError) {
+      setError(availabilityError || i18n.t('booking.checkingAvailability'));
+      return;
+    }
+    if (hasBookedNight(checkInDate, bookedRanges) || dateRangeOverlaps(checkInDate, checkOutDate, bookedRanges)) {
+      setError(i18n.t('booking.datesUnavailable'));
+      return;
+    }
 
     setLoading(true);
 
@@ -102,8 +146,6 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
     }
   };
 
-  const total = calculateTotal();
-
   return (
     <div id="booking-form" tabIndex={-1} className="scroll-mt-28 bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-all hover:shadow-2xl">
       {/* Card Header */}
@@ -118,17 +160,6 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
               <span className="text-slate-700 dark:text-slate-200 text-base">{i18n.t("/ night")}</span>
             </div>
           </div>
-          {total > 0 && (
-            <div className="text-right">
-              <p className="text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider mb-1">{i18n.t("Total Estimate")}</p>
-                <span className="text-xl font-bold text-blue-600 dark:text-blue-400" aria-live="polite">
-                  {formatCurrency(total)}
-                </span>
-                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                  {getStayNights(checkIn, checkOut)} {i18n.t('night(s)')} × {formatCurrency(Number(apartment?.pricePerNight || apartment?.price || 0))}
-                </p>
-            </div>
-          )}
         </div>
       </div>
 
@@ -200,41 +231,16 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="relative">
-              <label htmlFor="booking-check-in" className="text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider mb-1.5 block">{i18n.t("Check-In")}</label>
-              <div className="relative">
-                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                <input
-                  id="booking-check-in"
-                  type="date"
-                  required
-                  value={checkIn}
-                  min={getLocalDateString()}
-                  onChange={(e) => {
-                    setCheckIn(e.target.value);
-                    if (checkOut && e.target.value >= checkOut) setCheckOut('');
-                  }}
-                  className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-4 focus:ring-blue-500/40 focus:border-blue-600 outline-none transition-all text-base min-h-12"
-                />
-              </div>
-            </div>
-            <div className="relative">
-              <label htmlFor="booking-check-out" className="text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider mb-1.5 block">{i18n.t("Check-Out")}</label>
-              <div className="relative">
-                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                <input
-                  id="booking-check-out"
-                  type="date"
-                  required
-                  value={checkOut}
-                  onChange={(e) => setCheckOut(e.target.value)}
-                  min={checkIn || getLocalDateString()}
-                  className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-4 focus:ring-blue-500/40 focus:border-blue-600 outline-none transition-all text-base min-h-12"
-                />
-              </div>
-            </div>
-          </div>
+          <DateRangePicker
+            checkIn={checkInDate}
+            checkOut={checkOutDate}
+            onCheckInChange={setCheckInDate}
+            onCheckOutChange={setCheckOutDate}
+            bookedRanges={bookedRanges}
+            loading={availabilityLoading}
+            loadError={availabilityError}
+            onRetry={retryAvailability}
+          />
 
           <div className="relative">
             <label htmlFor="booking-guest-count" className="text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider mb-1.5 block">{i18n.t("Guests")}</label>
@@ -253,9 +259,24 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
           </div>
         </div>
 
+        <section className="space-y-3 rounded-2xl border border-blue-200 bg-blue-50/80 p-4 dark:border-blue-900 dark:bg-blue-950/30" aria-live="polite" aria-label={i18n.t('booking.priceBreakdown')}>
+          <div className="flex items-center justify-between gap-4 text-base text-slate-700 dark:text-slate-200">
+            <span>{i18n.t('booking.pricePerNight')}</span>
+            <span className="font-semibold">{formatCurrency(pricePerNight)}</span>
+          </div>
+          <div className="flex items-center justify-between gap-4 text-base text-slate-700 dark:text-slate-200">
+            <span>{i18n.t('booking.totalNights')}</span>
+            <span className="font-semibold">{nightsCount} {i18n.t('booking.night', { count: nightsCount })}</span>
+          </div>
+          <div className="flex items-center justify-between gap-4 border-t border-blue-200 pt-3 text-lg font-extrabold text-blue-800 dark:border-blue-900 dark:text-blue-200">
+            <span>{i18n.t('booking.totalPrice')}</span>
+            <span>{formatCurrency(totalPrice)}</span>
+          </div>
+        </section>
+
         <button 
           type="submit" 
-          disabled={loading}
+          disabled={loading || !checkInDate || !checkOutDate || availabilityLoading || Boolean(availabilityError)}
           className="min-h-14 w-full rounded-2xl bg-slate-900 px-5 py-4 text-base font-bold text-white transition-all hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:bg-blue-700 dark:hover:bg-blue-800 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg"
         >
           {loading ? (

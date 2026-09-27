@@ -3,6 +3,25 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
 const english = {
+  booking: {
+    chooseDates: 'Select your check-in and check-out dates',
+    priceBreakdown: 'Booking price breakdown',
+    selectDate: 'Select date',
+    chooseCheckin: 'Choose a check-in date',
+    chooseCheckout: 'Now choose a check-out date',
+    checkingAvailability: 'Checking availability…',
+    availabilityFailed: 'We could not check availability. Please try again.',
+    datesUnavailable: 'These dates include nights that are already booked.',
+    checkoutAfterCheckin: 'Check-out must be after check-in.',
+    clearDates: 'Clear dates',
+    previousMonth: 'Previous month',
+    nextMonth: 'Next month',
+    pricePerNight: 'Price per night',
+    totalNights: 'Total stay',
+    totalPrice: 'Total price',
+    night_one: 'night',
+    night_other: 'nights',
+  },
   'Home': 'Home', 'Apartments': 'Apartments', 'My Bookings': 'My Bookings',
   'Admin Dashboard': 'Admin Dashboard', 'Add Apartment': 'Add Apartment',
   'Logout': 'Logout', 'Language': 'Language', 'Search': 'Search', 'Filter': 'Filter',
@@ -81,6 +100,25 @@ const english = {
 };
 
 const arabic = {
+  booking: {
+    chooseDates: 'اختر تاريخ الوصول والمغادرة',
+    priceBreakdown: 'تفاصيل سعر الحجز',
+    selectDate: 'اختر التاريخ',
+    chooseCheckin: 'اختر تاريخ الوصول',
+    chooseCheckout: 'اختر الآن تاريخ المغادرة',
+    checkingAvailability: 'جارٍ التحقق من التوفر…',
+    availabilityFailed: 'تعذر التحقق من التوفر. يرجى المحاولة مرة أخرى.',
+    datesUnavailable: 'تتضمن هذه التواريخ ليالي محجوزة بالفعل.',
+    checkoutAfterCheckin: 'يجب أن يكون تاريخ المغادرة بعد تاريخ الوصول.',
+    clearDates: 'مسح التواريخ',
+    previousMonth: 'الشهر السابق',
+    nextMonth: 'الشهر التالي',
+    pricePerNight: 'السعر لليلة',
+    totalNights: 'مدة الإقامة',
+    totalPrice: 'السعر الإجمالي',
+    night_one: 'ليلة',
+    night_other: 'ليالٍ',
+  },
   'Promote an existing registered account by verified email, phone number, or both.': 'منح صلاحية المشرف لحساب مسجل باستخدام البريد المؤكد أو رقم الهاتف أو كليهما.',
   'Email Address (optional)': 'البريد الإلكتروني (اختياري)', 'Phone Number (optional)': 'رقم الهاتف (اختياري)',
   'Enter registered email': 'أدخل البريد المسجل', 'Enter registered phone number': 'أدخل رقم الهاتف المسجل',

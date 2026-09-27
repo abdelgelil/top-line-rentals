@@ -118,6 +118,8 @@ export const createBooking = async (bookingData) => {
   return response;
 };
 export const fetchUserBookings = (userId) => API.get('/bookings', { params: { userId } });
+export const fetchApartmentBookings = (apartmentId) =>
+  API.get(`/bookings/apartment/${encodeURIComponent(apartmentId)}`, { skipAuth: true });
 export const cancelBooking = async (id) => {
   const response = await API.patch(`/bookings/${id}/cancel`);
   invalidateBookingCache();
