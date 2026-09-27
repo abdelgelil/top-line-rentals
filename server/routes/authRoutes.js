@@ -23,6 +23,8 @@ router.post('/register', authLimiter, async (req, res) => {
     const phone = normalizePhone(req.body.phone);
     const password = typeof req.body.password === 'string' ? req.body.password : '';
     const email = typeof req.body.email === 'string' ? req.body.email.trim().toLowerCase() : '';
+    if (!email) delete req.body.email;
+    else req.body.email = email;
     if (!username || !phone || !password) return res.status(400).json({ message: 'Username, phone, and password are required.' });
     if (!phonePattern.test(phone)) return res.status(400).json({ message: 'Enter a valid phone number with country code.' });
     if (password.length < 8 || password.length > 128) return res.status(400).json({ message: 'Use a password between 8 and 128 characters.' });
@@ -32,7 +34,10 @@ router.post('/register', authLimiter, async (req, res) => {
     const user = await User.create({ username, name: username, phone, ...(email ? { email } : {}), password: await bcrypt.hash(password, 12), isVerified: true, emailVerified: true });
     return res.status(201).json({ success: true, token: createToken(user), user: safeUser(user) });
   } catch (error) {
-    if (error.code === 11000) return res.status(409).json({ message: 'An account already exists with these details.' });
+    if (error.code === 11000) {
+      console.error('Duplicate registration rejected:', { keyPattern: error.keyPattern, keyValue: error.keyValue });
+      return res.status(409).json({ message: 'An account already exists with these details.' });
+    }
     console.error('Registration failed:', error.message);
     return res.status(500).json({ message: 'Could not create your account.' });
   }
