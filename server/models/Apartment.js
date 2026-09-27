@@ -61,4 +61,6 @@ const apartmentSchema = new mongoose.Schema(
   }
 );
 
+apartmentSchema.index({ tower: 1, createdAt: -1 });
+
 export default mongoose.models.Apartment || mongoose.model('Apartment', apartmentSchema);

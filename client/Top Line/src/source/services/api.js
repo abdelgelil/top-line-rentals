@@ -11,8 +11,6 @@ const API = axios.create({
   },
 });
 
-console.log("🔗 Final API Base URL:", API.defaults.baseURL);
-
 let requestInterceptorId = null;
 
 export const setupAxiosInterceptors = (getToken) => {
@@ -27,12 +25,13 @@ export const setupAxiosInterceptors = (getToken) => {
           delete config.headers['Content-Type'];
         }
 
+        const skipAuth = Boolean(config.skipAuth);
+        delete config.skipAuth;
+
         let token = null;
-        if (typeof getToken === 'function') {
-          // Reuse Clerk's cached session token; forcing a refresh on every API
-          // request adds avoidable auth latency, including for parallel loads.
+        if (!skipAuth && typeof getToken === 'function') {
           token = await getToken();
-        } else {
+        } else if (!skipAuth) {
           token = localStorage.getItem('token');
         }
 
@@ -60,7 +59,7 @@ export const setupAxiosInterceptors = (getToken) => {
    ========================================================================== */
 const responseCache = new Map();
 const pendingRequests = new Map();
-const ADMIN_CACHE_TTL_MS = 15_000;
+const ADMIN_CACHE_TTL_MS = 60_000;
 
 const cachedGet = (key, request) => {
   const cached = responseCache.get(key);
@@ -88,8 +87,10 @@ const invalidateCache = (...keys) => {
 const apartmentsCacheKey = (tower) => `apartments:${tower || 'all'}`;
 
 export const fetchApartments = (tower) =>
-  cachedGet(apartmentsCacheKey(tower), () => API.get('/apartments', { params: { tower } }));
-export const fetchApartmentById = (id) => API.get(`/apartments/${id}`);
+  cachedGet(apartmentsCacheKey(tower), () =>
+    API.get('/apartments', { params: { tower }, skipAuth: true })
+  );
+export const fetchApartmentById = (id) => API.get(`/apartments/${id}`, { skipAuth: true });
 export const createApartment = async (formData) => {
   const response = await API.post('/apartments', formData);
   invalidateCache('apartments:all');
@@ -137,12 +138,31 @@ export const fetchAnalytics = () => cachedGet('admin:analytics', () => API.get('
 export const fetchUserRole = (clerkId) => API.get(`/users/role/${encodeURIComponent(clerkId)}`);
 export const syncUserProfile = (profile) => API.post('/users/sync', profile);
 
+export const prefetchAdminData = () => {
+  fetchAnalytics();
+  const later = typeof requestIdleCallback === 'function'
+    ? (cb) => requestIdleCallback(cb, { timeout: 1200 })
+    : (cb) => setTimeout(cb, 400);
+  later(() => {
+    fetchAllBookings();
+    fetchApartments();
+  });
+};
+
 /* ==========================================================================
    Messages & Contact Endpoints
    ========================================================================== */
-export const sendContactMessage = (formData) => API.post('/messages', formData);
-export const fetchMessages = () => API.get('/messages');
-export const markMessageAsRead = (id) => API.patch(`/messages/${id}/read`);
+export const sendContactMessage = (formData) =>
+  API.post('/messages', formData).then((response) => {
+    invalidateCache('admin:messages');
+    return response;
+  });
+export const fetchMessages = () => cachedGet('admin:messages', () => API.get('/messages'));
+export const markMessageAsRead = async (id) => {
+  const response = await API.patch(`/messages/${id}/read`);
+  invalidateCache('admin:messages');
+  return response;
+};
 
 
 export default API;

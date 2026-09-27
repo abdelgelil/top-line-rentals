@@ -281,7 +281,8 @@ router.get('/', async (req, res) => {
     }
 
     const bookings = await Booking.find(filter)
-      .populate('apartment')
+      .select('guestName guestEmail guestPhone checkIn checkOut guests totalPrice status apartment user createdAt')
+      .populate('apartment', 'title tower')
       .sort({ createdAt: -1 })
       .lean();
 

@@ -17,6 +17,7 @@ export const ApartmentCard = ({ unit, priority = false }) => {
           alt={translateText(unit.title || unit.name)}
           loading={priority ? 'eager' : 'lazy'}
           fetchPriority={priority ? 'high' : 'auto'}
+          width={priority ? 900 : 640}
           sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           decoding="async"
           className="h-full w-full"
@@ -51,7 +52,7 @@ export const ApartmentCard = ({ unit, priority = false }) => {
         <div className="flex items-center gap-4 text-base text-slate-700 dark:text-slate-200 border-t border-slate-100 dark:border-slate-800 pt-4">
           <div className="flex items-center gap-1.5">
             <Users className="w-4 h-4 text-blue-500 dark:text-sky-400" />
-            <span>{unit.maxGuests || 2}{' '}{i18n.t("Guests")}</span>
+            <span>{unit.guests || unit.maxGuests || 2}{' '}{i18n.t("Guests")}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <Bed className="w-4 h-4 text-blue-500 dark:text-sky-400" />

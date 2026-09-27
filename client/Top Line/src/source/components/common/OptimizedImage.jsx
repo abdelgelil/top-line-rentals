@@ -46,12 +46,13 @@ const OptimizedImage = ({
   fetchPriority = 'auto',
   decoding = 'async',
   sizes = '100vw',
+  width = 1200,
   imageClassName = 'h-full w-full object-cover',
 }) => {
   const [loaded, setLoaded] = useState(false);
   const [usingFallback, setUsingFallback] = useState(false);
   const [fallbackFailed, setFallbackFailed] = useState(false);
-  const imageSrc = usingFallback ? fallbackImage : (optimizeImageUrl(src) || fallbackImage);
+  const imageSrc = usingFallback ? fallbackImage : (optimizeImageUrl(src, width) || fallbackImage);
 
   useEffect(() => {
     setLoaded(false);

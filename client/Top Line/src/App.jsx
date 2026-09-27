@@ -9,7 +9,7 @@ import { Toaster } from 'react-hot-toast';
 import { ClientLayout } from "./source/components/common/ClientLayout";
 import { AdminLayout } from "./source/components/common/AdminLayout";
 
-import { syncUserProfile } from "./source/services/api";
+import { prefetchAdminData, syncUserProfile } from "./source/services/api";
 
 // Keep route-specific code out of the initial bundle.
 const Home = lazy(() => import("./source/pages/Home/Home").then(({ Home: component }) => ({ default: component })));
@@ -59,7 +59,7 @@ const RoleAwareLayout = () => {
       setRoleResolved(true);
       window.dispatchEvent(new Event("auth-change"));
     } else if (user?.id) {
-      setRoleResolved(false);
+      if (!localStorage.getItem("userRole")) setRoleResolved(false);
       const email = user.primaryEmailAddress?.emailAddress || user.emailAddresses?.[0]?.emailAddress;
       syncUserProfile({ clerkId: user.id, email })
         .then(({ data }) => {
@@ -112,14 +112,18 @@ const RoleAwareLayout = () => {
 const ProtectedAdminRoute = ({ children }) => {
   const { isSignedIn, isLoaded } = useUser();
   const { role, resolved } = useContext(RoleContext);
+  const isAdmin = isSignedIn && role === "admin";
 
-  if (!isLoaded || (isSignedIn && !resolved)) {
+  useEffect(() => {
+    if (!isAdmin) return;
+    prefetchAdminData();
+  }, [isAdmin]);
+
+  if (!isLoaded || (isSignedIn && !resolved && !isAdmin)) {
     return (
       <div className="flex justify-center items-center h-screen text-slate-500">{' '}{i18n.t("Loading session...")}{' '}</div>
     );
   }
-
-  const isAdmin = isSignedIn && role === "admin";
 
   if (!isSignedIn || !isAdmin) {
     return <Navigate to="/" replace />;
@@ -177,12 +181,9 @@ function App() {
             }
           >
             <Route index element={<Navigate to="analytics" replace />} />
-            <Route path="analytics" element={<AdminDashboard />} />
-            <Route path="reservations" element={<AdminDashboard />} />
             <Route path="messages" element={<AdminMessages />} />
-            <Route path="apartments" element={<AdminDashboard />} />
             <Route path="add-apartment" element={<Navigate to="apartments" replace />} />
-            <Route path="*" element={<Navigate to="analytics" replace />} />
+            <Route path="*" element={<AdminDashboard />} />
           </Route>
 
         {/* Fallback Catch-All Route */}

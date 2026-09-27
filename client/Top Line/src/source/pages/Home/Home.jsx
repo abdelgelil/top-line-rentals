@@ -5,6 +5,8 @@ import { fetchApartments } from '../../services/api';
 import { SearchFilterBar } from '../../components/search/SearchFilterBar';
 import { ApartmentCard } from '../../components/apartment/ApartmentCard';
 
+const apartmentsListPromise = { current: fetchApartments() };
+
 export const Home = () => {
   const [apartments, setApartments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,7 +22,7 @@ export const Home = () => {
     const loadUnits = async () => {
       try {
         setLoading(true);
-        const res = await fetchApartments();
+        const res = await apartmentsListPromise.current;
         const units = res?.data?.data || res?.data || res;
 
         if (Array.isArray(units)) {
@@ -30,7 +32,14 @@ export const Home = () => {
         }
       } catch (err) {
         console.error('Error fetching apartments:', err);
-        setApartments([]);
+        apartmentsListPromise.current = fetchApartments();
+        try {
+          const retry = await apartmentsListPromise.current;
+          const units = retry?.data?.data || retry?.data || retry;
+          setApartments(Array.isArray(units) ? units : []);
+        } catch {
+          setApartments([]);
+        }
       } finally {
         setLoading(false);
       }

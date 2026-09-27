@@ -60,6 +60,7 @@ bookingSchema.index({ apartment: 1, status: 1, checkIn: 1, checkOut: 1 });
 bookingSchema.index({ user: 1, createdAt: -1 });
 bookingSchema.index({ createdAt: -1 });
 bookingSchema.index({ status: 1 });
+bookingSchema.index({ guestEmail: 1, status: 1 });
 
 const Booking = mongoose.models.Booking || mongoose.model('Booking', bookingSchema);
 

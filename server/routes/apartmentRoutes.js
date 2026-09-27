@@ -20,9 +20,17 @@ router.get('/', async (req, res) => {
   try {
     const { tower } = req.query;
     const filter = tower && tower !== 'All' ? { tower } : {};
-    const apartments = await Apartment.find(filter).sort({ createdAt: -1 }).lean();
+    const apartments = await Apartment.find(filter)
+      .select('title description pricePerNight tower floor bedrooms bathrooms guests sizeSqM amenities images createdAt')
+      .sort({ createdAt: -1 })
+      .lean();
 
-    res.json({ success: true, data: apartments });
+    const data = apartments.map((apt) => ({
+      ...apt,
+      images: Array.isArray(apt.images) && apt.images.length ? [apt.images[0]] : [],
+    }));
+
+    res.json({ success: true, data });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

@@ -1,10 +1,8 @@
 import i18n from "../../../i18n.js";
 import toast from 'react-hot-toast';
 import { translateText } from '../../../utils/translateContent.js';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { lazy, Suspense, useEffect, useState, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import ApartmentForm from './ApartmentForm';
-import AdminSettings from './AdminSettings';
 import { 
   fetchAllBookings, 
   updateBookingStatus, 
@@ -14,6 +12,27 @@ import {
   fetchAnalytics
 } from '../../services/api';
 import OptimizedImage from '../common/OptimizedImage';
+
+const ApartmentForm = lazy(() => import('./ApartmentForm'));
+const AdminSettings = lazy(() => import('./AdminSettings'));
+
+const PanelFallback = () => (
+  <div className="flex items-center justify-center py-10 text-sm text-slate-500" role="status">
+    <span className="mr-3 h-5 w-5 animate-spin rounded-full border-2 border-blue-500/30 border-t-blue-500" />
+    {i18n.t('Loading session...')}
+  </div>
+);
+
+const AnalyticsSkeleton = () => (
+  <div className="space-y-8" aria-busy="true">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {[1, 2, 3, 4].map((n) => (
+        <div key={n} className="h-32 rounded-xl bg-slate-200 dark:bg-slate-800 animate-pulse" />
+      ))}
+    </div>
+    <div className="h-72 rounded-xl bg-slate-200 dark:bg-slate-800 animate-pulse" />
+  </div>
+);
 
 const AdminDashboard = () => {
   const location = useLocation();
@@ -28,6 +47,7 @@ const AdminDashboard = () => {
   // Analytics State
   const [analytics, setAnalytics] = useState(null);
   const [loadingAnalytics, setLoadingAnalytics] = useState(false);
+  const [analyticsFailed, setAnalyticsFailed] = useState(false);
 
   // Bookings State
   const [bookings, setBookings] = useState([]);
@@ -50,12 +70,16 @@ const AdminDashboard = () => {
   const loadAnalytics = useCallback(async () => {
     try {
       setLoadingAnalytics(true);
+      setAnalyticsFailed(false);
       const res = await fetchAnalytics();
       if (res?.data?.success) {
         setAnalytics(res.data.data);
+      } else {
+        setAnalyticsFailed(true);
       }
     } catch (err) {
       console.error('Failed to load analytics:', err);
+      setAnalyticsFailed(true);
     } finally {
       setLoadingAnalytics(false);
     }
@@ -201,7 +225,9 @@ const AdminDashboard = () => {
           }}
         >
           <div className="w-full max-w-xl" role="dialog" aria-modal="true" aria-label={i18n.t('Add New Admin')}>
-            <AdminSettings onClose={() => setShowAddAdminModal(false)} />
+            <Suspense fallback={<PanelFallback />}>
+              <AdminSettings onClose={() => setShowAddAdminModal(false)} />
+            </Suspense>
           </div>
         </div>
       )}
@@ -209,8 +235,12 @@ const AdminDashboard = () => {
       {/* TAB 1: ANALYTICS OVERVIEW */}
       {activeTab === 'analytics' && (
         <div className="space-y-8">
-          {loadingAnalytics || !analytics ? (
-            <div className="text-center py-12 text-slate-500">{i18n.t("Loading platform analytics...")}</div>
+          {!analytics && !analyticsFailed ? (
+            <AnalyticsSkeleton />
+          ) : analyticsFailed && !analytics ? (
+            <div className="text-center py-12 text-slate-500">
+              {i18n.t('Failed to load apartments. Please try refreshing.')}
+            </div>
           ) : (
             <>
               {/* KPI Stat Cards */}
@@ -433,6 +463,8 @@ const AdminDashboard = () => {
                     alt={translateText(apt.title)}
                     className="h-48 w-full"
                     imageClassName="h-full w-full object-cover"
+                    width={640}
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
                   />
                   <div className="p-4 space-y-2">
                     <h3 className="font-bold text-lg text-slate-900 dark:text-white">{translateText(apt.title)}</h3>
@@ -455,11 +487,13 @@ const AdminDashboard = () => {
 
           {/* Add Apartment Modal */}
           {showAddModal && (
-            <ApartmentForm
-              isOpen
-              onClose={() => setShowAddModal(false)}
-              onSubmit={handleCreateApartment}
-            />
+            <Suspense fallback={<PanelFallback />}>
+              <ApartmentForm
+                isOpen
+                onClose={() => setShowAddModal(false)}
+                onSubmit={handleCreateApartment}
+              />
+            </Suspense>
           )}
         </>
       )}
