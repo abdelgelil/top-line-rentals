@@ -63,7 +63,8 @@ export default function Welcome() {
       <section className="relative isolate flex min-h-[90vh] items-center overflow-hidden bg-slate-950">
         <img src={HERO_IMAGE} alt="" aria-hidden="true" className="absolute inset-0 -z-20 h-full w-full object-cover" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-slate-950/95 via-slate-950/90 to-blue-950/75" />
-        <div className="mx-auto w-full max-w-7xl px-6 py-24 lg:px-8">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-28 bg-gradient-to-b from-transparent via-slate-50/70 to-slate-50 dark:via-slate-950/70 dark:to-slate-950" />
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-24 lg:px-8">
           <div className="max-w-2xl" data-reveal>
             <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-semibold text-white shadow-lg backdrop-blur-md">{t('welcome.badge')}</span>
             <h1 className="mt-6 text-4xl font-bold tracking-tight text-white drop-shadow-[0_3px_12px_rgba(0,0,0,0.8)] sm:text-5xl lg:text-6xl lg:leading-[1.1]">{t('welcome.headline')}</h1>
@@ -73,7 +74,7 @@ export default function Welcome() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-24 lg:px-8" data-reveal>
+      <section className="mx-auto max-w-7xl px-6 py-20 lg:px-8" data-reveal>
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">{t('welcome.identityTitle')}</h2>
           <p className="mt-4 text-lg leading-relaxed text-slate-600 dark:text-slate-300">{t('welcome.identitySubtitle')}</p>
