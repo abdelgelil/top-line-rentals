@@ -2,13 +2,36 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
+import { ArrowLeft } from 'lucide-react';
 import API from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
+import Logo from '../../components/common/Logo';
+import { LanguageToggle } from '../../components/common/LanguageToggle';
 
-const fieldClass = 'mt-2 min-h-14 w-full rounded-xl border border-slate-300 bg-white px-4 text-lg text-slate-900 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:ring-blue-900';
+const fieldClass = 'mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-blue-400 dark:focus:bg-slate-800 dark:focus:ring-blue-900/60';
 
 function AuthShell({ title, hint, children, footer }) {
-  return <main className="flex min-h-[80vh] items-center justify-center bg-slate-50 px-4 py-12 dark:bg-slate-950"><section className="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-7 shadow-xl shadow-slate-900/5 dark:border-slate-800 dark:bg-slate-900 sm:p-10" aria-labelledby="auth-title"><h1 id="auth-title" className="text-3xl font-bold text-slate-900 dark:text-white">{title}</h1><p className="mt-3 text-lg leading-7 text-slate-600 dark:text-slate-300">{hint}</p>{children}{footer && <p className="mt-8 text-center text-base text-slate-600 dark:text-slate-300">{footer}</p>}</section></main>;
+  const { t } = useTranslation();
+  return (
+    <main className="relative isolate flex min-h-[calc(100svh-4rem)] flex-col overflow-hidden bg-gradient-to-b from-white via-slate-50 to-blue-50/60 px-4 py-8 dark:from-slate-950 dark:via-slate-950 dark:to-blue-950/30 sm:px-6 sm:py-12">
+      <div aria-hidden="true" className="pointer-events-none absolute -right-24 top-12 h-72 w-72 rounded-full bg-blue-200/30 blur-3xl dark:bg-blue-700/10" />
+      <div className="relative mx-auto flex w-full max-w-5xl items-center justify-between">
+        <Link to="/" className="inline-flex min-h-11 items-center gap-2 rounded-full px-2 text-sm font-bold uppercase tracking-[0.12em] text-slate-800 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/30 dark:text-slate-100 dark:hover:bg-slate-800" aria-label="Back to home">
+          <ArrowLeft className="h-5 w-5" aria-hidden="true" /><span>{t('Back', 'Back')}</span>
+        </Link>
+        <LanguageToggle />
+      </div>
+      <div className="relative flex flex-1 items-center justify-center py-8 sm:py-10">
+        <section className="w-full max-w-xl rounded-[2rem] border border-white/80 bg-white/95 p-6 shadow-[0_24px_70px_-30px_rgba(15,23,42,0.25)] backdrop-blur sm:rounded-[2.5rem] sm:p-10 lg:p-12 dark:border-slate-800 dark:bg-slate-900/95" aria-labelledby="auth-title">
+          <div className="mb-7 flex justify-center"><Logo /></div>
+          <h1 id="auth-title" className="text-center text-3xl font-black uppercase tracking-tight text-slate-900 sm:text-4xl dark:text-white">{title}</h1>
+          <p className="mx-auto mt-3 max-w-md text-center text-base leading-7 text-slate-600 dark:text-slate-300">{hint}</p>
+          {children}
+          {footer && <p className="mt-7 text-center text-sm leading-6 text-slate-600 sm:text-base dark:text-slate-300">{footer}</p>}
+        </section>
+      </div>
+    </main>
+  );
 }
 
 function PasswordAuthForm({ registering }) {
@@ -41,8 +64,8 @@ function PasswordAuthForm({ registering }) {
       <div><label htmlFor="auth-phone" className="text-base font-semibold text-slate-800 dark:text-slate-200">{t('auth.phone')}</label><input id="auth-phone" className={fieldClass} type="tel" inputMode="tel" autoComplete="tel" placeholder="+201000000000" required value={phone} onChange={(e) => setPhone(e.target.value)} /><p className="mt-2 text-sm text-slate-500">{t('auth.phoneFormat')}</p></div>
       {registering && <div><label htmlFor="auth-email" className="text-base font-semibold text-slate-800 dark:text-slate-200">{t('auth.emailOptional')}</label><input id="auth-email" className={fieldClass} type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} /></div>}
       <div><label htmlFor="auth-password" className="text-base font-semibold text-slate-800 dark:text-slate-200">{t('auth.password')}</label><input id="auth-password" className={fieldClass} type="password" autoComplete={registering ? 'new-password' : 'current-password'} minLength={8} maxLength={128} required value={password} onChange={(e) => setPassword(e.target.value)} /></div>
-      {!registering && <Link to="/reset-password" className="flex min-h-10 items-center text-base font-semibold text-blue-700 underline underline-offset-4 dark:text-blue-300">{t('auth.forgotPassword')}</Link>}
-      <button disabled={busy} className="min-h-14 w-full rounded-xl bg-blue-700 px-5 text-lg font-bold text-white transition hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 disabled:opacity-60">{busy ? t('auth.pleaseWait') : t(registering ? 'auth.createAccount' : 'auth.signIn')}</button>
+      {!registering && <div className="flex justify-end"><Link to="/reset-password" className="inline-flex min-h-11 items-center rounded-lg px-2 text-sm font-bold text-blue-700 transition hover:bg-blue-50 hover:text-blue-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 dark:text-blue-300 dark:hover:bg-blue-950/50">{t('auth.forgotPassword')}</Link></div>}
+      <button disabled={busy} className="min-h-14 w-full rounded-2xl bg-gradient-to-r from-blue-700 to-blue-600 px-5 text-base font-bold text-white shadow-lg shadow-blue-700/20 transition hover:-translate-y-0.5 hover:from-blue-800 hover:to-blue-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 disabled:translate-y-0 disabled:opacity-60">{busy ? t('auth.pleaseWait') : t(registering ? 'auth.createAccount' : 'auth.signIn')}</button>
     </form>
   </AuthShell>;
 }
