@@ -234,7 +234,7 @@ resources.en.translation.footer = {
   verifiedProperties: 'Verified properties',
   quickLinks: 'Quick Links',
   contactUs: 'Contact Us',
-  address: 'San Stefano Towers, Alexandria',
+  address: 'Alamein City, Mediterranean Coast',
   support: 'Customer Care',
   supportNote: 'Questions about a reservation or property? Our team is here to help.',
   allRightsReserved: 'All rights reserved.',
@@ -246,12 +246,22 @@ resources.ar.translation.footer = {
   verifiedProperties: 'عقارات موثقة',
   quickLinks: 'روابط سريعة',
   contactUs: 'تواصل معنا',
-  address: 'أبراج سان ستيفانو، الإسكندرية',
+  address: 'مدينة العلمين، ساحل البحر المتوسط',
   support: 'خدمة العملاء',
   supportNote: 'هل لديك سؤال عن حجز أو عقار؟ فريقنا هنا لمساعدتك.',
   allRightsReserved: 'جميع الحقوق محفوظة.',
   craftedWith: 'صُنع بعناية من أجل إقامتك.',
   developedBy: 'طُوّر بالجودة والعناية على يد',
+};
+resources.en.translation.location = {
+  title: 'Visit our compound',
+  description: 'Find TopLine Rentals on the Mediterranean coast in Alamein City.',
+  directions: 'Open location in Google Maps',
+};
+resources.ar.translation.location = {
+  title: 'زر مجمعنا',
+  description: 'اعثر على توب لاين رينتَلز على ساحل البحر المتوسط في مدينة العلمين.',
+  directions: 'افتح الموقع في خرائط Google',
 };
 
 i18n.use(LanguageDetector).use(initReactI18next).init({

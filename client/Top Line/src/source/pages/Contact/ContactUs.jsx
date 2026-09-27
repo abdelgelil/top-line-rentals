@@ -11,7 +11,8 @@ import {
   Palmtree,
   Waves,
   Info,
-  MessageSquare
+  MessageSquare,
+  ExternalLink,
 } from 'lucide-react';
 import { sendContactMessage } from '../../services/api';
 
@@ -241,6 +242,34 @@ export const ContactUs = () => {
           </div>
         </div>
       </div>
+
+      <section className="mx-auto mt-12 w-full max-w-7xl px-4 sm:px-8 lg:px-12" aria-label={i18n.t('location.title')}>
+        <div className="group relative isolate overflow-hidden rounded-3xl border border-blue-200/70 bg-white/80 shadow-xl shadow-blue-900/5 backdrop-blur-xl transition-all duration-300 hover:border-blue-300 dark:border-blue-500/20 dark:bg-slate-900/80">
+          <div className="absolute inset-y-0 right-0 -z-10 w-1/2 opacity-70 dark:opacity-40" aria-hidden="true">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-sky-200/70 via-blue-100/30 to-transparent dark:from-blue-900/70 dark:via-slate-900/30" />
+            <div className="absolute -right-8 top-1/2 h-40 w-[120%] -translate-y-1/2 rotate-[-12deg] border-y-8 border-white/70 bg-blue-100/40 dark:border-slate-700/70 dark:bg-slate-800/40" />
+            <div className="absolute right-1/3 top-0 h-full w-5 rotate-[24deg] bg-white/60 dark:bg-slate-700/60" />
+            <div className="absolute right-1/2 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg shadow-blue-900/25 ring-8 ring-blue-500/15 transition-transform group-hover:scale-110">
+              <MapPin className="h-6 w-6" />
+            </div>
+          </div>
+          <div className="relative flex min-h-52 flex-col justify-center gap-5 p-7 sm:p-10 md:max-w-2xl">
+            <div className="flex items-center gap-3 text-blue-600 dark:text-blue-400">
+              <MapPin className="h-6 w-6" />
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white">{i18n.t('location.title')}</h2>
+            </div>
+            <p className="max-w-xl text-sm leading-relaxed text-slate-600 dark:text-slate-300">{i18n.t('location.description')}</p>
+            <a
+              href="https://maps.app.goo.gl/PZ7EcCYEGwLkZJ849?g_st=iw"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-fit items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition-all hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-blue-600/30"
+            >
+              {i18n.t('location.directions')} <ExternalLink className="h-4 w-4" />
+            </a>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

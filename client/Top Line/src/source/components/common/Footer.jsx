@@ -35,7 +35,7 @@ const Footer = () => {
           <div className="space-y-4">
             <h2 className="text-base font-semibold tracking-wide text-white">{t('footer.contactUs')}</h2>
             <ul className="space-y-3 text-sm text-slate-400">
-              <li className="flex items-center gap-3"><MapPin className="h-4 w-4 shrink-0 text-blue-400" /><span>{t('footer.address')}</span></li>
+              <li className="flex items-center gap-3"><MapPin className="h-4 w-4 shrink-0 text-blue-400" /><a href="https://maps.app.goo.gl/PZ7EcCYEGwLkZJ849?g_st=iw" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-blue-300">{t('footer.address')}</a></li>
               <li className="flex items-center gap-3"><Phone className="h-4 w-4 shrink-0 text-blue-400" /><a dir="ltr" href="tel:+201000000000" className="hover:text-blue-300">+20 100 000 0000</a></li>
               <li className="flex items-center gap-3"><Mail className="h-4 w-4 shrink-0 text-blue-400" /><a href="mailto:support@toplinerentals.com" className="hover:text-blue-300">support@toplinerentals.com</a></li>
             </ul>
