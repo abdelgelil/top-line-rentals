@@ -13,7 +13,7 @@ const fieldClass = 'mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-
 function AuthShell({ title, hint, children, footer }) {
   const { t } = useTranslation();
   return (
-    <main className="relative isolate flex min-h-[calc(100svh-4rem)] flex-col overflow-hidden bg-gradient-to-b from-white via-slate-50 to-blue-50/60 px-4 py-8 dark:from-slate-950 dark:via-slate-950 dark:to-blue-950/30 sm:px-6 sm:py-12">
+    <main className="relative isolate flex min-h-screen flex-col overflow-hidden bg-gradient-to-b from-white via-slate-50 to-blue-50/60 px-4 py-8 dark:from-slate-950 dark:via-slate-950 dark:to-blue-950/30 sm:px-6 sm:py-12">
       <div aria-hidden="true" className="pointer-events-none absolute -right-24 top-12 h-72 w-72 rounded-full bg-blue-200/30 blur-3xl dark:bg-blue-700/10" />
       <div className="relative mx-auto flex w-full max-w-5xl items-center justify-between">
         <Link to="/" className="inline-flex min-h-11 items-center gap-2 rounded-full px-2 text-sm font-bold uppercase tracking-[0.12em] text-slate-800 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/30 dark:text-slate-100 dark:hover:bg-slate-800" aria-label="Back to home">
