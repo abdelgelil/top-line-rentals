@@ -29,34 +29,34 @@ const app = express();
 app.set('trust proxy', 1);
 
 // --- CORS CONFIGURATION ---
-const allowedOrigins = [
+const allowedOrigins = new Set([
   process.env.FRONTEND_URL,
   'https://steadfast-blessing-production-ffff.up.railway.app',
   'http://localhost:5173',
   'http://localhost:3000',
-].filter(Boolean);
+].filter(Boolean).map((origin) => origin.replace(/\/$/, '')));
 
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (!origin || allowedOrigins.includes(origin)) {
-    if (origin) res.setHeader('Access-Control-Allow-Origin', origin);
-  }
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, POST, PUT, DELETE, PATCH, OPTIONS'
-  );
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-Requested-With, Content-Type, Authorization, Accept, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'
-  );
-
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
-  }
-
-  next();
-});
+app.use(cors({
+  origin(origin, callback) {
+    // Permit non-browser clients that do not send an Origin header.
+    if (!origin || allowedOrigins.has(origin.replace(/\/$/, ''))) {
+      return callback(null, true);
+    }
+    return callback(new Error('Origin is not allowed by CORS'));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: [
+    'X-Requested-With',
+    'Content-Type',
+    'Authorization',
+    'Accept',
+    'Origin',
+    'Access-Control-Request-Method',
+    'Access-Control-Request-Headers',
+  ],
+  optionsSuccessStatus: 204,
+}));
 
 // --- SECURITY & BODY PARSING MIDDLEWARE ---
 app.use(
