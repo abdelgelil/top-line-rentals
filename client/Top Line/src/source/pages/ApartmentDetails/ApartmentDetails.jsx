@@ -181,14 +181,14 @@ export function ApartmentDetails({ currentUser: propUser }) {
                         loading={idx === activeImageIndex ? 'eager' : 'lazy'}
                         fetchPriority={idx === activeImageIndex ? 'high' : 'auto'}
                         decoding="async"
-                        className="w-full h-[400px] sm:h-[550px] object-cover flex-shrink-0"
+                        className="h-[260px] w-full flex-shrink-0 object-cover sm:h-[340px] lg:h-[420px]"
                         onError={(e) => { e.target.src = 'https://via.placeholder.com/800x600?text=No+Image'; }}
                       />
                     ))
                   ) : (
                     <img 
                       src="https://via.placeholder.com/800x600?text=No+Image" 
-                      className="w-full h-[400px] sm:h-[550px] object-cover flex-shrink-0" 
+                      className="h-[260px] w-full flex-shrink-0 object-cover sm:h-[340px] lg:h-[420px]"
                       alt={i18n.t("Placeholder")} 
                     />
                   )}
@@ -339,13 +339,13 @@ export function ApartmentDetails({ currentUser: propUser }) {
           />
         )}
       </div>
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-3 pb-[env(safe-area-inset-bottom)] pt-3 shadow-[0_-8px_30px_rgba(15,23,42,0.12)] backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/95 sm:px-6 sm:py-4">
-        <div className="mx-auto flex max-w-7xl flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-3 pb-[env(safe-area-inset-bottom)] pt-2 shadow-[0_-8px_30px_rgba(15,23,42,0.12)] backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/95 sm:px-6 sm:py-2">
+        <div className="mx-auto flex max-w-7xl flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <p className="text-center text-sm font-semibold text-slate-700 dark:text-slate-200 sm:hidden">{i18n.t('accessibility.stepsShort')}</p>
-          <ol className="hidden items-center gap-5 text-sm font-semibold text-slate-700 dark:text-slate-200 lg:flex">
-            <li>{i18n.t('accessibility.step1')}</li>
-            <li>{i18n.t('accessibility.step2')}</li>
-            <li>{i18n.t('accessibility.step3')}</li>
+          <ol className="hidden items-center gap-4 text-base font-semibold text-slate-700 dark:text-slate-200 lg:flex">
+            <li className="flex items-center gap-2"><span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-800 dark:bg-blue-900 dark:text-blue-200">1</span>{i18n.t('accessibility.chooseApartment')}</li>
+            <li className="flex items-center gap-2"><span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-800 dark:bg-blue-900 dark:text-blue-200">2</span>{i18n.t('accessibility.chooseDates')}</li>
+            <li className="flex items-center gap-2"><span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-800 dark:bg-blue-900 dark:text-blue-200">3</span>{i18n.t('accessibility.confirmDetails')}</li>
           </ol>
           <p className="hidden text-sm font-semibold text-slate-700 dark:text-slate-200 sm:block lg:hidden">{i18n.t('accessibility.stepsShort')}</p>
           <button
@@ -355,7 +355,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
               bookingForm?.scrollIntoView({ behavior: 'smooth', block: 'start' });
               bookingForm?.focus({ preventScroll: true });
             }}
-            className="flex min-h-14 w-full items-center justify-center rounded-xl bg-blue-700 px-6 py-3 text-base font-bold text-white shadow-lg transition-colors hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 sm:w-auto sm:min-w-64"
+            className="flex min-h-12 w-full items-center justify-center rounded-xl bg-blue-700 px-5 py-2 text-base font-bold text-white shadow-md transition-colors hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 sm:w-auto sm:min-w-56"
           >
             {i18n.t('accessibility.bookStay')}
           </button>

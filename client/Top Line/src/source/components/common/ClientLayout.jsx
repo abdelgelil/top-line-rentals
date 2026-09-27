@@ -122,31 +122,33 @@ const ClientLayout = () => {
           )}
         </div>
       )}
-      <div className="border-t border-slate-200/80 bg-white/95 px-3 py-2 dark:border-slate-800 dark:bg-slate-900/95 sm:px-6">
+      <div className="border-t border-slate-200/80 bg-white/95 px-3 py-1 dark:border-slate-800 dark:bg-slate-900/95 sm:px-6">
         <div className="mx-auto grid max-w-7xl grid-cols-3 gap-2">
           <Link
             to="/apartments"
-            className="flex min-h-12 items-center justify-center gap-2 rounded-xl bg-blue-700 px-2 py-2 text-center text-base font-bold text-white shadow-sm transition-colors hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 sm:px-4"
+            className="flex min-h-12 items-center justify-center gap-1 rounded-xl bg-blue-700 px-2 text-center text-sm font-bold text-white shadow-sm transition-colors hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 sm:gap-2 sm:px-4 sm:text-base"
           >
-            <KeyRound className="h-5 w-5 shrink-0" aria-hidden="true" />
-            <span>{t('accessibility.directBooking')}</span>
+            <KeyRound className="hidden h-5 w-5 shrink-0 sm:block" aria-hidden="true" />
+            <span className="sm:hidden">{t('accessibility.directShort')}</span>
+            <span className="hidden sm:inline">{t('accessibility.directBooking')}</span>
           </Link>
           <Link
             to="/my-bookings"
-            className="flex min-h-12 items-center justify-center gap-2 rounded-xl border-2 border-slate-300 px-2 py-2 text-center text-base font-bold text-slate-800 transition-colors hover:border-blue-600 hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800 sm:px-4"
+            className="flex min-h-12 items-center justify-center gap-1 rounded-xl border-2 border-slate-300 px-2 text-center text-sm font-bold text-slate-800 transition-colors hover:border-blue-600 hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800 sm:gap-2 sm:px-4 sm:text-base"
           >
-            <CalendarCheck className="h-5 w-5 shrink-0" aria-hidden="true" />
-            <span>{t('accessibility.myBookings')}</span>
+            <CalendarCheck className="hidden h-5 w-5 shrink-0 sm:block" aria-hidden="true" />
+            <span className="sm:hidden">{t('accessibility.bookingsShort')}</span>
+            <span className="hidden sm:inline">{t('accessibility.myBookings')}</span>
           </Link>
           <button
             type="button"
             onClick={() => setIsHelpOpen(true)}
             aria-label={t('accessibility.needHelp')}
-            className="flex min-h-12 items-center justify-center gap-2 rounded-xl border-2 border-blue-700 px-2 py-2 text-center text-base font-bold text-blue-800 transition-colors hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:border-blue-400 dark:text-blue-200 dark:hover:bg-blue-950/50 sm:px-4"
+            className="flex min-h-12 items-center justify-center gap-1 rounded-xl border-2 border-blue-700 px-2 text-center text-sm font-bold text-blue-800 transition-colors hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:border-blue-400 dark:text-blue-200 dark:hover:bg-blue-950/50 sm:gap-2 sm:px-4 sm:text-base"
           >
-            <CircleHelp className="h-5 w-5 shrink-0" aria-hidden="true" />
-            <span className="sm:hidden">{t('accessibility.helpShort')}</span>
-            <span className="hidden sm:inline">{t('accessibility.needHelp')}</span>
+            <CircleHelp className="hidden h-5 w-5 shrink-0 sm:block" aria-hidden="true" />
+            <span className="lg:hidden">{t('accessibility.helpShort')}</span>
+            <span className="hidden lg:inline">{t('accessibility.needHelp')}</span>
           </button>
         </div>
       </div>

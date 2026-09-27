@@ -267,7 +267,9 @@ resources.ar.translation.location = {
 };
 resources.en.translation.accessibility = {
   directBooking: 'Direct Booking',
+  directShort: 'Book',
   myBookings: 'My Bookings',
+  bookingsShort: 'Bookings',
   needHelp: 'Need Help Booking? Call Us',
   helpShort: 'Need Help?',
   callSupport: 'Call Support',
@@ -275,6 +277,9 @@ resources.en.translation.accessibility = {
   requestCallback: 'Request a Call Back',
   callbackMessage: 'Please call me back about making a booking.',
   stepsShort: 'Choose dates · Enter your details · Confirm',
+  chooseApartment: 'Choose a home',
+  chooseDates: 'Pick your dates',
+  confirmDetails: 'Confirm your request',
   closeHelp: 'Close help',
   quickBook: 'Quick Book',
   bookStay: 'Book This Stay',
@@ -285,7 +290,9 @@ resources.en.translation.accessibility = {
 };
 resources.ar.translation.accessibility = {
   directBooking: 'الحجز المباشر',
+  directShort: 'احجز',
   myBookings: 'حجوزاتي',
+  bookingsShort: 'الحجوزات',
   needHelp: 'هل تحتاج إلى مساعدة في الحجز؟ اتصل بنا',
   helpShort: 'المساعدة',
   callSupport: 'اتصل بالدعم',
@@ -293,6 +300,9 @@ resources.ar.translation.accessibility = {
   requestCallback: 'اطلب معاودة الاتصال',
   callbackMessage: 'من فضلكم اتصلوا بي لمساعدتي في الحجز.',
   stepsShort: 'اختر التواريخ · أدخل بياناتك · أكد الحجز',
+  chooseApartment: 'اختر الشقة',
+  chooseDates: 'اختر التواريخ',
+  confirmDetails: 'أكد طلبك',
   closeHelp: 'إغلاق المساعدة',
   quickBook: 'احجز الآن',
   bookStay: 'احجز هذه الإقامة',
