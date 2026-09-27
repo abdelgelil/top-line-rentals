@@ -20,6 +20,7 @@ dotenv.config({ path: path.resolve(__dirname, './.env') });
 const apartmentRoutes = (await import('./routes/apartmentRoutes.js')).default;
 const bookingRoutes = (await import('./routes/bookingRoutes.js')).default;
 const userRoutes = (await import('./routes/userRoutes.js')).default;
+const favoriteRoutes = (await import('./routes/favoriteRoutes.js')).default;
 const authRoutes = (await import('./routes/authRoutes.js')).default;
 const messageRoutes = (await import('./routes/messageRoutes.js')).default;
 
@@ -114,6 +115,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/apartments', apartmentRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/favorites', favoriteRoutes);
 app.use('/api/messages', messageRoutes);
 
 // Root healthcheck

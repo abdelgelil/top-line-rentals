@@ -4,11 +4,12 @@ import { createPortal } from 'react-dom';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
-import { Menu, X, Building2, Calendar, Mail, CircleHelp, LogOut, UserRound } from 'lucide-react';
+import { Menu, X, Building2, Calendar, Mail, CircleHelp, LogOut, UserRound, Heart } from 'lucide-react';
 import { LanguageToggle } from './LanguageToggle';
 import Footer from './Footer';
 import HelpModal from './HelpModal';
 import Logo from './Logo';
+import { useFavorites } from '../../context/FavoritesContext';
 
 const ClientLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,11 +17,13 @@ const ClientLayout = () => {
   const location = useLocation();
   const { t } = useTranslation();
   const { isSignedIn, user, signOut } = useAuth();
+  const { favoriteIds } = useFavorites();
   const isAuthPage = ['/sign-in', '/sign-up', '/reset-password'].includes(location.pathname);
 
   const navLinks = [
     { path: '/apartments', label: t('nav.apartments', 'Apartments'), icon: Building2 },
     { path: '/my-bookings', label: t('nav.myBookings', 'My Bookings'), icon: Calendar },
+    ...(isSignedIn ? [{ path: '/favorites', label: `Saved${favoriteIds.length ? ` (${favoriteIds.length})` : ''}`, icon: Heart }] : []),
     { path: '/contact', label: t('nav.contact', 'Contact Us'), icon: Mail },
   ];
 

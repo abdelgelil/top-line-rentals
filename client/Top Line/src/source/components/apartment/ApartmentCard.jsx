@@ -2,12 +2,26 @@ import i18n from "../../../i18n.js";
 import { translateText } from '../../../utils/translateContent.js';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Users, Bed, CalendarCheck } from 'lucide-react';
+import { Users, Bed, CalendarCheck, Heart } from 'lucide-react';
 import OptimizedImage from '../common/OptimizedImage';
 import { formatCurrency } from '../../utils/formatters';
+import { useAuth } from '../../context/AuthContext';
+import { useFavorites } from '../../context/FavoritesContext';
+import { useNavigate } from 'react-router-dom';
 
 export const ApartmentCard = ({ unit, priority = false }) => {
   const apartmentId = unit._id || unit.id;
+  const { isSignedIn } = useAuth();
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const navigate = useNavigate();
+  const favorited = isFavorite(apartmentId);
+
+  const handleFavorite = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!isSignedIn) return navigate('/sign-in');
+    toggleFavorite(apartmentId, unit);
+  };
 
   return (
     <div className="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all group flex flex-col">
@@ -24,7 +38,16 @@ export const ApartmentCard = ({ unit, priority = false }) => {
           className="h-full w-full"
           imageClassName="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
-        <div className="absolute top-4 right-4 bg-slate-900/80 backdrop-blur-md border border-white/20 text-sky-400 font-bold px-3 py-1 rounded-full text-xs shadow-md">
+        <button
+          type="button"
+          onClick={handleFavorite}
+          aria-label={favorited ? 'Remove from saved apartments' : 'Save apartment'}
+          aria-pressed={favorited}
+          className={`absolute top-3 right-3 z-10 rounded-full p-2 backdrop-blur-md transition hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${favorited ? 'bg-white text-red-500 dark:bg-slate-900' : 'bg-white/80 text-slate-600 dark:bg-slate-900/80 dark:text-slate-300'}`}
+        >
+          <Heart className={`h-5 w-5 ${favorited ? 'fill-red-500' : ''}`} />
+        </button>
+        <div className="absolute top-4 left-4 bg-slate-900/80 backdrop-blur-md border border-white/20 text-sky-400 font-bold px-3 py-1 rounded-full text-xs shadow-md">
           {formatCurrency(unit.pricePerNight || unit.price)}{' '}{i18n.t("/ night")}{' '}</div>
         <Link
           to={`/apartments/${apartmentId}`}

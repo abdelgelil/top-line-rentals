@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
   passwordHash: { type: String, select: false },
   resetOtp: { type: String, select: false },
   resetOtpExpires: { type: Date, select: false },
+  favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Apartment' }],
   role: { type: String, enum: ['admin', 'user', 'client'], default: 'user' },
 }, { timestamps: true });
 

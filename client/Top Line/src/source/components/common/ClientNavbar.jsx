@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Building2, CalendarCheck, Mail, Menu, X, User, LayoutDashboard } from 'lucide-react';
+import { Building2, CalendarCheck, Mail, Menu, X, User, LayoutDashboard, Heart } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Logo from './Logo';
 import { LanguageToggle } from './LanguageToggle';
+import { useFavorites } from '../../context/FavoritesContext';
 
 const ClientNavbar = () => {
   const { t } = useTranslation();
   const { isSignedIn, user, signOut } = useAuth();
+  const { favoriteIds } = useFavorites();
   const [isOpen, setIsOpen] = useState(false);
   const isAdmin = user?.publicMetadata?.role === 'admin';
 
@@ -76,6 +78,11 @@ const ClientNavbar = () => {
                 </>
               )
             )}
+
+            {isSignedIn && <NavLink to="/favorites" className={desktopLinkClass}>
+              <Heart className="w-4 h-4" />
+              <span>Saved{favoriteIds.length > 0 ? ` (${favoriteIds.length})` : ''}</span>
+            </NavLink>}
 
             {!isSignedIn && (
               <NavLink to="/contact" className={desktopLinkClass}>
@@ -179,6 +186,12 @@ const ClientNavbar = () => {
               </>
             )
           )}
+
+          {isSignedIn && <NavLink
+            to="/favorites"
+            className={({ isActive }) => `flex min-h-12 items-center gap-3 px-5 py-4 rounded-2xl text-lg font-semibold transition-all duration-300 ${isActive ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/20 shadow-inner' : 'text-slate-700 dark:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800/60'}`}
+            onClick={() => setIsOpen(false)}
+          ><Heart className="w-4 h-4" /><span>Saved{favoriteIds.length > 0 ? ` (${favoriteIds.length})` : ''}</span></NavLink>}
 
           {!isSignedIn && (
             <NavLink

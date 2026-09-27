@@ -23,6 +23,7 @@ const AdminDashboard = lazy(() => import("./source/components/admin/AdminDashboa
 const AdminMessages = lazy(() => import("./source/pages/Admin/Messages/AdminMessages").then(({ AdminMessages: component }) => ({ default: component })));
 const ApartmentDetails = lazy(() => import("./source/pages/ApartmentDetails/ApartmentDetails"));
 const MyBookings = lazy(() => import("./source/pages/Bookings/MyBookings"));
+const Favorites = lazy(() => import("./source/pages/Favorites"));
 
 const RoleContext = createContext({ role: "", resolved: false });
 
@@ -140,6 +141,7 @@ function App() {
             <Route path="/contact" element={<ContactUs />} />
             <Route path="/listing" element={<Navigate to="/apartments" replace />} />
             <Route path="/my-bookings" element={<MyBookings />} />
+            <Route path="/favorites" element={<Favorites />} />
             <Route path="/checkout" element={<Checkout />} />
           <Route
             path="/admin"
