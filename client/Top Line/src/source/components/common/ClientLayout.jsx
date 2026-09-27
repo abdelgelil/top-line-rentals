@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { UserButton, useUser } from '@clerk/clerk-react';
-import { Menu, X, Building2, Calendar, Mail, CalendarCheck, CircleHelp, KeyRound } from 'lucide-react';
+import { Menu, X, Building2, Calendar, Mail, CircleHelp } from 'lucide-react';
 import { LanguageToggle } from './LanguageToggle';
 import Footer from './Footer';
 import HelpModal from './HelpModal';
@@ -61,6 +61,15 @@ const ClientLayout = () => {
 
         {/* Desktop Right Action Controls */}
         <div className="hidden md:flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setIsHelpOpen(true)}
+            aria-label={t('accessibility.needHelp')}
+            title={t('accessibility.needHelp')}
+            className="flex h-12 w-12 items-center justify-center rounded-full text-slate-700 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:text-slate-200 dark:hover:bg-slate-800"
+          >
+            <CircleHelp className="h-6 w-6" aria-hidden="true" />
+          </button>
           <LanguageToggle />
 
           {isSignedIn ? (
@@ -113,6 +122,15 @@ const ClientLayout = () => {
             );
           })}
 
+          <button
+            type="button"
+            onClick={() => { setIsOpen(false); setIsHelpOpen(true); }}
+            className="flex min-h-12 items-center gap-3 rounded-xl px-4 py-3 text-base font-semibold text-slate-700 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:text-slate-200 dark:hover:bg-slate-800"
+          >
+            <CircleHelp className="h-5 w-5" aria-hidden="true" />
+            <span>{t('accessibility.helpShort')}</span>
+          </button>
+
           {!isSignedIn && (
             <Link
               to="/sign-in"
@@ -122,36 +140,6 @@ const ClientLayout = () => {
           )}
         </div>
       )}
-      <div className="border-t border-slate-200/80 bg-white/95 px-3 py-1 dark:border-slate-800 dark:bg-slate-900/95 sm:px-6">
-        <div className="mx-auto grid max-w-7xl grid-cols-3 gap-2">
-          <Link
-            to="/apartments"
-            className="flex min-h-12 items-center justify-center gap-1 rounded-xl bg-blue-700 px-2 text-center text-sm font-bold text-white shadow-sm transition-colors hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 sm:gap-2 sm:px-4 sm:text-base"
-          >
-            <KeyRound className="hidden h-5 w-5 shrink-0 sm:block" aria-hidden="true" />
-            <span className="sm:hidden">{t('accessibility.directShort')}</span>
-            <span className="hidden sm:inline">{t('accessibility.directBooking')}</span>
-          </Link>
-          <Link
-            to="/my-bookings"
-            className="flex min-h-12 items-center justify-center gap-1 rounded-xl border-2 border-slate-300 px-2 text-center text-sm font-bold text-slate-800 transition-colors hover:border-blue-600 hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800 sm:gap-2 sm:px-4 sm:text-base"
-          >
-            <CalendarCheck className="hidden h-5 w-5 shrink-0 sm:block" aria-hidden="true" />
-            <span className="sm:hidden">{t('accessibility.bookingsShort')}</span>
-            <span className="hidden sm:inline">{t('accessibility.myBookings')}</span>
-          </Link>
-          <button
-            type="button"
-            onClick={() => setIsHelpOpen(true)}
-            aria-label={t('accessibility.needHelp')}
-            className="flex min-h-12 items-center justify-center gap-1 rounded-xl border-2 border-blue-700 px-2 text-center text-sm font-bold text-blue-800 transition-colors hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:border-blue-400 dark:text-blue-200 dark:hover:bg-blue-950/50 sm:gap-2 sm:px-4 sm:text-base"
-          >
-            <CircleHelp className="hidden h-5 w-5 shrink-0 sm:block" aria-hidden="true" />
-            <span className="lg:hidden">{t('accessibility.helpShort')}</span>
-            <span className="hidden lg:inline">{t('accessibility.needHelp')}</span>
-          </button>
-        </div>
-      </div>
     </header>
     <main className="flex-grow">
       <Outlet />

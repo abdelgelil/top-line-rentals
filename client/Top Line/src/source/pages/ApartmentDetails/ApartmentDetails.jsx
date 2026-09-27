@@ -149,7 +149,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 pt-8 pb-36 lg:pt-16 lg:pb-36">
+      <div className="max-w-7xl mx-auto px-4 pt-8 pb-24 lg:pt-16 lg:pb-24">
         
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
@@ -339,15 +339,14 @@ export function ApartmentDetails({ currentUser: propUser }) {
           />
         )}
       </div>
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-3 pb-[env(safe-area-inset-bottom)] pt-2 shadow-[0_-8px_30px_rgba(15,23,42,0.12)] backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/95 sm:px-6 sm:py-2">
-        <div className="mx-auto flex max-w-7xl flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-          <p className="text-center text-sm font-semibold text-slate-700 dark:text-slate-200 sm:hidden">{i18n.t('accessibility.stepsShort')}</p>
-          <ol className="hidden items-center gap-4 text-base font-semibold text-slate-700 dark:text-slate-200 lg:flex">
-            <li className="flex items-center gap-2"><span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-800 dark:bg-blue-900 dark:text-blue-200">1</span>{i18n.t('accessibility.chooseApartment')}</li>
-            <li className="flex items-center gap-2"><span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-800 dark:bg-blue-900 dark:text-blue-200">2</span>{i18n.t('accessibility.chooseDates')}</li>
-            <li className="flex items-center gap-2"><span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-800 dark:bg-blue-900 dark:text-blue-200">3</span>{i18n.t('accessibility.confirmDetails')}</li>
-          </ol>
-          <p className="hidden text-sm font-semibold text-slate-700 dark:text-slate-200 sm:block lg:hidden">{i18n.t('accessibility.stepsShort')}</p>
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-4 pb-[env(safe-area-inset-bottom)] py-3 shadow-lg backdrop-blur-md dark:border-slate-700 dark:bg-slate-900/95 sm:px-6">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-bold text-slate-900 dark:text-white sm:text-base">{translateText(apartment.title)}</p>
+            <p className="text-sm font-semibold text-slate-700 dark:text-slate-200 sm:text-base">
+              ${apartment.pricePerNight || apartment.price || '0'} <span className="font-normal">{i18n.t('/ night')}</span>
+            </p>
+          </div>
           <button
             type="button"
             onClick={() => {
@@ -355,7 +354,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
               bookingForm?.scrollIntoView({ behavior: 'smooth', block: 'start' });
               bookingForm?.focus({ preventScroll: true });
             }}
-            className="flex min-h-12 w-full items-center justify-center rounded-xl bg-blue-700 px-5 py-2 text-base font-bold text-white shadow-md transition-colors hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 sm:w-auto sm:min-w-56"
+            className="flex min-h-12 shrink-0 items-center justify-center rounded-xl bg-blue-700 px-5 py-3 text-base font-bold text-white shadow-md transition-colors hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50"
           >
             {i18n.t('accessibility.bookStay')}
           </button>

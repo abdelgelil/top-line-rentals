@@ -305,7 +305,7 @@ resources.ar.translation.accessibility = {
   confirmDetails: 'أكد طلبك',
   closeHelp: 'إغلاق المساعدة',
   quickBook: 'احجز الآن',
-  bookStay: 'احجز هذه الإقامة',
+  bookStay: 'احجز الآن',
   easyStepsTitle: 'طريقة الحجز في ٣ خطوات سهلة',
   step1: '١. اختر الشقة المناسبة لك.',
   step2: '٢. اختر تاريخ الوصول والمغادرة.',
