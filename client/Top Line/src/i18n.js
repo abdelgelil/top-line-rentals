@@ -199,6 +199,20 @@ const homeKeys = {
 };
 
 Object.assign(arabic, {
+  'Guest Reviews': 'تقييمات الضيوف',
+  'Approve guest feedback before it appears on apartment pages.': 'راجع آراء الضيوف ووافق عليها قبل ظهورها في صفحات الشقق.',
+  'awaiting approval': 'بانتظار الموافقة',
+  'Loading reviews...': 'جارٍ تحميل التقييمات...',
+  'No reviews have been submitted yet.': 'لم يتم إرسال أي تقييمات بعد.',
+  'Approved': 'تمت الموافقة',
+  'stars': 'نجوم',
+  'Saving...': 'جارٍ الحفظ...',
+  'Hide review': 'إخفاء التقييم',
+  'Approve review': 'الموافقة على التقييم',
+  'Review approved.': 'تمت الموافقة على التقييم.',
+  'Review hidden.': 'تم إخفاء التقييم.',
+  'Unable to load reviews.': 'تعذر تحميل التقييمات.',
+  'Unable to update review.': 'تعذر تحديث التقييم.',
   'Cancel Booking': 'إلغاء الحجز', 'Canceling...': 'جارٍ إلغاء الحجز...',
   'Keep Booking': 'الاحتفاظ بالحجز', 'Yes, cancel': 'نعم، ألغِ الحجز',
   'Are you sure you want to cancel this booking?': 'هل أنت متأكد من رغبتك في إلغاء هذا الحجز؟',
