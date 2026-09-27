@@ -13,37 +13,36 @@ const router = express.Router();
    ========================================================================== */
 router.get('/analytics', async (req, res) => {
   try {
-    const totalBookings = await Booking.countDocuments();
-    const confirmedBookings = await Booking.countDocuments({ status: 'confirmed' });
-    const pendingBookings = await Booking.countDocuments({ status: 'pending' });
-    const cancelledBookings = await Booking.countDocuments({ status: { $in: ['cancelled', 'canceled'] } });
-
-    const revenueAgg = await Booking.aggregate([
-      { $match: { status: 'confirmed' } },
-      { $group: { _id: null, totalRevenue: { $sum: '$totalPrice' } } },
+    const [totalBookings, confirmedBookings, pendingBookings, cancelledBookings, revenueAgg, topClients] = await Promise.all([
+      Booking.countDocuments(),
+      Booking.countDocuments({ status: 'confirmed' }),
+      Booking.countDocuments({ status: 'pending' }),
+      Booking.countDocuments({ status: { $in: ['cancelled', 'canceled'] } }),
+      Booking.aggregate([
+        { $match: { status: 'confirmed' } },
+        { $group: { _id: null, totalRevenue: { $sum: '$totalPrice' } } },
+      ]),
+      Booking.aggregate([
+        {
+          $group: {
+            _id: '$guestEmail',
+            guestName: { $first: '$guestName' },
+            guestPhone: { $first: '$guestPhone' },
+            totalBookings: { $sum: 1 },
+            confirmedBookings: {
+              $sum: { $cond: [{ $eq: ['$status', 'confirmed'] }, 1, 0] },
+            },
+            totalSpent: {
+              $sum: { $cond: [{ $eq: ['$status', 'confirmed'] }, '$totalPrice', 0] },
+            },
+            lastBookingDate: { $max: '$createdAt' },
+          },
+        },
+        { $sort: { totalBookings: -1, totalSpent: -1 } },
+        { $limit: 10 },
+      ]),
     ]);
     const totalRevenue = revenueAgg[0]?.totalRevenue || 0;
-
-    // Aggregate frequent visiting clients by email
-    const topClients = await Booking.aggregate([
-      {
-        $group: {
-          _id: '$guestEmail',
-          guestName: { $first: '$guestName' },
-          guestPhone: { $first: '$guestPhone' },
-          totalBookings: { $sum: 1 },
-          confirmedBookings: {
-            $sum: { $cond: [{ $eq: ['$status', 'confirmed'] }, 1, 0] },
-          },
-          totalSpent: {
-            $sum: { $cond: [{ $eq: ['$status', 'confirmed'] }, '$totalPrice', 0] },
-          },
-          lastBookingDate: { $max: '$createdAt' },
-        },
-      },
-      { $sort: { totalBookings: -1, totalSpent: -1 } },
-      { $limit: 10 },
-    ]);
 
     return res.json({
       success: true,
@@ -185,7 +184,7 @@ router.post('/', ensureVerifiedUser, async (req, res) => {
 
     // --- DATE OVERLAP VALIDATION ---
     // A booking overlaps if (NewStart < ExistingEnd) AND (NewEnd > ExistingStart)
-    const overlappingBookings = await Booking.find({
+    const overlappingBooking = await Booking.exists({
       apartment: targetApartmentId,
       status: { $in: ['confirmed', 'pending'] },
       $and: [
@@ -194,7 +193,7 @@ router.post('/', ensureVerifiedUser, async (req, res) => {
       ],
     });
 
-    if (overlappingBookings.length > 0) {
+    if (overlappingBooking) {
       return res.status(409).json({
         success: false,
         message: 'This apartment is already reserved for the selected dates. Please choose different dates.',
@@ -257,7 +256,8 @@ router.get('/', async (req, res) => {
 
     const bookings = await Booking.find(filter)
       .populate('apartment')
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .lean();
 
     return res.json({
       success: true,

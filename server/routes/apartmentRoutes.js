@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
   try {
     const { tower } = req.query;
     const filter = tower && tower !== 'All' ? { tower } : {};
-    const apartments = await Apartment.find(filter).sort({ createdAt: -1 });
+    const apartments = await Apartment.find(filter).sort({ createdAt: -1 }).lean();
 
     res.json({ success: true, data: apartments });
   } catch (error) {
@@ -55,9 +55,6 @@ router.get('/:id', async (req, res) => {
    ========================================================================== */
 router.post('/', requireAuth, requireAdmin, upload.array('images', 10), async (req, res) => {
   try {
-    console.log('Incoming apartment payload:', req.body);
-    console.log('Incoming images count:', req.files?.length);
-
     const {
       title,
       description,

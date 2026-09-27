@@ -1,5 +1,5 @@
 import i18n from "./i18n.js";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, lazy, Suspense, useContext, useEffect, useState } from "react";
 import { Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 import { useTranslation } from "react-i18next";
@@ -9,16 +9,18 @@ import { Toaster } from 'react-hot-toast';
 import { ClientLayout } from "./source/components/common/ClientLayout";
 import { AdminLayout } from "./source/components/common/AdminLayout";
 
-// Page Module Imports (handles named exports safely)
-import { Home } from "./source/pages/Home/Home";
-import { Checkout } from "./source/pages/Checkout/Checkout";
-import { SignInPage, SignUpPage } from "./source/pages/Auth/AuthPages";
-import { ContactUs } from "./source/pages/Contact/ContactUs";
-import AdminDashboard from "./source/components/admin/AdminDashboard";
-import { AdminMessages } from "./source/pages/Admin/Messages/AdminMessages";
-import ApartmentDetails from "./source/pages/ApartmentDetails/ApartmentDetails";
-import MyBookings from "./source/pages/Bookings/MyBookings";
 import { syncUserProfile } from "./source/services/api";
+
+// Keep route-specific code out of the initial bundle.
+const Home = lazy(() => import("./source/pages/Home/Home").then(({ Home: component }) => ({ default: component })));
+const Checkout = lazy(() => import("./source/pages/Checkout/Checkout").then(({ Checkout: component }) => ({ default: component })));
+const SignInPage = lazy(() => import("./source/pages/Auth/AuthPages").then(({ SignInPage: component }) => ({ default: component })));
+const SignUpPage = lazy(() => import("./source/pages/Auth/AuthPages").then(({ SignUpPage: component }) => ({ default: component })));
+const ContactUs = lazy(() => import("./source/pages/Contact/ContactUs").then(({ ContactUs: component }) => ({ default: component })));
+const AdminDashboard = lazy(() => import("./source/components/admin/AdminDashboard"));
+const AdminMessages = lazy(() => import("./source/pages/Admin/Messages/AdminMessages").then(({ AdminMessages: component }) => ({ default: component })));
+const ApartmentDetails = lazy(() => import("./source/pages/ApartmentDetails/ApartmentDetails"));
+const MyBookings = lazy(() => import("./source/pages/Bookings/MyBookings"));
 
 const RoleContext = createContext({ role: "", resolved: false });
 
@@ -148,6 +150,12 @@ function App() {
         error: { iconTheme: { primary: '#f87171', secondary: '#0f172a' } },
       }}
     />
+    <Suspense fallback={(
+      <div className="flex min-h-[50vh] items-center justify-center text-sm text-slate-500" role="status" aria-live="polite">
+        <span className="mr-3 h-5 w-5 animate-spin rounded-full border-2 border-blue-500/30 border-t-blue-500" />
+        {i18n.t("Loading session...")}
+      </div>
+    )}>
     <Routes>
       <Route element={<RoleAwareLayout />}>
             <Route path="/" element={<Home />} />
@@ -181,6 +189,7 @@ function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
+    </Suspense>
     </>
   );
 }

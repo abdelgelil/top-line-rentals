@@ -18,14 +18,15 @@ export const SearchFilterBar = ({
 
       {/* Tower Location Dropdown */}
       <div className="md:col-span-4 px-4 py-2 border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-800">
-        <label className="flex items-center gap-1.5 text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-1">
+        <label htmlFor="apartment-tower-filter" className="flex items-center gap-2 text-base font-bold text-blue-800 dark:text-blue-300 uppercase tracking-wider mb-1">
           <Building className="w-3.5 h-3.5 text-blue-500 dark:text-sky-400" />
           <span>{i18n.t("Tower Location")}</span>
         </label>
         <select
+          id="apartment-tower-filter"
           value={towerFilter}
           onChange={(e) => setTowerFilter(e.target.value)}
-          className="w-full bg-transparent text-sm font-semibold text-slate-800 dark:text-slate-100 focus:outline-none cursor-pointer"
+          className="min-h-12 w-full rounded-lg bg-transparent px-2 text-base font-semibold text-slate-900 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/40 dark:text-white cursor-pointer"
         >
           <option value="All" className="dark:bg-slate-900">{i18n.t("All Towers")}</option>
           <option value="Tower 1" className="dark:bg-slate-900">{i18n.t("Tower 1")}</option>
@@ -36,37 +37,40 @@ export const SearchFilterBar = ({
 
       {/* Check-In & Check-Out Dates */}
       <div className="md:col-span-4 px-4 py-2 border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-800">
-        <label className="flex items-center gap-1.5 text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-1">
+        <label className="flex items-center gap-2 text-base font-bold text-blue-800 dark:text-blue-300 uppercase tracking-wider mb-1">
           <Calendar className="w-3.5 h-3.5 text-blue-500 dark:text-sky-400" />
           <span>{i18n.t("Check-In & Check-Out")}</span>
         </label>
         <div className="flex items-center gap-2">
           <input
+            aria-label={i18n.t("Check-In")}
             type="date"
             value={checkIn}
             onChange={(e) => setCheckIn(e.target.value)}
-            className="w-full bg-slate-50 dark:bg-slate-800/50 text-xs p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 focus:outline-none"
+            className="min-h-12 w-full rounded-lg border border-slate-300 bg-slate-50 px-2 py-2 text-base text-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/40 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
           />
-          <span className="text-slate-400 text-xs">-</span>
+          <span className="text-slate-700 dark:text-slate-200 text-base">-</span>
           <input
+            aria-label={i18n.t("Check-Out")}
             type="date"
             value={checkOut}
             onChange={(e) => setCheckOut(e.target.value)}
-            className="w-full bg-slate-50 dark:bg-slate-800/50 text-xs p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 focus:outline-none"
+            className="min-h-12 w-full rounded-lg border border-slate-300 bg-slate-50 px-2 py-2 text-base text-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/40 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
           />
         </div>
       </div>
 
       {/* Guests Dropdown */}
       <div className="md:col-span-2 px-4 py-2">
-        <label className="flex items-center gap-1.5 text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-1">
+        <label htmlFor="apartment-guest-filter" className="flex items-center gap-2 text-base font-bold text-blue-800 dark:text-blue-300 uppercase tracking-wider mb-1">
           <Users className="w-3.5 h-3.5 text-blue-500 dark:text-sky-400" />
           <span>{i18n.t("Guests")}</span>
         </label>
         <select
+          id="apartment-guest-filter"
           value={guests}
           onChange={(e) => setGuests(Number(e.target.value))}
-          className="w-full bg-transparent text-sm font-semibold text-slate-800 dark:text-slate-100 focus:outline-none cursor-pointer"
+          className="min-h-12 w-full rounded-lg bg-transparent px-2 text-base font-semibold text-slate-900 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/40 dark:text-white cursor-pointer"
         >
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
             <option key={num} value={num} className="dark:bg-slate-900">
@@ -80,7 +84,7 @@ export const SearchFilterBar = ({
       <div className="md:col-span-2">
         <button
           onClick={onSearch}
-          className="w-full py-3.5 px-4 bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-bold rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-blue-500/25 transition-all text-sm"
+          className="min-h-14 w-full rounded-2xl bg-gradient-to-r from-blue-700 to-sky-600 px-5 py-4 text-base font-bold text-white shadow-lg shadow-blue-500/25 transition-all hover:from-blue-800 hover:to-sky-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 flex items-center justify-center gap-2"
         >
           <Search className="w-4 h-4" />
           <span>{i18n.t("Search Units")}</span>

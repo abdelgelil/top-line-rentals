@@ -59,23 +59,23 @@ export default function MyBookings() {
       };
 
       toast.custom((toastItem) => (
-        <div className="w-[min(360px,calc(100vw-32px))] rounded-xl border border-slate-700 bg-slate-900 px-3 py-2.5 text-slate-100 shadow-xl">
-          <div className="flex items-start gap-2">
-            <Info className="mt-0.5 h-4 w-4 shrink-0 text-sky-400" />
-            <p className="text-xs font-medium">{i18n.t('Are you sure you want to cancel this booking?')}</p>
+        <div className="w-[min(420px,calc(100vw-32px))] rounded-2xl border border-slate-700 bg-slate-900 p-5 text-slate-100 shadow-xl">
+          <div className="flex items-start gap-3">
+            <Info className="mt-1 h-6 w-6 shrink-0 text-sky-400" />
+            <p className="text-base font-semibold leading-relaxed">{i18n.t('Are you sure you want to cancel this booking?')}</p>
           </div>
-          <div className="mt-3 flex justify-end gap-2">
+          <div className="mt-4 flex flex-col justify-end gap-2 sm:flex-row">
             <button
               type="button"
               onClick={() => answer(false, toastItem.id)}
-              className="rounded-lg border border-slate-600 px-3 py-1.5 text-xs text-slate-300 hover:bg-slate-800"
+              className="min-h-12 rounded-lg border-2 border-slate-600 px-5 py-3 text-base font-semibold text-slate-100 hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50"
             >
               {i18n.t('Keep Booking')}
             </button>
             <button
               type="button"
               onClick={() => answer(true, toastItem.id)}
-              className="rounded-lg bg-rose-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-rose-500"
+              className="min-h-12 rounded-lg bg-rose-700 px-5 py-3 text-base font-bold text-white hover:bg-rose-600 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-400/50"
             >
               {i18n.t('Yes, cancel')}
             </button>
@@ -129,7 +129,7 @@ export default function MyBookings() {
         {/* Page Header */}
         <header className="text-center space-y-3">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-blue-500 to-sky-400 bg-clip-text text-transparent">{' '}{i18n.t("My Reservations")}{' '}</h1>
-          <p className="text-slate-600 dark:text-slate-400 text-sm md:text-base max-w-2xl mx-auto">{' '}{i18n.t("Manage and track your active luxury apartment bookings and residency details.")}{' '}</p>
+          <p className="text-slate-700 dark:text-slate-200 text-base md:text-lg max-w-2xl mx-auto">{' '}{i18n.t("Manage and track your active luxury apartment bookings and residency details.")}{' '}</p>
         </header>
 
         {error && (
@@ -145,7 +145,7 @@ export default function MyBookings() {
             </div>
             <div className="space-y-2">
               <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{i18n.t("No Bookings Found")}</h3>
-              <p className="text-slate-500 dark:text-slate-400 max-w-sm">{' '}{i18n.t("You haven't reserved any residences yet. Start exploring our luxury towers.")}{' '}</p>
+              <p className="text-base text-slate-700 dark:text-slate-200 max-w-sm">{' '}{i18n.t("You haven't reserved any residences yet. Start exploring our luxury towers.")}{' '}</p>
             </div>
             <Link 
               to="/apartments" 
@@ -183,7 +183,7 @@ export default function MyBookings() {
                       <h2 className="text-xl font-bold text-slate-900 dark:text-white leading-tight">
                         {translateText(booking.apartment?.title || 'Luxury Apartment')}
                       </h2>
-                      <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 text-xs font-medium">
+                      <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-200 text-base font-medium">
                         <MapPin className="w-3 h-3" />
                         <span>{translateText(booking.apartment?.location || 'The Towers, Coastal District')}</span>
                       </div>
@@ -200,8 +200,8 @@ export default function MyBookings() {
                         <Calendar className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-[10px] text-slate-500 uppercase font-bold">{i18n.t("Dates")}</span>
-                        <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                        <span className="text-sm text-slate-700 dark:text-slate-200 uppercase font-bold">{i18n.t("Dates")}</span>
+                        <span className="text-base font-semibold text-slate-900 dark:text-white">
                           {booking.checkIn ? new Date(booking.checkIn).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'TBD'} 
                           <span className="mx-1 text-slate-400">—</span> 
                           {booking.checkOut ? new Date(booking.checkOut).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'TBD'}
@@ -214,8 +214,8 @@ export default function MyBookings() {
                         <Clock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-[10px] text-slate-500 uppercase font-bold">{i18n.t("Duration")}</span>
-                        <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                        <span className="text-sm text-slate-700 dark:text-slate-200 uppercase font-bold">{i18n.t("Duration")}</span>
+                        <span className="text-base font-semibold text-slate-900 dark:text-white">
                           {nights ? `${nights} Nights` : 'TBD'}
                         </span>
                       </div>
@@ -226,8 +226,8 @@ export default function MyBookings() {
                         <Users className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-[10px] text-slate-500 uppercase font-bold">{i18n.t("Guests")}</span>
-                        <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                        <span className="text-sm text-slate-700 dark:text-slate-200 uppercase font-bold">{i18n.t("Guests")}</span>
+                        <span className="text-base font-semibold text-slate-900 dark:text-white">
                           {booking.guests || 'Not specified'}
                         </span>
                       </div>
@@ -238,12 +238,12 @@ export default function MyBookings() {
                     <div className="flex items-center gap-3">
                       <Link 
                         to={`/apartments/${booking.apartment?._id || booking.apartment?.id}`}
-                        className="flex items-center gap-2 px-4 py-2 bg-blue-50/80 dark:bg-slate-800 text-blue-600 dark:text-blue-300 rounded-xl text-xs font-bold transition-all hover:bg-blue-100 dark:hover:bg-slate-700 group/btn"
+                        className="flex min-h-12 items-center gap-2 rounded-xl bg-blue-50/80 px-5 py-3 text-base font-bold text-blue-800 transition-all hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:bg-slate-800 dark:text-blue-200 dark:hover:bg-slate-700 group/btn"
                       >{' '}{i18n.t("View Details")}{' '}<ChevronRight className="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform" />
                       </Link>
                       <Link 
                         to="/contact" 
-                        className="flex items-center gap-2 px-4 py-2 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 rounded-xl text-xs font-bold transition-colors"
+                        className="flex min-h-12 items-center gap-2 rounded-xl px-5 py-3 text-base font-bold text-slate-700 transition-colors hover:text-blue-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:text-slate-200 dark:hover:text-blue-300"
                       >
                         <MessageCircle className="w-3 h-3" />{' '}{i18n.t("Support")}{' '}</Link>
                     </div>
@@ -253,14 +253,14 @@ export default function MyBookings() {
                           type="button"
                           onClick={() => handleCancelBooking(booking)}
                           disabled={cancellingId === booking._id}
-                          className="px-4 py-2 rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50 dark:border-rose-900/50 dark:hover:bg-rose-950/30 text-xs font-bold transition-colors disabled:opacity-50"
+                          className="min-h-12 rounded-xl border-2 border-rose-300 px-5 py-3 text-base font-bold text-rose-700 transition-colors hover:bg-rose-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-500/40 disabled:opacity-50 dark:border-rose-800 dark:text-rose-300 dark:hover:bg-rose-950/30"
                         >
                           {cancellingId === booking._id ? i18n.t('Canceling...') : i18n.t('Cancel Booking')}
                         </button>
                       </div>
                     )}
                     <div className="text-right">
-                      <span className="text-[10px] text-slate-500 uppercase font-bold block">{i18n.t("Total Investment")}</span>
+                      <span className="text-sm text-slate-700 dark:text-slate-200 uppercase font-bold block">{i18n.t("Total Investment")}</span>
                       <span className="text-2xl font-black text-blue-600 dark:text-sky-400">
                         ${booking.totalPrice?.toLocaleString() || '—'}
                       </span>

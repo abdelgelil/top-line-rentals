@@ -29,7 +29,9 @@ export const setupAxiosInterceptors = (getToken) => {
 
         let token = null;
         if (typeof getToken === 'function') {
-          token = await getToken({ skipCache: true });
+          // Reuse Clerk's cached session token; forcing a refresh on every API
+          // request adds avoidable auth latency, including for parallel loads.
+          token = await getToken();
         } else {
           token = localStorage.getItem('token');
         }

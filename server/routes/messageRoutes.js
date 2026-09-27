@@ -37,7 +37,8 @@ router.get('/', async (req, res) => {
   try {
     const messages = await Message.find()
       .populate('userId', 'email role')
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .lean();
     res.status(200).json({ success: true, data: messages });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });

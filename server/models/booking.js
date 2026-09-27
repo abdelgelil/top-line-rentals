@@ -55,6 +55,12 @@ const bookingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Support availability checks, user history, recent booking lists, and status metrics.
+bookingSchema.index({ apartment: 1, status: 1, checkIn: 1, checkOut: 1 });
+bookingSchema.index({ user: 1, createdAt: -1 });
+bookingSchema.index({ createdAt: -1 });
+bookingSchema.index({ status: 1 });
+
 const Booking = mongoose.models.Booking || mongoose.model('Booking', bookingSchema);
 
 export default Booking;

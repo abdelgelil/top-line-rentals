@@ -149,7 +149,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 py-8 lg:py-16">
+      <div className="max-w-7xl mx-auto px-4 pt-8 pb-36 lg:pt-16 lg:pb-36">
         
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
@@ -178,6 +178,9 @@ export function ApartmentDetails({ currentUser: propUser }) {
                         key={idx}
                         src={img} 
                         alt={`Property view ${idx + 1}`} 
+                        loading={idx === activeImageIndex ? 'eager' : 'lazy'}
+                        fetchPriority={idx === activeImageIndex ? 'high' : 'auto'}
+                        decoding="async"
                         className="w-full h-[400px] sm:h-[550px] object-cover flex-shrink-0"
                         onError={(e) => { e.target.src = 'https://via.placeholder.com/800x600?text=No+Image'; }}
                       />
@@ -196,13 +199,15 @@ export function ApartmentDetails({ currentUser: propUser }) {
                   <>
                     <button 
                       onClick={() => setActiveImageIndex(prev => (prev - 1 + images.length) % images.length)}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/80 dark:bg-black/50 text-slate-900 dark:text-white hover:bg-white dark:hover:bg-black transition-all shadow-lg backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity"
+                      aria-label={i18n.t('Previous photo')}
+                      className="absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow-lg backdrop-blur-md transition-all hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/60 dark:bg-black/70 dark:text-white dark:hover:bg-black"
                     >
                       <ChevronLeft className="w-6 h-6" />
                     </button>
                     <button 
                       onClick={() => setActiveImageIndex(prev => (prev + 1) % images.length)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/80 dark:bg-black/50 text-slate-900 dark:text-white hover:bg-white dark:hover:bg-black transition-all shadow-lg backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity"
+                      aria-label={i18n.t('Next photo')}
+                      className="absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow-lg backdrop-blur-md transition-all hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/60 dark:bg-black/70 dark:text-white dark:hover:bg-black"
                     >
                       <ChevronRight className="w-6 h-6" />
                     </button>
@@ -214,7 +219,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
                   <div className="absolute bottom-6 right-6">
                     <button 
                       onClick={() => openLightbox(0)}
-                      className="flex items-center gap-2 bg-white/90 dark:bg-black/70 text-slate-900 dark:text-white px-4 py-2 rounded-full text-xs font-bold shadow-xl backdrop-blur-md hover:bg-white dark:hover:bg-black transition-all border border-white/20"
+                      className="flex min-h-12 items-center gap-2 rounded-full border border-white/20 bg-white/90 px-5 py-3 text-base font-bold text-slate-900 shadow-xl backdrop-blur-md transition-all hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/60 dark:bg-black/70 dark:text-white dark:hover:bg-black"
                     >
                       <ImageIcon className="w-4 h-4" />
                       <span>{i18n.t("View All")}{' '}{images.length}{' '}{i18n.t("Photos")}</span>
@@ -230,10 +235,14 @@ export function ApartmentDetails({ currentUser: propUser }) {
                     <button 
                       key={idx}
                       onClick={() => setActiveImageIndex(idx)}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${
-                        activeImageIndex === idx ? 'w-8 bg-blue-600' : 'w-1.5 bg-slate-300 dark:bg-slate-700 hover:bg-slate-400'
-                      }`}
-                    />
+                      aria-label={`${i18n.t('Go to photo')} ${idx + 1}`}
+                      aria-current={activeImageIndex === idx ? 'true' : undefined}
+                      className="flex h-12 w-12 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50"
+                    >
+                      <span className={`h-2 rounded-full transition-all duration-300 ${
+                        activeImageIndex === idx ? 'w-8 bg-blue-700' : 'w-2 bg-slate-500 dark:bg-slate-300'
+                      }`} />
+                    </button>
                   ))}
                 </div>
               )}
@@ -329,6 +338,28 @@ export function ApartmentDetails({ currentUser: propUser }) {
             onClose={() => setIsLightboxOpen(false)} 
           />
         )}
+      </div>
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-3 pb-[env(safe-area-inset-bottom)] pt-3 shadow-[0_-8px_30px_rgba(15,23,42,0.12)] backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/95 sm:px-6 sm:py-4">
+        <div className="mx-auto flex max-w-7xl flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+          <p className="text-center text-sm font-semibold text-slate-700 dark:text-slate-200 sm:hidden">{i18n.t('accessibility.stepsShort')}</p>
+          <ol className="hidden items-center gap-5 text-sm font-semibold text-slate-700 dark:text-slate-200 lg:flex">
+            <li>{i18n.t('accessibility.step1')}</li>
+            <li>{i18n.t('accessibility.step2')}</li>
+            <li>{i18n.t('accessibility.step3')}</li>
+          </ol>
+          <p className="hidden text-sm font-semibold text-slate-700 dark:text-slate-200 sm:block lg:hidden">{i18n.t('accessibility.stepsShort')}</p>
+          <button
+            type="button"
+            onClick={() => {
+              const bookingForm = document.getElementById('booking-form');
+              bookingForm?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              bookingForm?.focus({ preventScroll: true });
+            }}
+            className="flex min-h-14 w-full items-center justify-center rounded-xl bg-blue-700 px-6 py-3 text-base font-bold text-white shadow-lg transition-colors hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 sm:w-auto sm:min-w-64"
+          >
+            {i18n.t('accessibility.bookStay')}
+          </button>
+        </div>
       </div>
     </div>
   );
