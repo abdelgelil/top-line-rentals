@@ -1,10 +1,10 @@
 import i18n from "../../../i18n.js";
 import toast from 'react-hot-toast';
 import React, { useState, useEffect } from 'react';
-import { X, Trash2 } from 'lucide-react';
+import { X, Trash2, ArrowLeft } from 'lucide-react';
 import { createApartment, updateApartment } from '../../services/api';
 
-const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
+const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode = false }) => {
 
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -127,25 +127,26 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-      <div className="relative flex flex-col w-full max-w-lg max-h-[85vh] rounded-xl bg-white shadow-2xl overflow-hidden">
+    <div className={pageMode ? 'mx-auto w-full max-w-4xl px-4 py-8 sm:px-6' : 'fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4'}>
+      <div className={`relative flex flex-col w-full ${pageMode ? 'rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-900' : 'max-w-lg max-h-[85vh] rounded-xl bg-white shadow-2xl'} overflow-hidden`}>
 
         {/* Fixed Header */}
         <div className="flex items-center justify-between border-b px-5 py-3 bg-gray-50">
-          <h2 className="text-base font-semibold text-gray-800">
-            {i18n.t(initialData ? 'Edit Apartment' : 'Add New Apartment')}
+          <h2 className="text-base font-semibold text-gray-800 dark:text-white">
+            {i18n.t(pageMode ? 'Edit Apartment Details' : (initialData ? 'Edit Apartment' : 'Add New Apartment'))}
           </h2>
           <button
             type="button"
             onClick={onClose}
+            aria-label={i18n.t(pageMode ? 'Back to Apartments' : 'Close')}
             className="rounded-lg p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-700"
           >
-            <X size={18} />
+            {pageMode ? <ArrowLeft size={18} /> : <X size={18} />}
           </button>
         </div>
 
         {/* Scrollable Form Body */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-5 space-y-3 text-sm">
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-5 space-y-3 text-sm dark:[&_label]:text-slate-300">
           {/* Title */}
           <div>
             <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Title *")}{' '}</label>

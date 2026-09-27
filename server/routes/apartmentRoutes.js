@@ -224,6 +224,9 @@ router.put('/:id', requireAuth, requireAdmin, upload.array('images', 10), async 
 
     const updatedApartment = await Apartment.findByIdAndUpdate(id, updateFields, { new: true });
 
+    const removedImages = (apartment.images || []).filter((imageUrl) => !updatedImages.includes(imageUrl));
+    await Promise.allSettled(removedImages.map((imageUrl) => deleteFromCloudinary(imageUrl)));
+
     return res.json({ success: true, data: updatedApartment });
   } catch (error) {
     console.error('SERVER ERROR IN PUT /api/apartments:', error);

@@ -24,6 +24,7 @@ const AdminMessages = lazy(() => import("./source/pages/Admin/Messages/AdminMess
 const ApartmentDetails = lazy(() => import("./source/pages/ApartmentDetails/ApartmentDetails"));
 const MyBookings = lazy(() => import("./source/pages/Bookings/MyBookings"));
 const Favorites = lazy(() => import("./source/pages/Favorites"));
+const AdminEditApartment = lazy(() => import("./source/pages/Admin/AdminEditApartment"));
 
 const RoleContext = createContext({ role: "", resolved: false });
 
@@ -153,6 +154,7 @@ function App() {
           >
             <Route index element={<Navigate to="analytics" replace />} />
             <Route path="messages" element={<AdminMessages />} />
+            <Route path="apartments/:id/edit" element={<AdminEditApartment />} />
             <Route path="add-apartment" element={<Navigate to="apartments" replace />} />
             <Route path="*" element={<AdminDashboard />} />
           </Route>

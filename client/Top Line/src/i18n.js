@@ -22,7 +22,9 @@ const english = {
     night_one: 'night',
     night_other: 'nights',
   },
-  'Home': 'Home', 'Apartments': 'Apartments', 'My Bookings': 'My Bookings',
+  'Home': 'Home', 'Apartments': 'Apartments', 'My Bookings': 'My Bookings', 'Saved Apartments': 'Saved Apartments',
+  'Saved': 'Saved', 'No saved properties yet. Explore our coastal stays and bookmark your favorites for quick access!': 'No saved properties yet. Explore our coastal stays and bookmark your favorites for quick access!', 'Explore Apartments': 'Explore Apartments',
+  'Edit Apartment Details': 'Edit Apartment Details', 'Apartment not found': 'Apartment not found', 'Failed to load apartment': 'Failed to load apartment', 'Back to Apartments': 'Back to Apartments',
   'Admin Dashboard': 'Admin Dashboard', 'Add Apartment': 'Add Apartment',
   'Logout': 'Logout', 'Language': 'Language', 'Search': 'Search', 'Filter': 'Filter',
   'Price': 'Price', 'Price per Night (EGP) *': 'Price per Night (EGP) *', 'View Details': 'View Details', 'Book Now': 'Book Now',
@@ -127,7 +129,9 @@ const arabic = {
   'Enter an email address, phone number, or both': 'أدخل البريد الإلكتروني أو رقم الهاتف أو كليهما',
   'Updating...': 'جارٍ التحديث...', 'Make Admin': 'تعيين مشرف',
   'Add New Admin': 'إضافة مشرف جديد', 'Close': 'إغلاق',
-  'Home': 'الرئيسية', 'Apartments': 'الشقق', 'My Bookings': 'حجوزاتي', 'Admin Dashboard': 'لوحة الإدارة',
+  'Home': 'الرئيسية', 'Apartments': 'الشقق', 'My Bookings': 'حجوزاتي', 'Saved Apartments': 'الشقق المحفوظة', 'Saved': 'المحفوظات',
+  'No saved properties yet. Explore our coastal stays and bookmark your favorites for quick access!': 'لا توجد عقارات محفوظة حتى الآن. استكشف إقاماتنا الساحلية واحفظ المفضلة للوصول إليها بسهولة!', 'Explore Apartments': 'استكشف الشقق',
+  'Edit Apartment Details': 'تعديل تفاصيل الشقة', 'Apartment not found': 'الشقة غير موجودة', 'Failed to load apartment': 'تعذر تحميل الشقة', 'Back to Apartments': 'العودة إلى الشقق', 'Admin Dashboard': 'لوحة الإدارة',
   'Add Apartment': 'إضافة شقة', 'Logout': 'تسجيل الخروج', 'Language': 'اللغة', 'Search': 'بحث', 'Filter': 'تصفية',
   'Price': 'السعر', 'View Details': 'عرض التفاصيل', 'Book Now': 'احجز الآن', 'Status': 'الحالة', 'Actions': 'الإجراءات',
   'Contact Us': 'اتصل بنا', 'Luxury Coastal Living': 'إقامة ساحلية فاخرة',
@@ -267,8 +271,8 @@ Object.assign(arabic, {
 const flatArabic = Object.fromEntries(Object.entries(arabic));
 const flatEnglish = Object.fromEntries(Object.entries(english));
 const resources = {
-  en: { translation: { ...flatEnglish, ...Object.fromEntries(Object.entries(homeKeys).map(([k,v]) => [k,v])), nav: { home: 'Home', apartments: 'Apartments', myBookings: 'My Bookings', adminDashboard: 'Admin Dashboard', addApartment: 'Add Apartment', logout: 'Logout', language: 'Language', contact: 'Contact Us' }, common: { search: 'Search', filter: 'Filter', price: 'Price', details: 'View Details', bookNow: 'Book Now', status: 'Status', actions: 'Actions' } } },
-  ar: { translation: { ...flatArabic, ...Object.fromEntries(Object.entries(homeKeys).map(([k,v]) => [k,flatArabic[v] || v])), nav: { home: 'الرئيسية', apartments: 'الشقق', myBookings: 'حجوزاتي', adminDashboard: 'لوحة الإدارة', addApartment: 'إضافة شقة', logout: 'تسجيل الخروج', language: 'اللغة', contact: 'اتصل بنا' }, common: { search: 'بحث', filter: 'تصفية', price: 'السعر', details: 'عرض التفاصيل', bookNow: 'احجز الآن', status: 'الحالة', actions: 'الإجراءات' } } }
+  en: { translation: { ...flatEnglish, ...Object.fromEntries(Object.entries(homeKeys).map(([k,v]) => [k,v])), nav: { home: 'Home', apartments: 'Apartments', myBookings: 'My Bookings', saved: 'Saved', adminDashboard: 'Admin Dashboard', addApartment: 'Add Apartment', logout: 'Logout', language: 'Language', contact: 'Contact Us' }, common: { search: 'Search', filter: 'Filter', price: 'Price', details: 'View Details', bookNow: 'Book Now', status: 'Status', actions: 'Actions' } } },
+  ar: { translation: { ...flatArabic, ...Object.fromEntries(Object.entries(homeKeys).map(([k,v]) => [k,flatArabic[v] || v])), nav: { home: 'الرئيسية', apartments: 'الشقق', myBookings: 'حجوزاتي', saved: 'المحفوظات', adminDashboard: 'لوحة الإدارة', addApartment: 'إضافة شقة', logout: 'تسجيل الخروج', language: 'اللغة', contact: 'اتصل بنا' }, common: { search: 'بحث', filter: 'تصفية', price: 'السعر', details: 'عرض التفاصيل', bookNow: 'احجز الآن', status: 'الحالة', actions: 'الإجراءات' } } }
 };
 
 resources.en.translation.auth = { signIn: 'Sign in', createAccount: 'Create account', resetPassword: 'Reset password', forgotPassword: 'Forgot password?', username: 'Username', phone: 'Phone number', accountIdentifier: 'Account phone number or username', email: 'Email address', targetEmail: 'Email address to receive the reset code', emailOptional: 'Email address (optional)', password: 'Password', newPassword: 'New password', signupHint: 'Create your account with a username, phone number, and password.', loginHint: 'Sign in with your phone number and password.', phoneFormat: 'Include your country code, for example +201000000000.', pleaseWait: 'Please wait…', resetEmailHint: 'Enter your account phone number or username and any email address where we can send your reset code.', resetCodeHint: 'Enter the six-digit code sent to your email and choose a new password.', verificationCode: 'Six-digit code', sendCode: 'Send code', haveAccount: 'Already have an account?', noAccount: 'New to Top Line?', signInFailed: 'Could not sign in.', sendFailed: 'Could not send the code.', resetFailed: 'Could not reset your password.', resetCodeSent: 'A reset code has been sent to your email address.', passwordReset: 'Password updated successfully. You can now log in.', welcome: 'You are signed in.' };

@@ -23,7 +23,7 @@ const ClientLayout = () => {
   const navLinks = [
     { path: '/apartments', label: t('nav.apartments', 'Apartments'), icon: Building2 },
     { path: '/my-bookings', label: t('nav.myBookings', 'My Bookings'), icon: Calendar },
-    ...(isSignedIn ? [{ path: '/favorites', label: `Saved${favoriteIds.length ? ` (${favoriteIds.length})` : ''}`, icon: Heart }] : []),
+    ...(isSignedIn ? [{ path: '/favorites', label: `${t('nav.saved')}${favoriteIds.length ? ` (${favoriteIds.length})` : ''}`, icon: Heart }] : []),
     { path: '/contact', label: t('nav.contact', 'Contact Us'), icon: Mail },
   ];
 

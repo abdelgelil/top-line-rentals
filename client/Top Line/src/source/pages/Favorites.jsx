@@ -5,8 +5,10 @@ import { useAuth } from '../context/AuthContext';
 import { useFavorites } from '../context/FavoritesContext';
 import { ApartmentCard } from '../components/apartment/ApartmentCard';
 import { ApartmentCardSkeleton } from '../components/common/Skeletons';
+import { useTranslation } from 'react-i18next';
 
 export default function Favorites() {
+  const { t } = useTranslation();
   const { isLoaded, isSignedIn } = useAuth();
   const { favoriteApartments, isLoading } = useFavorites();
 
@@ -18,7 +20,7 @@ export default function Favorites() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-8 flex items-center gap-3">
           <Heart className="h-7 w-7 fill-rose-500 text-rose-500" aria-hidden="true" />
-          <h1 className="text-3xl font-bold">Saved Apartments</h1>
+          <h1 className="text-3xl font-bold">{t('Saved Apartments')}</h1>
         </div>
         {isLoading ? (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"><ApartmentCardSkeleton count={4} /></div>
@@ -29,8 +31,8 @@ export default function Favorites() {
         ) : (
           <div className="mx-auto flex max-w-xl flex-col items-center rounded-3xl border border-slate-200 bg-slate-50 px-6 py-14 text-center dark:border-slate-800 dark:bg-slate-900">
             <Heart className="mb-5 h-12 w-12 text-rose-400" aria-hidden="true" />
-            <p className="mb-6 text-lg text-slate-600 dark:text-slate-300">No saved properties yet. Explore our coastal stays and bookmark your favorites for quick access!</p>
-            <Link to="/apartments" className="rounded-xl bg-blue-700 px-5 py-3 font-bold text-white transition hover:bg-blue-800">Explore Apartments</Link>
+            <p className="mb-6 text-lg text-slate-600 dark:text-slate-300">{t('No saved properties yet. Explore our coastal stays and bookmark your favorites for quick access!')}</p>
+            <Link to="/apartments" className="rounded-xl bg-blue-700 px-5 py-3 font-bold text-white transition hover:bg-blue-800">{t('Explore Apartments')}</Link>
           </div>
         )}
       </div>

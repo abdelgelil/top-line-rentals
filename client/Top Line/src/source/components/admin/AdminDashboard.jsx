@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import { translateText } from '../../../utils/translateContent.js';
 import React, { lazy, Suspense, useEffect, useState, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Edit } from 'lucide-react';
 import { 
   fetchAllBookings, 
   updateBookingStatus, 
@@ -476,7 +477,13 @@ const AdminDashboard = () => {
                       <span>{formatCurrency(apt.pricePerNight || apt.price)}{' '}{i18n.t("/ night")}</span>
                     </div>
                   </div>
-                  <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/30 flex justify-end">
+                  <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/30 flex justify-end gap-2">
+                    <button
+                      type="button"
+                      onClick={() => navigate(`/admin/apartments/${apt._id}/edit`)}
+                      className="inline-flex items-center gap-2 rounded-lg border border-blue-200 px-3 py-1.5 text-xs font-medium text-blue-700 hover:bg-blue-50 dark:border-blue-900 dark:text-blue-300 dark:hover:bg-blue-950/40"
+                      aria-label={`${i18n.t('Edit Apartment')}: ${apt.title}`}
+                    ><Edit size={14} />{i18n.t('Edit')}</button>
                     <button
                       onClick={() => handleDeleteApartment(apt._id)}
                       className="px-3 py-1.5 text-xs font-medium text-white bg-rose-600 hover:bg-rose-700 rounded-lg"
