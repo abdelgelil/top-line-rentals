@@ -9,17 +9,19 @@ function getTransporter() {
   const transportOptions = process.env.EMAIL_HOST
     ? {
         host: process.env.EMAIL_HOST,
-        port: Number(process.env.EMAIL_PORT || 587),
-        secure: process.env.EMAIL_SECURE === 'true',
+        port: Number(process.env.EMAIL_PORT || 465),
+        secure: process.env.EMAIL_SECURE !== 'false',
       }
-    : { service: process.env.EMAIL_SERVICE || 'gmail' };
+    : {
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+      };
   transporter = nodemailer.createTransport({
     ...transportOptions,
-    // Fail quickly when the deployment platform cannot reach the SMTP server.
-    // Nodemailer's default connection timeout is two minutes.
     connectionTimeout: 10_000,
-    greetingTimeout: 10_000,
-    socketTimeout: 20_000,
+    greetingTimeout: 5_000,
+    socketTimeout: 10_000,
     auth: { user: EMAIL_USER, pass: EMAIL_PASS },
   });
   return transporter;
