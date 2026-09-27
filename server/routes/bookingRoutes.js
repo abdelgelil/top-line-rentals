@@ -13,48 +13,59 @@ const router = express.Router();
    ========================================================================== */
 router.get('/analytics', async (req, res) => {
   try {
-    const [totalBookings, confirmedBookings, pendingBookings, cancelledBookings, revenueAgg, topClients] = await Promise.all([
-      Booking.countDocuments(),
-      Booking.countDocuments({ status: 'confirmed' }),
-      Booking.countDocuments({ status: 'pending' }),
-      Booking.countDocuments({ status: { $in: ['cancelled', 'canceled'] } }),
-      Booking.aggregate([
-        { $match: { status: 'confirmed' } },
-        { $group: { _id: null, totalRevenue: { $sum: '$totalPrice' } } },
-      ]),
-      Booking.aggregate([
-        {
-          $group: {
-            _id: '$guestEmail',
-            guestName: { $first: '$guestName' },
-            guestPhone: { $first: '$guestPhone' },
-            totalBookings: { $sum: 1 },
-            confirmedBookings: {
-              $sum: { $cond: [{ $eq: ['$status', 'confirmed'] }, 1, 0] },
+    // One database round trip keeps the dashboard's summary and VIP data in sync.
+    const [analytics] = await Booking.aggregate([
+      {
+        $facet: {
+          metrics: [
+            {
+              $group: {
+                _id: null,
+                totalBookings: { $sum: 1 },
+                confirmedBookings: { $sum: { $cond: [{ $eq: ['$status', 'confirmed'] }, 1, 0] } },
+                pendingBookings: { $sum: { $cond: [{ $eq: ['$status', 'pending'] }, 1, 0] } },
+                cancelledBookings: {
+                  $sum: { $cond: [{ $in: ['$status', ['cancelled', 'canceled']] }, 1, 0] },
+                },
+                totalRevenue: {
+                  $sum: { $cond: [{ $eq: ['$status', 'confirmed'] }, '$totalPrice', 0] },
+                },
+              },
             },
-            totalSpent: {
-              $sum: { $cond: [{ $eq: ['$status', 'confirmed'] }, '$totalPrice', 0] },
+          ],
+          topClients: [
+            {
+              $group: {
+                _id: '$guestEmail',
+                guestName: { $first: '$guestName' },
+                guestPhone: { $first: '$guestPhone' },
+                totalBookings: { $sum: 1 },
+                confirmedBookings: { $sum: { $cond: [{ $eq: ['$status', 'confirmed'] }, 1, 0] } },
+                totalSpent: {
+                  $sum: { $cond: [{ $eq: ['$status', 'confirmed'] }, '$totalPrice', 0] },
+                },
+                lastBookingDate: { $max: '$createdAt' },
+              },
             },
-            lastBookingDate: { $max: '$createdAt' },
-          },
+            { $sort: { totalBookings: -1, totalSpent: -1 } },
+            { $limit: 10 },
+          ],
         },
-        { $sort: { totalBookings: -1, totalSpent: -1 } },
-        { $limit: 10 },
-      ]),
+      },
     ]);
-    const totalRevenue = revenueAgg[0]?.totalRevenue || 0;
+    const metrics = analytics?.metrics?.[0] || {};
 
     return res.json({
       success: true,
       data: {
         metrics: {
-          totalBookings,
-          confirmedBookings,
-          pendingBookings,
-          cancelledBookings,
-          totalRevenue,
+          totalBookings: metrics.totalBookings || 0,
+          confirmedBookings: metrics.confirmedBookings || 0,
+          pendingBookings: metrics.pendingBookings || 0,
+          cancelledBookings: metrics.cancelledBookings || 0,
+          totalRevenue: metrics.totalRevenue || 0,
         },
-        topClients,
+        topClients: analytics?.topClients || [],
       },
     });
   } catch (error) {

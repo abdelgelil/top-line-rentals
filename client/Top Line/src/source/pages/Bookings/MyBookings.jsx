@@ -1,6 +1,7 @@
 import i18n from "../../../i18n.js";
 import { translateText } from '../../../utils/translateContent.js';
 import React, { useEffect, useState } from 'react';
+import OptimizedImage from '../../components/common/OptimizedImage';
 import { useUser } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
 import { cancelBooking, fetchUserBookings } from '../../services/api';
@@ -166,10 +167,11 @@ export default function MyBookings() {
               >
                 {/* Property Thumbnail */}
                 <div className="relative w-full md:w-40 h-32 md:h-32 shrink-0 overflow-hidden rounded-2xl shadow-lg">
-                  <img 
-                    src={booking.apartment?.images?.[0] || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267'} 
+                  <OptimizedImage
+                    src={booking.apartment?.images?.[0]}
                     alt={translateText(booking.apartment?.title)}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="h-full w-full"
+                    imageClassName="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute top-2 left-2 px-2 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-md text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase">
                     {translateText(booking.apartment?.tower || 'Residence')}

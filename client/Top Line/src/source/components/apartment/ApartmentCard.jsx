@@ -3,6 +3,7 @@ import { translateText } from '../../../utils/translateContent.js';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Bed, CalendarCheck } from 'lucide-react';
+import OptimizedImage from '../common/OptimizedImage';
 
 export const ApartmentCard = ({ unit }) => {
   const apartmentId = unit._id || unit.id;
@@ -11,12 +12,13 @@ export const ApartmentCard = ({ unit }) => {
     <div className="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all group flex flex-col">
       {/* Image Container */}
       <div className="relative h-64 overflow-hidden">
-        <img
-          src={unit.images?.[0] || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267'}
+        <OptimizedImage
+          src={unit.images?.[0]}
           alt={translateText(unit.title || unit.name)}
           loading="lazy"
           decoding="async"
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="h-full w-full"
+          imageClassName="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute top-4 right-4 bg-slate-900/80 backdrop-blur-md border border-white/20 text-sky-400 font-bold px-3 py-1 rounded-full text-xs shadow-md">
           ${unit.pricePerNight || unit.price}{' '}{i18n.t("/ night")}{' '}</div>

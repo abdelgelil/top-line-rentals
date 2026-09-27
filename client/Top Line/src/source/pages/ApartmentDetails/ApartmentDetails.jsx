@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 import { fetchApartmentById } from '../../services/api';
 import BookingForm from '../../components/booking/BookingForm';
+import OptimizedImage from '../../components/common/OptimizedImage';
 import { 
   Users, 
   Maximize, 
@@ -64,10 +65,12 @@ const ImageLightbox = ({ images, initialIndex, onClose }) => {
           <ChevronLeft className="w-8 h-8" />
         </button>
         
-        <img 
+        <OptimizedImage
           src={images[currentIndex]} 
           alt={`Property view ${currentIndex + 1}`} 
-          className="max-w-full max-h-full object-contain rounded-lg shadow-2xl transition-all duration-300"
+          className="max-w-full max-h-full rounded-lg shadow-2xl"
+          imageClassName="max-w-full max-h-full object-contain transition-all duration-300"
+          loading="eager"
         />
 
         <button 
@@ -87,7 +90,7 @@ const ImageLightbox = ({ images, initialIndex, onClose }) => {
               currentIndex === idx ? 'border-blue-500 scale-110' : 'border-transparent opacity-50 hover:opacity-100'
             }`}
           >
-            <img src={img} className="w-full h-full object-cover" alt={`Thumb ${idx}`} />
+            <OptimizedImage src={img} className="h-full w-full" imageClassName="h-full w-full object-cover" alt={`Thumb ${idx}`} />
           </button>
         ))}
       </div>
@@ -174,21 +177,21 @@ export function ApartmentDetails({ currentUser: propUser }) {
                 >
                   {images.length > 0 ? (
                     images.map((img, idx) => (
-                      <img 
+                      <OptimizedImage
                         key={idx}
-                        src={img} 
+                        src={img}
                         alt={`Property view ${idx + 1}`} 
                         loading={idx === activeImageIndex ? 'eager' : 'lazy'}
                         fetchPriority={idx === activeImageIndex ? 'high' : 'auto'}
                         decoding="async"
-                        className="h-[260px] w-full flex-shrink-0 object-cover sm:h-[340px] lg:h-[420px]"
-                        onError={(e) => { e.target.src = 'https://via.placeholder.com/800x600?text=No+Image'; }}
+                        className="h-[260px] w-full flex-shrink-0 sm:h-[340px] lg:h-[420px]"
+                        imageClassName="h-full w-full object-cover"
                       />
                     ))
                   ) : (
-                    <img 
-                      src="https://via.placeholder.com/800x600?text=No+Image" 
-                      className="h-[260px] w-full flex-shrink-0 object-cover sm:h-[340px] lg:h-[420px]"
+                    <OptimizedImage
+                      className="h-[260px] w-full flex-shrink-0 sm:h-[340px] lg:h-[420px]"
+                      imageClassName="h-full w-full object-cover"
                       alt={i18n.t("Placeholder")} 
                     />
                   )}

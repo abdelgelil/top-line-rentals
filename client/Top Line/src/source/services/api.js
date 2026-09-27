@@ -58,22 +58,82 @@ export const setupAxiosInterceptors = (getToken) => {
 /* ==========================================================================
    Apartments Endpoints
    ========================================================================== */
-export const fetchApartments = (tower) => API.get('/apartments', { params: { tower } });
+const responseCache = new Map();
+const pendingRequests = new Map();
+const ADMIN_CACHE_TTL_MS = 15_000;
+
+const cachedGet = (key, request) => {
+  const cached = responseCache.get(key);
+  if (cached && cached.expiresAt > Date.now()) return Promise.resolve(cached.response);
+  if (pendingRequests.has(key)) return pendingRequests.get(key);
+
+  const pending = request()
+    .then((response) => {
+      responseCache.set(key, { response, expiresAt: Date.now() + ADMIN_CACHE_TTL_MS });
+      return response;
+    })
+    .finally(() => pendingRequests.delete(key));
+  pendingRequests.set(key, pending);
+  return pending;
+};
+
+const invalidateCache = (...keys) => {
+  keys.forEach((key) => responseCache.delete(key));
+  if (keys.includes('apartments:all')) {
+    for (const key of responseCache.keys()) {
+      if (key.startsWith('apartments:')) responseCache.delete(key);
+    }
+  }
+};
+const apartmentsCacheKey = (tower) => `apartments:${tower || 'all'}`;
+
+export const fetchApartments = (tower) =>
+  cachedGet(apartmentsCacheKey(tower), () => API.get('/apartments', { params: { tower } }));
 export const fetchApartmentById = (id) => API.get(`/apartments/${id}`);
-export const createApartment = (formData) => API.post('/apartments', formData);
-export const updateApartment = (id, formData) => API.put(`/apartments/${id}`, formData);
-export const deleteApartment = (id) => API.delete(`/apartments/${id}`);
+export const createApartment = async (formData) => {
+  const response = await API.post('/apartments', formData);
+  invalidateCache('apartments:all');
+  return response;
+};
+export const updateApartment = async (id, formData) => {
+  const response = await API.put(`/apartments/${id}`, formData);
+  invalidateCache('apartments:all');
+  return response;
+};
+export const deleteApartment = async (id) => {
+  const response = await API.delete(`/apartments/${id}`);
+  invalidateCache('apartments:all');
+  return response;
+};
 
 /* ==========================================================================
    Bookings & Analytics Endpoints
    ========================================================================== */
-export const createBooking = (bookingData) => API.post('/bookings', bookingData);
+const invalidateBookingCache = () => invalidateCache('admin:bookings', 'admin:analytics');
+
+export const createBooking = async (bookingData) => {
+  const response = await API.post('/bookings', bookingData);
+  invalidateBookingCache();
+  return response;
+};
 export const fetchUserBookings = (userId) => API.get('/bookings', { params: { userId } });
-export const cancelBooking = (id) => API.patch(`/bookings/${id}/cancel`);
-export const fetchAllBookings = () => API.get('/bookings');
-export const updateBookingStatus = (id, status) => API.patch(`/bookings/${id}/status`, { status });
-export const deleteBooking = (id) => API.delete(`/bookings/${id}`);
-export const fetchAnalytics = () => API.get('/bookings/analytics');
+export const cancelBooking = async (id) => {
+  const response = await API.patch(`/bookings/${id}/cancel`);
+  invalidateBookingCache();
+  return response;
+};
+export const fetchAllBookings = () => cachedGet('admin:bookings', () => API.get('/bookings'));
+export const updateBookingStatus = async (id, status) => {
+  const response = await API.patch(`/bookings/${id}/status`, { status });
+  invalidateBookingCache();
+  return response;
+};
+export const deleteBooking = async (id) => {
+  const response = await API.delete(`/bookings/${id}`);
+  invalidateBookingCache();
+  return response;
+};
+export const fetchAnalytics = () => cachedGet('admin:analytics', () => API.get('/bookings/analytics'));
 export const fetchUserRole = (clerkId) => API.get(`/users/role/${encodeURIComponent(clerkId)}`);
 export const syncUserProfile = (profile) => API.post('/users/sync', profile);
 

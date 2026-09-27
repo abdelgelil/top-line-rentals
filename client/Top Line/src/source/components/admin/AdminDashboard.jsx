@@ -13,6 +13,7 @@ import {
   deleteApartment, 
   fetchAnalytics
 } from '../../services/api';
+import OptimizedImage from '../common/OptimizedImage';
 
 const AdminDashboard = () => {
   const location = useLocation();
@@ -427,11 +428,11 @@ const AdminDashboard = () => {
                   key={apt._id}
                   className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col justify-between"
                 >
-                  <img
-                    src={apt.images?.[0] || 'https://via.placeholder.com/400x250'}
+                  <OptimizedImage
+                    src={apt.images?.[0]}
                     alt={translateText(apt.title)}
-                    onError={(e) => { e.target.src = 'https://via.placeholder.com/400x250'; }}
-                    className="w-full h-48 object-cover"
+                    className="h-48 w-full"
+                    imageClassName="h-full w-full object-cover"
                   />
                   <div className="p-4 space-y-2">
                     <h3 className="font-bold text-lg text-slate-900 dark:text-white">{translateText(apt.title)}</h3>
