@@ -1,6 +1,16 @@
 import express from 'express';
+import { clerkClient } from '@clerk/express';
 import User from '../models/User.js';
-import { getClerkClient, requireAdmin, requireAuth } from '../middleware/auth.js';
+import { requireAdmin, requireAuth } from '../middleware/auth.js';
+
+const getClerkApiClient = () => (
+  typeof clerkClient === 'function'
+    ? clerkClient({
+        secretKey: process.env.CLERK_SECRET_KEY,
+        publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
+      })
+    : clerkClient
+);
 
 const router = express.Router();
 
@@ -27,7 +37,7 @@ router.post('/sync', requireAuth, async (req, res) => {
       return res.status(403).json({ success: false, message: 'Account ID does not match the signed-in user' });
     }
 
-    const clerkUser = await getClerkClient().users.getUser(req.userId);
+    const clerkUser = await getClerkApiClient().users.getUser(req.userId);
     const verifiedEmails = (clerkUser.emailAddresses || []).filter(
       (entry) => entry.verification?.status === 'verified'
     );
@@ -105,7 +115,7 @@ router.post('/make-admin', requireAuth, requireAdmin, async (req, res) => {
     }
 
     const normalizePhone = (value) => String(value || '').replace(/\D/g, '');
-    const clerkResult = await getClerkClient().users.getUserList({
+    const clerkResult = await getClerkApiClient().users.getUserList({
       ...(normalizedEmail ? { emailAddress: [normalizedEmail] } : {}),
       ...(normalizedPhone ? { phoneNumber: [`+${phoneDigits}`] } : {}),
       limit: 100,
@@ -137,14 +147,14 @@ router.post('/make-admin', requireAuth, requireAdmin, async (req, res) => {
     }
 
     const previousPublicMetadata = matchedClerkUser.publicMetadata || {};
-    await getClerkClient().users.updateUserMetadata(matchedClerkUser.id, {
+    await getClerkApiClient().users.updateUserMetadata(matchedClerkUser.id, {
       publicMetadata: { ...previousPublicMetadata, role: 'admin' },
     });
     try {
       updatedUser.role = 'admin';
       await updatedUser.save();
     } catch (saveError) {
-      await getClerkClient().users.updateUserMetadata(matchedClerkUser.id, {
+      await getClerkApiClient().users.updateUserMetadata(matchedClerkUser.id, {
         publicMetadata: previousPublicMetadata,
       });
       throw saveError;
