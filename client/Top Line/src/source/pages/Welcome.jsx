@@ -9,7 +9,7 @@ const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible
 function CtaPair({ t, variant = 'hero' }) {
   const isBanner = variant === 'banner';
   const bookClass = isBanner
-    ? 'bg-white text-blue-700 shadow-blue-600/30 hover:bg-blue-50'
+    ? 'bg-white text-blue-700 font-semibold hover:bg-blue-50'
     : 'bg-blue-600 text-white shadow-blue-600/30 hover:bg-blue-700 hover:scale-105 motion-reduce:hover:scale-100';
 
   return (
@@ -65,9 +65,9 @@ export default function Welcome() {
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-slate-950/95 via-slate-950/90 to-blue-950/75" />
         <div className="mx-auto w-full max-w-7xl px-6 py-24 lg:px-8">
           <div className="max-w-2xl" data-reveal>
-            <span className="inline-flex rounded-full border border-blue-300/40 bg-slate-950/75 px-4 py-1.5 text-sm font-semibold text-blue-100 shadow-lg backdrop-blur-md">{t('welcome.badge')}</span>
-            <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-white drop-shadow-[0_3px_12px_rgba(0,0,0,0.8)] sm:text-5xl lg:text-6xl lg:leading-[1.1]">{t('welcome.headline')}</h1>
-            <p className="mt-6 max-w-xl text-lg font-medium leading-relaxed text-slate-100 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">{t('welcome.subtitle')}</p>
+            <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-semibold text-white shadow-lg backdrop-blur-md">{t('welcome.badge')}</span>
+            <h1 className="mt-6 text-4xl font-bold tracking-tight text-white drop-shadow-[0_3px_12px_rgba(0,0,0,0.8)] sm:text-5xl lg:text-6xl lg:leading-[1.1]">{t('welcome.headline')}</h1>
+            <p className="mt-6 max-w-xl text-lg font-medium leading-relaxed text-slate-200 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">{t('welcome.subtitle')}</p>
             <div className="mt-10"><CtaPair t={t} /></div>
           </div>
         </div>
@@ -75,15 +75,15 @@ export default function Welcome() {
 
       <section className="mx-auto max-w-7xl px-6 py-24 lg:px-8" data-reveal>
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-blue-800 dark:text-blue-200 sm:text-4xl">{t('welcome.identityTitle')}</h2>
-          <p className="mt-4 text-lg leading-relaxed text-slate-500 dark:text-slate-300">{t('welcome.identitySubtitle')}</p>
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">{t('welcome.identityTitle')}</h2>
+          <p className="mt-4 text-lg leading-relaxed text-slate-600 dark:text-slate-300">{t('welcome.identitySubtitle')}</p>
         </div>
         <div className="mt-14 grid gap-8 md:grid-cols-3" data-reveal-stagger>
           {identityCards.map(({ icon: Icon, title, text }) => (
             <article key={title} className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all hover:shadow-xl motion-reduce:transition-none dark:border-slate-800 dark:bg-slate-900">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-white"><Icon aria-hidden="true" className="h-6 w-6" /></div>
-              <h3 className="mt-6 text-xl font-semibold text-blue-800 dark:text-blue-200">{t(title)}</h3>
-              <p className="mt-3 leading-relaxed text-slate-500 dark:text-slate-300">{t(text)}</p>
+              <h3 className="mt-6 text-xl font-semibold text-slate-900 dark:text-white">{t(title)}</h3>
+              <p className="mt-3 leading-relaxed text-slate-600 dark:text-slate-300">{t(text)}</p>
             </article>
           ))}
         </div>
@@ -97,10 +97,10 @@ export default function Welcome() {
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3" data-reveal-stagger>
             {highlights.map(({ icon: Icon, title, text }) => (
-              <article key={title} className="rounded-2xl border border-slate-700 bg-slate-800/60 p-6 sm:p-8">
+              <article key={title} className="rounded-2xl border border-slate-700/60 bg-slate-800/80 p-6 sm:p-8">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-600 text-white"><Icon aria-hidden="true" className="h-6 w-6" /></div>
                 <h3 className="mt-6 text-xl font-semibold text-white">{t(title)}</h3>
-                <p className="mt-3 leading-relaxed text-slate-200">{t(text)}</p>
+                <p className="mt-3 leading-relaxed text-slate-300">{t(text)}</p>
               </article>
             ))}
           </div>
@@ -112,7 +112,7 @@ export default function Welcome() {
           <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
             <div className="max-w-xl">
               <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">{t('welcome.bannerTitle')}</h2>
-              <p className="mt-4 text-lg text-blue-50">{t('welcome.bannerSubtitle')}</p>
+              <p className="mt-4 text-lg text-blue-100">{t('welcome.bannerSubtitle')}</p>
             </div>
             <CtaPair t={t} variant="banner" />
           </div>
