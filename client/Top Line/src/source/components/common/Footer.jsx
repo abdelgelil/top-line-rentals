@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Building2, Mail, Phone, MapPin, ShieldCheck } from 'lucide-react';
+import { Mail, Phone, MapPin, ShieldCheck } from 'lucide-react';
+import logoMark from '../../../assets/Logo.png';
 
 const Footer = () => {
   const { t, i18n } = useTranslation();
@@ -13,8 +14,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 gap-10 border-b border-slate-800/80 pb-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-4">
             <Link to="/" className="flex w-fit items-center gap-2.5">
-              <span className="rounded-xl border border-blue-500/30 bg-blue-600/20 p-2 text-blue-400"><Building2 className="h-6 w-6" /></span>
-              <span className="text-xl font-bold tracking-wide text-white">TopLine <span className="text-blue-400">Rentals</span></span>
+              <img src={logoMark} alt="" aria-hidden="true" className="h-10 w-9 object-contain" />
+              <span className="text-lg font-bold tracking-wide text-white">TopLine <span className="text-blue-400">Luxury Apartments</span></span>
             </Link>
             <p className="max-w-sm text-sm leading-relaxed text-slate-400">{t('footer.aboutText')}</p>
             <div className="flex w-fit items-center gap-2 rounded-full border border-blue-800/50 bg-blue-950/50 px-3 py-1.5 text-xs text-blue-300">
@@ -48,7 +49,7 @@ const Footer = () => {
         </div>
 
         <div className="flex flex-col items-center justify-between gap-4 border-t border-slate-800/60 pt-8 text-xs text-slate-500 sm:flex-row">
-          <p>© {new Date().getFullYear()} TopLine Rentals. {t('footer.allRightsReserved', 'All rights reserved.')}</p>
+          <p>© {new Date().getFullYear()} TopLine Luxury Apartments. {t('footer.allRightsReserved', 'All rights reserved.')}</p>
           <div className="flex items-center gap-1.5 text-slate-400">
             <span>{t('footer.developedBy', 'Developed with quality & care by')}</span>
             <a

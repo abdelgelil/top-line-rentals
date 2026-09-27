@@ -7,6 +7,7 @@ import { Menu, X, Building2, Calendar, Mail, CircleHelp } from 'lucide-react';
 import { LanguageToggle } from './LanguageToggle';
 import Footer from './Footer';
 import HelpModal from './HelpModal';
+import Logo from './Logo';
 
 const ClientLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,11 +31,8 @@ const ClientLayout = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
 
         {/* Brand / Logo */}
-        <Link to="/" className="flex items-center gap-2.5 font-extrabold text-xl tracking-tight text-slate-900 dark:text-white">
-          <div className="p-2 bg-blue-600 text-white rounded-xl shadow-md shadow-blue-500/20">
-            <Building2 className="w-5 h-5" />
-          </div>
-          <span>{i18n.t("TopLine")}{' '}<span className="text-blue-600 dark:text-blue-400">{i18n.t("Rentals")}</span></span>
+        <Link to="/" className="font-extrabold tracking-tight text-slate-900 dark:text-white">
+          <Logo />
         </Link>
 
         {/* Desktop Navigation Links */}

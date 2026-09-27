@@ -75,9 +75,9 @@ export const ContactUs = () => {
           <div className="p-6 sm:p-8 rounded-3xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-blue-100/60 dark:border-blue-500/20 shadow-xl shadow-blue-900/5 space-y-6 transition-all duration-300 hover:border-blue-300/60">
             <div className="flex items-center gap-3 text-blue-600 dark:text-blue-400">
               <Info className="w-6 h-6" />
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">{i18n.t("About TopLine Rentals")}</h2>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white">{i18n.t("About TopLine Luxury Apartments")}</h2>
             </div>
-            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">{' '}{i18n.t("TopLine Rentals is a premier provider of luxury rental property listings and apartment management. We specialize in curating high-end residences designed for both short-term stays and extended luxury living, ensuring every guest experiences the pinnacle of coastal sophistication.")}{' '}</p>
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">{' '}{i18n.t("TopLine Luxury Apartments offers carefully selected coastal homes for short stays and extended visits, with attentive service and a simple booking experience.")}{' '}</p>
           </div>
 
           <div className="p-6 sm:p-8 rounded-3xl bg-slate-900 dark:bg-slate-800 text-white border border-blue-500/20 shadow-2xl space-y-6 relative overflow-hidden group transition-all duration-300 hover:border-blue-500/40">
