@@ -13,7 +13,11 @@ const resetLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 5, standardHea
 const phonePattern = /^\+[1-9]\d{7,14}$/;
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const normalizePhone = (phone) => String(phone || '').replace(/[\s().-]/g, '');
-const hashOtp = (otp) => crypto.createHash('sha256').update(otp).digest('hex');
+const hashOtp = (otp) => {
+  const secret = process.env.OTP_SECRET || process.env.JWT_SECRET;
+  if (!secret || secret.length < 32) throw new Error('A 32-character OTP_SECRET or JWT_SECRET is required to secure reset codes.');
+  return crypto.createHmac('sha256', secret).update(otp).digest('hex');
+};
 const safeUser = (user) => ({ id: String(user._id), username: user.username || user.name || '', name: user.username || user.name || '', email: user.email || '', phone: user.phone, role: user.role });
 const createToken = (user) => jwt.sign({ id: String(user._id), phone: user.phone, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d', issuer: 'top-line' });
 
@@ -31,7 +35,7 @@ router.post('/register', authLimiter, async (req, res) => {
     if (email && !emailPattern.test(email)) return res.status(400).json({ message: 'Enter a valid email address.' });
     if (await User.exists({ phone })) return res.status(409).json({ message: 'An account already exists for this phone number. Sign in instead.' });
     if (email && await User.exists({ email })) return res.status(409).json({ message: 'An account already exists for this email address.' });
-    const user = await User.create({ username, name: username, phone, ...(email ? { email } : {}), password: await bcrypt.hash(password, 12), isVerified: true, emailVerified: true });
+    const user = await User.create({ username, name: username, phone, ...(email ? { email } : {}), password: await bcrypt.hash(password, 12) });
     return res.status(201).json({ success: true, token: createToken(user), user: safeUser(user) });
   } catch (error) {
     if (error.code === 11000) {
@@ -76,6 +80,7 @@ router.post('/forgot-password', resetLimiter, async (req, res) => {
     const user = await User.findOne({ $or: [{ phone: normalizePhone(identifier) }, { username: identifier }] });
     if (!user) return res.status(404).json({ message: 'No account found with this phone number or username.' });
     const otp = String(crypto.randomInt(0, 1_000_000)).padStart(6, '0');
+    user.username ||= user.name || user.phone;
     user.resetOtp = hashOtp(otp);
     user.resetOtpExpires = new Date(Date.now() + 10 * 60 * 1000);
     await user.save();
@@ -83,6 +88,9 @@ router.post('/forgot-password', resetLimiter, async (req, res) => {
       await sendOTP({ email: targetEmail, otpCode: otp, purpose: 'password reset' });
     } catch (emailError) {
       console.error('[forgot-password] Email delivery failed:', emailError.message || emailError);
+      user.resetOtp = undefined;
+      user.resetOtpExpires = undefined;
+      await user.save().catch((clearError) => console.error('[forgot-password] Could not clear unsent reset code:', clearError.message));
       return res.status(500).json({ message: 'Could not send a reset code. Please ensure email is configured and try again.' });
     }
     return res.json({ success: true, message: 'A password reset code has been sent to your email address.' });
@@ -99,11 +107,15 @@ router.post('/reset-password', resetLimiter, async (req, res) => {
     const newPassword = typeof req.body.newPassword === 'string' ? req.body.newPassword : '';
     if (!identifier || !/^\d{6}$/.test(otp)) return res.status(400).json({ message: 'Enter an account phone number or username and a six-digit code.' });
     if (newPassword.length < 8 || newPassword.length > 128) return res.status(400).json({ message: 'Use a password between 8 and 128 characters.' });
-    const user = await User.findOne({ $or: [{ phone: normalizePhone(identifier) }, { username: identifier }] }).select('+password +resetOtp +resetOtpExpires');
-    if (!user || !user.resetOtp || !user.resetOtpExpires || user.resetOtpExpires <= new Date()) return res.status(400).json({ message: 'This reset code is invalid or expired. Request a new one.' });
+    const matchingUsers = await User.find({ $or: [{ phone: normalizePhone(identifier) }, { username: identifier }] }).select('+password +resetOtp +resetOtpExpires');
     const submittedHash = Buffer.from(hashOtp(otp));
-    const storedHash = Buffer.from(user.resetOtp);
-    if (submittedHash.length !== storedHash.length || !crypto.timingSafeEqual(submittedHash, storedHash)) return res.status(400).json({ message: 'This reset code is invalid or expired. Request a new one.' });
+    const user = matchingUsers.find((candidate) => {
+      if (!candidate.resetOtp || !candidate.resetOtpExpires || candidate.resetOtpExpires <= new Date()) return false;
+      const storedHash = Buffer.from(candidate.resetOtp);
+      return submittedHash.length === storedHash.length && crypto.timingSafeEqual(submittedHash, storedHash);
+    });
+    if (!user) return res.status(400).json({ message: 'This reset code is invalid or expired. Request a new one.' });
+    user.username ||= user.name || user.phone;
     user.password = await bcrypt.hash(newPassword, 12);
     user.resetOtp = undefined;
     user.resetOtpExpires = undefined;

@@ -1,16 +1,17 @@
 # Top Line
 
-## Phone authentication setup
+## Authentication and password reset
 
-Sign-up and sign-in require a password, a unique phone number, and an email verification code. Passwords are stored using scrypt; OTPs expire after ten minutes and are stored as SHA-256 hashes peppered with `OTP_SECRET`. Configure these server environment variables before enabling authentication:
+Sign-up uses username, unique phone, and password; email is optional and signup does not require an OTP. Passwords use bcryptjs. Password recovery requires the account identifier (phone or username) and the email address registered on that account. Reset codes are HMAC-hashed, expire after ten minutes, and are delivered through Resend's HTTPS API.
 
-- `JWT_SECRET`: long, random secret used to sign seven-day session tokens.
-- `OTP_SECRET`: separate long, random secret used to hash verification codes.
-- `EMAIL_USER`, `EMAIL_PASS`: SMTP account and app password. Gmail SMTP is used by default; optionally set `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_SECURE`, or `EMAIL_SERVICE` for another provider.
-- `SETUP_SECRET`: one-time secret for the initial admin claim endpoint.
+Configure these server environment variables:
 
-In development, verification codes are printed to the server console and SMTP is skipped. Production never logs codes. Passwords must be at least 12 characters. Existing accounts need valid email addresses; accounts without password hashes can set one through the email-verified **Forgot password** flow.
+- `JWT_SECRET`: at least 32 random characters, used for session tokens and as the reset-code HMAC key when `OTP_SECRET` is absent.
+- `OTP_SECRET`: optional separate secret of at least 32 random characters for reset-code hashing.
+- `RESEND_API_KEY`: Resend API key for production delivery.
+- `RESEND_FROM_EMAIL`: optional sender using a domain verified with Resend. The default `onboarding@resend.dev` sender is restricted by Resend and is not suitable for arbitrary recipients in production.
+- `SETUP_SECRET`: secret for the initial admin claim endpoint.
 
-Before deploying against an existing database, resolve duplicate or missing phone numbers and emails. Ensure the unique indexes on both `phone` and `email` exist. Users must verify their email through OTP before the account is marked verified.
+In local development, if `RESEND_API_KEY` is absent, the reset code is printed to the server console. Production requests fail with a JSON error when Resend is not configured or delivery fails. Never commit `.env` files or API keys.
 
-For an existing deployment, clear pending challenges created by the previous SMS flow once the SMTP version is deployed: `db.otpchallenges.deleteMany({})`. Then confirm that account records have valid unique emails and E.164 phone numbers before enabling the unique indexes.
+Existing accounts created with the earlier password format can migrate to bcryptjs at their next successful login. The server converts the old non-sparse email index to a sparse unique index before accepting requests.
