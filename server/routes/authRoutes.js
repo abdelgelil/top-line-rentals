@@ -74,35 +74,35 @@ router.post('/login', authLimiter, async (req, res) => {
 
 router.post('/forgot-password', resetLimiter, async (req, res) => {
   try {
-    const identifier = typeof req.body.identifier === 'string' ? req.body.identifier.trim() : '';
-    const targetEmail = typeof req.body.targetEmail === 'string' ? req.body.targetEmail.trim().toLowerCase() : '';
+    const { identifier: rawIdentifier, targetEmail: rawTargetEmail } = req.body || {};
+    const identifier = typeof rawIdentifier === 'string' ? rawIdentifier.trim() : '';
+    const targetEmail = typeof rawTargetEmail === 'string' ? rawTargetEmail.trim().toLowerCase() : '';
     if (!identifier || !emailPattern.test(targetEmail)) return res.status(400).json({ message: 'Enter an account phone number or username and a valid email address.' });
+    console.log('[forgot-password] Finding user by account identifier.');
     const user = await User.findOne({ $or: [{ phone: normalizePhone(identifier) }, { username: identifier }] });
     if (!user) return res.status(404).json({ message: 'No account found with this phone number or username.' });
+    console.log('[forgot-password] Generating reset code.');
     const otp = String(crypto.randomInt(0, 1_000_000)).padStart(6, '0');
     user.username ||= user.name || user.phone;
     user.resetOtp = hashOtp(otp);
     user.resetOtpExpires = new Date(Date.now() + 10 * 60 * 1000);
+    console.log('[forgot-password] Saving reset code.');
     await user.save();
     try {
+      console.log('[forgot-password] Calling Resend.');
       await sendOTP({ email: targetEmail, otpCode: otp, purpose: 'password reset' });
     } catch (emailError) {
-      console.error('[forgot-password] Email delivery failed:', {
-        message: emailError.message || String(emailError),
-        name: emailError.name,
-        code: emailError.code,
-        statusCode: emailError.statusCode,
-        cause: emailError.cause?.message,
-      });
+      console.error('[forgot-password error]:', emailError.stack || emailError);
       user.resetOtp = undefined;
       user.resetOtpExpires = undefined;
       await user.save().catch((clearError) => console.error('[forgot-password] Could not clear unsent reset code:', clearError.message));
-      return res.status(500).json({ message: 'Could not send a reset code. Please ensure email is configured and try again.' });
+      return res.status(500).json({ message: emailError.message || 'Failed to process password reset.' });
     }
+    console.log('[forgot-password] Reset code sent successfully.');
     return res.json({ success: true, message: 'A password reset code has been sent to your email address.' });
   } catch (error) {
-    console.error('[forgot-password] Unexpected error:', error.message || error);
-    return res.status(500).json({ message: 'An unexpected error occurred. Please try again.' });
+    console.error('[forgot-password error]:', error.stack || error);
+    return res.status(500).json({ message: error.message || 'Failed to process password reset.' });
   }
 });
 
