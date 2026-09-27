@@ -5,6 +5,21 @@ import { SignInButton, useUser } from "@clerk/clerk-react";
 import { createBooking } from "../../services/api";
 import { Calendar, Users, Phone, Mail, User, CreditCard } from "lucide-react";
 
+const getStayNights = (checkIn, checkOut) => {
+  if (!checkIn || !checkOut) return 0;
+  const toUtcDay = (value) => {
+    const [year, month, day] = value.split('-').map(Number);
+    return Date.UTC(year, month - 1, day);
+  };
+  const nights = (toUtcDay(checkOut) - toUtcDay(checkIn)) / 86_400_000;
+  return Number.isInteger(nights) && nights > 0 ? nights : 0;
+};
+
+const getLocalDateString = () => {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+};
+
 const BookingForm = ({ apartment, currentUser, onSuccess }) => {
   const { isLoaded, isSignedIn } = useUser();
   const [checkIn, setCheckIn] = useState('');
@@ -21,13 +36,8 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
   const [error, setError] = useState('');
 
   const calculateTotal = () => {
-    if (!checkIn || !checkOut) return 0;
-    const start = new Date(checkIn);
-    const end = new Date(checkOut);
-    const diffTime = Math.abs(end - start);
-    const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     const pricePerNight = Number(apartment?.pricePerNight || apartment?.price || 0);
-    return nights > 0 ? nights * pricePerNight : 0;
+    return getStayNights(checkIn, checkOut) * pricePerNight;
   };
 
   const handleBooking = async (e) => {
@@ -41,10 +51,9 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
       return;
     }
 
-    const start = new Date(checkIn);
-    const end = new Date(checkOut);
-    const diffTime = Math.abs(end - start);
-    const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const nights = getStayNights(checkIn, checkOut);
+    const start = new Date(`${checkIn}T00:00:00.000Z`);
+    const end = new Date(`${checkOut}T00:00:00.000Z`);
 
     if (isNaN(nights) || nights <= 0) {
       setError(i18n.t('Check-Out date must be after Check-In date.'));
@@ -111,7 +120,12 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
           {total > 0 && (
             <div className="text-right">
               <p className="text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider mb-1">{i18n.t("Total Estimate")}</p>
-              <span className="text-xl font-bold text-blue-600 dark:text-blue-400">${total}</span>
+                <span className="text-xl font-bold text-blue-600 dark:text-blue-400" aria-live="polite">
+                  ${total.toLocaleString()}
+                </span>
+                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                  {getStayNights(checkIn, checkOut)} {i18n.t('night(s)')} × ${Number(apartment?.pricePerNight || apartment?.price || 0).toLocaleString()}
+                </p>
             </div>
           )}
         </div>
@@ -195,7 +209,11 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
                   type="date"
                   required
                   value={checkIn}
-                  onChange={(e) => setCheckIn(e.target.value)}
+                  min={getLocalDateString()}
+                  onChange={(e) => {
+                    setCheckIn(e.target.value);
+                    if (checkOut && e.target.value >= checkOut) setCheckOut('');
+                  }}
                   className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-4 focus:ring-blue-500/40 focus:border-blue-600 outline-none transition-all text-base min-h-12"
                 />
               </div>
@@ -210,6 +228,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
                   required
                   value={checkOut}
                   onChange={(e) => setCheckOut(e.target.value)}
+                  min={checkIn || getLocalDateString()}
                   className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-4 focus:ring-blue-500/40 focus:border-blue-600 outline-none transition-all text-base min-h-12"
                 />
               </div>

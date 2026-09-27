@@ -53,6 +53,11 @@ body {
   font-size: 16px;
 }
 
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid #6366f1;
+  outline-offset: 3px;
+}
+
 #root {
   width: 100%;
   min-height: 100vh;

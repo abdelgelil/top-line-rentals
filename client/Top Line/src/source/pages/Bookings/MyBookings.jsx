@@ -5,24 +5,35 @@ import OptimizedImage from '../../components/common/OptimizedImage';
 import { useUser } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
 import { cancelBooking, fetchUserBookings } from '../../services/api';
+import EmptyState from '../../components/common/EmptyState';
+import { TableSkeleton } from '../../components/common/Skeletons';
 import toast from 'react-hot-toast';
-import { Calendar, Clock, Users, MapPin, ChevronRight, Home, MessageCircle, Info } from 'lucide-react';
+import { Calendar, Clock, Users, MapPin, ChevronRight, MessageCircle, Info } from 'lucide-react';
 
 export default function MyBookings() {
   const { user, isLoaded, isSignedIn } = useUser();
   const [bookings, setBookings] = useState([]);
+  const [loadingBookings, setLoadingBookings] = useState(true);
   const [error, setError] = useState('');
   const [cancellingId, setCancellingId] = useState(null);
 
   useEffect(() => {
-    if (!isLoaded || !isSignedIn || !user?.id) return;
+    if (!isLoaded) return;
+    if (!isSignedIn || !user?.id) {
+      setLoadingBookings(false);
+      return;
+    }
     let active = true;
+    setLoadingBookings(true);
     fetchUserBookings(user.id)
       .then(({ data }) => {
         if (active) setBookings(data?.data || []);
       })
       .catch(() => {
         if (active) setError(i18n.t('Unable to load your bookings. Please try again later.'));
+      })
+      .finally(() => {
+        if (active) setLoadingBookings(false);
       });
     return () => { active = false; };
   }, [isLoaded, isSignedIn, user?.id]);
@@ -139,23 +150,19 @@ export default function MyBookings() {
           </div>
         )}
 
-        {!error && bookings.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-20 px-6 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl border border-blue-100/60 dark:border-blue-500/20 rounded-3xl shadow-xl text-center space-y-6">
-            <div className="w-24 h-24 bg-blue-50 dark:bg-blue-500/10 rounded-full flex items-center justify-center text-blue-600">
-              <Calendar className="w-12 h-12 opacity-50" />
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{i18n.t("No Bookings Found")}</h3>
-              <p className="text-base text-slate-700 dark:text-slate-200 max-w-sm">{' '}{i18n.t("You haven't reserved any residences yet. Start exploring our luxury towers.")}{' '}</p>
-            </div>
-            <Link 
-              to="/apartments" 
-              className="px-8 py-3 bg-gradient-to-r from-blue-600 to-sky-500 text-white font-bold rounded-xl shadow-lg shadow-blue-500/20 transition-all hover:scale-105 active:scale-95"
-            >{' '}{i18n.t("Explore Residences")}{' '}</Link>
-          </div>
-        )}
+        {loadingBookings ? (
+          <TableSkeleton rows={3} variant="cards" />
+        ) : !error && bookings.length === 0 ? (
+          <EmptyState
+            icon={Calendar}
+            title={i18n.t('No Bookings Found')}
+            description={i18n.t("You haven't reserved any residences yet. Start exploring our luxury towers.")}
+            actionLabel={i18n.t('Explore Residences')}
+            actionTo="/apartments"
+          />
+        ) : null}
 
-        <div className="grid grid-cols-1 gap-6">
+        {!loadingBookings && !error && bookings.length > 0 && <div className="grid grid-cols-1 gap-6">
           {bookings.map((booking) => {
             const nights = calculateNights(booking.checkIn, booking.checkOut);
             const statusStyles = getStatusStyles(booking.status);
@@ -272,7 +279,7 @@ export default function MyBookings() {
               </article>
             );
           })}
-        </div>
+        </div>}
       </div>
     </div>
   );

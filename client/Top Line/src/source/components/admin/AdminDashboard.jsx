@@ -12,6 +12,7 @@ import {
   fetchAnalytics
 } from '../../services/api';
 import OptimizedImage from '../common/OptimizedImage';
+import { TableSkeleton } from '../common/Skeletons';
 
 const ApartmentForm = lazy(() => import('./ApartmentForm'));
 const AdminSettings = lazy(() => import('./AdminSettings'));
@@ -30,7 +31,7 @@ const AnalyticsSkeleton = () => (
         <div key={n} className="h-32 rounded-xl bg-slate-200 dark:bg-slate-800 animate-pulse" />
       ))}
     </div>
-    <div className="h-72 rounded-xl bg-slate-200 dark:bg-slate-800 animate-pulse" />
+    <TableSkeleton rows={4} columns={5} />
   </div>
 );
 
@@ -178,7 +179,7 @@ const AdminDashboard = () => {
           <button
             type="button"
             onClick={() => setShowAddAdminModal(true)}
-            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700"
+            className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
           >
             <span aria-hidden="true">+</span>{i18n.t('Add New Admin')}
           </button>
@@ -189,7 +190,7 @@ const AdminDashboard = () => {
           <button
             type="button"
             onClick={() => navigate('/admin/analytics')}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+            className={`min-h-12 px-4 py-2 rounded-lg text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
               activeTab === 'analytics'
                 ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
@@ -198,7 +199,7 @@ const AdminDashboard = () => {
           <button
             type="button"
             onClick={() => navigate('/admin/reservations')}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+            className={`min-h-12 px-4 py-2 rounded-lg text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
               activeTab === 'bookings'
                 ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
@@ -208,7 +209,7 @@ const AdminDashboard = () => {
           <button
             type="button"
             onClick={() => navigate('/admin/apartments')}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+            className={`min-h-12 px-4 py-2 rounded-lg text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
               activeTab === 'apartments'
                 ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
@@ -341,7 +342,7 @@ const AdminDashboard = () => {
       {activeTab === 'bookings' && (
         <>
           {loadingBookings ? (
-            <div className="text-center py-12 text-slate-500">{i18n.t("Loading Reservations...")}</div>
+            <TableSkeleton rows={6} columns={8} />
           ) : bookings.length === 0 ? (
             <div className="bg-white dark:bg-slate-900 shadow rounded-lg p-6 text-center text-slate-500">{' '}{i18n.t("No reservations found in database.")}{' '}</div>
           ) : (

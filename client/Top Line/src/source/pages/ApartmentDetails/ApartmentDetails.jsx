@@ -358,7 +358,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
               bookingForm?.scrollIntoView({ behavior: 'smooth', block: 'start' });
               bookingForm?.focus({ preventScroll: true });
             }}
-            className="inline-flex h-10 shrink-0 items-center justify-center rounded-lg bg-blue-700 px-4 text-sm font-semibold text-white transition-colors hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 sm:h-11"
+            className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-lg bg-blue-700 px-4 text-sm font-semibold text-white transition-colors hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900"
           >
             {i18n.t('accessibility.bookStay')}
           </button>
