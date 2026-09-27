@@ -6,6 +6,6 @@
   },
   "deploy": {
     "startCommand": "cd server && npm install && npm start",
-    "healthcheckPath": "/"
+    "healthcheckPath": "/api/health"
   }
 }

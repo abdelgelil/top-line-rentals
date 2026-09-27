@@ -98,6 +98,11 @@ app.use('/api/users/claim-first-admin', authLimiter);
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
+// Lightweight Railway/container readiness endpoint.
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
 // Serve static upload directory (fallback if storing images locally)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -141,12 +146,27 @@ if (!MONGO_URI) {
   process.exit(1);
 }
 
-mongoose
-  .connect(MONGO_URI)
-  .then(() => {
+async function startServer() {
+  try {
+    await mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 15_000 });
     console.log('MongoDB connected successfully');
-    app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
-  })
-  .catch((err) => console.error('Database connection error:', err));
+
+    const server = app.listen(PORT, '0.0.0.0', () => {
+      console.log(`Server listening on 0.0.0.0:${PORT}`);
+    });
+    server.on('error', (error) => {
+      console.error('HTTP server failed to bind:', error);
+      process.exit(1);
+    });
+  } catch (error) {
+    console.error('Database connection failed; server was not started:', error);
+    await mongoose.disconnect().catch((disconnectError) => {
+      console.error('MongoDB cleanup failed:', disconnectError);
+    });
+    process.exit(1);
+  }
+}
+
+startServer();
 
 export default app;
