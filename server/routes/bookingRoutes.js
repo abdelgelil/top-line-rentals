@@ -7,12 +7,22 @@ import Message from '../models/Message.js';
 import { requireAuth as ensureVerifiedUser } from '../middleware/auth.js';
 
 const router = express.Router();
+const ANALYTICS_CACHE_TTL_MS = 60_000;
+let analyticsCache = null;
+
+const invalidateAnalyticsCache = () => {
+  analyticsCache = null;
+};
 
 /* ==========================================================================
    GET /api/bookings/analytics - Fetch Admin Dashboard Analytics & VIP Clients
    ========================================================================== */
 router.get('/analytics', async (req, res) => {
   try {
+    if (analyticsCache && analyticsCache.expiresAt > Date.now()) {
+      return res.json(analyticsCache.data);
+    }
+
     // One database round trip keeps the dashboard's summary and VIP data in sync.
     const [analytics] = await Booking.aggregate([
       {
@@ -55,7 +65,7 @@ router.get('/analytics', async (req, res) => {
     ]);
     const metrics = analytics?.metrics?.[0] || {};
 
-    return res.json({
+    const responseData = {
       success: true,
       data: {
         metrics: {
@@ -67,7 +77,9 @@ router.get('/analytics', async (req, res) => {
         },
         topClients: analytics?.topClients || [],
       },
-    });
+    };
+    analyticsCache = { data: responseData, expiresAt: Date.now() + ANALYTICS_CACHE_TTL_MS };
+    return res.json(responseData);
   } catch (error) {
     console.error('Error calculating analytics:', error);
     return res.status(500).json({ success: false, message: error.message });
@@ -133,6 +145,8 @@ router.patch('/:id/cancel', requireAuth(), ensureVerifiedUser, async (req, res) 
       );
       throw messageError;
     }
+
+    invalidateAnalyticsCache();
 
     return res.status(200).json({
       success: true,
@@ -238,6 +252,7 @@ router.post('/', ensureVerifiedUser, async (req, res) => {
     };
 
     const newBooking = await Booking.create(bookingPayload);
+    invalidateAnalyticsCache();
 
     return res.status(201).json({
       success: true,
@@ -303,6 +318,8 @@ router.patch('/:id/status', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Booking not found' });
     }
 
+    invalidateAnalyticsCache();
+
     return res.json({ success: true, data: updatedBooking });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
@@ -325,6 +342,8 @@ router.delete('/:id', async (req, res) => {
     if (!deletedBooking) {
       return res.status(404).json({ success: false, message: 'Reservation document not found' });
     }
+
+    invalidateAnalyticsCache();
 
     return res.json({
       success: true,
