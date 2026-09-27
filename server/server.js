@@ -13,13 +13,7 @@ const __dirname = path.dirname(__filename);
 
 // 1. Load .env BEFORE importing routes
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
-dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
 dotenv.config({ path: path.resolve(__dirname, './.env') });
-
-const cleanEnv = (value) => (typeof value === 'string' ? value.trim().replace(/^['"]|['"]$/g, '') : value);
-for (const key of ['CLERK_SECRET_KEY', 'CLERK_PUBLISHABLE_KEY', 'CLERK_JWT_KEY']) {
-  if (process.env[key]) process.env[key] = cleanEnv(process.env[key]);
-}
 
 const { clerkMiddleware } = await import('@clerk/express');
 
@@ -72,41 +66,40 @@ app.use(
   })
 );
 
-// High payload limits for image base64/form payloads
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
-
-// Serve static upload directory (fallback if storing images locally)
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
 // --- RATE LIMITING ---
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 200, // Elevated request allowance to support image batch uploads
-  message: {
-    success: false,
-    message: 'Too many requests from this IP, please try again after 15 minutes',
-  },
+  limit: 100,
   standardHeaders: true,
   legacyHeaders: false,
-  validate: { trustProxy: false },
+  handler: (req, res) => res.status(429).json({
+    success: false,
+    message: 'Too many requests. Please try again in 15 minutes.',
+  }),
 });
 
 const authLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour
-  max: 20,
-  message: {
-    success: false,
-    message: 'Too many authentication attempts, please try again in an hour',
-  },
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
   standardHeaders: true,
   legacyHeaders: false,
-  validate: { trustProxy: false },
+  handler: (req, res) => res.status(429).json({
+    success: false,
+    message: 'Too many authentication or admin attempts. Please try again in 15 minutes.',
+  }),
 });
 
 app.use('/api/', generalLimiter);
 app.use('/api/users/sync', authLimiter);
+app.use('/api/users/make-admin', authLimiter);
 app.use('/api/users/claim-first-admin', authLimiter);
+
+// Keep request bodies small before they are parsed into memory.
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+
+// Serve static upload directory (fallback if storing images locally)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 if (!process.env.CLERK_SECRET_KEY) {
   console.error('WARNING: CLERK_SECRET_KEY is not set. Admin API routes will return 401.');
@@ -167,4 +160,4 @@ mongoose
   })
   .catch((err) => console.error('Database connection error:', err));
 
-export default app; 
+export default app;

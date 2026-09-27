@@ -1,5 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import rateLimit from 'express-rate-limit';
 import { requireAuth } from '@clerk/express';
 import Booking from '../models/booking.js';
 import Apartment from '../models/Apartment.js';
@@ -7,6 +8,16 @@ import Message from '../models/Message.js';
 import { requireAuth as ensureVerifiedUser } from '../middleware/auth.js';
 
 const router = express.Router();
+const bookingActionLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => res.status(429).json({
+    success: false,
+    message: 'Too many booking actions. Please try again in 15 minutes.',
+  }),
+});
 const ANALYTICS_CACHE_TTL_MS = 60_000;
 let analyticsCache = null;
 
@@ -89,7 +100,7 @@ router.get('/analytics', async (req, res) => {
 /* =======================================================================
    PATCH /api/bookings/:id/cancel - Cancel the signed-in user's reservation
    ======================================================================= */
-router.patch('/:id/cancel', requireAuth(), ensureVerifiedUser, async (req, res) => {
+router.patch('/:id/cancel', bookingActionLimiter, requireAuth(), ensureVerifiedUser, async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ success: false, message: 'Invalid booking ID' });
@@ -162,7 +173,7 @@ router.patch('/:id/cancel', requireAuth(), ensureVerifiedUser, async (req, res) 
 /* ==========================================================================
    POST /api/bookings - Create new reservation
    ========================================================================== */
-router.post('/', ensureVerifiedUser, async (req, res) => {
+router.post('/', bookingActionLimiter, ensureVerifiedUser, async (req, res) => {
   try {
     const {
       apartment,
