@@ -176,7 +176,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null }) => {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Price per Night ($) *")}{' '}</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Price per Night (EGP) *")}{' '}</label>
               <input
                 type="number"
                 name="pricePerNight"

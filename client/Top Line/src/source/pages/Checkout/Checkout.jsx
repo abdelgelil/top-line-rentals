@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import API from '../../services/api';
+import { formatCurrency } from '../../utils/formatters';
 
 export const Checkout = () => {
   const location = useLocation();
@@ -37,7 +38,7 @@ export const Checkout = () => {
       <h1 className="text-2xl font-bold mb-6">{i18n.t("Confirm Your Reservation")}</h1>
       <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 space-y-4">
         <p><strong>{i18n.t("Apartment ID:")}</strong> {bookingDetails.apartmentId}</p>
-        <p><strong>{i18n.t("Total Price:")}</strong> ${bookingDetails.totalPrice}</p>
+        <p><strong>{i18n.t("Total Price:")}</strong> {formatCurrency(bookingDetails.totalPrice)}</p>
         <button
           onClick={handleConfirmBooking}
           disabled={loading}

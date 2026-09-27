@@ -7,24 +7,20 @@ import { Link } from 'react-router-dom';
 import { cancelBooking, fetchUserBookings } from '../../services/api';
 import EmptyState from '../../components/common/EmptyState';
 import { TableSkeleton } from '../../components/common/Skeletons';
+import { formatCurrency } from '../../utils/formatters';
 import toast from 'react-hot-toast';
-import { Calendar, Clock, Users, MapPin, ChevronRight, MessageCircle, Info } from 'lucide-react';
+import { Calendar, Clock, Users, MapPin, ChevronRight, Home, MessageCircle, Info } from 'lucide-react';
 
 export default function MyBookings() {
   const { user, isLoaded, isSignedIn } = useUser();
   const [bookings, setBookings] = useState([]);
-  const [loadingBookings, setLoadingBookings] = useState(true);
+  const [loadedBookingsFor, setLoadedBookingsFor] = useState('');
   const [error, setError] = useState('');
   const [cancellingId, setCancellingId] = useState(null);
 
   useEffect(() => {
-    if (!isLoaded) return;
-    if (!isSignedIn || !user?.id) {
-      setLoadingBookings(false);
-      return;
-    }
+    if (!isLoaded || !isSignedIn || !user?.id) return;
     let active = true;
-    setLoadingBookings(true);
     fetchUserBookings(user.id)
       .then(({ data }) => {
         if (active) setBookings(data?.data || []);
@@ -33,10 +29,12 @@ export default function MyBookings() {
         if (active) setError(i18n.t('Unable to load your bookings. Please try again later.'));
       })
       .finally(() => {
-        if (active) setLoadingBookings(false);
+        if (active) setLoadedBookingsFor(user.id);
       });
     return () => { active = false; };
   }, [isLoaded, isSignedIn, user?.id]);
+
+  const loadingBookings = !isLoaded || (isSignedIn && !!user?.id && loadedBookingsFor !== user.id);
 
   const calculateNights = (start, end) => {
     if (!start || !end) return null;
@@ -150,7 +148,7 @@ export default function MyBookings() {
           </div>
         )}
 
-        {loadingBookings ? (
+        {!isLoaded || (isSignedIn && loadingBookings) ? (
           <TableSkeleton rows={3} variant="cards" />
         ) : !error && bookings.length === 0 ? (
           <EmptyState
@@ -162,7 +160,7 @@ export default function MyBookings() {
           />
         ) : null}
 
-        {!loadingBookings && !error && bookings.length > 0 && <div className="grid grid-cols-1 gap-6">
+        {isLoaded && !loadingBookings && !error && bookings.length > 0 && <div className="grid grid-cols-1 gap-6">
           {bookings.map((booking) => {
             const nights = calculateNights(booking.checkIn, booking.checkOut);
             const statusStyles = getStatusStyles(booking.status);
@@ -271,7 +269,7 @@ export default function MyBookings() {
                     <div className="text-right">
                       <span className="text-sm text-slate-700 dark:text-slate-200 uppercase font-bold block">{i18n.t("Total Investment")}</span>
                       <span className="text-2xl font-black text-blue-600 dark:text-sky-400">
-                        ${booking.totalPrice?.toLocaleString() || '—'}
+                        {formatCurrency(booking.totalPrice)}
                       </span>
                     </div>
                   </div>

@@ -7,6 +7,7 @@ import { AdminBookings } from './AdminBookings';
 import ApartmentForm from '../../components/admin/ApartmentForm';
 import { fetchApartments, deleteApartment } from '../../services/api';
 import OptimizedImage from '../../components/common/OptimizedImage';
+import { formatCurrency } from '../../utils/formatters';
 
 export const Admin = () => {
   const [activeTab, setActiveTab] = useState('apartments'); // 'apartments' | 'bookings'
@@ -203,7 +204,7 @@ export const Admin = () => {
                       <div>
                         <h3 className="font-semibold text-lg text-gray-900 line-clamp-1">{translateText(apt.title)}</h3>
                         <p className="text-blue-600 font-bold text-lg mt-1">
-                          ${apt.pricePerNight}{' '}
+                          {formatCurrency(apt.pricePerNight || apt.price)}{' '}
                           <span className="text-xs text-gray-500 font-normal">{i18n.t("/ night")}</span>
                         </p>
                         <div className="flex items-center space-x-3 text-xs text-gray-500 mt-3">

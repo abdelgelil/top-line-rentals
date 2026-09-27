@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import React, { useState } from "react";
 import { SignInButton, useUser } from "@clerk/clerk-react";
 import { createBooking } from "../../services/api";
+import { formatCurrency } from '../../utils/formatters';
 import { Calendar, Users, Phone, Mail, User, CreditCard } from "lucide-react";
 
 const getStayNights = (checkIn, checkOut) => {
@@ -112,7 +113,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
             <p className="text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider mb-1">{i18n.t("Price per night")}</p>
             <div className="flex items-baseline gap-1">
               <span className="text-3xl font-black text-slate-900 dark:text-white">
-                ${apartment?.pricePerNight || apartment?.price || '0'}
+                {formatCurrency(apartment?.pricePerNight || apartment?.price || 0)}
               </span>
               <span className="text-slate-700 dark:text-slate-200 text-base">{i18n.t("/ night")}</span>
             </div>
@@ -121,10 +122,10 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
             <div className="text-right">
               <p className="text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider mb-1">{i18n.t("Total Estimate")}</p>
                 <span className="text-xl font-bold text-blue-600 dark:text-blue-400" aria-live="polite">
-                  ${total.toLocaleString()}
+                  {formatCurrency(total)}
                 </span>
                 <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                  {getStayNights(checkIn, checkOut)} {i18n.t('night(s)')} × ${Number(apartment?.pricePerNight || apartment?.price || 0).toLocaleString()}
+                  {getStayNights(checkIn, checkOut)} {i18n.t('night(s)')} × {formatCurrency(Number(apartment?.pricePerNight || apartment?.price || 0))}
                 </p>
             </div>
           )}

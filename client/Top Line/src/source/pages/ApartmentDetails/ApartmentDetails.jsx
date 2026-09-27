@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 import { fetchApartmentById } from '../../services/api';
 import BookingForm from '../../components/booking/BookingForm';
+import { formatCurrency } from '../../utils/formatters';
 import OptimizedImage from '../../components/common/OptimizedImage';
 import { 
   Users, 
@@ -348,7 +349,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-bold text-slate-900 dark:text-white sm:text-base">{translateText(apartment.title)}</p>
             <p className="text-sm font-semibold text-slate-700 dark:text-slate-200 sm:text-base">
-              ${apartment.pricePerNight || apartment.price || '0'} <span className="font-normal">{i18n.t('/ night')}</span>
+              {formatCurrency(apartment.pricePerNight || apartment.price || 0)} <span className="font-normal">{i18n.t('/ night')}</span>
             </p>
           </div>
           <button

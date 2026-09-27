@@ -4,6 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Bed, CalendarCheck } from 'lucide-react';
 import OptimizedImage from '../common/OptimizedImage';
+import { formatCurrency } from '../../utils/formatters';
 
 export const ApartmentCard = ({ unit, priority = false }) => {
   const apartmentId = unit._id || unit.id;
@@ -24,7 +25,7 @@ export const ApartmentCard = ({ unit, priority = false }) => {
           imageClassName="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute top-4 right-4 bg-slate-900/80 backdrop-blur-md border border-white/20 text-sky-400 font-bold px-3 py-1 rounded-full text-xs shadow-md">
-          ${unit.pricePerNight || unit.price}{' '}{i18n.t("/ night")}{' '}</div>
+          {formatCurrency(unit.pricePerNight || unit.price)}{' '}{i18n.t("/ night")}{' '}</div>
         <Link
           to={`/apartments/${apartmentId}`}
           className="absolute bottom-4 left-4 inline-flex min-h-12 items-center gap-2 rounded-xl bg-blue-700 px-4 py-3 text-base font-bold text-white shadow-lg transition-colors hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-400/70"

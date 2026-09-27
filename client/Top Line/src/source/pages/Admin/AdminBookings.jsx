@@ -3,6 +3,7 @@ import { translateText } from '../../../utils/translateContent.js';
 import React, { useState, useEffect } from 'react';
 import { Calendar, User, Phone, Mail, Building, Clock, CheckCircle2, XCircle } from 'lucide-react';
 import * as apiServices from '../../services/api';
+import { formatCurrency } from '../../utils/formatters';
 
 export const AdminBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -148,7 +149,7 @@ export const AdminBookings = () => {
                       {/* Total Price */}
                       <td className="p-4">
                         <span className="font-black text-slate-900 dark:text-white">
-                          {b.totalPrice ? `$${b.totalPrice.toLocaleString()}` : 'N/A'}
+                          {b.totalPrice ? formatCurrency(b.totalPrice) : 'N/A'}
                         </span>
                       </td>
 

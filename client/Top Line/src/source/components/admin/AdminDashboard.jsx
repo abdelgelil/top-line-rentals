@@ -13,6 +13,7 @@ import {
 } from '../../services/api';
 import OptimizedImage from '../common/OptimizedImage';
 import { TableSkeleton } from '../common/Skeletons';
+import { formatCurrency } from '../../utils/formatters';
 
 const ApartmentForm = lazy(() => import('./ApartmentForm'));
 const AdminSettings = lazy(() => import('./AdminSettings'));
@@ -273,7 +274,7 @@ const AdminDashboard = () => {
                 <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
                   <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">{' '}{i18n.t("Total Revenue")}{' '}</p>
                   <h3 className="text-3xl font-black text-indigo-600 dark:text-indigo-400 mt-2">
-                    ${(analytics?.metrics?.totalRevenue ?? 0).toLocaleString()}
+                    {formatCurrency(analytics?.metrics?.totalRevenue ?? 0)}
                   </h3>
                   <span className="text-xs text-slate-400">{i18n.t("Confirmed revenue")}</span>
                 </div>
@@ -321,7 +322,7 @@ const AdminDashboard = () => {
                             <td className="px-6 py-4 text-emerald-600 font-semibold">
                               {client.confirmedBookings}{' '}{i18n.t("confirmed")}{' '}</td>
                             <td className="px-6 py-4 font-semibold text-slate-900 dark:text-white">
-                              ${client.totalSpent?.toLocaleString() ?? 0}
+                              {formatCurrency(client.totalSpent ?? 0)}
                             </td>
                             <td className="px-6 py-4 text-xs text-slate-500">
                               {client.lastBookingDate ? new Date(client.lastBookingDate).toLocaleDateString() : 'N/A'}
@@ -386,7 +387,7 @@ const AdminDashboard = () => {
                           {b.checkOut ? new Date(b.checkOut).toLocaleDateString() : 'N/A'}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap font-semibold text-slate-900 dark:text-white">
-                          ${b.totalPrice}
+                          {formatCurrency(b.totalPrice)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span
@@ -472,7 +473,7 @@ const AdminDashboard = () => {
                     <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">{translateText(apt.description)}</p>
                     <div className="flex justify-between items-center text-sm font-semibold text-slate-700 dark:text-slate-300 pt-2">
                       <span>{translateText(apt.tower || 'Tower 1')}</span>
-                      <span>${apt.pricePerNight || apt.price}{' '}{i18n.t("/ night")}</span>
+                      <span>{formatCurrency(apt.pricePerNight || apt.price)}{' '}{i18n.t("/ night")}</span>
                     </div>
                   </div>
                   <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/30 flex justify-end">

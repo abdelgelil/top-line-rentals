@@ -2,11 +2,9 @@
  * Format numbers into Egyptian Pound (EGP) currency strings
  */
 export const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('en-EG', {
-    style: 'currency',
-    currency: 'EGP',
-    maximumFractionDigits: 0,
-  }).format(amount || 0);
+  const numericAmount = Number(amount);
+  const safeAmount = Number.isFinite(numericAmount) ? numericAmount : 0;
+  return `${new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(safeAmount)} EGP`;
 };
 
 /**
