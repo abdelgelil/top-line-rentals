@@ -1,7 +1,8 @@
 import i18n from "../../../i18n.js";
 import toast from 'react-hot-toast';
 import React, { useEffect, useState } from "react";
-import { SignInButton, useUser } from "@clerk/clerk-react";
+import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import { createBooking, fetchApartmentBookings } from "../../services/api";
 import { formatCurrency } from '../../utils/formatters';
 import DateRangePicker, { dateRangeOverlaps, hasBookedNight } from './DateRangePicker';
@@ -18,7 +19,7 @@ const getStayNights = (checkIn, checkOut) => {
 };
 
 const BookingForm = ({ apartment, currentUser, onSuccess }) => {
-  const { isLoaded, isSignedIn } = useUser();
+  const { isLoaded, isSignedIn } = useAuth();
   const [checkInDate, setCheckInDate] = useState('');
   const [checkOutDate, setCheckOutDate] = useState('');
   const [guests, setGuests] = useState(1);
@@ -28,7 +29,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
   const [guestEmail, setGuestEmail] = useState(
     currentUser?.primaryEmailAddress?.emailAddress || currentUser?.email || ''
   );
-  const [guestPhone, setGuestPhone] = useState('');
+  const [guestPhone, setGuestPhone] = useState(currentUser?.phone || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const apartmentId = apartment?._id || apartment?.id;
@@ -169,12 +170,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
       ) : !isSignedIn ? (
         <div className="p-6 space-y-4 text-center">
           <p className="text-base text-slate-700 dark:text-slate-200">{i18n.t("Sign in to reserve this apartment.")}</p>
-          <SignInButton mode="modal" forceRedirectUrl={window.location.href}>
-            <button
-              type="button"
-              className="min-h-14 w-full rounded-2xl bg-slate-900 px-5 py-4 text-base font-bold text-white transition-colors hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:bg-blue-700 dark:hover:bg-blue-800"
-            >{' '}{i18n.t("Sign In to Book")}{' '}</button>
-          </SignInButton>
+          <Link to="/sign-in" className="flex min-h-14 w-full items-center justify-center rounded-2xl bg-slate-900 px-5 py-4 text-base font-bold text-white transition-colors hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:bg-blue-700 dark:hover:bg-blue-800">{i18n.t("Sign In to Book")}</Link>
         </div>
       ) : <form onSubmit={handleBooking} className="p-6 space-y-5">
         {error && (

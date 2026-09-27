@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { useUser, UserButton } from '@clerk/clerk-react';
+import { useAuth } from '../../context/AuthContext';
 import { Building2, CalendarCheck, Mail, Menu, X, User, LayoutDashboard } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Logo from './Logo';
@@ -8,7 +8,7 @@ import { LanguageToggle } from './LanguageToggle';
 
 const ClientNavbar = () => {
   const { t } = useTranslation();
-  const { isSignedIn, user } = useUser();
+  const { isSignedIn, user, signOut } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const isAdmin = user?.publicMetadata?.role === 'admin';
 
@@ -81,10 +81,10 @@ const ClientNavbar = () => {
             <div className="flex items-center gap-3 pl-4 border-l border-blue-100/50 dark:border-blue-500/10">
               <LanguageToggle />
               {isSignedIn ? (
-                <UserButton afterSignOutUrl="/" />
+                <button onClick={signOut} className="min-h-12 rounded-full px-3 text-sm font-semibold text-slate-700 dark:text-slate-200" aria-label={t('nav.logout')}>{t('nav.logout')}</button>
               ) : (
                 <Link
-                  to="/auth"
+                  to="/sign-in"
                   className="px-5 py-2 text-xs font-bold bg-gradient-to-r from-blue-600 via-blue-500 to-sky-400 text-white rounded-full shadow-lg shadow-blue-500/20 transition-all active:scale-95 hover:shadow-blue-500/40"
                 >
                   Sign In
@@ -187,14 +187,14 @@ const ClientNavbar = () => {
              {isSignedIn ? (
                 <div className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-500 dark:text-slate-400">
                   <LanguageToggle />
-                  <UserButton afterSignOutUrl="/" />
+                  <button onClick={signOut} className="min-h-12 rounded-lg px-3 text-sm font-semibold" aria-label={t('nav.logout')}>{t('nav.logout')}</button>
                   <span className="truncate">{user?.fullName || 'Member'}</span>
                 </div>
               ) : (
                 <div className="flex flex-col gap-2">
                   <LanguageToggle />
                   <Link
-                    to="/auth"
+                    to="/sign-in"
                     className="block w-full py-2 text-center text-sm font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     onClick={() => setIsOpen(false)}
                   >

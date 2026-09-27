@@ -2,7 +2,7 @@ import i18n from "../../../i18n.js";
 import React, { useCallback, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { UserButton, useUser } from '@clerk/clerk-react';
+import { useAuth } from '../../context/AuthContext';
 import { Menu, X, Building2, Calendar, Mail, CircleHelp } from 'lucide-react';
 import { LanguageToggle } from './LanguageToggle';
 import Footer from './Footer';
@@ -14,7 +14,7 @@ const ClientLayout = () => {
   const [isHelpOpen, setIsHelpOpen] = useState(false);
   const location = useLocation();
   const { t } = useTranslation();
-  const { isSignedIn } = useUser();
+  const { isSignedIn, user, signOut } = useAuth();
 
   const navLinks = [
     { path: '/apartments', label: t('nav.apartments', 'Apartments'), icon: Building2 },
@@ -71,7 +71,7 @@ const ClientLayout = () => {
           <LanguageToggle />
 
           {isSignedIn ? (
-            <UserButton afterSignOutUrl="/" />
+            <button onClick={signOut} className="min-h-12 rounded-full px-4 text-base font-semibold text-slate-700 dark:text-slate-200">{user?.name || user?.phone} · {i18n.t('nav.logout')}</button>
           ) : (
             <Link
               to="/sign-in"
@@ -84,7 +84,7 @@ const ClientLayout = () => {
         <div className="flex items-center gap-2 md:hidden">
           <LanguageToggle />
 
-          {isSignedIn && <UserButton afterSignOutUrl="/" />}
+          {isSignedIn && <button onClick={signOut} className="min-h-12 rounded-xl px-3 text-sm font-semibold" aria-label={i18n.t('nav.logout')}>{i18n.t('nav.logout')}</button>}
 
           <button
             onClick={() => setIsOpen(!isOpen)}

@@ -117,7 +117,7 @@ export const createBooking = async (bookingData) => {
   invalidateBookingCache();
   return response;
 };
-export const fetchUserBookings = (userId) => API.get('/bookings', { params: { userId } });
+export const fetchUserBookings = () => API.get('/bookings');
 export const fetchApartmentBookings = (apartmentId) =>
   API.get(`/bookings/apartment/${encodeURIComponent(apartmentId)}`, { skipAuth: true });
 export const cancelBooking = async (id) => {
@@ -137,8 +137,6 @@ export const deleteBooking = async (id) => {
   return response;
 };
 export const fetchAnalytics = () => cachedGet('admin:analytics', () => API.get('/bookings/analytics'));
-export const fetchUserRole = (clerkId) => API.get(`/users/role/${encodeURIComponent(clerkId)}`);
-export const syncUserProfile = (profile) => API.post('/users/sync', profile);
 
 export const prefetchAdminData = () => {
   fetchAnalytics();

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useUser } from '@clerk/clerk-react';
+import { useAuth } from '../../context/AuthContext';
 import { fetchApartmentById } from '../../services/api';
 import BookingForm from '../../components/booking/BookingForm';
 import { 
@@ -18,8 +18,8 @@ import {
 
 export function ApartmentDetails({ currentUser: propUser }) {
   const { id } = useParams();
-  const { user: clerkUser } = useUser();
-  const currentUser = propUser || clerkUser;
+  const { user } = useAuth();
+  const currentUser = propUser || user;
 
   const [apartment, setApartment] = useState(null);
   const [loading, setLoading] = useState(true);

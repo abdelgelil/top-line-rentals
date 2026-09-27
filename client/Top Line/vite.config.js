@@ -32,7 +32,6 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (!id.includes('node_modules')) return;
-          if (id.includes('@clerk')) return 'clerk';
           if (id.includes('i18next')) return 'i18n';
           if (id.includes('axios')) return 'http';
           if (id.includes('lucide-react')) return 'icons';

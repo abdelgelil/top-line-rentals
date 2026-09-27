@@ -9,9 +9,8 @@ RUN npm ci
 COPY ["client/Top Line/", "./"]
 
 # Pass build-time Vite environment variables
-ARG VITE_CLERK_PUBLISHABLE_KEY
 ARG VITE_API_BASE_URL
-RUN VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY VITE_API_BASE_URL=$VITE_API_BASE_URL npm run build
+RUN VITE_API_BASE_URL=$VITE_API_BASE_URL npm run build
 
 # Production Stage
 FROM nginx:alpine

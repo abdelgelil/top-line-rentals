@@ -1,10 +1,10 @@
 import i18n from "../../../i18n.js";
 import React from 'react';
-import { useUser } from '@clerk/clerk-react';
+import { useAuth } from '../../context/AuthContext';
 import { Navigate, Outlet } from 'react-router-dom';
 
 export function ProtectedRoute() {
-  const { isLoaded, isSignedIn } = useUser();
+  const { isLoaded, isSignedIn } = useAuth();
 
   if (!isLoaded) {
     return <div className="p-8 text-center text-slate-500">{i18n.t("Loading authentication status...")}</div>;
@@ -18,7 +18,7 @@ export function ProtectedRoute() {
 }
 
 export function AdminRoute() {
-  const { isLoaded, isSignedIn } = useUser();
+  const { isLoaded, isSignedIn } = useAuth();
 
   if (!isLoaded) {
     return <div className="p-8 text-center text-slate-500">{i18n.t("Checking permissions...")}</div>;

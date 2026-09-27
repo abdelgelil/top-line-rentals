@@ -2,7 +2,7 @@ import i18n from "../../../i18n.js";
 import { translateText } from '../../../utils/translateContent.js';
 import React, { useEffect, useState } from 'react';
 import OptimizedImage from '../../components/common/OptimizedImage';
-import { useUser } from '@clerk/clerk-react';
+import { useAuth } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import { cancelBooking, fetchUserBookings } from '../../services/api';
 import EmptyState from '../../components/common/EmptyState';
@@ -12,7 +12,7 @@ import toast from 'react-hot-toast';
 import { Calendar, Clock, Users, MapPin, ChevronRight, Home, MessageCircle, Info } from 'lucide-react';
 
 export default function MyBookings() {
-  const { user, isLoaded, isSignedIn } = useUser();
+  const { user, isLoaded, isSignedIn } = useAuth();
   const [bookings, setBookings] = useState([]);
   const [loadedBookingsFor, setLoadedBookingsFor] = useState('');
   const [error, setError] = useState('');
@@ -21,7 +21,7 @@ export default function MyBookings() {
   useEffect(() => {
     if (!isLoaded || !isSignedIn || !user?.id) return;
     let active = true;
-    fetchUserBookings(user.id)
+    fetchUserBookings()
       .then(({ data }) => {
         if (active) setBookings(data?.data || []);
       })

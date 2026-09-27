@@ -1,10 +1,10 @@
 import i18n from "../../../i18n.js";
 import React from 'react';
-import { useUser } from '@clerk/clerk-react';
+import { useAuth } from '../../context/AuthContext';
 import { Navigate } from 'react-router-dom';
 
 const AdminRoute = ({ children }) => {
-  const { isLoaded, isSignedIn, user } = useUser();
+  const { isLoaded, isSignedIn, user } = useAuth();
 
   if (!isLoaded) {
     return (
@@ -12,7 +12,7 @@ const AdminRoute = ({ children }) => {
     );
   }
 
-  const isAdmin = isSignedIn && user?.publicMetadata?.role === 'admin';
+  const isAdmin = isSignedIn && user?.role === 'admin';
 
   if (!isAdmin) {
     // Redirect standard clients away from admin routes

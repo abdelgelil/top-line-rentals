@@ -2,7 +2,7 @@ import i18n from "../../../i18n.js";
 import { translateText } from '../../../utils/translateContent.js';
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { useUser } from '@clerk/clerk-react';
+import { useAuth } from '../../context/AuthContext';
 import { fetchApartmentById } from '../../services/api';
 import BookingForm from '../../components/booking/BookingForm';
 import { formatCurrency } from '../../utils/formatters';
@@ -101,8 +101,8 @@ const ImageLightbox = ({ images, initialIndex, onClose }) => {
 
 export function ApartmentDetails({ currentUser: propUser }) {
   const { id } = useParams();
-  const { user: clerkUser } = useUser();
-  const currentUser = propUser || clerkUser;
+  const { user } = useAuth();
+  const currentUser = propUser || user;
 
   const [apartment, setApartment] = useState(null);
   const [loading, setLoading] = useState(true);

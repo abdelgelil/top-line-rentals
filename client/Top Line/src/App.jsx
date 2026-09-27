@@ -1,7 +1,7 @@
 import i18n from "./i18n.js";
 import React, { createContext, lazy, Suspense, useContext, useEffect, useState } from "react";
 import { Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
-import { useUser } from "@clerk/clerk-react";
+import { useAuth } from "./source/context/AuthContext";
 import { useTranslation } from "react-i18next";
 import { Toaster } from 'react-hot-toast';
 
@@ -9,13 +9,14 @@ import { Toaster } from 'react-hot-toast';
 import { ClientLayout } from "./source/components/common/ClientLayout";
 import { AdminLayout } from "./source/components/common/AdminLayout";
 
-import { prefetchAdminData, syncUserProfile } from "./source/services/api";
+import { prefetchAdminData } from "./source/services/api";
 
 // Keep route-specific code out of the initial bundle.
 const Home = lazy(() => import("./source/pages/Home/Home").then(({ Home: component }) => ({ default: component })));
 const Checkout = lazy(() => import("./source/pages/Checkout/Checkout").then(({ Checkout: component }) => ({ default: component })));
 const SignInPage = lazy(() => import("./source/pages/Auth/AuthPages").then(({ SignInPage: component }) => ({ default: component })));
 const SignUpPage = lazy(() => import("./source/pages/Auth/AuthPages").then(({ SignUpPage: component }) => ({ default: component })));
+const ResetPasswordPage = lazy(() => import("./source/pages/Auth/AuthPages").then(({ ResetPasswordPage: component }) => ({ default: component })));
 const ContactUs = lazy(() => import("./source/pages/Contact/ContactUs").then(({ ContactUs: component }) => ({ default: component })));
 const AdminDashboard = lazy(() => import("./source/components/admin/AdminDashboard"));
 const AdminMessages = lazy(() => import("./source/pages/Admin/Messages/AdminMessages").then(({ AdminMessages: component }) => ({ default: component })));
@@ -25,7 +26,7 @@ const MyBookings = lazy(() => import("./source/pages/Bookings/MyBookings"));
 const RoleContext = createContext({ role: "", resolved: false });
 
 const RoleAwareLayout = () => {
-  const { user, isSignedIn, isLoaded } = useUser();
+  const { user, isSignedIn, isLoaded } = useAuth();
   const location = useLocation();
   const [storedRole, setStoredRole] = useState(() => localStorage.getItem("userRole") || "");
   const [roleResolved, setRoleResolved] = useState(false);
@@ -42,7 +43,6 @@ const RoleAwareLayout = () => {
 
   useEffect(() => {
     if (!isLoaded) return;
-    const clerkUserRole = user?.publicMetadata?.role || user?.unsafeMetadata?.role;
     if (!isSignedIn) {
       localStorage.removeItem("userRole");
       setStoredRole("");
@@ -51,48 +51,14 @@ const RoleAwareLayout = () => {
       return;
     }
 
-    let active = true;
-    if (clerkUserRole) {
-      const nextRole = String(clerkUserRole);
-      localStorage.setItem("userRole", nextRole);
-      setStoredRole(nextRole);
-      setRoleResolved(true);
-      window.dispatchEvent(new Event("auth-change"));
-    } else if (user?.id) {
-      if (!localStorage.getItem("userRole")) setRoleResolved(false);
-      const email = user.primaryEmailAddress?.emailAddress || user.emailAddresses?.[0]?.emailAddress;
-      syncUserProfile({ clerkId: user.id, email })
-        .then(({ data }) => {
-          if (!active) return;
-          const nextRole = data?.data?.role || data?.user?.role || "";
-          if (nextRole) localStorage.setItem("userRole", String(nextRole));
-          else localStorage.removeItem("userRole");
-          setStoredRole(String(nextRole));
-        })
-        .catch(() => {
-          if (!active) return;
-          localStorage.removeItem("userRole");
-          setStoredRole("");
-        })
-        .finally(() => {
-          if (active) {
-            setRoleResolved(true);
-            window.dispatchEvent(new Event("auth-change"));
-          }
-        });
-    } else {
-      setRoleResolved(true);
-    }
-
-    return () => { active = false; };
+    const nextRole = String(user?.role || "user");
+    localStorage.setItem("userRole", nextRole);
+    setStoredRole(nextRole);
+    setRoleResolved(true);
+    window.dispatchEvent(new Event("auth-change"));
   }, [isLoaded, isSignedIn, user]);
 
-  const clerkRole = (user?.publicMetadata?.role || user?.unsafeMetadata?.role || "")
-    .toString()
-    .toLowerCase();
-  const email = user?.primaryEmailAddress?.emailAddress || user?.emailAddresses?.[0]?.emailAddress || "";
-  const hasAdminEmail = email.toLowerCase().endsWith("@toplinerentals.com");
-  const effectiveRole = hasAdminEmail ? "admin" : clerkRole || storedRole.toLowerCase();
+  const effectiveRole = String(user?.role || storedRole || "").toLowerCase();
   const isAdmin = isSignedIn && effectiveRole === "admin";
   const isAdminRoute = location.pathname.startsWith("/admin");
   const Layout = isLoaded && (isAdmin || isAdminRoute) ? AdminLayout : ClientLayout;
@@ -110,9 +76,9 @@ const RoleAwareLayout = () => {
 
 // Protected Route Wrapper for Admin Access
 const ProtectedAdminRoute = ({ children }) => {
-  const { isSignedIn, isLoaded } = useUser();
+  const { isSignedIn, isLoaded, user } = useAuth();
   const { role, resolved } = useContext(RoleContext);
-  const isAdmin = isSignedIn && role === "admin";
+  const isAdmin = isSignedIn && (user?.role || role) === "admin";
 
   useEffect(() => {
     if (!isAdmin) return;
@@ -165,6 +131,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/sign-in/*" element={<SignInPage />} />
             <Route path="/sign-up/*" element={<SignUpPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/auth/*" element={<Navigate to="/sign-in" replace />} />
             <Route path="/apartments" element={<Home />} />
             <Route path="/apartments/:id" element={<ApartmentDetails />} />

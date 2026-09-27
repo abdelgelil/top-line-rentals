@@ -1,7 +1,7 @@
 import i18n from "../../../i18n.js";
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { UserButton } from '@clerk/clerk-react';
+import { useAuth } from '../../context/AuthContext';
 import { Building2, LayoutDashboard, ShieldCheck, CalendarCheck, Mail, Menu, X, ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Logo from './Logo';
@@ -10,6 +10,7 @@ import { LanguageToggle } from './LanguageToggle';
 const AdminNavbar = () => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const { user, signOut } = useAuth();
 
   const linkClass = ({ isActive }) =>
     `flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
@@ -53,7 +54,7 @@ const AdminNavbar = () => {
             </Link>
             <div className="pl-4 border-l border-blue-500/20 flex items-center gap-3">
               <LanguageToggle />
-              <UserButton afterSignOutUrl="/" />
+              <button onClick={signOut} className="min-h-12 px-3 text-sm font-semibold text-white">{user?.name || user?.phone} · {i18n.t('nav.logout')}</button>
             </div>
           </div>
 
@@ -129,7 +130,7 @@ const AdminNavbar = () => {
           <div className="pt-2 mt-2 border-t border-slate-800">
             <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-800/50 border border-blue-500/20">
               <LanguageToggle />
-              <UserButton afterSignOutUrl="/" />
+              <button onClick={signOut} className="min-h-12 px-3 text-sm font-semibold text-white">{i18n.t('nav.logout')}</button>
               <span className="text-sm font-medium text-slate-300">{i18n.t("Administrator")}</span>
             </div>
           </div>

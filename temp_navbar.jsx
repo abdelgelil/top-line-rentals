@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { useUser, UserButton } from '@clerk/clerk-react';
 import { Building2, CalendarCheck, Mail, Menu, X, User, LayoutDashboard } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Logo from './Logo';
@@ -8,9 +7,11 @@ import { LanguageToggle } from './LanguageToggle';
 
 const ClientNavbar = () => {
   const { t } = useTranslation();
-  const { isSignedIn, user } = useUser();
+  const user = (() => { try { return JSON.parse(localStorage.getItem('authUser') || 'null'); } catch { return null; } })();
+  const isSignedIn = Boolean(user);
+  const signOut = () => { localStorage.removeItem('authUser'); localStorage.removeItem('token'); window.location.assign('/'); };
   const [isOpen, setIsOpen] = useState(false);
-  const isAdmin = user?.publicMetadata?.role === 'admin';
+  const isAdmin = user?.role === 'admin';
 
   useEffect(() => {
     if (isOpen) {
@@ -81,7 +82,7 @@ const ClientNavbar = () => {
             <div className="flex items-center gap-3 pl-4 border-l border-blue-100/50 dark:border-blue-500/10">
               <LanguageToggle />
               {isSignedIn ? (
-                <UserButton afterSignOutUrl="/" />
+                <button onClick={signOut}>{t('nav.logout')}</button>
               ) : (
                 <Link
                   to="/auth"
@@ -187,7 +188,7 @@ const ClientNavbar = () => {
              {isSignedIn ? (
                 <div className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-500 dark:text-slate-400">
                   <LanguageToggle />
-                  <UserButton afterSignOutUrl="/" />
+                  <button onClick={signOut}>{t('nav.logout')}</button>
                   <span className="truncate">{user?.fullName || 'Member'}</span>
                 </div>
               ) : (
