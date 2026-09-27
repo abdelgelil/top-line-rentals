@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Users, Bed, CalendarCheck } from 'lucide-react';
 import OptimizedImage from '../common/OptimizedImage';
 
-export const ApartmentCard = ({ unit }) => {
+export const ApartmentCard = ({ unit, priority = false }) => {
   const apartmentId = unit._id || unit.id;
 
   return (
@@ -15,7 +15,9 @@ export const ApartmentCard = ({ unit }) => {
         <OptimizedImage
           src={unit.images?.[0]}
           alt={translateText(unit.title || unit.name)}
-          loading="lazy"
+          loading={priority ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : 'auto'}
+          sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           decoding="async"
           className="h-full w-full"
           imageClassName="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

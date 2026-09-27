@@ -184,6 +184,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
                         loading={idx === activeImageIndex ? 'eager' : 'lazy'}
                         fetchPriority={idx === activeImageIndex ? 'high' : 'auto'}
                         decoding="async"
+                        sizes="(min-width: 1024px) 66vw, 100vw"
                         className="h-[260px] w-full flex-shrink-0 sm:h-[340px] lg:h-[420px]"
                         imageClassName="h-full w-full object-cover"
                       />

@@ -126,8 +126,8 @@ export const Home = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredApartments.map((unit) => (
-              <ApartmentCard key={unit._id || unit.id} unit={unit} />
+            {filteredApartments.map((unit, index) => (
+              <ApartmentCard key={unit._id || unit.id} unit={unit} priority={index === 0} />
             ))}
           </div>
         )}
