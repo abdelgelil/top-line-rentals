@@ -13,7 +13,7 @@ import { prefetchAdminData } from "./source/services/api";
 
 // Keep route-specific code out of the initial bundle.
 const Home = lazy(() => import("./source/pages/Home/Home").then(({ Home: component }) => ({ default: component })));
-const Welcome = lazy(() => import("./source/pages/Welcome/Welcome").then(({ Welcome: component }) => ({ default: component })));
+const Welcome = lazy(() => import("./source/pages/Welcome"));
 const Checkout = lazy(() => import("./source/pages/Checkout/Checkout").then(({ Checkout: component }) => ({ default: component })));
 const SignInPage = lazy(() => import("./source/pages/Auth/AuthPages").then(({ SignInPage: component }) => ({ default: component })));
 const SignUpPage = lazy(() => import("./source/pages/Auth/AuthPages").then(({ SignUpPage: component }) => ({ default: component })));
@@ -130,6 +130,7 @@ function App() {
     <Routes>
       <Route element={<RoleAwareLayout />}>
             <Route path="/" element={<Welcome />} />
+            <Route path="/welcome" element={<Welcome />} />
             <Route path="/sign-in/*" element={<SignInPage />} />
             <Route path="/sign-up/*" element={<SignUpPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
