@@ -1,5 +1,6 @@
 import i18n from "../../../i18n.js";
 import React, { useCallback, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
@@ -124,22 +125,22 @@ const ClientLayout = () => {
       </div>
 
       {/* Mobile navigation drawer */}
-      {isOpen && (
-        <div className="fixed inset-0 z-[60] md:hidden">
+      {isOpen && createPortal(
+        <div className="fixed inset-0 z-[100] md:hidden">
           <button
             type="button"
             aria-label={i18n.t('Close menu', 'Close menu')}
-            className="absolute inset-0 h-full w-full bg-slate-950/45 backdrop-blur-[2px]"
+            className="fixed inset-0 z-40 h-full w-full bg-slate-950/60 backdrop-blur-sm"
             onClick={() => setIsOpen(false)}
           />
           <aside
             role="dialog"
             aria-modal="true"
             aria-label={i18n.t('nav.menu', 'Navigation menu')}
-            className="absolute inset-y-0 right-0 flex w-[min(22rem,88vw)] flex-col border-l border-slate-200 bg-white shadow-2xl dark:border-slate-800 dark:bg-slate-900 rtl:right-auto rtl:left-0 rtl:border-l-0 rtl:border-r"
+            className="fixed inset-y-0 right-0 z-50 flex w-[min(22rem,88vw)] flex-col overflow-hidden border-l border-slate-200 bg-white text-slate-900 shadow-2xl dark:border-slate-800 dark:bg-slate-900 dark:text-white rtl:right-auto rtl:left-0 rtl:border-l-0 rtl:border-r"
           >
-            <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 dark:border-slate-800">
-              <span className="text-sm font-bold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">{i18n.t('nav.menu', 'Menu')}</span>
+            <div className="flex items-center justify-between border-b border-slate-100 bg-white px-5 py-4 dark:border-slate-800 dark:bg-slate-900">
+              <Link to="/" onClick={() => setIsOpen(false)} className="min-w-0"><Logo /></Link>
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
@@ -189,7 +190,7 @@ const ClientLayout = () => {
                 <span>{t('accessibility.helpShort')}</span>
               </button>
             </nav>
-            <div className="space-y-3 border-t border-slate-100 p-4 dark:border-slate-800">
+            <div className="space-y-4 border-t border-slate-100 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
               <LanguageToggle />
               {isSignedIn ? (
                 <button
@@ -211,7 +212,8 @@ const ClientLayout = () => {
               )}
             </div>
           </aside>
-        </div>
+        </div>,
+        document.body
       )}
     </header>
     <main className="flex-grow">
