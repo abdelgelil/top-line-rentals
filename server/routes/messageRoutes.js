@@ -1,6 +1,7 @@
 import express from 'express';
 import Message from '../models/Message.js';
 import User from '../models/User.js';
+import { requireAuth, requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ router.post('/', async (req, res) => {
 
     // Check if the sender is a registered user to link their account
     let userId = null;
-    const user = await User.findOne({ email: email.toLowerCase() });
+    const user = email ? await User.findOne({ email: email.toLowerCase() }) : null;
     if (user) {
       userId = user._id;
     }
@@ -33,7 +34,7 @@ router.post('/', async (req, res) => {
 });
 
 // Get all messages (Admin only - Middleware should be applied in server.js or here)
-router.get('/', async (req, res) => {
+router.get('/', requireAuth, requireAdmin, async (req, res) => {
   try {
     const messages = await Message.find()
       .populate('userId', 'email role')
@@ -46,7 +47,7 @@ router.get('/', async (req, res) => {
 });
 
 // Mark message as read
-router.patch('/:id/read', async (req, res) => {
+router.patch('/:id/read', requireAuth, requireAdmin, async (req, res) => {
   try {
     const message = await Message.findByIdAndUpdate(
       req.params.id,

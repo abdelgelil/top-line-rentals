@@ -15,12 +15,11 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 dotenv.config({ path: path.resolve(__dirname, './.env') });
 
-const { clerkMiddleware } = await import('@clerk/express');
-
 // 2. Dynamic Route Imports
 const apartmentRoutes = (await import('./routes/apartmentRoutes.js')).default;
 const bookingRoutes = (await import('./routes/bookingRoutes.js')).default;
 const userRoutes = (await import('./routes/userRoutes.js')).default;
+const authRoutes = (await import('./routes/authRoutes.js')).default;
 const messageRoutes = (await import('./routes/messageRoutes.js')).default;
 
 const app = express();
@@ -90,7 +89,8 @@ const authLimiter = rateLimit({
 });
 
 app.use('/api/', generalLimiter);
-app.use('/api/users/sync', authLimiter);
+app.use('/api/auth/request-otp', authLimiter);
+app.use('/api/auth/verify-otp', authLimiter);
 app.use('/api/users/make-admin', authLimiter);
 app.use('/api/users/claim-first-admin', authLimiter);
 
@@ -101,19 +101,8 @@ app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 // Serve static upload directory (fallback if storing images locally)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-if (!process.env.CLERK_SECRET_KEY) {
-  console.error('WARNING: CLERK_SECRET_KEY is not set. Admin API routes will return 401.');
-}
-
-// Parses Clerk session JWTs from Authorization Bearer tokens / cookies
-app.use(
-  clerkMiddleware({
-    secretKey: process.env.CLERK_SECRET_KEY,
-    publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
-  })
-);
-
 // --- REGISTER API ENDPOINTS ---
+app.use('/api/auth', authRoutes);
 app.use('/api/apartments', apartmentRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/users', userRoutes);

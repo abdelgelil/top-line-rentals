@@ -14,18 +14,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@clerk/backend": "^2.29.0",
-    "@clerk/express": "^2.1.69",
     "cloudinary": "^1.41.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "express-rate-limit": "^7.1.5",
     "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^7.1.5",
     "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^9.9.5",
     "multer": "^2.4.0",
-    "multer-storage-cloudinary": "^4.0.0"
+    "multer-storage-cloudinary": "^4.0.0",
+    "nodemailer": "^7.0.13"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"

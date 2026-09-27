@@ -8,7 +8,7 @@ const bookingSchema = new mongoose.Schema(
       required: [true, 'Apartment reference is required'],
     },
     user: {
-      type: String, // Accepts Clerk User IDs (e.g. "user_2pX...") or standard MongoDB ObjectIDs
+      type: String,
       default: null,
     },
     guestName: {
@@ -18,7 +18,7 @@ const bookingSchema = new mongoose.Schema(
     },
     guestEmail: {
       type: String,
-      required: [true, 'Guest email is required'],
+      required: false,
       trim: true,
       lowercase: true,
     },

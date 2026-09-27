@@ -1,28 +1,30 @@
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
-  clerkId: {
-    type: String,
-    required: true,
-    unique: true
-  },
+  name: { type: String, trim: true, default: '' },
   email: {
     type: String,
-    required: true
+    required: true,
+    lowercase: true,
+    trim: true,
+    unique: true,
+    match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Enter a valid email address'],
   },
   phone: {
     type: String,
     trim: true,
-    default: ''
+    required: true,
+    unique: true,
+    match: [/^\+[1-9]\d{7,14}$/, 'Phone must be in E.164 format'],
   },
+  emailVerified: { type: Boolean, default: false },
+  passwordHash: { type: String, required: true, select: false },
   role: {
     type: String,
     enum: ['admin', 'user', 'client'],
     default: 'user'
   }
 }, { timestamps: true });
-
-userSchema.index({ email: 1 });
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);
 export default User;

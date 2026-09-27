@@ -1,11 +1,10 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import rateLimit from 'express-rate-limit';
-import { requireAuth } from '@clerk/express';
 import Booking from '../models/booking.js';
 import Apartment from '../models/Apartment.js';
 import Message from '../models/Message.js';
-import { requireAuth as ensureVerifiedUser } from '../middleware/auth.js';
+import { requireAuth, requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 const bookingActionLimiter = rateLimit({
@@ -28,7 +27,7 @@ const invalidateAnalyticsCache = () => {
 /* ==========================================================================
    GET /api/bookings/analytics - Fetch Admin Dashboard Analytics & VIP Clients
    ========================================================================== */
-router.get('/analytics', async (req, res) => {
+router.get('/analytics', requireAuth, requireAdmin, async (req, res) => {
   try {
     if (analyticsCache && analyticsCache.expiresAt > Date.now()) {
       return res.json(analyticsCache.data);
@@ -124,7 +123,7 @@ router.get('/apartment/:id', async (req, res) => {
 /* =======================================================================
    PATCH /api/bookings/:id/cancel - Cancel the signed-in user's reservation
    ======================================================================= */
-router.patch('/:id/cancel', bookingActionLimiter, requireAuth(), ensureVerifiedUser, async (req, res) => {
+router.patch('/:id/cancel', bookingActionLimiter, requireAuth, async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ success: false, message: 'Invalid booking ID' });
@@ -197,7 +196,7 @@ router.patch('/:id/cancel', bookingActionLimiter, requireAuth(), ensureVerifiedU
 /* ==========================================================================
    POST /api/bookings - Create new reservation
    ========================================================================== */
-router.post('/', bookingActionLimiter, ensureVerifiedUser, async (req, res) => {
+router.post('/', bookingActionLimiter, requireAuth, async (req, res) => {
   try {
     const {
       apartment,
@@ -306,12 +305,12 @@ router.post('/', bookingActionLimiter, ensureVerifiedUser, async (req, res) => {
 /* ==========================================================================
    GET /api/bookings - Fetch all reservations (Global Admin + Optional User Filter)
    ========================================================================== */
-router.get('/', async (req, res) => {
+router.get('/', requireAuth, async (req, res) => {
   try {
     const { userId } = req.query;
 
-    let filter = {};
-    if (userId && userId !== 'undefined' && userId !== 'null') {
+    let filter = req.user.role === 'admin' ? {} : { user: String(req.user.id) };
+    if (req.user.role === 'admin' && userId && userId !== 'undefined' && userId !== 'null') {
       filter = { user: String(userId) };
     }
 
@@ -335,7 +334,7 @@ router.get('/', async (req, res) => {
 /* ==========================================================================
    PATCH /api/bookings/:id/status - Update reservation status
    ========================================================================== */
-router.patch('/:id/status', async (req, res) => {
+router.patch('/:id/status', requireAuth, requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
@@ -365,7 +364,7 @@ router.patch('/:id/status', async (req, res) => {
 /* ==========================================================================
    DELETE /api/bookings/:id - Delete reservation document
    ========================================================================== */
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', requireAuth, requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
 
