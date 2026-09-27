@@ -44,7 +44,7 @@ const ClientNavbar = () => {
     }`;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 px-4 py-4 pointer-events-none">
+    <div className="fixed top-0 left-0 right-0 z-[100] px-4 py-4 pointer-events-none">
       <nav className="max-w-7xl mx-auto pointer-events-auto bg-white/60 dark:bg-slate-900/60 backdrop-blur-2xl border border-blue-100/50 dark:border-blue-500/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] rounded-full px-6 py-2 transition-all duration-500 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.6)]">
         <div className="flex items-center justify-between">
           <Link to="/" className="hover:opacity-90 transition-opacity">
@@ -108,9 +108,9 @@ const ClientNavbar = () => {
         </div>
       </nav>
 
-      <div className={`md:hidden fixed inset-0 z-[60] transition-opacity duration-300 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`} aria-hidden={!isOpen} inert={!isOpen}>
-        <button type="button" tabIndex={isOpen ? 0 : -1} aria-label={t('Close menu')} onClick={() => setIsOpen(false)} className="absolute inset-0 h-full w-full bg-black/60 backdrop-blur-sm" />
-        <aside role="dialog" aria-modal="true" aria-label={t('nav.menu', 'Navigation menu')} className={`absolute inset-y-0 right-0 flex w-[min(22rem,88vw)] flex-col border-l border-slate-200 bg-white shadow-2xl transition-transform duration-300 ease-in-out dark:border-slate-800 dark:bg-slate-900 rtl:right-auto rtl:left-0 rtl:border-l-0 rtl:border-r ${isOpen ? 'translate-x-0' : 'translate-x-full rtl:-translate-x-full'}`}>
+      <div className={`md:hidden fixed inset-0 z-[100] transition-opacity duration-300 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`} aria-hidden={!isOpen} inert={!isOpen}>
+        <div aria-hidden="true" onClick={() => setIsOpen(false)} className="absolute inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity" />
+        <aside role="dialog" aria-modal="true" aria-label={t('nav.menu', 'Navigation menu')} className={`absolute inset-y-0 right-0 z-50 flex w-[min(22rem,88vw)] flex-col border-l border-slate-200 bg-white shadow-2xl transition-transform duration-300 ease-in-out dark:border-slate-800 dark:bg-slate-900 rtl:right-auto rtl:left-0 rtl:border-l-0 rtl:border-r ${isOpen ? 'translate-x-0' : 'translate-x-full rtl:-translate-x-full'}`}>
           <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 dark:border-slate-800">
             <Link to="/" onClick={() => setIsOpen(false)}><Logo /></Link>
             <button
@@ -215,7 +215,6 @@ const ClientNavbar = () => {
                   </Link>
                 </div>
               )}
-            </div>
           </div>
         </aside>
       </div>
