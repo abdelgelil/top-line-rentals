@@ -65,23 +65,27 @@ const OptimizedImage = ({
   imageClassName = 'h-full w-full object-cover',
 }) => {
   const [loaded, setLoaded] = useState(false);
-  const [usingFallback, setUsingFallback] = useState(false);
-  const [fallbackFailed, setFallbackFailed] = useState(false);
+  const [sourceMode, setSourceMode] = useState('optimized');
   const normalizedSrc = getImageUrl(src);
-  const imageSrc = usingFallback ? DEFAULT_IMAGE_FALLBACK : optimizeImageUrl(normalizedSrc, width);
+  const optimizedSrc = optimizeImageUrl(normalizedSrc, width);
+  const imageSrc = sourceMode === 'fallback'
+    ? DEFAULT_IMAGE_FALLBACK
+    : sourceMode === 'original' ? normalizedSrc : optimizedSrc;
 
   useEffect(() => {
     setLoaded(false);
-    setUsingFallback(false);
-    setFallbackFailed(false);
+    setSourceMode('optimized');
   }, [src]);
 
   const handleError = () => {
-    if (!usingFallback) {
-      setUsingFallback(true);
+    if (sourceMode === 'optimized' && optimizedSrc !== normalizedSrc) {
+      setSourceMode('original');
+      setLoaded(false);
+    } else if (sourceMode !== 'fallback') {
+      setSourceMode('fallback');
       setLoaded(false);
     } else {
-      setFallbackFailed(true);
+      setSourceMode('failed');
       setLoaded(true);
     }
   };
@@ -91,10 +95,10 @@ const OptimizedImage = ({
       {!loaded && (
         <div className="absolute inset-0 animate-pulse bg-slate-200 dark:bg-slate-700" aria-hidden="true" />
       )}
-      {!fallbackFailed && (
+      {sourceMode !== 'failed' && (
         <img
           src={imageSrc}
-          srcSet={usingFallback ? undefined : imageSrcSet(normalizedSrc)}
+          srcSet={sourceMode === 'optimized' ? imageSrcSet(normalizedSrc) : undefined}
           sizes={sizes}
           alt={alt}
           loading={loading}
@@ -105,7 +109,7 @@ const OptimizedImage = ({
           className={`${imageClassName} transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
         />
       )}
-      {fallbackFailed && <div className="absolute inset-0 bg-gradient-to-br from-sky-100 via-slate-100 to-blue-200 dark:from-slate-700 dark:via-slate-800 dark:to-slate-900" role="img" aria-label={alt || 'Image unavailable'} />}
+      {sourceMode === 'failed' && <div className="absolute inset-0 bg-gradient-to-br from-sky-100 via-slate-100 to-blue-200 dark:from-slate-700 dark:via-slate-800 dark:to-slate-900" role="img" aria-label={alt || 'Image unavailable'} />}
     </div>
   );
 };

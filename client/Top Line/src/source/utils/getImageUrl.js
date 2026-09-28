@@ -12,7 +12,14 @@ export const getImageUrl = (imageSource, fallbackUrl = DEFAULT_IMAGE_FALLBACK) =
   if (typeof imageSource !== 'string' || !imageSource.trim()) return fallbackUrl;
 
   const imageUrl = imageSource.trim();
-  if (/^(https?:|data:image\/|blob:)/i.test(imageUrl)) return imageUrl;
+  if (/^https?:\/\//i.test(imageUrl)) {
+    // Avoid mixed-content image requests on the production HTTPS site.
+    if (imageUrl.toLowerCase().startsWith('http://') && globalThis.location?.protocol === 'https:') {
+      return `https://${imageUrl.slice(7)}`;
+    }
+    return imageUrl;
+  }
+  if (/^(data:image\/|blob:)/i.test(imageUrl)) return imageUrl;
   if (/^[A-Za-z\d+/]+={0,2}$/.test(imageUrl) && imageUrl.length >= 64 && imageUrl.length % 4 === 0) {
     return `data:image/jpeg;base64,${imageUrl}`;
   }
