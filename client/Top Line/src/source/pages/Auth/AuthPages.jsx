@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Check, ChevronDown } from 'lucide-react';
 import API from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import Logo from '../../components/common/Logo';
@@ -43,15 +43,16 @@ function PasswordAuthForm({ registering }) {
   const [username, setUsername] = useState('');
   const [phone, setPhone] = useState('');
   const [countryIso, setCountryIso] = useState('EG');
+  const [countryMenuOpen, setCountryMenuOpen] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const selectedCountry = COUNTRY_CODES.find(({ iso }) => iso === countryIso) || COUNTRY_CODES[0];
 
   const submit = async (event) => {
     event.preventDefault();
     setBusy(true);
     try {
       const endpoint = registering ? '/auth/register' : '/auth/login';
-      const selectedCountry = COUNTRY_CODES.find(({ iso }) => iso === countryIso) || COUNTRY_CODES[0];
       // Egyptian mobile numbers are entered in their familiar 11-digit local form (01...).
       // Strip the trunk zero when composing the international number sent to the API.
       const localPhone = countryIso === 'EG' ? phone.replace(/^0/, '') : phone;
@@ -71,15 +72,40 @@ function PasswordAuthForm({ registering }) {
       <div>
         <label htmlFor="auth-phone" className="text-base font-semibold text-slate-800 dark:text-slate-200">{t('auth.phone')}</label>
         <div className="mt-2 flex gap-2">
-          <select
-            aria-label={t('auth.countryCode', 'Country code')}
-            autoComplete="tel-country-code"
-            className="min-h-14 w-[46%] shrink-0 rounded-2xl border border-slate-200 bg-slate-50 px-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:border-blue-400 dark:focus:bg-slate-800 dark:focus:ring-blue-900/60 sm:w-[50%] sm:px-4 sm:text-base"
-            value={countryIso}
-            onChange={(event) => { setCountryIso(event.target.value); setPhone(''); }}
-          >
-            {COUNTRY_CODES.map(({ code, country, flag, iso }) => <option key={iso} value={iso}>{flag} {country} ({code})</option>)}
-          </select>
+          <div className="relative w-[46%] shrink-0 sm:w-[50%]">
+            <button
+              type="button"
+              aria-label={t('auth.countryCode', 'Country code')}
+              aria-haspopup="listbox"
+              aria-expanded={countryMenuOpen}
+              className="flex min-h-14 w-full items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 text-left text-sm text-slate-800 shadow-sm outline-none transition hover:border-blue-200 hover:bg-white focus-visible:border-blue-500 focus-visible:ring-4 focus-visible:ring-blue-100 sm:gap-3 sm:px-4 sm:text-base dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:border-slate-600 dark:hover:bg-slate-700 dark:focus-visible:border-blue-400 dark:focus-visible:ring-blue-900/60"
+              onClick={() => setCountryMenuOpen((open) => !open)}
+              onKeyDown={(event) => { if (event.key === 'Escape') setCountryMenuOpen(false); }}
+            >
+              <span aria-hidden="true" className="flex h-8 w-9 shrink-0 items-center justify-center rounded-lg border border-blue-100 bg-gradient-to-br from-white to-blue-50 text-[10px] font-black tracking-wide text-blue-800 shadow-sm dark:border-slate-600 dark:from-slate-700 dark:to-slate-800 dark:text-blue-200">{selectedCountry.iso}</span>
+              <span className="min-w-0 flex-1 truncate font-semibold">{selectedCountry.country}</span>
+              <span className="shrink-0 text-xs font-bold text-slate-500 sm:text-sm dark:text-slate-400">{selectedCountry.code}</span>
+              <ChevronDown aria-hidden="true" className={`h-4 w-4 shrink-0 text-slate-400 transition-transform ${countryMenuOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {countryMenuOpen && <div role="listbox" aria-label={t('auth.countryCode', 'Country code')} className="absolute left-0 top-[calc(100%+0.5rem)] z-30 max-h-72 w-[min(22rem,calc(100vw-3rem))] overflow-y-auto rounded-2xl border border-slate-200/90 bg-white/95 p-2 shadow-[0_20px_50px_-18px_rgba(15,23,42,0.35)] backdrop-blur-xl ring-1 ring-slate-900/5 dark:border-slate-700 dark:bg-slate-900/95 dark:ring-white/10">
+              {COUNTRY_CODES.map((country) => {
+                const active = country.iso === countryIso;
+                return <button
+                  type="button"
+                  role="option"
+                  aria-selected={active}
+                  key={country.iso}
+                  className={`group flex min-h-12 w-full items-center gap-3 rounded-xl px-3 py-2 text-left transition ${active ? 'bg-blue-50 text-blue-900 dark:bg-blue-950/60 dark:text-blue-100' : 'text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800'}`}
+                  onClick={() => { setCountryIso(country.iso); setPhone(''); setCountryMenuOpen(false); }}
+                >
+                  <span aria-hidden="true" className={`flex h-9 w-10 shrink-0 items-center justify-center rounded-xl border text-[10px] font-black tracking-wide shadow-sm ${active ? 'border-blue-200 bg-white text-blue-800 dark:border-blue-800 dark:bg-slate-800 dark:text-blue-200' : 'border-slate-200 bg-gradient-to-br from-white to-slate-50 text-slate-600 dark:border-slate-700 dark:from-slate-800 dark:to-slate-900 dark:text-slate-300'}`}>{country.iso}</span>
+                  <span className="min-w-0 flex-1 truncate text-sm font-semibold">{country.country}</span>
+                  <span className="text-sm font-bold tabular-nums text-slate-500 dark:text-slate-400">{country.code}</span>
+                  {active && <Check aria-hidden="true" className="h-4 w-4 text-blue-600 dark:text-blue-300" />}
+                </button>;
+              })}
+            </div>}
+          </div>
           <input
             id="auth-phone"
             className={fieldClass.replace('mt-2 ', '')}
