@@ -6,9 +6,10 @@ const optimizeImageUrl = (url, width = 1200) => {
 
   // Keep existing Cloudinary transformations and update/add only the width.
   if (/res\.cloudinary\.com\//i.test(url) && /\/upload\//i.test(url)) {
-    return url.replace(/\/upload\/([^/?#]*)(.*)$/i, (match, segment, remainder) => {
+    return url.replace(/\/upload\/([^/?#]*)(.*)$/i, (match, segment, remainder, offset, originalUrl) => {
+      const uploadPrefix = originalUrl.slice(0, offset);
       const isTransformation = segment.includes(',') || /^(f_|q_|w_|c_|g_|dpr_|ar_|e_|fl_)/.test(segment);
-      if (!isTransformation) return `/upload/f_auto,q_auto,w_${width},c_limit/${segment}${remainder}`;
+      if (!isTransformation) return `${uploadPrefix}/upload/f_auto,q_auto,w_${width},c_limit/${segment}${remainder}`;
 
       const parts = segment.split(',').filter(Boolean);
       const hasAutoFormat = parts.includes('f_auto');
@@ -20,7 +21,7 @@ const optimizeImageUrl = (url, width = 1200) => {
       if (!hasAutoFormat) nextParts.unshift('f_auto');
       if (!hasAutoQuality) nextParts.push('q_auto');
       if (!hasLimitCrop) nextParts.push('c_limit');
-      return `/upload/${nextParts.join(',')}${remainder}`;
+      return `${uploadPrefix}/upload/${nextParts.join(',')}${remainder}`;
     });
   }
 
