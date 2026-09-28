@@ -431,9 +431,9 @@ export function ApartmentDetails({ currentUser: propUser }) {
                       </button>
                     ))}
                   </div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  <label htmlFor="review-comment" className="block text-sm font-medium text-slate-700 dark:text-slate-200">
                     {i18n.t('Your review')}
-                    <textarea required minLength={5} maxLength={1000} value={reviewComment} onChange={(event) => setReviewComment(event.target.value)} rows={4} className="mt-2 w-full rounded-xl border border-slate-300 bg-slate-50 p-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 dark:border-slate-600 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-blue-400 dark:focus:ring-blue-900/50" />
+                    <textarea id="review-comment" required minLength={5} maxLength={1000} value={reviewComment} onChange={(event) => setReviewComment(event.target.value)} rows={4} placeholder={i18n.t('Share the highlights of your stay...')} className="mt-2 w-full resize-y rounded-xl border border-slate-300 bg-slate-50 p-4 text-base leading-relaxed text-slate-900 caret-blue-700 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 dark:border-slate-600 dark:bg-slate-950 dark:text-slate-50 dark:caret-blue-300 dark:placeholder:text-slate-400 dark:focus:border-blue-400 dark:focus:ring-blue-900/50" />
                   </label>
                   <p className="text-xs text-slate-500 dark:text-slate-400">{i18n.t('Reviews appear after admin approval.')}</p>
                   <button disabled={reviewSubmitting || reviewComment.trim().length < 5} type="submit" className="min-h-12 rounded-xl bg-gradient-to-r from-blue-700 to-blue-600 px-6 font-bold text-white shadow-lg shadow-blue-700/20 transition hover:-translate-y-0.5 hover:from-blue-800 hover:to-blue-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-55">{reviewSubmitting ? i18n.t('Submitting...') : i18n.t('Submit review')}</button>
