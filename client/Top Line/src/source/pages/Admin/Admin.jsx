@@ -90,13 +90,13 @@ export const Admin = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 p-6 dark:bg-slate-950">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 dark:bg-slate-900">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">{i18n.t("Admin Dashboard")}</h1>
-            <p className="text-gray-500 text-sm mt-1">{i18n.t("Manage listings, view reservations, and update features.")}</p>
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{i18n.t("Admin Dashboard")}</h1>
+            <p className="text-sm text-slate-600 mt-1 dark:text-slate-300">{i18n.t("Manage listings, view reservations, and update features.")}</p>
           </div>
 
           <div className="flex items-center space-x-3">
@@ -113,13 +113,13 @@ export const Admin = () => {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex border-b border-gray-200 bg-white px-6 rounded-xl shadow-sm">
+        <div className="flex border-b border-gray-200 bg-white px-6 rounded-xl shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <button
             onClick={() => setActiveTab('apartments')}
             className={`flex items-center space-x-2 py-4 px-4 font-medium text-sm border-b-2 transition ${
               activeTab === 'apartments'
-                ? 'border-[#785910] text-[#785910]'
-                : 'border-transparent text-gray-500 hover:text-gray-700'
+                ? 'border-[#785910] text-[#785910] dark:text-[#dfbe74]'
+                : 'border-transparent text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
           >
             <Building size={18} />
@@ -130,8 +130,8 @@ export const Admin = () => {
             onClick={() => setActiveTab('bookings')}
             className={`flex items-center space-x-2 py-4 px-4 font-medium text-sm border-b-2 transition ${
               activeTab === 'bookings'
-                ? 'border-[#785910] text-[#785910]'
-                : 'border-transparent text-gray-500 hover:text-gray-700'
+                ? 'border-[#785910] text-[#785910] dark:text-[#dfbe74]'
+                : 'border-transparent text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
           >
             <Calendar size={18} />
@@ -143,7 +143,7 @@ export const Admin = () => {
         {activeTab === 'apartments' ? (
           <div className="space-y-6">
             {/* Filters */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-4 rounded-xl shadow-sm">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-4 rounded-xl shadow-sm dark:bg-slate-900">
               <div className="relative w-full sm:w-72">
                 <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
@@ -151,7 +151,7 @@ export const Admin = () => {
                   placeholder={i18n.t("Search title...")}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#c6a052]"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg bg-white text-sm text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#c6a052] dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-400"
                 />
               </div>
 
@@ -160,7 +160,7 @@ export const Admin = () => {
                 <select
                   value={selectedTower}
                   onChange={(e) => setSelectedTower(e.target.value)}
-                  className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#c6a052]"
+                  className="border border-gray-200 rounded-lg bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#c6a052] dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                 >
                   <option value="All">{i18n.t("All Towers")}</option>
                   <option value="Tower 1">{i18n.t("Tower 1")}</option>
@@ -171,19 +171,19 @@ export const Admin = () => {
             </div>
 
             {/* Error Message */}
-            {error && <div className="p-4 bg-red-50 text-red-700 rounded-lg text-sm">{error}</div>}
+            {error && <div className="p-4 bg-red-50 text-red-700 rounded-lg text-sm dark:bg-red-950/40 dark:text-red-300">{error}</div>}
 
             {/* Loading / Apartments Grid */}
             {isLoading ? (
-              <div className="text-center py-12 text-gray-500">{i18n.t("Loading apartments...")}</div>
+              <div className="text-center py-12 text-slate-600 dark:text-slate-400">{i18n.t("Loading apartments...")}</div>
             ) : filteredApartments.length === 0 ? (
-              <div className="text-center py-12 bg-white rounded-xl text-gray-500">{' '}{i18n.t("No apartments found.")}{' '}</div>
+              <div className="text-center py-12 bg-white rounded-xl text-slate-600 dark:bg-slate-900 dark:text-slate-400">{' '}{i18n.t("No apartments found.")}{' '}</div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredApartments.map((apt) => (
                   <div
                     key={apt._id}
-                    className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col hover:shadow-md transition"
+                    className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col hover:shadow-md transition dark:border-slate-800 dark:bg-slate-900"
                   >
                     <div className="h-48 bg-gray-100 relative">
                       <OptimizedImage
@@ -192,19 +192,19 @@ export const Admin = () => {
                         className="h-full w-full"
                         imageClassName="h-full w-full object-cover"
                       />
-                      <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-md text-xs font-semibold text-gray-700 shadow-sm">
+                      <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-md text-xs font-semibold text-slate-700 shadow-sm dark:bg-slate-900/90 dark:text-slate-200">
                         {translateText(apt.tower)}
                       </span>
                     </div>
 
                     <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
                       <div>
-                        <h3 className="font-semibold text-lg text-gray-900 line-clamp-1">{translateText(apt.title)}</h3>
+                        <h3 className="font-semibold text-lg text-slate-900 line-clamp-1 dark:text-white">{translateText(apt.title)}</h3>
                         <p className="text-[#785910] font-bold text-lg mt-1">
                           {formatCurrency(apt.pricePerNight || apt.price)}{' '}
-                          <span className="text-xs text-gray-500 font-normal">{i18n.t("/ night")}</span>
+                          <span className="text-xs text-slate-500 font-normal dark:text-slate-400">{i18n.t("/ night")}</span>
                         </p>
-                        <div className="flex items-center space-x-3 text-xs text-gray-500 mt-3">
+                        <div className="flex items-center space-x-3 text-xs text-slate-600 mt-3 dark:text-slate-400">
                           <span>{apt.bedrooms}{' '}{i18n.t("Bed")}</span>
                           <span>•</span>
                           <span>{apt.bathrooms}{' '}{i18n.t("Bath")}</span>
@@ -219,17 +219,17 @@ export const Admin = () => {
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-end space-x-2 pt-3 border-t border-gray-100">
+                      <div className="flex items-center justify-end space-x-2 pt-3 border-t border-gray-100 dark:border-slate-800">
                         <button
                           onClick={() => handleOpenEditModal(apt)}
-                          className="p-2 text-gray-600 hover:text-[#785910] hover:bg-[#dfbe74] rounded-lg transition"
+                          className="p-2 text-slate-600 hover:text-[#785910] hover:bg-[#dfbe74] rounded-lg transition dark:text-slate-300"
                           title={i18n.t("Edit Apartment")}
                         >
                           <Edit size={18} />
                         </button>
                         <button
                           onClick={() => handleDeleteApartment(apt._id)}
-                          className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
+                          className="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition dark:text-slate-300 dark:hover:text-red-300 dark:hover:bg-red-950/40"
                           title={i18n.t("Delete Apartment")}
                         >
                           <Trash2 size={18} />

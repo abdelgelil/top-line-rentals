@@ -360,7 +360,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
                       <stat.icon className="w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-[10px] font-bold text-slate-400 uppercase">{i18n.t(stat.label)}</p>
+                      <p className="text-[10px] font-bold text-slate-500 uppercase dark:text-slate-400">{i18n.t(stat.label)}</p>
                       <p className="text-sm font-bold text-slate-900 dark:text-white">{stat.value}</p>
                     </div>
                   </div>
@@ -464,7 +464,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
                     </article>
                   ))}
                 </div>
-              ) : <p className="rounded-2xl border border-dashed border-slate-300 p-6 text-center text-slate-500 dark:border-slate-700">{i18n.t('Be the first guest to share a review.')}</p>}
+              ) : <p className="rounded-2xl border border-dashed border-slate-300 p-6 text-center text-slate-600 dark:border-slate-700 dark:text-slate-300">{i18n.t('Be the first guest to share a review.')}</p>}
             </section>
           </div>
 

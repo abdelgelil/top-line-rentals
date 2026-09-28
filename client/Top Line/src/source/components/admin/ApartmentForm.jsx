@@ -150,7 +150,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-5 space-y-3 text-sm dark:[&_label]:text-slate-300 dark:[&_input]:border-slate-700 dark:[&_input]:bg-slate-800 dark:[&_input]:text-white dark:[&_input]:placeholder:text-slate-400 dark:[&_select]:border-slate-700 dark:[&_select]:bg-slate-800 dark:[&_select]:text-white dark:[&_textarea]:border-slate-700 dark:[&_textarea]:bg-slate-800 dark:[&_textarea]:text-white dark:[&_textarea]:placeholder:text-slate-400">
           {/* Title */}
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Title *")}{' '}</label>
+            <label className="block text-xs font-medium text-slate-700 mb-1 dark:text-slate-300">{' '}{i18n.t("Title *")}{' '}</label>
             <input
               type="text"
               name="title"
@@ -165,7 +165,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
           {/* Tower & Price */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Tower")}{' '}</label>
+              <label className="block text-xs font-medium text-slate-700 mb-1 dark:text-slate-300">{' '}{i18n.t("Tower")}{' '}</label>
               <select
                 name="tower"
                 value={formData.tower}
@@ -178,7 +178,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Price per Night (EGP) *")}{' '}</label>
+              <label className="block text-xs font-medium text-slate-700 mb-1 dark:text-slate-300">{' '}{i18n.t("Price per Night (EGP) *")}{' '}</label>
               <input
                 type="number"
                 name="pricePerNight"
@@ -194,7 +194,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
           {/* Floor, Bedrooms, Bathrooms, Guests */}
           <div className="grid grid-cols-4 gap-2">
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Floor")}{' '}</label>
+              <label className="block text-xs font-medium text-slate-700 mb-1 dark:text-slate-300">{' '}{i18n.t("Floor")}{' '}</label>
               <input
                 type="number"
                 name="floor"
@@ -205,7 +205,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Bedrooms")}{' '}</label>
+              <label className="block text-xs font-medium text-slate-700 mb-1 dark:text-slate-300">{' '}{i18n.t("Bedrooms")}{' '}</label>
               <input
                 type="number"
                 name="bedrooms"
@@ -216,7 +216,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Bathrooms")}{' '}</label>
+              <label className="block text-xs font-medium text-slate-700 mb-1 dark:text-slate-300">{' '}{i18n.t("Bathrooms")}{' '}</label>
               <input
                 type="number"
                 name="bathrooms"
@@ -227,7 +227,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Guests")}{' '}</label>
+              <label className="block text-xs font-medium text-slate-700 mb-1 dark:text-slate-300">{' '}{i18n.t("Guests")}{' '}</label>
               <input
                 type="number"
                 name="guests"
@@ -242,7 +242,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
           {/* Size & Amenities */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Size (sqm)")}{' '}</label>
+              <label className="block text-xs font-medium text-slate-700 mb-1 dark:text-slate-300">{' '}{i18n.t("Size (sqm)")}{' '}</label>
               <input
                 type="number"
                 name="sizeSqM"
@@ -253,7 +253,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Amenities")}{' '}</label>
+              <label className="block text-xs font-medium text-slate-700 mb-1 dark:text-slate-300">{' '}{i18n.t("Amenities")}{' '}</label>
               <input
                 type="text"
                 name="amenities"
@@ -267,7 +267,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
 
           {/* Description */}
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Description")}{' '}</label>
+            <label className="block text-xs font-medium text-slate-700 mb-1 dark:text-slate-300">{' '}{i18n.t("Description")}{' '}</label>
             <textarea
               name="description"
               rows={2}
@@ -280,13 +280,13 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
 
           {/* Images */}
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Images")}{' '}</label>
+            <label className="block text-xs font-medium text-slate-700 mb-1 dark:text-slate-300">{' '}{i18n.t("Images")}{' '}</label>
             <input
               type="file"
               multiple
               accept="image/*"
               onChange={handleFileChange}
-              className="w-full text-xs text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-[#c6a052] file:text-[#785910] hover:file:bg-[#c6a052]"
+              className="w-full text-xs text-slate-600 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-[#c6a052] file:text-[#785910] hover:file:bg-[#c6a052] dark:text-slate-400"
             />
 
             {(existingImages.length > 0 || filePreviews.length > 0) && (
