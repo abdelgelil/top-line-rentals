@@ -40,7 +40,7 @@ export const BookingWidget = ({ pricePerNight = 5000, maxGuests = 4, onReserve }
           <span className="text-2xl font-black text-slate-900 dark:text-white">
             {formatCurrency(pricePerNight)}
           </span>
-          <span className="text-xs text-slate-500 font-medium">{' '}{i18n.t("/ night")}</span>
+          <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">{' '}{i18n.t("/ night")}</span>
         </div>
         <div className="flex items-center gap-1 text-xs font-bold text-[#785910] dark:text-[#dfbe74] bg-[#c6a052]/10 px-2.5 py-1 rounded-full">
           <Sparkles className="w-3.5 h-3.5" />

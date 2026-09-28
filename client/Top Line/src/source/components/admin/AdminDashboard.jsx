@@ -21,7 +21,7 @@ const ApartmentForm = lazy(() => import('./ApartmentForm'));
 const AdminSettings = lazy(() => import('./AdminSettings'));
 
 const PanelFallback = () => (
-  <div className="flex items-center justify-center py-10 text-sm text-slate-500" role="status">
+  <div className="flex items-center justify-center py-10 text-sm text-slate-500 dark:text-slate-400" role="status">
     <span className="mr-3 h-5 w-5 animate-spin rounded-full border-2 border-[#c6a052]/30 border-t-[#c6a052]" />
     {i18n.t('Loading session...')}
   </div>
@@ -242,7 +242,7 @@ const AdminDashboard = () => {
           {!analytics && !analyticsFailed ? (
             <AnalyticsSkeleton />
           ) : analyticsFailed && !analytics ? (
-            <div className="text-center py-12 text-slate-500">
+            <div className="text-center py-12 text-slate-500 dark:text-slate-400">
               {i18n.t('Failed to load apartments. Please try refreshing.')}
             </div>
           ) : (
@@ -250,7 +250,7 @@ const AdminDashboard = () => {
               {/* KPI Stat Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{i18n.t("Total Bookings")}</p>
+                  <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{i18n.t("Total Bookings")}</p>
                   <h3 className="text-3xl font-black text-slate-900 dark:text-white mt-2">
                     {analytics?.metrics?.totalBookings ?? 0}
                   </h3>
@@ -286,11 +286,11 @@ const AdminDashboard = () => {
               <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
                 <div className="px-6 py-5 border-b border-slate-200 dark:border-slate-800">
                   <h2 className="text-lg font-bold text-slate-900 dark:text-white">{' '}{i18n.t("Frequent Visitors & VIP Clients")}{' '}</h2>
-                  <p className="text-xs text-slate-500">{' '}{i18n.t("Clients with the highest frequency of reservation activity.")}{' '}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">{' '}{i18n.t("Clients with the highest frequency of reservation activity.")}{' '}</p>
                 </div>
 
                 {!analytics?.topClients || analytics.topClients.length === 0 ? (
-                  <div className="p-6 text-center text-slate-500">{i18n.t("No client activity recorded yet.")}</div>
+                  <div className="p-6 text-center text-slate-500 dark:text-slate-400">{i18n.t("No client activity recorded yet.")}</div>
                 ) : (
                   <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-800 text-left text-sm">
@@ -315,7 +315,7 @@ const AdminDashboard = () => {
                                   <div className="font-semibold text-slate-900 dark:text-white">
                                     {client.guestName || 'Anonymous Guest'}
                                   </div>
-                                  <div className="text-xs text-slate-500">{client._id || 'N/A'}</div>
+                                  <div className="text-xs text-slate-500 dark:text-slate-400">{client._id || 'N/A'}</div>
                                 </div>
                               </div>
                             </td>
@@ -326,7 +326,7 @@ const AdminDashboard = () => {
                             <td className="px-6 py-4 font-semibold text-slate-900 dark:text-white">
                               {formatCurrency(client.totalSpent ?? 0)}
                             </td>
-                            <td className="px-6 py-4 text-xs text-slate-500">
+                            <td className="px-6 py-4 text-xs text-slate-500 dark:text-slate-400">
                               {client.lastBookingDate ? new Date(client.lastBookingDate).toLocaleDateString() : 'N/A'}
                             </td>
                           </tr>
@@ -347,7 +347,7 @@ const AdminDashboard = () => {
           {loadingBookings ? (
             <TableSkeleton rows={6} columns={8} />
           ) : bookings.length === 0 ? (
-            <div className="bg-white dark:bg-slate-900 shadow rounded-lg p-6 text-center text-slate-500">{' '}{i18n.t("No reservations found in database.")}{' '}</div>
+            <div className="bg-white dark:bg-slate-900 shadow rounded-lg p-6 text-center text-slate-500 dark:text-slate-400">{' '}{i18n.t("No reservations found in database.")}{' '}</div>
           ) : (
             <div className="bg-white dark:bg-slate-900 shadow-sm rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
               <div className="overflow-x-auto">
@@ -375,14 +375,14 @@ const AdminDashboard = () => {
                           {b.guestPhone ? <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
                             <a dir="ltr" href={`tel:${String(b.guestPhone).replace(/[^\d+]/g, '')}`} className="font-medium text-slate-600 underline decoration-[#c6a052]/50 underline-offset-2 hover:text-[#785910] dark:text-slate-300 dark:hover:text-[#dfbe74]">{b.guestPhone}</a>
                             <a href={`https://wa.me/${String(b.guestPhone).replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" aria-label={`${i18n.t('Message guest on WhatsApp')}: ${b.guestName || b.guestPhone}`} className="rounded-full border border-[#c6a052]/40 px-2 py-1 font-semibold text-[#785910] transition-colors hover:bg-[#c6a052]/10 dark:text-[#dfbe74]">WhatsApp</a>
-                          </div> : <div className="text-xs text-slate-500">{i18n.t('No phone provided')}</div>}
+                          </div> : <div className="text-xs text-slate-500 dark:text-slate-400">{i18n.t('No phone provided')}</div>}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="font-semibold text-slate-800 dark:text-slate-200">
                             {translateText(b.apartment?.title || 'Deleted/Unknown Apartment')}
                           </div>
                           {b.apartment?.tower && (
-                            <div className="text-xs text-slate-500">{i18n.t("Tower:")}{' '}{translateText(b.apartment.tower)}</div>
+                            <div className="text-xs text-slate-500 dark:text-slate-400">{i18n.t("Tower:")}{' '}{translateText(b.apartment.tower)}</div>
                           )}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-slate-600 dark:text-slate-300">
@@ -455,9 +455,9 @@ const AdminDashboard = () => {
           </div>
 
           {loadingApartments ? (
-            <div className="text-center py-12 text-slate-500">{i18n.t("Loading Apartments...")}</div>
+            <div className="text-center py-12 text-slate-500 dark:text-slate-400">{i18n.t("Loading Apartments...")}</div>
           ) : apartments.length === 0 ? (
-            <div className="bg-white dark:bg-slate-900 shadow rounded-lg p-6 text-center text-slate-500">{' '}{i18n.t("No apartments found.")}{' '}</div>
+            <div className="bg-white dark:bg-slate-900 shadow rounded-lg p-6 text-center text-slate-500 dark:text-slate-400">{' '}{i18n.t("No apartments found.")}{' '}</div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {apartments.map((apt) => (

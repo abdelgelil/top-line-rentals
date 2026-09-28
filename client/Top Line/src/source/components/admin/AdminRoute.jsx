@@ -8,7 +8,7 @@ const AdminRoute = ({ children }) => {
 
   if (!isLoaded) {
     return (
-      <div className="flex justify-center items-center min-h-[60vh] text-slate-500 font-medium">{' '}{i18n.t("Authenticating...")}{' '}</div>
+      <div className="flex justify-center items-center min-h-[60vh] text-slate-500 dark:text-slate-400 font-medium">{' '}{i18n.t("Authenticating...")}{' '}</div>
     );
   }
 

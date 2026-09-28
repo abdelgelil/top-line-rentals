@@ -129,10 +129,10 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
 
   return (
     <div className={pageMode ? 'mx-auto w-full max-w-4xl px-4 py-8 sm:px-6' : 'fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4'}>
-      <div className={`relative flex flex-col w-full ${pageMode ? 'rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-900' : 'max-w-lg max-h-[85vh] rounded-xl bg-white shadow-2xl'} overflow-hidden`}>
+      <div className={`relative flex flex-col w-full ${pageMode ? 'rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-900' : 'max-w-lg max-h-[85vh] rounded-xl bg-white shadow-2xl dark:bg-slate-900'} overflow-hidden`}>
 
         {/* Fixed Header */}
-        <div className="flex items-center justify-between border-b px-5 py-3 bg-gray-50">
+        <div className="flex items-center justify-between border-b border-gray-200 px-5 py-3 bg-gray-50 dark:border-slate-700 dark:bg-slate-800">
           <h2 className="text-base font-semibold text-gray-800 dark:text-white">
             {i18n.t(pageMode ? 'Edit Apartment Details' : (initialData ? 'Edit Apartment' : 'Add New Apartment'))}
           </h2>
@@ -140,14 +140,14 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
             type="button"
             onClick={onClose}
             aria-label={i18n.t(pageMode ? 'Back to Apartments' : 'Close')}
-            className="rounded-lg p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-700"
+            className="rounded-lg p-1 text-gray-500 hover:bg-gray-200 hover:text-gray-900 dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:text-white"
           >
             {pageMode ? <ArrowLeft size={18} /> : <X size={18} />}
           </button>
         </div>
 
         {/* Scrollable Form Body */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-5 space-y-3 text-sm dark:[&_label]:text-slate-300">
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-5 space-y-3 text-sm dark:[&_label]:text-slate-300 dark:[&_input]:border-slate-700 dark:[&_input]:bg-slate-800 dark:[&_input]:text-white dark:[&_input]:placeholder:text-slate-400 dark:[&_select]:border-slate-700 dark:[&_select]:bg-slate-800 dark:[&_select]:text-white dark:[&_textarea]:border-slate-700 dark:[&_textarea]:bg-slate-800 dark:[&_textarea]:text-white dark:[&_textarea]:placeholder:text-slate-400">
           {/* Title */}
           <div>
             <label className="block text-xs font-medium text-gray-700 mb-1">{' '}{i18n.t("Title *")}{' '}</label>
@@ -317,7 +317,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
             <button
               type="button"
               onClick={onClose}
-              className="px-3 py-1.5 rounded-md border border-gray-300 text-xs font-medium text-gray-700 hover:bg-gray-100"
+              className="px-3 py-1.5 rounded-md border border-gray-300 text-xs font-medium text-gray-700 hover:bg-gray-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
             >{' '}{i18n.t("Cancel")}{' '}</button>
             <button
               type="submit"

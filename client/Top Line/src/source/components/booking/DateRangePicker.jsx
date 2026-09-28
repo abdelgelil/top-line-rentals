@@ -115,7 +115,7 @@ export default function DateRangePicker({
 
         <div className="grid grid-cols-7 gap-1" role="grid" aria-label={monthLabel}>
           {weekdays.map((day, index) => (
-            <div key={`${day}-${index}`} className="flex min-h-10 items-center justify-center text-xs font-bold text-slate-500" role="columnheader">
+            <div key={`${day}-${index}`} className="flex min-h-10 items-center justify-center text-xs font-bold text-slate-500 dark:text-slate-400" role="columnheader">
               {day}
             </div>
           ))}

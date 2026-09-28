@@ -75,14 +75,14 @@ export const AdminBookings = () => {
       ) : filteredBookings.length === 0 ? (
         <div className="text-center py-16 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
           <p className="text-slate-800 dark:text-slate-200 font-semibold text-base">{i18n.t("No reservations found")}</p>
-          <p className="text-slate-400 text-xs mt-1">{i18n.t("There are currently no bookings matching the selected filter.")}</p>
+          <p className="text-slate-400 dark:text-slate-300 text-xs mt-1">{i18n.t("There are currently no bookings matching the selected filter.")}</p>
         </div>
       ) : (
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                <tr className="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-500 dark:text-slate-300 uppercase tracking-wider">
                   <th className="p-4 pl-6">{i18n.t("Apartment")}</th>
                   <th className="p-4">{i18n.t("Customer Contact")}</th>
                   <th className="p-4">{i18n.t("Dates & Guests")}</th>
@@ -122,13 +122,13 @@ export const AdminBookings = () => {
                             <User className="w-3.5 h-3.5 text-slate-400" />
                             <span>{user.name || user.fullName || 'Guest'}</span>
                           </div>
-                          <div className="flex items-center gap-2 text-xs text-slate-500">
+                          <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                             <Phone className="w-3.5 h-3.5 text-slate-400" />
                             <a href={`tel:${user.phone || user.phoneNumber}`} className="hover:underline text-[#785910] dark:text-[#dfbe74] font-mono">
                               {user.phone || user.phoneNumber || 'N/A'}
                             </a>
                           </div>
-                          <div className="flex items-center gap-2 text-xs text-slate-500">
+                          <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                             <Mail className="w-3.5 h-3.5 text-slate-400" />
                             <span>{user.email || 'N/A'}</span>
                           </div>

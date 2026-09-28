@@ -94,7 +94,7 @@ export const Home = () => {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
           <div>
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">{i18n.t("Available Residences")}</h2>
-            <p className="text-xs sm:text-sm text-slate-500">{' '}{i18n.t("Showing")}{' '}{filteredApartments.length}{' '}{i18n.t("handpicked premium suites")}{' '}</p>
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">{' '}{i18n.t("Showing")}{' '}{filteredApartments.length}{' '}{i18n.t("handpicked premium suites")}{' '}</p>
           </div>
 
           <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0">

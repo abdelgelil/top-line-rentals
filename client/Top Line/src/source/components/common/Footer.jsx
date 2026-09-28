@@ -46,7 +46,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-between gap-4 border-t border-slate-800/60 pt-8 text-xs text-slate-500 sm:flex-row">
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-slate-800/60 pt-8 text-xs text-slate-400 sm:flex-row">
           <p>© {new Date().getFullYear()} Topline Luxury Apartments. {t('footer.allRightsReserved', 'All rights reserved.')}</p>
           <div className="flex items-center gap-1.5 text-slate-400">
             <span>{t('footer.developedBy', 'Developed with quality & care by')}</span>

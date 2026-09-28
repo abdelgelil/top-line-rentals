@@ -42,7 +42,7 @@ export default function AdminSettings({ onClose }) {
       <div className="flex items-start justify-between gap-4">
         <div>
           <h2 className="text-xl font-bold text-slate-900 dark:text-white">{i18n.t("Admin Management")}</h2>
-          <p className="text-xs text-slate-500 mt-1">{' '}{i18n.t("Promote an existing registered account by verified email, phone number, or both.")}{' '}</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{' '}{i18n.t("Promote an existing registered account by verified email, phone number, or both.")}{' '}</p>
         </div>
         {onClose && (
           <button
@@ -68,7 +68,7 @@ export default function AdminSettings({ onClose }) {
 
       <form onSubmit={handleGrantAdmin} className="space-y-4">
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-1">{' '}{i18n.t("Email Address (optional)")}{' '}</label>
+          <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">{' '}{i18n.t("Email Address (optional)")}{' '}</label>
           <input
             type="email"
             placeholder={i18n.t("Enter registered email")}
@@ -79,7 +79,7 @@ export default function AdminSettings({ onClose }) {
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-1">{' '}{i18n.t("Phone Number (optional)")}{' '}</label>
+          <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">{' '}{i18n.t("Phone Number (optional)")}{' '}</label>
           <input
             type="tel"
             placeholder={i18n.t("Enter registered phone number with country code")}
@@ -87,7 +87,7 @@ export default function AdminSettings({ onClose }) {
             onChange={(e) => setNewAdminPhone(e.target.value)}
             className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-transparent text-sm focus:outline-none focus:ring-2 focus:ring-[#c6a052] text-slate-900 dark:text-white"
           />
-          <p className="mt-1 text-[11px] text-slate-500">{i18n.t("If both are entered, they must belong to the same account.")}</p>
+          <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">{i18n.t("If both are entered, they must belong to the same account.")}</p>
         </div>
 
         <button

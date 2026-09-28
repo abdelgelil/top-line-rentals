@@ -12,7 +12,7 @@ export default function Favorites() {
   const { isLoaded, isSignedIn } = useAuth();
   const { favoriteApartments, isLoading } = useFavorites();
 
-  if (!isLoaded) return <div className="p-8 text-center text-slate-500">Loading authentication status...</div>;
+  if (!isLoaded) return <div className="p-8 text-center text-slate-500 dark:text-slate-400">Loading authentication status...</div>;
   if (!isSignedIn) return <Navigate to="/sign-in" replace />;
 
   return (

@@ -64,7 +64,7 @@ export const ContactUs = () => {
 
       {/* Header Section */}
       <section className="w-full pt-16 pb-12 px-4 sm:px-8 lg:px-12 text-center space-y-4">
-        <h1 className="text-4xl sm:text-6xl font-black text-slate-900 dark:text-white tracking-tight bg-gradient-to-r from-[#c6a052] via-[#c6a052] to-[#dfbe74] bg-clip-text text-transparent">{' '}{i18n.t("Get in Touch")}{' '}</h1>
+        <h1 className="text-4xl sm:text-6xl font-black tracking-tight bg-gradient-to-r from-[#785910] via-[#a68032] to-[#785910] dark:from-[#dfbe74] dark:via-[#c6a052] dark:to-[#dfbe74] bg-clip-text text-transparent">{' '}{i18n.t("Get in Touch")}{' '}</h1>
         <p className="text-sm sm:text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">{' '}{i18n.t("Whether you're planning a coastal getaway or exploring investment opportunities in Alamein City, our reservation specialists are here to help.")}{' '}</p>
       </section>
 

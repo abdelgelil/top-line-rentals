@@ -51,7 +51,7 @@ export const AdminMessages = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-full text-slate-500">
+      <div className="flex items-center justify-center h-full text-slate-500 dark:text-slate-400">
         <div className="flex flex-col items-center gap-2">
           <div className="w-8 h-8 border-4 border-[#c6a052] border-t-transparent rounded-full animate-spin" />
           <p>{i18n.t("Loading messages...")}</p>
@@ -97,7 +97,7 @@ export const AdminMessages = () => {
                 >
                   <div className="flex justify-between items-start mb-1">
                     <div className="flex items-center gap-2 min-w-0">
-                      <span className={`text-xs font-bold truncate ${!msg.isRead ? 'text-[#785910] dark:text-[#dfbe74]' : 'text-slate-400'}`}>
+                  <span className={`text-xs font-bold truncate ${!msg.isRead ? 'text-[#785910] dark:text-[#dfbe74]' : 'text-slate-400 dark:text-slate-300'}`}>
                         {msg.subject}
                       </span>
                       {msg.type === 'cancellation_alert' && (
@@ -134,7 +134,7 @@ export const AdminMessages = () => {
                 <ArrowLeft className="w-4 h-4" />{' '}{i18n.t("Back to Inbox")}{' '}</button>
               <div className="flex items-center gap-3 ml-auto">
                 <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                  selectedMessage.isRead ? 'bg-slate-100 dark:bg-slate-800 text-slate-500' : 'bg-[#c6a052] dark:bg-[#a68032]/30 text-[#785910] dark:text-[#dfbe74]'
+                  selectedMessage.isRead ? 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-300' : 'bg-[#c6a052] dark:bg-[#a68032]/30 text-[#785910] dark:text-[#dfbe74]'
                 }`}>
                   {i18n.t(selectedMessage.isRead ? 'Read' : 'New Message')}
                 </span>
@@ -164,7 +164,7 @@ export const AdminMessages = () => {
 
               {/* Message Body */}
               <div className="space-y-4">
-                <div className="flex items-center gap-2 text-slate-400 dark:text-slate-500">
+                <div className="flex items-center gap-2 text-slate-400 dark:text-slate-300">
                   <MessageSquare className="w-4 h-4" />
                   <span className="text-xs font-bold uppercase tracking-widest">{i18n.t("Message Detail")}</span>
                 </div>
@@ -172,7 +172,7 @@ export const AdminMessages = () => {
                   <div className="mb-4 pb-4 border-b border-slate-100 dark:border-slate-700">
                     <h4 className="text-lg font-bold text-slate-900 dark:text-white">{selectedMessage.subject}</h4>
                     {selectedMessage.type === 'cancellation_alert' && selectedMessage.apartmentTitle && (
-                      <p className="mt-1 text-xs font-medium text-slate-500">{i18n.t('Apartment:')} {selectedMessage.apartmentTitle}</p>
+                      <p className="mt-1 text-xs font-medium text-slate-500 dark:text-slate-400">{i18n.t('Apartment:')} {selectedMessage.apartmentTitle}</p>
                     )}
                   </div>
                   <p className="text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">

@@ -55,7 +55,7 @@ export default function MyBookings() {
       case 'canceled':
         return 'bg-rose-500/10 text-rose-600 border-rose-500/30';
       default:
-        return 'bg-slate-500/10 text-slate-600 border-slate-500/30';
+        return 'bg-slate-500/10 text-slate-600 border-slate-500/30 dark:text-slate-300 dark:border-slate-400/30';
     }
   };
 

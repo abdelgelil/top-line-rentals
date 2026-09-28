@@ -120,7 +120,7 @@ function PasswordAuthForm({ registering }) {
             onChange={(event) => setPhone(event.target.value.replace(/\D/g, '').slice(0, countryIso === 'EG' ? 10 : 14))}
           />
         </div>
-        <p className="mt-2 text-sm text-slate-500">{countryIso === 'EG' ? 'Enter 10 digits without the leading 0 (for example, 1000000000).' : `Enter the phone number for ${selectedCountry.country}; the country code is added automatically.`}</p>
+        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{countryIso === 'EG' ? 'Enter 10 digits without the leading 0 (for example, 1000000000).' : `Enter the phone number for ${selectedCountry.country}; the country code is added automatically.`}</p>
       </div>
       {registering && <div><label htmlFor="auth-email" className="text-base font-semibold text-slate-800 dark:text-slate-200">{t('auth.emailOptional')}</label><input id="auth-email" className={fieldClass} type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} /></div>}
       <div><label htmlFor="auth-password" className="text-base font-semibold text-slate-800 dark:text-slate-200">{t('auth.password')}</label><input id="auth-password" className={fieldClass} type="password" autoComplete={registering ? 'new-password' : 'current-password'} minLength={8} maxLength={128} required value={password} onChange={(e) => setPassword(e.target.value)} /></div>

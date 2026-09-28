@@ -60,7 +60,7 @@ export const BookingModal = ({ apartment, onClose }) => {
           <CheckCircle2 className="w-10 h-10" />
         </div>
         <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{i18n.t("Reservation Received!")}</h3>
-        <p className="text-sm text-slate-500">{' '}{i18n.t("Thank you,")}{' '}<span className="font-semibold text-slate-800 dark:text-slate-200">{formData.fullName}</span>{i18n.t(". Your reservation request for")}{' '}<span className="font-semibold text-slate-800 dark:text-slate-200">{translateText(apartment.title)}</span>{' '}{i18n.t("has been saved. Our team will contact you directly via phone or email shortly.")}{' '}</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">{' '}{i18n.t("Thank you,")}{' '}<span className="font-semibold text-slate-800 dark:text-slate-200">{formData.fullName}</span>{i18n.t(". Your reservation request for")}{' '}<span className="font-semibold text-slate-800 dark:text-slate-200">{translateText(apartment.title)}</span>{' '}{i18n.t("has been saved. Our team will contact you directly via phone or email shortly.")}{' '}</p>
         <button
           onClick={onClose}
           className="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-xl hover:opacity-90 transition-all text-sm mt-4"
@@ -73,7 +73,7 @@ export const BookingModal = ({ apartment, onClose }) => {
     <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl max-w-lg mx-auto border border-slate-200 dark:border-slate-800 shadow-2xl">
       <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-1">{' '}{i18n.t("Reserve")}{' '}{translateText(apartment.title)}
       </h2>
-      <p className="text-xs text-slate-500 mb-6">{' '}{i18n.t("Enter your details below to confirm your stay request.")}{' '}</p>
+      <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">{' '}{i18n.t("Enter your details below to confirm your stay request.")}{' '}</p>
 
       {error && (
         <div className="mb-4 p-3 bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 rounded-xl text-xs font-semibold">

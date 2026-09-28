@@ -26,7 +26,7 @@ export default function AdminEditApartment() {
 
   const goBack = () => navigate('/admin/apartments');
 
-  if (loading) return <div className="p-8 text-center text-slate-500">{t('Loading Apartments...')}</div>;
+  if (loading) return <div className="p-8 text-center text-slate-500 dark:text-slate-400">{t('Loading Apartments...')}</div>;
   if (error || !apartment) return (
     <div className="mx-auto max-w-2xl px-4 py-12 text-center">
       <p className="mb-5 text-slate-600 dark:text-slate-300">{error || t('Apartment not found')}</p>

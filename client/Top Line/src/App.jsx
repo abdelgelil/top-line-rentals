@@ -91,7 +91,7 @@ const ProtectedAdminRoute = ({ children }) => {
 
   if (!isLoaded || (isSignedIn && !resolved && !isAdmin)) {
     return (
-      <div className="flex justify-center items-center h-screen text-slate-500">{' '}{i18n.t("Loading session...")}{' '}</div>
+      <div className="flex justify-center items-center h-screen text-slate-500 dark:text-slate-400">{' '}{i18n.t("Loading session...")}{' '}</div>
     );
   }
 
@@ -125,7 +125,7 @@ function App() {
       }}
     />
     <Suspense fallback={(
-      <div className="flex min-h-[50vh] items-center justify-center text-sm text-slate-500" role="status" aria-live="polite">
+      <div className="flex min-h-[50vh] items-center justify-center text-sm text-slate-500 dark:text-slate-400" role="status" aria-live="polite">
         <span className="mr-3 h-5 w-5 animate-spin rounded-full border-2 border-[#c6a052]/30 border-t-[#c6a052]" />
         {i18n.t("Loading session...")}
       </div>

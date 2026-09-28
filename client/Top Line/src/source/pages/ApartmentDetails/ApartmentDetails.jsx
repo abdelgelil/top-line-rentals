@@ -206,7 +206,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] text-slate-500 space-y-4">
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-slate-500 dark:text-slate-400 space-y-4">
         <div className="w-10 h-10 border-4 border-[#785910] border-t-transparent rounded-full animate-spin" />
         <p className="font-medium">{i18n.t("Loading luxury details...")}</p>
       </div>
