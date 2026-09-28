@@ -9,7 +9,7 @@ import EmptyState from '../../components/common/EmptyState';
 import { TableSkeleton } from '../../components/common/Skeletons';
 import { formatCurrency } from '../../utils/formatters';
 import toast from 'react-hot-toast';
-import { Calendar, Clock, Users, MapPin, ChevronRight, Home, MessageCircle, Info } from 'lucide-react';
+import { Calendar, Clock, Users, MapPin, ChevronRight, Home, MessageCircle, Info, Star } from 'lucide-react';
 import { getFirstImage } from '../../utils/getImageUrl';
 
 export default function MyBookings() {
@@ -247,11 +247,18 @@ export default function MyBookings() {
                   </div>
 
                   <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                       <Link 
                         to={`/apartments/${booking.apartment?._id || booking.apartment?.id}`}
                         className="flex min-h-12 items-center gap-2 rounded-xl bg-blue-50/80 px-5 py-3 text-base font-bold text-blue-800 transition-all hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:bg-slate-800 dark:text-blue-200 dark:hover:bg-slate-700 group/btn"
                       >{' '}{i18n.t("View Details")}{' '}<ChevronRight className="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform" />
+                      </Link>
+                      <Link
+                        to={`/apartments/${booking.apartment?._id || booking.apartment?.id}#apartment-reviews`}
+                        className="flex min-h-12 items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-bold text-amber-800 shadow-sm transition-all hover:-translate-y-0.5 hover:border-amber-300 hover:bg-amber-100 hover:shadow-md focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-400/40 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-200 dark:hover:bg-amber-400/15"
+                      >
+                        <Star className="h-4 w-4 fill-current" aria-hidden="true" />
+                        {i18n.t('Write a review')}
                       </Link>
                       <Link 
                         to="/contact" 

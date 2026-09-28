@@ -9,7 +9,7 @@ import { requireAuth, requireAdmin } from '../middleware/auth.js';
 const router = express.Router();
 const bookingActionLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  limit: 20,
+  limit: 60,
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) => res.status(429).json({

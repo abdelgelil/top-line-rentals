@@ -7,7 +7,7 @@ import Review from '../models/Review.js';
 import { requireAuth, requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
-const reviewLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 8, standardHeaders: true, legacyHeaders: false });
+const reviewLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 30, standardHeaders: true, legacyHeaders: false });
 
 router.get('/apartment/:apartmentId', async (req, res) => {
   const { apartmentId } = req.params;

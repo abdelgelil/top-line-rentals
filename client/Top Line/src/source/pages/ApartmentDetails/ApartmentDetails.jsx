@@ -112,32 +112,63 @@ export function ApartmentDetails({ currentUser: propUser }) {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [averageRating, setAverageRating] = useState(null);
+  const [reviewsLoading, setReviewsLoading] = useState(true);
+  const [reviewsError, setReviewsError] = useState('');
   const [eligibleBookings, setEligibleBookings] = useState([]);
+  const [eligibilityLoading, setEligibilityLoading] = useState(false);
+  const [eligibilityError, setEligibilityError] = useState('');
+  const [eligibilityRetry, setEligibilityRetry] = useState(0);
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewComment, setReviewComment] = useState('');
   const [reviewSubmitting, setReviewSubmitting] = useState(false);
+  const [reviewSubmitted, setReviewSubmitted] = useState(false);
 
   const loadReviews = useCallback(() => {
     if (!id) return;
+    setReviewsLoading(true);
+    setReviewsError('');
     fetchApartmentReviews(id).then(({ data }) => {
       setReviews(data?.data || []);
       setAverageRating(data?.averageRating ?? null);
-    }).catch(() => {});
+    }).catch(() => {
+      setReviews([]);
+      setAverageRating(null);
+      setReviewsError(i18n.t('Unable to load reviews. Please try again.'));
+    }).finally(() => setReviewsLoading(false));
   }, [id]);
 
   useEffect(() => { loadReviews(); }, [loadReviews]);
 
   useEffect(() => {
+    if (loading || window.location.hash !== '#apartment-reviews') return undefined;
+    const scrollTimer = window.setTimeout(() => {
+      document.getElementById('apartment-reviews')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+    return () => window.clearTimeout(scrollTimer);
+  }, [loading, id]);
+
+  useEffect(() => {
     let active = true;
     if (!currentUser?.id) {
       setEligibleBookings([]);
+      setEligibilityError('');
+      setEligibilityLoading(false);
       return undefined;
     }
+    setEligibleBookings([]);
+    setEligibilityError('');
+    setEligibilityLoading(true);
     fetchEligibleReviews(id)
       .then(({ data }) => { if (active) setEligibleBookings(data?.data || []); })
-      .catch(() => { if (active) setEligibleBookings([]); });
+      .catch(() => {
+        if (active) {
+          setEligibleBookings([]);
+          setEligibilityError(i18n.t('Unable to check review eligibility. Please try again.'));
+        }
+      })
+      .finally(() => { if (active) setEligibilityLoading(false); });
     return () => { active = false; };
-  }, [id, currentUser?.id]);
+  }, [id, currentUser?.id, eligibilityRetry]);
 
   const handleReviewSubmit = async (event) => {
     event.preventDefault();
@@ -147,6 +178,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
       await submitReview({ bookingId: eligibleBookings[0]._id, rating: reviewRating, comment: reviewComment });
       setEligibleBookings((current) => current.slice(1));
       setReviewComment('');
+      setReviewSubmitted(true);
       toast.success(i18n.t('Your review was submitted for approval.'));
     } catch (error) {
       toast.error(error.response?.data?.message || i18n.t('Unable to submit your review.'));
@@ -375,40 +407,52 @@ export function ApartmentDetails({ currentUser: propUser }) {
               </section>
             </div>
 
-            <section className="space-y-6" aria-labelledby="apartment-reviews-title">
+            <section id="apartment-reviews" className="relative isolate scroll-mt-24 space-y-6 overflow-hidden rounded-[2rem] border border-blue-100 bg-gradient-to-br from-white via-blue-50/70 to-amber-50/60 p-5 shadow-xl shadow-blue-950/5 sm:p-8 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-blue-950/50 dark:shadow-black/20" aria-labelledby="apartment-reviews-title">
+              <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-20 -z-10 h-56 w-56 rounded-full bg-amber-300/15 blur-3xl dark:bg-amber-400/10" />
               <div className="flex flex-wrap items-end justify-between gap-3">
                 <div>
-                  <h2 id="apartment-reviews-title" className="text-2xl font-bold text-slate-900 dark:text-white">{i18n.t('Guest Reviews')}</h2>
-                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{reviews.length ? `${averageRating.toFixed(1)} / 5 · ${reviews.length} ${i18n.t('reviews')}` : i18n.t('No reviews yet')}</p>
+                  <span className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-white/80 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-amber-800 shadow-sm dark:border-amber-400/20 dark:bg-slate-800 dark:text-amber-200"><Star className="h-3.5 w-3.5 fill-current" />{i18n.t('Guest experiences')}</span>
+                  <h2 id="apartment-reviews-title" className="mt-3 text-2xl font-black tracking-tight text-slate-900 dark:text-white">{i18n.t('Guest Reviews')}</h2>
+                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{reviews.length && averageRating !== null ? `${averageRating.toFixed(1)} / 5 · ${reviews.length} ${i18n.t('reviews')}` : i18n.t('No reviews yet')}</p>
                 </div>
-                {averageRating !== null && <div className="flex items-center gap-1 rounded-full bg-amber-50 px-3 py-2 font-bold text-amber-700 dark:bg-amber-500/10 dark:text-amber-300"><Star className="h-4 w-4 fill-current" />{averageRating.toFixed(1)}</div>}
+                {averageRating !== null && <div className="flex min-w-20 items-center justify-center gap-2 rounded-2xl border border-amber-200 bg-white px-4 py-3 text-lg font-black text-amber-700 shadow-md shadow-amber-950/5 dark:border-amber-400/20 dark:bg-slate-800 dark:text-amber-200"><Star className="h-5 w-5 fill-current" />{averageRating.toFixed(1)}</div>}
               </div>
 
               {eligibleBookings.length > 0 && (
-                <form onSubmit={handleReviewSubmit} className="space-y-4 rounded-2xl border border-blue-100 bg-white p-5 shadow-sm dark:border-blue-900/50 dark:bg-slate-900">
-                  <h3 className="font-semibold text-slate-900 dark:text-white">{i18n.t('Review your completed stay')}</h3>
+                <form onSubmit={handleReviewSubmit} className="space-y-5 rounded-2xl border border-blue-200 bg-white p-5 shadow-lg shadow-blue-950/5 sm:p-6 dark:border-blue-400/20 dark:bg-slate-800/80 dark:shadow-black/20">
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white">{i18n.t('Review your completed stay')}</h3>
+                    <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{i18n.t('Your feedback helps future guests choose the right stay.')}</p>
+                  </div>
                   <div className="flex items-center gap-1" role="radiogroup" aria-label={i18n.t('Rating')}>
                     {[1, 2, 3, 4, 5].map((rating) => (
-                      <button key={rating} type="button" role="radio" aria-checked={reviewRating === rating} aria-label={`${rating} ${i18n.t('stars')}`} onClick={() => setReviewRating(rating)} className="rounded p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
-                        <Star className={`h-6 w-6 ${rating <= reviewRating ? 'fill-amber-400 text-amber-400' : 'text-slate-300 dark:text-slate-600'}`} />
+                      <button key={rating} type="button" role="radio" aria-checked={reviewRating === rating} aria-label={`${rating} ${i18n.t('stars')}`} onClick={() => setReviewRating(rating)} className="rounded-lg p-1.5 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                        <Star className={`h-7 w-7 ${rating <= reviewRating ? 'fill-amber-400 text-amber-500 dark:text-amber-300' : 'text-slate-300 dark:text-slate-600'}`} />
                       </button>
                     ))}
                   </div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                     {i18n.t('Your review')}
-                    <textarea required minLength={5} maxLength={1000} value={reviewComment} onChange={(event) => setReviewComment(event.target.value)} rows={4} className="mt-2 w-full rounded-xl border border-slate-300 bg-white p-3 text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+                    <textarea required minLength={5} maxLength={1000} value={reviewComment} onChange={(event) => setReviewComment(event.target.value)} rows={4} className="mt-2 w-full rounded-xl border border-slate-300 bg-slate-50 p-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 dark:border-slate-600 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-blue-400 dark:focus:ring-blue-900/50" />
                   </label>
                   <p className="text-xs text-slate-500 dark:text-slate-400">{i18n.t('Reviews appear after admin approval.')}</p>
-                  <button disabled={reviewSubmitting} type="submit" className="min-h-11 rounded-xl bg-blue-700 px-5 font-semibold text-white transition hover:bg-blue-800 disabled:opacity-60">{reviewSubmitting ? i18n.t('Submitting...') : i18n.t('Submit review')}</button>
+                  <button disabled={reviewSubmitting || reviewComment.trim().length < 5} type="submit" className="min-h-12 rounded-xl bg-gradient-to-r from-blue-700 to-blue-600 px-6 font-bold text-white shadow-lg shadow-blue-700/20 transition hover:-translate-y-0.5 hover:from-blue-800 hover:to-blue-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-55">{reviewSubmitting ? i18n.t('Submitting...') : i18n.t('Submit review')}</button>
                 </form>
               )}
               {!currentUser?.id && <p className="text-sm text-slate-600 dark:text-slate-400"><Link to="/sign-in" className="font-semibold text-blue-700 hover:underline dark:text-blue-300">{i18n.t('Sign in')}</Link>{' '}{i18n.t('to review after a completed stay.')}</p>}
-              {eligibleBookings.length === 0 && currentUser?.id && <p className="text-sm text-slate-500 dark:text-slate-400">{i18n.t('Reviews are available after a confirmed stay is completed.')}</p>}
+              {reviewSubmitted && <p role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800 dark:border-emerald-400/20 dark:bg-emerald-950/40 dark:text-emerald-200">{i18n.t('Your review was submitted and will appear after approval.')}</p>}
+              {eligibilityLoading && currentUser?.id && <p role="status" className="rounded-xl border border-blue-200 bg-blue-50/80 px-4 py-3 text-sm text-blue-900 dark:border-blue-400/20 dark:bg-blue-950/40 dark:text-blue-100">{i18n.t('Checking whether you can review this stay...')}</p>}
+              {eligibilityError && <p role="alert" className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-800 dark:border-rose-400/20 dark:bg-rose-950/40 dark:text-rose-200">{eligibilityError} <button type="button" onClick={() => setEligibilityRetry((current) => current + 1)} className="ml-1 font-bold underline underline-offset-2">{i18n.t('Retry')}</button></p>}
+              {eligibleBookings.length === 0 && currentUser?.id && !eligibilityLoading && !eligibilityError && <p className="rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-300">{i18n.t('Reviews are available after a confirmed stay is completed.')}</p>}
 
-              {reviews.length > 0 ? (
+              {reviewsLoading ? (
+                <p role="status" className="rounded-xl border border-slate-200 bg-white/80 px-4 py-4 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-300">{i18n.t('Loading reviews...')}</p>
+              ) : reviewsError ? (
+                <p role="alert" className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-800 dark:border-rose-400/20 dark:bg-rose-950/40 dark:text-rose-200">{reviewsError} <button type="button" onClick={loadReviews} className="ml-1 font-bold underline underline-offset-2">{i18n.t('Retry')}</button></p>
+              ) : reviews.length > 0 ? (
                 <div className="grid gap-4 sm:grid-cols-2">
                   {reviews.map((review) => (
-                    <article key={review._id} className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+                    <article key={review._id} className="rounded-2xl border border-slate-200 bg-white/90 p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800/70">
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <h3 className="font-semibold text-slate-900 dark:text-white">{review.guestName}</h3>

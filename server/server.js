@@ -71,7 +71,9 @@ app.use(
 // --- RATE LIMITING ---
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  limit: 100,
+  // All API calls share this IP bucket, including reads; allow normal browsing
+  // on shared mobile carrier and office networks without removing the API guard.
+  limit: 1000,
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) => res.status(429).json({
@@ -83,6 +85,7 @@ const generalLimiter = rateLimit({
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 10,
+  skipSuccessfulRequests: true,
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) => res.status(429).json({
@@ -92,8 +95,6 @@ const authLimiter = rateLimit({
 });
 
 app.use('/api/', generalLimiter);
-app.use('/api/auth/login', authLimiter);
-app.use('/api/auth/register', authLimiter);
 app.use('/api/auth/forgot-password', authLimiter);
 app.use('/api/auth/reset-password', authLimiter);
 app.use('/api/users/make-admin', authLimiter);
