@@ -115,7 +115,7 @@ export const Home = () => {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <ApartmentCardSkeleton count={4} />
           </div>
         ) : loadError ? (
@@ -150,7 +150,7 @@ export const Home = () => {
             }}
           />
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredApartments.map((unit, index) => (
               <ApartmentCard key={unit._id || unit.id} unit={unit} priority={index === 0} />
             ))}

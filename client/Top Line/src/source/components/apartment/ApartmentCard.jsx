@@ -1,13 +1,12 @@
 import i18n from "../../../i18n.js";
 import { translateText } from '../../../utils/translateContent.js';
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Users, Bed, CalendarCheck, Heart } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Bath, Bed, Heart, MapPin, Ruler, Users } from 'lucide-react';
 import OptimizedImage from '../common/OptimizedImage';
 import { formatCurrency } from '../../utils/formatters';
 import { useAuth } from '../../context/AuthContext';
 import { useFavorites } from '../../context/FavoritesContext';
-import { useNavigate } from 'react-router-dom';
 import { getFirstImage } from '../../utils/getImageUrl';
 
 export const ApartmentCard = ({ unit, priority = false }) => {
@@ -16,6 +15,9 @@ export const ApartmentCard = ({ unit, priority = false }) => {
   const { isFavorite, toggleFavorite } = useFavorites();
   const navigate = useNavigate();
   const favorited = isFavorite(apartmentId);
+  const apartmentUrl = `/apartments/${apartmentId}`;
+  const title = translateText(unit.title || unit.name || i18n.t('Apartment Unit'));
+  const location = translateText(unit.address || unit.location || unit.tower || 'Alamein, Egypt');
 
   const handleFavorite = (event) => {
     event.preventDefault();
@@ -24,73 +26,82 @@ export const ApartmentCard = ({ unit, priority = false }) => {
     toggleFavorite(apartmentId, unit);
   };
 
+  const specs = [
+    { Icon: Bed, value: unit.bedrooms || 1, label: i18n.t('Beds') },
+    { Icon: Bath, value: unit.bathrooms || 1, label: i18n.t('Baths') },
+    { Icon: Users, value: unit.guests || unit.maxGuests || 2, label: i18n.t('Guests') },
+    { Icon: Ruler, value: unit.sizeSqM ? `${unit.sizeSqM} m²` : '—', label: '' },
+  ];
+
   return (
-    <div className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_12px_30px_-20px_rgba(15,23,42,0.25)] transition-all hover:-translate-y-1 hover:border-[#a68032]/50 hover:shadow-[0_20px_40px_-20px_rgba(15,23,42,.3)] dark:border-[#1f2e4d] dark:bg-[#0b1325] dark:shadow-sm dark:hover:border-[#c6a052]/50 dark:hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,.65)]">
-      {/* Image Container */}
-      <div className="relative h-64 overflow-hidden">
+    <article className="group flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border border-[#e7dfd1] bg-[#f9f8f5] text-[#080d1a] shadow-[0_12px_30px_-20px_rgba(15,23,42,0.3)] transition duration-200 hover:-translate-y-1 hover:border-[#c6a052]/70 dark:border-[#1f2e4d] dark:bg-[#0b1325] dark:text-[#f9f8f5] dark:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.65)] dark:hover:border-[#c6a052]/50">
+      <div className="relative aspect-[4/3] shrink-0 overflow-hidden bg-[#e7dfd1] dark:bg-[#080d1a]">
         <OptimizedImage
           src={getFirstImage(unit)}
-          alt={translateText(unit.title || unit.name)}
+          alt={title}
           loading={priority ? 'eager' : 'lazy'}
           fetchPriority={priority ? 'high' : 'auto'}
           width={priority ? 900 : 640}
-          sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
           decoding="async"
-          className="h-full w-full"
-          imageClassName="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="absolute inset-0 h-full w-full"
+          imageClassName="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#080d1a]/60 via-transparent to-[#080d1a]/75" />
+
+        <div className="absolute left-3 top-3 flex max-w-[calc(100%-4.5rem)] items-center gap-1.5 truncate rounded-full border border-[#c6a052]/30 bg-[#080d1a]/85 px-2.5 py-1 text-[11px] font-semibold text-[#f9f8f5] shadow-sm backdrop-blur-sm">
+          <MapPin aria-hidden="true" className="h-3.5 w-3.5 shrink-0 text-[#dfbe74]" />
+          <span className="truncate">{unit.floor ? `${unit.floor}${i18n.t('th')} Floor · ` : ''}{translateText(unit.tower || 'Tower Residence')}</span>
+        </div>
+
         <button
           type="button"
           onClick={handleFavorite}
           aria-label={favorited ? 'Remove from saved apartments' : 'Save apartment'}
           aria-pressed={favorited}
-          className={`absolute top-3 right-3 z-10 rounded-full p-2 backdrop-blur-md transition hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${favorited ? 'bg-white text-red-500 dark:bg-slate-900' : 'bg-white/80 text-slate-600 dark:bg-slate-900/80 dark:text-slate-300'}`}
+          className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-[#080d1a]/75 text-[#f9f8f5] shadow-sm backdrop-blur-sm transition hover:scale-105 hover:text-[#dfbe74] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dfbe74]"
         >
-          <Heart className={`h-5 w-5 ${favorited ? 'fill-red-500' : ''}`} />
+          <Heart className={`h-4 w-4 ${favorited ? 'fill-rose-400 text-rose-400' : ''}`} />
         </button>
-        <div className="absolute top-4 left-4 rounded-full border border-[#c6a052]/50 bg-[#080d1a]/85 px-3 py-1 text-xs font-bold text-[#dfbe74] shadow-md backdrop-blur-md">
-          {formatCurrency(unit.pricePerNight || unit.price)}{' '}{i18n.t("/ night")}{' '}</div>
-        <Link
-          to={`/apartments/${apartmentId}`}
-          className="absolute bottom-4 left-4 inline-flex min-h-12 items-center gap-2 rounded-full bg-[#c6a052] px-5 py-3 text-base font-bold text-[#080d1a] shadow-lg transition-colors hover:bg-[#dfbe74] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#dfbe74]/70"
-        >
-          <CalendarCheck className="h-5 w-5" aria-hidden="true" />
-          {i18n.t('accessibility.quickBook')}
-        </Link>
+
+        <div className="absolute inset-x-3 bottom-2">
+          <p className="font-[var(--heading)] text-lg font-bold leading-none text-[#dfbe74] drop-shadow sm:text-xl">
+            {formatCurrency(unit.pricePerNight || unit.price)}
+            <span className="ml-1 font-[var(--sans)] text-[10px] font-semibold uppercase tracking-wide text-[#f9f8f5]">/ {i18n.t('night')}</span>
+          </p>
+        </div>
       </div>
 
-      {/* Card Body */}
-      <div className="flex flex-grow flex-col justify-between space-y-4 p-6 text-slate-900 dark:text-[#f9f8f5]">
+      <div className="flex flex-1 flex-col gap-2.5 p-3.5 sm:p-4">
         <div>
-          <span className="text-sm font-semibold uppercase tracking-wider text-[#785910] dark:text-[#dfbe74]">
-            {translateText(unit.tower || 'Tower Residence')}
-          </span>
-          <h3 className="mt-1 text-xl font-semibold text-slate-900 dark:text-[#f9f8f5]">
-            {translateText(unit.title || unit.name)}
-          </h3>
-          <p className="mt-2 line-clamp-2 text-base text-slate-600 dark:text-[#d4cebf]">
+          <p className="mb-1 flex min-w-0 items-center gap-1.5 text-xs font-medium text-[#785910] dark:text-[#dfbe74]">
+            <MapPin aria-hidden="true" className="h-3.5 w-3.5 shrink-0" />
+            <span className="truncate">{location}</span>
+          </p>
+          <h3 className="truncate font-[var(--heading)] text-lg font-semibold leading-tight text-[#080d1a] dark:text-[#f9f8f5]" title={title}>{title}</h3>
+          <p className="mt-1 line-clamp-2 min-h-8 text-xs leading-relaxed text-slate-600 dark:text-[#d4cebf]">
             {translateText(unit.description || 'Luxury serviced suite with beach access.')}
           </p>
         </div>
 
-        {/* Specs */}
-        <div className="flex items-center gap-4 border-t border-slate-200 pt-4 text-base text-slate-600 dark:border-[#1f2e4d] dark:text-[#d4cebf]">
-          <div className="flex items-center gap-1.5">
-            <Users className="h-4 w-4 text-[#785910] dark:text-[#dfbe74]" />
-            <span>{unit.guests || unit.maxGuests || 2}{' '}{i18n.t("Guests")}</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <Bed className="h-4 w-4 text-[#785910] dark:text-[#dfbe74]" />
-            <span>{unit.bedrooms || 1}{' '}{i18n.t("Beds")}</span>
-          </div>
+        <div className="grid grid-cols-4 gap-1 rounded-xl bg-[#eee9df] px-1.5 py-2.5 text-center dark:bg-[#080d1a]/70">
+          {specs.map(({ Icon, value, label }) => (
+            <div key={label || 'size'} className="flex min-w-0 flex-col items-center gap-1 text-[10px] font-semibold leading-tight text-slate-700 dark:text-[#f9f8f5]">
+              <Icon aria-hidden="true" className="h-4 w-4 text-[#a68032] dark:text-[#dfbe74]" />
+              <span className="truncate">{value}{label ? ` ${label}` : ''}</span>
+            </div>
+          ))}
         </div>
 
-        {/* Action Link to Apartment Details */}
-        <Link
-          to={`/apartments/${apartmentId}`}
-          className="mt-2 flex min-h-12 w-full items-center justify-center rounded-full border border-[#a68032]/60 bg-transparent px-5 py-3 text-base font-bold text-slate-800 transition-all hover:bg-[#dfbe74] hover:text-[#080d1a] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#dfbe74]/50 dark:border-[#c6a052] dark:text-[#f9f8f5]"
-        >{' '}{i18n.t("View & Book Residence")}{' '}</Link>
+        <div className="mt-auto grid grid-cols-[1fr_auto] gap-1.5 pt-0.5">
+          <Link to={apartmentUrl} className="flex min-h-9 items-center justify-center rounded-full bg-[#c6a052] px-3 text-xs font-bold tracking-wide text-[#080d1a] transition-colors hover:bg-[#dfbe74] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dfbe74]">
+            {i18n.t('Instant Book')}
+          </Link>
+          <Link to={apartmentUrl} className="flex min-h-9 items-center justify-center rounded-full border border-[#d4cebf] bg-white px-3 text-xs font-semibold text-[#080d1a] transition-colors hover:border-[#a68032] hover:bg-[#f4f0e8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a68032] dark:border-[#1f2e4d] dark:bg-[#152038] dark:text-[#f9f8f5] dark:hover:border-[#c6a052]/50 dark:hover:bg-[#1f2e4d] dark:focus-visible:ring-[#dfbe74]">
+            {i18n.t('Details')}
+          </Link>
+        </div>
       </div>
-    </div>
+    </article>
   );
 };

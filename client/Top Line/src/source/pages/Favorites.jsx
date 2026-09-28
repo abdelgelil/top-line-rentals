@@ -23,9 +23,9 @@ export default function Favorites() {
           <h1 className="text-3xl font-bold">{t('Saved Apartments')}</h1>
         </div>
         {isLoading ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"><ApartmentCardSkeleton count={4} /></div>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"><ApartmentCardSkeleton count={3} /></div>
         ) : favoriteApartments.length ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {favoriteApartments.map((unit) => <ApartmentCard key={unit._id} unit={unit} />)}
           </div>
         ) : (

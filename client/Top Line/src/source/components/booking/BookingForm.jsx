@@ -170,7 +170,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
       ) : !isSignedIn ? (
         <div className="p-6 space-y-4 text-center">
           <p className="text-base text-slate-700 dark:text-slate-200">{i18n.t("Sign in to reserve this apartment.")}</p>
-          <Link to="/sign-in" className="flex min-h-14 w-full items-center justify-center rounded-2xl bg-slate-900 px-5 py-4 text-base font-bold text-white transition-colors hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50 dark:bg-[#c6a052] dark:hover:bg-[#a68032]">{i18n.t("Sign In to Book")}</Link>
+          <Link to="/sign-in" className="flex min-h-14 w-full items-center justify-center rounded-2xl bg-slate-900 px-5 py-4 text-base font-bold !text-white transition-colors hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50 dark:bg-[#c6a052] dark:!text-slate-950 dark:hover:bg-[#a68032]">{i18n.t("Sign In to Book")}</Link>
         </div>
       ) : <form onSubmit={handleBooking} className="p-6 space-y-5">
         {error && (
@@ -273,7 +273,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
         <button 
           type="submit" 
           disabled={loading || !checkInDate || !checkOutDate || availabilityLoading || Boolean(availabilityError)}
-          className="min-h-14 w-full rounded-2xl bg-slate-900 px-5 py-4 text-base font-bold text-white transition-all hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50 dark:bg-[#c6a052] dark:hover:bg-[#a68032] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg"
+          className="min-h-14 w-full rounded-2xl bg-slate-900 px-5 py-4 text-base font-bold !text-white transition-all hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50 dark:bg-[#c6a052] dark:!text-slate-950 dark:hover:bg-[#a68032] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg"
         >
           {loading ? (
             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
