@@ -76,9 +76,9 @@ const AdminNavbar = () => {
               <button
                 type="button"
                 onClick={signOut}
-                className="inline-flex min-h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-rose-400/30 bg-rose-500/10 px-3 text-sm font-semibold text-rose-200 transition-colors hover:border-rose-400/50 hover:bg-rose-500/20 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-400/30"
+                className="group inline-flex min-h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-slate-600 bg-slate-800/80 px-4 text-sm font-semibold text-slate-200 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-rose-400/50 hover:bg-rose-500/10 hover:text-rose-100 hover:shadow-md hover:shadow-black/10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-400/30"
               >
-                <LogOut className="h-4 w-4" aria-hidden="true" />
+                <LogOut className="h-4 w-4 text-slate-400 transition-colors group-hover:text-rose-300" aria-hidden="true" />
                 <span>{i18n.t('nav.logout')}</span>
               </button>
             </div>
@@ -200,9 +200,9 @@ const AdminNavbar = () => {
             <button
               type="button"
               onClick={() => { setIsOpen(false); signOut(); }}
-              className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-rose-400/30 bg-rose-500/10 px-4 text-sm font-semibold text-rose-200 transition-colors hover:bg-rose-500/20 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-400/30"
+              className="group flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-slate-600 bg-slate-800/80 px-4 text-sm font-semibold text-slate-200 shadow-sm transition-all duration-200 hover:border-rose-400/50 hover:bg-rose-500/10 hover:text-rose-100 hover:shadow-md focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-400/30"
             >
-              <LogOut className="h-4 w-4" aria-hidden="true" />
+              <LogOut className="h-4 w-4 text-slate-400 transition-colors group-hover:text-rose-300" aria-hidden="true" />
               <span>{i18n.t('nav.logout')}</span>
             </button>
           </div>
