@@ -78,9 +78,10 @@ export default function Welcome() {
         @media (prefers-reduced-motion: reduce) { [data-reveal], [data-reveal-stagger] > *, [data-reveal].welcome-revealed, [data-reveal-stagger].welcome-revealed > * { opacity: 1; transform: none; transition: none; } }
       `}</style>
       <section className="relative isolate flex min-h-[90vh] flex-col justify-center overflow-hidden bg-[#080d1a] lg:block">
-        <div className="relative z-0 aspect-[16/9] w-full shrink-0 overflow-hidden lg:absolute lg:inset-0 lg:aspect-auto">
-          <OptimizedImage src={HERO_IMAGE} alt="Topline Luxury Apartments at Adly Plaza Compound" className="absolute inset-0 h-full w-full" imageClassName="h-full w-full object-contain lg:object-cover" loading="eager" fetchPriority="high" width={1920} sizes="100vw" />
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0 lg:bg-gradient-to-r lg:from-[#080d1a]/75 lg:via-[#080d1a]/35 lg:to-transparent" />
+        <div className="relative z-0 mx-3 aspect-[3/2] w-auto shrink-0 overflow-hidden rounded-[1.75rem] bg-[#0b1325] shadow-[0_24px_70px_-24px_rgba(0,0,0,0.85)] ring-1 ring-[#dfbe74]/25 sm:mx-0 sm:aspect-[16/9] sm:w-full sm:rounded-none sm:shadow-none sm:ring-0 lg:absolute lg:inset-0 lg:mx-0 lg:aspect-auto">
+          <OptimizedImage src={HERO_IMAGE} alt="Topline Luxury Apartments at Adly Plaza Compound" className="absolute inset-0 h-full w-full" imageClassName="h-full w-full object-cover object-[center_38%]" loading="eager" fetchPriority="high" width={1920} sizes="100vw" />
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#080d1a]/35 via-transparent to-[#080d1a]/10 lg:bg-gradient-to-r lg:from-[#080d1a]/75 lg:via-[#080d1a]/35 lg:to-transparent" />
+          <div className="absolute left-4 top-4 z-10 rounded-full border border-[#dfbe74]/45 bg-[#080d1a]/75 px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#f4dfad] shadow-lg backdrop-blur-md sm:hidden">TopLine <span className="text-white/75">Luxury Apartments</span></div>
           <div className="absolute inset-x-0 bottom-0 z-10 grid grid-cols-2 gap-x-3 gap-y-1 border-t border-[#dfbe74]/40 bg-[#080d1a]/95 px-3 py-2 text-white backdrop-blur-sm sm:px-6 lg:flex lg:items-center lg:justify-center lg:gap-8 lg:px-8 lg:py-3">
             <a dir="ltr" href={`tel:${CONTACT_PHONE}`} className="flex min-w-0 items-center justify-center gap-1.5 text-xs font-semibold sm:text-sm">
               <Phone aria-hidden="true" className="h-3.5 w-3.5 shrink-0 text-[#dfbe74]" />
