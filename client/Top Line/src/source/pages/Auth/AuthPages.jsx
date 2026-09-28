@@ -7,6 +7,7 @@ import API from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import Logo from '../../components/common/Logo';
 import { LanguageToggle } from '../../components/common/LanguageToggle';
+import { COUNTRY_CODES } from '../../constants/countryCodes';
 
 const fieldClass = 'mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-blue-400 dark:focus:bg-slate-800 dark:focus:ring-blue-900/60';
 
@@ -41,6 +42,7 @@ function PasswordAuthForm({ registering }) {
   const [busy, setBusy] = useState(false);
   const [username, setUsername] = useState('');
   const [phone, setPhone] = useState('');
+  const [countryIso, setCountryIso] = useState('EG');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -49,7 +51,12 @@ function PasswordAuthForm({ registering }) {
     setBusy(true);
     try {
       const endpoint = registering ? '/auth/register' : '/auth/login';
-      const body = registering ? { username, phone, password, ...(email.trim() ? { email: email.trim() } : {}) } : { phone, password };
+      const selectedCountry = COUNTRY_CODES.find(({ iso }) => iso === countryIso) || COUNTRY_CODES[0];
+      // Egyptian mobile numbers are entered in their familiar 11-digit local form (01...).
+      // Strip the trunk zero when composing the international number sent to the API.
+      const localPhone = countryIso === 'EG' ? phone.replace(/^0/, '') : phone;
+      const fullPhone = `${selectedCountry.code}${localPhone}`;
+      const body = registering ? { username, phone: fullPhone, password, ...(email.trim() ? { email: email.trim() } : {}) } : { phone: fullPhone, password };
       const { data } = await API.post(endpoint, body, { skipAuth: true });
       setAuthenticatedUser(data);
       toast.success(t('auth.welcome'));
@@ -61,7 +68,35 @@ function PasswordAuthForm({ registering }) {
   return <AuthShell title={t(registering ? 'auth.createAccount' : 'auth.signIn')} hint={t(registering ? 'auth.signupHint' : 'auth.loginHint')} footer={<>{t(registering ? 'auth.haveAccount' : 'auth.noAccount')} <Link className="font-bold text-blue-700 underline underline-offset-4 dark:text-blue-300" to={registering ? '/sign-in' : '/sign-up'}>{t(registering ? 'auth.signIn' : 'auth.createAccount')}</Link></>}>
     <form className="mt-8 space-y-5" onSubmit={submit}>
       {registering && <div><label htmlFor="auth-username" className="text-base font-semibold text-slate-800 dark:text-slate-200">{t('auth.username')}</label><input id="auth-username" className={fieldClass} autoComplete="username" required maxLength={100} value={username} onChange={(e) => setUsername(e.target.value)} /></div>}
-      <div><label htmlFor="auth-phone" className="text-base font-semibold text-slate-800 dark:text-slate-200">{t('auth.phone')}</label><input id="auth-phone" className={fieldClass} type="tel" inputMode="tel" autoComplete="tel" placeholder="+201000000000" required value={phone} onChange={(e) => setPhone(e.target.value)} /><p className="mt-2 text-sm text-slate-500">{t('auth.phoneFormat')}</p></div>
+      <div>
+        <label htmlFor="auth-phone" className="text-base font-semibold text-slate-800 dark:text-slate-200">{t('auth.phone')}</label>
+        <div className="mt-2 flex gap-2">
+          <select
+            aria-label={t('auth.countryCode', 'Country code')}
+            autoComplete="tel-country-code"
+            className="min-h-14 w-[46%] shrink-0 rounded-2xl border border-slate-200 bg-slate-50 px-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:border-blue-400 dark:focus:bg-slate-800 dark:focus:ring-blue-900/60 sm:w-[50%] sm:px-4 sm:text-base"
+            value={countryIso}
+            onChange={(event) => { setCountryIso(event.target.value); setPhone(''); }}
+          >
+            {COUNTRY_CODES.map(({ code, country, flag, iso }) => <option key={iso} value={iso}>{flag} {country} ({code})</option>)}
+          </select>
+          <input
+            id="auth-phone"
+            className={fieldClass.replace('mt-2 ', '')}
+            type="tel"
+            inputMode="numeric"
+            autoComplete="tel-national"
+            placeholder={countryIso === 'EG' ? '01000000000' : 'Phone number'}
+            required
+            maxLength={countryIso === 'EG' ? 11 : 14}
+            pattern={countryIso === 'EG' ? '[0-9]{11}' : '[0-9]{4,14}'}
+            title={countryIso === 'EG' ? 'Enter an 11-digit Egyptian phone number' : 'Enter 4 to 14 digits'}
+            value={phone}
+            onChange={(event) => setPhone(event.target.value.replace(/\D/g, '').slice(0, countryIso === 'EG' ? 11 : 14))}
+          />
+        </div>
+        <p className="mt-2 text-sm text-slate-500">{countryIso === 'EG' ? 'Enter 11 digits, including the leading 0 (for example, 01000000000).' : `Enter the phone number for ${COUNTRY_CODES.find(({ iso }) => iso === countryIso)?.country}; the country code is added automatically.`}</p>
+      </div>
       {registering && <div><label htmlFor="auth-email" className="text-base font-semibold text-slate-800 dark:text-slate-200">{t('auth.emailOptional')}</label><input id="auth-email" className={fieldClass} type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} /></div>}
       <div><label htmlFor="auth-password" className="text-base font-semibold text-slate-800 dark:text-slate-200">{t('auth.password')}</label><input id="auth-password" className={fieldClass} type="password" autoComplete={registering ? 'new-password' : 'current-password'} minLength={8} maxLength={128} required value={password} onChange={(e) => setPassword(e.target.value)} /></div>
       {!registering && <div className="flex justify-end"><Link to="/reset-password" className="inline-flex min-h-11 items-center rounded-lg px-2 text-sm font-bold text-blue-700 transition hover:bg-blue-50 hover:text-blue-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 dark:text-blue-300 dark:hover:bg-blue-950/50">{t('auth.forgotPassword')}</Link></div>}
