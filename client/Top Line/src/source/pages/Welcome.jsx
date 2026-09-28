@@ -5,6 +5,7 @@ import { ArrowRight, Building, KeyRound, MapPin, PhoneCall, Search, ShieldCheck,
 import { fetchApartments } from '../services/api';
 import { ApartmentCard } from '../components/apartment/ApartmentCard';
 import { ApartmentCardSkeleton } from '../components/common/Skeletons';
+import OptimizedImage from '../components/common/OptimizedImage';
 
 const HERO_IMAGE = '/welcome1.jpg';
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#dfbe74] focus-visible:ring-offset-[#080d1a]';
@@ -76,7 +77,7 @@ export default function Welcome() {
         @media (prefers-reduced-motion: reduce) { [data-reveal], [data-reveal-stagger] > *, [data-reveal].welcome-revealed, [data-reveal-stagger].welcome-revealed > * { opacity: 1; transform: none; transition: none; } }
       `}</style>
       <section className="relative isolate flex min-h-[90vh] items-center overflow-hidden bg-[#080d1a]">
-        <img src={HERO_IMAGE} alt="Mediterranean coastal apartments" className="absolute inset-0 -z-20 h-full w-full object-cover" fetchPriority="high" />
+        <OptimizedImage src={HERO_IMAGE} alt="Mediterranean coastal apartments" className="absolute inset-0 -z-20 h-full w-full" imageClassName="h-full w-full object-cover" loading="eager" fetchPriority="high" width={1920} sizes="100vw" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#080d1a]/95 via-[#080d1a]/75 to-[#0b1325]/30" />
         <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-28 bg-gradient-to-b from-transparent via-[#080d1a]/70 to-[#080d1a]" />
         <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-24 lg:px-8">

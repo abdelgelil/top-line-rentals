@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import React, { useState, useEffect } from 'react';
 import { X, Trash2, ArrowLeft } from 'lucide-react';
 import { createApartment, updateApartment } from '../../services/api';
+import OptimizedImage from '../common/OptimizedImage';
 
 const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode = false }) => {
 
@@ -292,7 +293,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
               <div className="mt-2 flex flex-wrap gap-2">
                 {existingImages.map((src, idx) => (
                   <div key={`existing-${idx}`} className="relative h-10 w-10 rounded overflow-hidden border">
-                    <img src={src} alt="" className="h-full w-full object-cover" />
+                    <OptimizedImage src={src} alt="" className="h-full w-full" imageClassName="h-full w-full object-cover" sizes="40px" />
                     <button
                       type="button"
                       onClick={() => handleRemoveExistingImage(idx)}
@@ -304,7 +305,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
                 ))}
                 {filePreviews.map((src, idx) => (
                   <div key={`new-${idx}`} className="h-10 w-10 rounded overflow-hidden border">
-                    <img src={src} alt="" className="h-full w-full object-cover" />
+                    <OptimizedImage src={src} alt="" className="h-full w-full" imageClassName="h-full w-full object-cover" sizes="40px" />
                   </div>
                 ))}
               </div>

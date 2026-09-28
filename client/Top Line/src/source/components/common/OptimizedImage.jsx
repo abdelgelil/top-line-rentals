@@ -1,12 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import fallbackImage from '../../../assets/hero.png';
+import { DEFAULT_IMAGE_FALLBACK, getImageUrl } from '../../utils/getImageUrl';
 
 const optimizeImageUrl = (url, width = 1200) => {
   if (typeof url !== 'string') return url;
 
-  // Cloudinary negotiates a modern format and resizes oversized uploads.
-  if (/res\.cloudinary\.com\//i.test(url) && url.includes('/upload/')) {
-    return url.replace('/upload/', `/upload/f_auto,q_auto,w_${width},c_limit/`);
+  // Keep existing Cloudinary transformations and update/add only the width.
+  if (/res\.cloudinary\.com\//i.test(url) && /\/upload\//i.test(url)) {
+    return url.replace(/\/upload\/([^/?#]*)(.*)$/i, (match, segment, remainder) => {
+      const isTransformation = segment.includes(',') || /^(f_|q_|w_|c_|g_|dpr_|ar_|e_|fl_)/.test(segment);
+      if (!isTransformation) return `/upload/f_auto,q_auto,w_${width},c_limit/${segment}${remainder}`;
+
+      const parts = segment.split(',').filter(Boolean);
+      const hasAutoFormat = parts.includes('f_auto');
+      const hasAutoQuality = parts.includes('q_auto');
+      const hasLimitCrop = parts.includes('c_limit');
+      const nextParts = parts
+        .filter((part) => !/^w_\d+$/.test(part))
+        .concat(`w_${width}`);
+      if (!hasAutoFormat) nextParts.unshift('f_auto');
+      if (!hasAutoQuality) nextParts.push('q_auto');
+      if (!hasLimitCrop) nextParts.push('c_limit');
+      return `/upload/${nextParts.join(',')}${remainder}`;
+    });
   }
 
   // Unsplash can return a resized modern format while retaining a fallback.
@@ -52,7 +67,8 @@ const OptimizedImage = ({
   const [loaded, setLoaded] = useState(false);
   const [usingFallback, setUsingFallback] = useState(false);
   const [fallbackFailed, setFallbackFailed] = useState(false);
-  const imageSrc = usingFallback ? fallbackImage : (optimizeImageUrl(src, width) || fallbackImage);
+  const normalizedSrc = getImageUrl(src);
+  const imageSrc = usingFallback ? DEFAULT_IMAGE_FALLBACK : optimizeImageUrl(normalizedSrc, width);
 
   useEffect(() => {
     setLoaded(false);
@@ -78,7 +94,7 @@ const OptimizedImage = ({
       {!fallbackFailed && (
         <img
           src={imageSrc}
-          srcSet={usingFallback ? undefined : imageSrcSet(src)}
+          srcSet={usingFallback ? undefined : imageSrcSet(normalizedSrc)}
           sizes={sizes}
           alt={alt}
           loading={loading}
@@ -89,6 +105,7 @@ const OptimizedImage = ({
           className={`${imageClassName} transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
         />
       )}
+      {fallbackFailed && <div className="absolute inset-0 bg-gradient-to-br from-sky-100 via-slate-100 to-blue-200 dark:from-slate-700 dark:via-slate-800 dark:to-slate-900" role="img" aria-label={alt || 'Image unavailable'} />}
     </div>
   );
 };

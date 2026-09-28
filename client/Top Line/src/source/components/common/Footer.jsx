@@ -13,7 +13,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 gap-10 border-b border-slate-800/80 pb-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-4">
             <Link to="/" className="flex w-fit items-center gap-2.5">
-              <img src="/logo1.jpg" alt="Topline Luxury Apartments" className="w-36 rounded-lg bg-white p-2" />
+              <img src="/logo1.jpg" alt="Topline Luxury Apartments" width="144" height="48" decoding="async" className="h-12 w-36 rounded-lg bg-white p-2 object-contain" />
             </Link>
             <p className="max-w-sm text-sm leading-relaxed text-slate-400">{t('footer.aboutText')}</p>
             <div className="flex w-fit items-center gap-2 rounded-full border border-[#a68032]/50 bg-[#080d1a]/50 px-3 py-1.5 text-xs text-[#dfbe74]">
