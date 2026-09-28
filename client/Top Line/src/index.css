@@ -43,10 +43,6 @@ code { font-size: .875rem; line-height: 1.4; padding: .25rem .5rem; background: 
 ::selection { color: var(--color-midnight); background: var(--color-gilded); }
 [class~="bg-[#c6a052]"] { color: var(--color-midnight); }
 [class*="bg-[#c6a052]"].text-white,
-[class*="from-[#c6a052]"].text-white,
-button[class*="bg-[#c6a052]"],
-a[class*="bg-[#c6a052]"],
-button[class*="from-[#c6a052]"],
-a[class*="from-[#c6a052]"] { color: var(--color-midnight); }
+[class*="from-[#c6a052]"].text-white { color: var(--color-midnight); }
 button, a { -webkit-tap-highlight-color: transparent; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
