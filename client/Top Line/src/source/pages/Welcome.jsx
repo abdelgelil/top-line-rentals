@@ -18,11 +18,11 @@ function CtaPair({ t, variant = 'hero' }) {
     : 'bg-[#c6a052] text-[#080d1a] shadow-amber-900/30 hover:bg-[#dfbe74] hover:scale-105 motion-reduce:hover:scale-100';
 
   return (
-    <div className="flex flex-col gap-4 sm:flex-row">
-      <Link to="/sign-in" className={`inline-flex items-center justify-center rounded-xl px-8 py-4 text-base font-semibold shadow-xl transition-all motion-reduce:transition-none ${bookClass} ${focusRing}`}>
+    <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
+      <Link to="/sign-in" className={`inline-flex min-h-12 w-full items-center justify-center rounded-full px-6 py-3 text-sm font-semibold shadow-xl transition-all motion-reduce:transition-none sm:w-auto sm:px-8 sm:py-4 sm:text-base ${bookClass} ${focusRing}`}>
         {t('welcome.bookNow')}
       </Link>
-      <Link to="/contact" className={`inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/10 px-8 py-4 text-base font-semibold text-white backdrop-blur-md transition-all hover:bg-white/20 motion-reduce:transition-none ${focusRing}`}>
+      <Link to="/contact" className={`inline-flex min-h-12 w-full items-center justify-center rounded-full border border-white/25 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-md transition-all hover:bg-white/10 motion-reduce:transition-none sm:w-auto sm:px-8 sm:py-4 sm:text-base ${focusRing}`}>
         {t('welcome.contactUs')}
       </Link>
     </div>
@@ -77,12 +77,11 @@ export default function Welcome() {
         [data-reveal-stagger].welcome-revealed > :nth-child(3) { transition-delay: 180ms; }
         @media (prefers-reduced-motion: reduce) { [data-reveal], [data-reveal-stagger] > *, [data-reveal].welcome-revealed, [data-reveal-stagger].welcome-revealed > * { opacity: 1; transform: none; transition: none; } }
       `}</style>
-      <section className="relative isolate flex min-h-[90vh] flex-col justify-center overflow-hidden bg-[#080d1a] lg:block">
-        <div className="relative z-0 mx-3 aspect-[3/2] w-auto shrink-0 overflow-hidden rounded-[1.75rem] bg-[#0b1325] shadow-[0_24px_70px_-24px_rgba(0,0,0,0.85)] ring-1 ring-[#dfbe74]/25 sm:mx-0 sm:aspect-[16/9] sm:w-full sm:rounded-none sm:shadow-none sm:ring-0 lg:absolute lg:inset-0 lg:mx-0 lg:aspect-auto">
-          <OptimizedImage src={HERO_IMAGE} alt="Topline Luxury Apartments at Adly Plaza Compound" className="absolute inset-0 h-full w-full" imageClassName="h-full w-full object-cover object-[center_38%]" loading="eager" fetchPriority="high" width={1920} sizes="100vw" />
+      <section className="relative isolate flex flex-col overflow-hidden bg-[#080d1a] lg:min-h-[90vh] lg:justify-center lg:block">
+        <div className="relative z-0 mx-4 mt-4 aspect-video w-auto shrink-0 overflow-hidden rounded-2xl bg-[#0b1325] shadow-[0_24px_70px_-24px_rgba(0,0,0,0.85)] ring-1 ring-[#dfbe74]/25 sm:mx-0 sm:mt-0 sm:w-full sm:rounded-none sm:shadow-none sm:ring-0 lg:absolute lg:inset-0 lg:aspect-auto">
+          <OptimizedImage src={HERO_IMAGE} alt="Topline Luxury Apartments at Adly Plaza Compound" className="absolute inset-0 h-full w-full" imageClassName="h-full w-full object-cover object-center lg:object-[center_38%]" loading="eager" fetchPriority="high" width={1920} sizes="100vw" />
           <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#080d1a]/35 via-transparent to-[#080d1a]/10 lg:bg-gradient-to-r lg:from-[#080d1a]/75 lg:via-[#080d1a]/35 lg:to-transparent" />
-          <div className="absolute left-4 top-4 z-10 rounded-full border border-[#dfbe74]/45 bg-[#080d1a]/75 px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#f4dfad] shadow-lg backdrop-blur-md sm:hidden">TopLine <span className="text-white/75">Luxury Apartments</span></div>
-          <div className="absolute inset-x-0 bottom-0 z-10 grid grid-cols-2 gap-x-3 gap-y-1 border-t border-[#dfbe74]/40 bg-[#080d1a]/95 px-3 py-2 text-white backdrop-blur-sm sm:px-6 lg:flex lg:items-center lg:justify-center lg:gap-8 lg:px-8 lg:py-3">
+          <div className="absolute inset-x-0 bottom-0 z-10 hidden grid-cols-2 gap-x-3 gap-y-1 border-t border-[#dfbe74]/40 bg-[#080d1a]/95 px-3 py-2 text-white backdrop-blur-sm sm:px-6 lg:flex lg:items-center lg:justify-center lg:gap-8 lg:px-8 lg:py-3">
             <a dir="ltr" href={`tel:${CONTACT_PHONE}`} className="flex min-w-0 items-center justify-center gap-1.5 text-xs font-semibold sm:text-sm">
               <Phone aria-hidden="true" className="h-3.5 w-3.5 shrink-0 text-[#dfbe74]" />
               <span><span className="block text-[10px] font-medium text-slate-300 sm:text-xs">{t('Contact Us')}</span>{CONTACT_PHONE_DISPLAY}</span>
@@ -97,12 +96,12 @@ export default function Welcome() {
             </div>
           </div>
         </div>
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-10 lg:px-8 lg:py-24">
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-12 pt-8 sm:px-6 sm:py-12 lg:px-8 lg:py-24">
           <div className="max-w-2xl" data-reveal>
-            <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-semibold text-white shadow-lg backdrop-blur-md">{t('welcome.badge')}</span>
-            <h1 className="mt-6 font-[Playfair_Display,serif] text-4xl font-semibold tracking-tight text-white drop-shadow-[0_3px_12px_rgba(0,0,0,0.8)] sm:text-5xl lg:text-6xl lg:leading-[1.1]">{t('welcome.headline')}</h1>
-            <p className="mt-6 max-w-xl text-lg font-medium leading-relaxed text-slate-200 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">{t('welcome.subtitle')}</p>
-            <div className="mt-10"><CtaPair t={t} /></div>
+            <span className="inline-flex rounded-full border border-[#dfbe74]/35 bg-[#131b2e] px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#dfbe74] sm:text-xs">{t('welcome.badge')}</span>
+            <h1 className="mt-5 font-[Playfair_Display,serif] text-4xl font-semibold leading-[1.12] tracking-tight text-white drop-shadow-[0_3px_12px_rgba(0,0,0,0.8)] sm:mt-6 sm:text-5xl lg:text-6xl lg:leading-[1.1]">{t('welcome.headline')}</h1>
+            <p className="mt-4 max-w-xl text-base font-medium leading-relaxed text-slate-200 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] sm:mt-6 sm:text-lg">{t('welcome.subtitle')}</p>
+            <div className="mt-7 sm:mt-10"><CtaPair t={t} /></div>
           </div>
         </div>
       </section>
