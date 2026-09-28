@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Mail, Phone, MapPin, ShieldCheck } from 'lucide-react';
 import { COMPOUND_ADDRESS, COMPOUND_NAME, CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../../constants/contactDetails';
+import Logo from './Logo';
 
 const Footer = () => {
   const { t, i18n } = useTranslation();
@@ -13,8 +14,12 @@ const Footer = () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 border-b border-slate-800/80 pb-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-4">
-            <Link to="/" className="flex w-fit items-center gap-2.5">
-              <img src="/logo1.jpg" alt="Topline Luxury Apartments" width="144" height="48" decoding="async" className="h-12 w-36 rounded-lg bg-white p-2 object-contain" />
+            <Link to="/" aria-label={t('Topline Luxury Apartments home', 'Topline Luxury Apartments home')} className="group flex w-fit items-center gap-4 rounded-full pr-5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052]">
+              <Logo showText={false} size="large" />
+              <span className="flex flex-col gap-1">
+                <span className="font-[Playfair_Display,serif] text-lg font-semibold tracking-tight text-[#f9f8f5] transition-colors group-hover:text-[#dfbe74]">Topline Luxury Apartments</span>
+                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#dfbe74]">Luxury coastal stays</span>
+              </span>
             </Link>
             <p className="max-w-sm text-sm leading-relaxed text-slate-400">{t('footer.aboutText')}</p>
             <div className="flex w-fit items-center gap-2 rounded-full border border-[#a68032]/50 bg-[#080d1a]/50 px-3 py-1.5 text-xs text-[#dfbe74]">
