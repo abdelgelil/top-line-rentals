@@ -60,7 +60,7 @@ const ImageLightbox = ({ images, initialIndex, onClose }) => {
         </button>
       </div>
 
-      <div className="flex-1 relative flex items-center justify-center p-4 sm:p-12">
+      <div dir="ltr" className="flex-1 relative flex items-center justify-center p-4 sm:p-12">
         <button 
           onClick={prevImage}
           className="absolute left-4 p-3 rounded-full bg-black/30 text-white hover:bg-black/60 transition-all backdrop-blur-sm z-10"
@@ -84,7 +84,7 @@ const ImageLightbox = ({ images, initialIndex, onClose }) => {
         </button>
       </div>
 
-      <div className="p-6 flex justify-center gap-3 overflow-x-auto bg-gradient-to-t from-black/50 to-transparent">
+      <div dir="ltr" className="p-6 flex justify-center gap-3 overflow-x-auto bg-gradient-to-t from-black/50 to-transparent">
         {images.map((img, idx) => (
           <button 
             key={idx}
@@ -251,7 +251,8 @@ export function ApartmentDetails({ currentUser: propUser }) {
             {/* Horizontal Image Slider / Carousel */}
             <div className="relative group">
               <div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl ring-1 ring-black/5 bg-slate-200 dark:bg-slate-800">
-                <div 
+                <div
+                  dir="ltr"
                   className="flex transition-transform duration-500 ease-out" 
                   style={{ transform: `translateX(-${activeImageIndex * 100}%)` }}
                 >
