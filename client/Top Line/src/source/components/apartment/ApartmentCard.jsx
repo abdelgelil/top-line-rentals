@@ -25,7 +25,7 @@ export const ApartmentCard = ({ unit, priority = false }) => {
   };
 
   return (
-    <div className="group flex flex-col overflow-hidden rounded-2xl border border-[#1f2e4d] bg-[#0b1325] shadow-sm transition-all hover:-translate-y-1 hover:border-[#c6a052]/50 hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,.65)]">
+    <div className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_12px_30px_-20px_rgba(15,23,42,0.25)] transition-all hover:-translate-y-1 hover:border-[#a68032]/50 hover:shadow-[0_20px_40px_-20px_rgba(15,23,42,.3)] dark:border-[#1f2e4d] dark:bg-[#0b1325] dark:shadow-sm dark:hover:border-[#c6a052]/50 dark:hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,.65)]">
       {/* Image Container */}
       <div className="relative h-64 overflow-hidden">
         <OptimizedImage
@@ -60,27 +60,27 @@ export const ApartmentCard = ({ unit, priority = false }) => {
       </div>
 
       {/* Card Body */}
-      <div className="flex flex-grow flex-col justify-between space-y-4 p-6 text-[#f9f8f5]">
+      <div className="flex flex-grow flex-col justify-between space-y-4 p-6 text-slate-900 dark:text-[#f9f8f5]">
         <div>
-          <span className="text-sm font-semibold uppercase tracking-wider text-[#dfbe74]">
+          <span className="text-sm font-semibold uppercase tracking-wider text-[#785910] dark:text-[#dfbe74]">
             {translateText(unit.tower || 'Tower Residence')}
           </span>
-          <h3 className="mt-1 text-xl font-semibold text-[#f9f8f5]">
+          <h3 className="mt-1 text-xl font-semibold text-slate-900 dark:text-[#f9f8f5]">
             {translateText(unit.title || unit.name)}
           </h3>
-          <p className="mt-2 line-clamp-2 text-base text-[#d4cebf]">
+          <p className="mt-2 line-clamp-2 text-base text-slate-600 dark:text-[#d4cebf]">
             {translateText(unit.description || 'Luxury serviced suite with beach access.')}
           </p>
         </div>
 
         {/* Specs */}
-        <div className="flex items-center gap-4 border-t border-[#1f2e4d] pt-4 text-base text-[#d4cebf]">
+        <div className="flex items-center gap-4 border-t border-slate-200 pt-4 text-base text-slate-600 dark:border-[#1f2e4d] dark:text-[#d4cebf]">
           <div className="flex items-center gap-1.5">
-            <Users className="h-4 w-4 text-[#dfbe74]" />
+            <Users className="h-4 w-4 text-[#785910] dark:text-[#dfbe74]" />
             <span>{unit.guests || unit.maxGuests || 2}{' '}{i18n.t("Guests")}</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Bed className="h-4 w-4 text-[#dfbe74]" />
+            <Bed className="h-4 w-4 text-[#785910] dark:text-[#dfbe74]" />
             <span>{unit.bedrooms || 1}{' '}{i18n.t("Beds")}</span>
           </div>
         </div>
@@ -88,7 +88,7 @@ export const ApartmentCard = ({ unit, priority = false }) => {
         {/* Action Link to Apartment Details */}
         <Link
           to={`/apartments/${apartmentId}`}
-          className="mt-2 flex min-h-12 w-full items-center justify-center rounded-full border border-[#c6a052] bg-transparent px-5 py-3 text-base font-bold text-[#f9f8f5] transition-all hover:bg-[#dfbe74] hover:text-[#080d1a] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#dfbe74]/50"
+          className="mt-2 flex min-h-12 w-full items-center justify-center rounded-full border border-[#a68032]/60 bg-transparent px-5 py-3 text-base font-bold text-slate-800 transition-all hover:bg-[#dfbe74] hover:text-[#080d1a] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#dfbe74]/50 dark:border-[#c6a052] dark:text-[#f9f8f5]"
         >{' '}{i18n.t("View & Book Residence")}{' '}</Link>
       </div>
     </div>
