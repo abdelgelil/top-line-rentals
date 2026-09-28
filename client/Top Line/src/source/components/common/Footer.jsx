@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Mail, Phone, MapPin, ShieldCheck } from 'lucide-react';
+import { COMPOUND_ADDRESS, COMPOUND_NAME, CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../../constants/contactDetails';
 
 const Footer = () => {
   const { t, i18n } = useTranslation();
@@ -34,8 +35,8 @@ const Footer = () => {
           <div className="space-y-4">
             <h2 className="text-base font-semibold tracking-wide text-white">{t('footer.contactUs')}</h2>
             <ul className="space-y-3 text-sm text-slate-400">
-              <li className="flex items-center gap-3"><MapPin className="h-4 w-4 shrink-0 text-[#dfbe74]" /><a href="https://maps.app.goo.gl/PZ7EcCYEGwLkZJ849?g_st=iw" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-[#dfbe74]">{t('footer.address')}</a></li>
-              <li className="flex items-center gap-3"><Phone className="h-4 w-4 shrink-0 text-[#dfbe74]" /><a dir="ltr" href="tel:+201000000000" className="hover:text-[#dfbe74]">+20 100 000 0000</a></li>
+              <li className="flex items-center gap-3"><MapPin className="h-4 w-4 shrink-0 text-[#dfbe74]" /><a href="https://maps.app.goo.gl/PZ7EcCYEGwLkZJ849?g_st=iw" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-[#dfbe74]">{COMPOUND_ADDRESS}, {COMPOUND_NAME}</a></li>
+              <li className="flex items-center gap-3"><Phone className="h-4 w-4 shrink-0 text-[#dfbe74]" /><a dir="ltr" href={`tel:${CONTACT_PHONE}`} className="hover:text-[#dfbe74]">{CONTACT_PHONE_DISPLAY}</a></li>
               <li className="flex items-center gap-3"><Mail className="h-4 w-4 shrink-0 text-[#dfbe74]" /><a href="mailto:support@toplinerentals.com" className="hover:text-[#dfbe74]">support@toplinerentals.com</a></li>
             </ul>
           </div>

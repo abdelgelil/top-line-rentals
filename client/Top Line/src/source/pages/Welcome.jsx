@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight, Building, KeyRound, MapPin, PhoneCall, Search, ShieldCheck, Waves } from 'lucide-react';
+import { ArrowRight, Building, KeyRound, MapPin, Phone, PhoneCall, Search, ShieldCheck, Waves } from 'lucide-react';
 import { fetchApartments } from '../services/api';
 import { ApartmentCard } from '../components/apartment/ApartmentCard';
 import { ApartmentCardSkeleton } from '../components/common/Skeletons';
 import OptimizedImage from '../components/common/OptimizedImage';
+import { COMPOUND_ADDRESS, COMPOUND_NAME, CONTACT_PHONE, CONTACT_PHONE_DISPLAY, HOTLINE_PHONE, HOTLINE_PHONE_DISPLAY } from '../constants/contactDetails';
 
 const HERO_IMAGE = '/welcome1.jpg';
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#dfbe74] focus-visible:ring-offset-[#080d1a]';
@@ -76,11 +77,26 @@ export default function Welcome() {
         [data-reveal-stagger].welcome-revealed > :nth-child(3) { transition-delay: 180ms; }
         @media (prefers-reduced-motion: reduce) { [data-reveal], [data-reveal-stagger] > *, [data-reveal].welcome-revealed, [data-reveal-stagger].welcome-revealed > * { opacity: 1; transform: none; transition: none; } }
       `}</style>
-      <section className="relative isolate flex min-h-[90vh] items-center overflow-hidden bg-[#080d1a]">
-        <OptimizedImage src={HERO_IMAGE} alt="Mediterranean coastal apartments" className="absolute inset-0 -z-20 h-full w-full" imageClassName="h-full w-full object-cover" loading="eager" fetchPriority="high" width={1920} sizes="100vw" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#080d1a]/95 via-[#080d1a]/75 to-[#0b1325]/30" />
-        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-28 bg-gradient-to-b from-transparent via-[#080d1a]/70 to-[#080d1a]" />
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-24 lg:px-8">
+      <section className="relative isolate flex min-h-[90vh] flex-col justify-center overflow-hidden bg-[#080d1a] lg:block">
+        <div className="relative z-0 aspect-[16/9] w-full shrink-0 overflow-hidden lg:absolute lg:inset-0 lg:aspect-auto">
+          <OptimizedImage src={HERO_IMAGE} alt="Topline Luxury Apartments at Adly Plaza Compound" className="absolute inset-0 h-full w-full" imageClassName="h-full w-full object-contain lg:object-cover" loading="eager" fetchPriority="high" width={1920} sizes="100vw" />
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 lg:bg-gradient-to-r lg:from-[#080d1a]/75 lg:via-[#080d1a]/35 lg:to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 z-10 grid grid-cols-2 gap-x-3 gap-y-1 border-t border-[#dfbe74]/40 bg-[#080d1a]/95 px-3 py-2 text-white backdrop-blur-sm sm:px-6 lg:flex lg:items-center lg:justify-center lg:gap-8 lg:px-8 lg:py-3">
+            <a dir="ltr" href={`tel:${CONTACT_PHONE}`} className="flex min-w-0 items-center justify-center gap-1.5 text-xs font-semibold sm:text-sm">
+              <Phone aria-hidden="true" className="h-3.5 w-3.5 shrink-0 text-[#dfbe74]" />
+              <span><span className="block text-[10px] font-medium text-slate-300 sm:text-xs">{t('Contact Us')}</span>{CONTACT_PHONE_DISPLAY}</span>
+            </a>
+            <a dir="ltr" href={`tel:${HOTLINE_PHONE}`} className="flex min-w-0 items-center justify-center gap-1.5 text-xs font-semibold sm:text-sm">
+              <PhoneCall aria-hidden="true" className="h-3.5 w-3.5 shrink-0 text-[#dfbe74]" />
+              <span><span className="block text-[10px] font-medium text-slate-300 sm:text-xs">{t('Hotline')}</span>{HOTLINE_PHONE_DISPLAY}</span>
+            </a>
+            <div className="col-span-2 flex items-center justify-center gap-1.5 text-[10px] font-medium text-slate-200 sm:text-xs lg:col-span-1">
+              <MapPin aria-hidden="true" className="h-3.5 w-3.5 shrink-0 text-[#dfbe74]" />
+              {COMPOUND_ADDRESS} · {COMPOUND_NAME}
+            </div>
+          </div>
+        </div>
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-10 lg:px-8 lg:py-24">
           <div className="max-w-2xl" data-reveal>
             <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-semibold text-white shadow-lg backdrop-blur-md">{t('welcome.badge')}</span>
             <h1 className="mt-6 font-[Playfair_Display,serif] text-4xl font-semibold tracking-tight text-white drop-shadow-[0_3px_12px_rgba(0,0,0,0.8)] sm:text-5xl lg:text-6xl lg:leading-[1.1]">{t('welcome.headline')}</h1>

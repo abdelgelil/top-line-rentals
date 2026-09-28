@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { X, Phone, MessageCircle, MessageSquare, CalendarCheck } from 'lucide-react';
+import { CONTACT_PHONE } from '../../constants/contactDetails';
 
-const SUPPORT_PHONE = '+201234567890';
+const SUPPORT_PHONE = CONTACT_PHONE;
 
 const HelpModal = ({ onClose }) => {
   const { t } = useTranslation();
@@ -85,7 +86,7 @@ const HelpModal = ({ onClose }) => {
             <MessageSquare className="h-5 w-5" aria-hidden="true" /> {t('accessibility.requestCallback')}
           </a>
         </div>
-        <p className="mt-3 text-center text-lg font-semibold text-slate-700 dark:text-slate-200" dir="ltr">+20 123 456 7890</p>
+        <p className="mt-3 text-center text-lg font-semibold text-slate-700 dark:text-slate-200" dir="ltr">+20 100 069 4256</p>
 
         <div className="mt-7 rounded-2xl bg-slate-50 p-5 dark:bg-slate-800/70">
           <h3 className="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-white">

@@ -15,6 +15,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { sendContactMessage } from '../../services/api';
+import { COMPOUND_ADDRESS, COMPOUND_NAME, CONTACT_PHONE_DISPLAY, HOTLINE_PHONE_DISPLAY } from '../../constants/contactDetails';
 
 export const ContactUs = () => {
   const [formState, setFormState] = useState({
@@ -98,9 +99,10 @@ export const ContactUs = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {[
-              { icon: Phone, label: 'Hotline', value: '+1 (555) 000-0000', color: 'blue' },
+              { icon: Phone, label: 'Contact Us', value: CONTACT_PHONE_DISPLAY, color: 'blue' },
+              { icon: Phone, label: 'Hotline', value: HOTLINE_PHONE_DISPLAY, color: 'blue' },
               { icon: Mail, label: 'Email Support', value: 'reservations@toplinerentals.com', color: 'blue' },
-              { icon: MapPin, label: 'Headquarters', value: 'Alexandria, Cleopatra', color: 'blue' },
+              { icon: MapPin, label: 'Headquarters', value: `${COMPOUND_ADDRESS}, ${COMPOUND_NAME}`, color: 'blue' },
               { icon: Clock, label: 'Working Hours', value: 'Sun - Thu: 9am - 6pm', color: 'blue' },
             ].map((item, idx) => (
               <div key={idx} className="p-6 rounded-2xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-[#c6a052]/60 dark:border-[#c6a052]/20 flex flex-col gap-3 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-[#c6a052]/5">
