@@ -53,10 +53,9 @@ function PasswordAuthForm({ registering }) {
     setBusy(true);
     try {
       const endpoint = registering ? '/auth/register' : '/auth/login';
-      // Egyptian mobile numbers are entered in their familiar 11-digit local form (01...).
-      // Strip the trunk zero when composing the international number sent to the API.
-      const localPhone = countryIso === 'EG' ? phone.replace(/^0/, '') : phone;
-      const fullPhone = `${selectedCountry.code}${localPhone}`;
+      // Egyptian users enter the 10 digits after the leading zero (10...),
+      // which combines directly with +20 to form the international number.
+      const fullPhone = `${selectedCountry.code}${phone}`;
       const body = registering ? { username, phone: fullPhone, password, ...(email.trim() ? { email: email.trim() } : {}) } : { phone: fullPhone, password };
       const { data } = await API.post(endpoint, body, { skipAuth: true });
       setAuthenticatedUser(data);
@@ -112,16 +111,16 @@ function PasswordAuthForm({ registering }) {
             type="tel"
             inputMode="numeric"
             autoComplete="tel-national"
-            placeholder={countryIso === 'EG' ? '01000000000' : 'Phone number'}
+            placeholder={countryIso === 'EG' ? '1000000000' : 'Phone number'}
             required
-            maxLength={countryIso === 'EG' ? 11 : 14}
-            pattern={countryIso === 'EG' ? '[0-9]{11}' : '[0-9]{4,14}'}
-            title={countryIso === 'EG' ? 'Enter an 11-digit Egyptian phone number' : 'Enter 4 to 14 digits'}
+            maxLength={countryIso === 'EG' ? 10 : 14}
+            pattern={countryIso === 'EG' ? '[0-9]{10}' : '[0-9]{4,14}'}
+            title={countryIso === 'EG' ? 'Enter the 10 digits after the leading 0' : 'Enter 4 to 14 digits'}
             value={phone}
-            onChange={(event) => setPhone(event.target.value.replace(/\D/g, '').slice(0, countryIso === 'EG' ? 11 : 14))}
+            onChange={(event) => setPhone(event.target.value.replace(/\D/g, '').slice(0, countryIso === 'EG' ? 10 : 14))}
           />
         </div>
-        <p className="mt-2 text-sm text-slate-500">{countryIso === 'EG' ? 'Enter 11 digits, including the leading 0 (for example, 01000000000).' : `Enter the phone number for ${COUNTRY_CODES.find(({ iso }) => iso === countryIso)?.country}; the country code is added automatically.`}</p>
+        <p className="mt-2 text-sm text-slate-500">{countryIso === 'EG' ? 'Enter 10 digits without the leading 0 (for example, 1000000000).' : `Enter the phone number for ${selectedCountry.country}; the country code is added automatically.`}</p>
       </div>
       {registering && <div><label htmlFor="auth-email" className="text-base font-semibold text-slate-800 dark:text-slate-200">{t('auth.emailOptional')}</label><input id="auth-email" className={fieldClass} type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} /></div>}
       <div><label htmlFor="auth-password" className="text-base font-semibold text-slate-800 dark:text-slate-200">{t('auth.password')}</label><input id="auth-password" className={fieldClass} type="password" autoComplete={registering ? 'new-password' : 'current-password'} minLength={8} maxLength={128} required value={password} onChange={(e) => setPassword(e.target.value)} /></div>
