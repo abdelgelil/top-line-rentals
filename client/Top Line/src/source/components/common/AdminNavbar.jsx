@@ -34,6 +34,13 @@ const AdminNavbar = () => {
         : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
     }`;
 
+  const drawerLinkClass = ({ isActive }) =>
+    `relative flex min-h-12 items-center gap-3 rounded-xl border-s-2 px-4 py-3 text-sm font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dfbe74]/60 ${
+      isActive
+        ? 'border-s-[#a68032] bg-[#f7f3e8] text-[#4e3700] dark:border-s-[#dfbe74] dark:bg-[#152038] dark:text-[#f9f8f5]'
+        : 'border-s-transparent text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-[#131b2e] dark:hover:text-white'
+    }`;
+
   return (
     <div className="sticky inset-x-0 top-0 z-50 w-full px-3 py-3 sm:px-5">
       <nav className="mx-auto w-full max-w-[1504px] rounded-2xl border border-slate-200/80 bg-white/90 shadow-[0_12px_36px_rgba(15,23,42,0.08)] backdrop-blur-xl dark:border-[#c6a052]/20 dark:bg-[#0b1325]/95 dark:shadow-[0_16px_40px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(223,190,116,0.08)] sm:rounded-full">
@@ -42,7 +49,7 @@ const AdminNavbar = () => {
             <Link to="/admin" className="hover:opacity-90 transition-opacity">
               <Logo />
             </Link>
-            <span className="hidden sm:flex px-2 py-0.5 text-[10px] uppercase font-extrabold tracking-wider bg-[#c6a052] text-[#080d1a] border border-[#c6a052] rounded-md items-center gap-1 dark:border-[#c6a052]/30 dark:bg-[#c6a052]/15 dark:text-[#dfbe74]">
+            <span className="hidden items-center gap-1 rounded-md border border-[#a68032]/35 bg-[#f7f3e8] px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-[#4e3700] dark:border-[#c6a052]/25 dark:bg-[#080d1a]/75 dark:text-[#dfbe74] sm:flex">
               <ShieldCheck className="w-3 h-3" />{' '}{i18n.t("Admin Portal")}{' '}</span>
           </div>
 
@@ -110,7 +117,7 @@ const AdminNavbar = () => {
             role="dialog"
             aria-modal="true"
             aria-label={i18n.t('nav.menu', 'Admin navigation menu')}
-            className="absolute inset-y-0 right-0 flex w-[min(22rem,88vw)] flex-col border-l border-slate-200 bg-white text-slate-900 shadow-2xl dark:border-slate-700 dark:bg-slate-900 dark:text-white rtl:right-auto rtl:left-0 rtl:border-l-0 rtl:border-r"
+            className="absolute inset-y-0 right-0 flex w-[min(22rem,88vw)] flex-col border-l border-slate-200 bg-white text-slate-900 shadow-2xl dark:border-[#c6a052]/20 dark:bg-[#0b1325] dark:text-white rtl:right-auto rtl:left-0 rtl:border-l-0 rtl:border-r"
           >
           <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4 dark:border-slate-800">
             <div>
@@ -126,8 +133,8 @@ const AdminNavbar = () => {
               <X className="h-5 w-5" />
             </button>
           </div>
-          <div className="mx-4 mt-4 flex items-center gap-3 rounded-2xl border border-[#c6a052] bg-[#c6a052] p-4 dark:border-[#c6a052]/20 dark:bg-[#c6a052]/10">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-[#785910] shadow-sm dark:bg-slate-800 dark:text-[#dfbe74]">
+          <div className="mx-4 mt-4 flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-[#c6a052]/20 dark:bg-[#131b2e]">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-[#785910] shadow-sm dark:bg-[#080d1a] dark:text-[#dfbe74]">
               <UserRound className="h-5 w-5" aria-hidden="true" />
             </span>
             <div className="min-w-0">
@@ -138,11 +145,7 @@ const AdminNavbar = () => {
           <nav className="flex-1 space-y-1 overflow-y-auto px-4 py-5">
           <NavLink
             to="/admin/analytics"
-            className={({ isActive }) => `flex min-h-12 items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#dfbe74]/40 ${
-              isActive
-                ? 'bg-[#c6a052] text-[#080d1a] dark:bg-[#c6a052]/15 dark:text-[#dfbe74]'
-                : 'text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
-            }`}
+            className={drawerLinkClass}
             onClick={() => setIsOpen(false)}
           >
             <LayoutDashboard className="w-4 h-4" />
@@ -150,11 +153,7 @@ const AdminNavbar = () => {
           </NavLink>
           <NavLink
             to="/admin/apartments"
-            className={({ isActive }) => `flex min-h-12 items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#dfbe74]/40 ${
-              isActive
-                ? 'bg-[#c6a052] text-[#080d1a] dark:bg-[#c6a052]/15 dark:text-[#dfbe74]'
-                : 'text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
-            }`}
+            className={drawerLinkClass}
             onClick={() => setIsOpen(false)}
           >
             <Building2 className="w-4 h-4" />
@@ -162,11 +161,7 @@ const AdminNavbar = () => {
           </NavLink>
           <NavLink
             to="/admin/reservations"
-            className={({ isActive }) => `flex min-h-12 items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#dfbe74]/40 ${
-              isActive
-                ? 'bg-[#c6a052] text-[#080d1a] dark:bg-[#c6a052]/15 dark:text-[#dfbe74]'
-                : 'text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
-            }`}
+            className={drawerLinkClass}
             onClick={() => setIsOpen(false)}
           >
             <CalendarCheck className="w-4 h-4" />
@@ -174,9 +169,7 @@ const AdminNavbar = () => {
           </NavLink>
           <NavLink
             to="/admin/messages"
-            className={({ isActive }) => `flex min-h-12 items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#dfbe74]/40 ${
-              isActive ? 'bg-[#c6a052] text-[#080d1a] dark:bg-[#c6a052]/15 dark:text-[#dfbe74]' : 'text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
-            }`}
+            className={drawerLinkClass}
             onClick={() => setIsOpen(false)}
           >
             <Mail className="w-4 h-4" />
@@ -184,15 +177,13 @@ const AdminNavbar = () => {
           </NavLink>
           <NavLink
             to="/admin/reviews"
-            className={({ isActive }) => `flex min-h-12 items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#dfbe74]/40 ${
-              isActive ? 'bg-[#c6a052] text-[#080d1a] dark:bg-[#c6a052]/15 dark:text-[#dfbe74]' : 'text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
-            }`}
+            className={drawerLinkClass}
             onClick={() => setIsOpen(false)}
           >
             <Star className="w-4 h-4" />
             <span>{i18n.t('Guest Reviews')}</span>
           </NavLink>
-          <Link to="/apartments" className="flex min-h-12 items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#dfbe74]/40 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white" onClick={() => setIsOpen(false)}>
+          <Link to="/apartments" className={`${drawerLinkClass({ isActive: false })}`} onClick={() => setIsOpen(false)}>
             <ExternalLink className="w-4 h-4" />
             <span>{i18n.t("View Public Site")}</span>
           </Link>
