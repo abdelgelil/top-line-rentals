@@ -3,6 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
 const english = {
+  language: { english: 'English', arabic: 'العربية', switchToEnglish: 'Switch language to English', switchToArabic: 'Switch language to Arabic' },
   booking: {
     chooseDates: 'Select your check-in and check-out dates',
     priceBreakdown: 'Booking price breakdown',
@@ -102,6 +103,7 @@ const english = {
 };
 
 const arabic = {
+  language: { english: 'English', arabic: 'العربية', switchToEnglish: 'تغيير اللغة إلى الإنجليزية', switchToArabic: 'تغيير اللغة إلى العربية' },
   booking: {
     chooseDates: 'اختر تاريخ الوصول والمغادرة',
     priceBreakdown: 'تفاصيل سعر الحجز',

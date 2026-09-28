@@ -1,11 +1,12 @@
 import i18n from "../../../i18n.js";
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { Building2, LayoutDashboard, ShieldCheck, CalendarCheck, Mail, Menu, X, ExternalLink, LogOut, UserRound, Star } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Logo from './Logo';
 import { LanguageToggle } from './LanguageToggle';
+import ThemeToggle from './ThemeToggle';
 
 const AdminNavbar = () => {
   const { t } = useTranslation();
@@ -34,8 +35,8 @@ const AdminNavbar = () => {
     }`;
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 top-0 z-50 px-4 py-3 sm:px-6">
-      <nav className="pointer-events-auto mx-auto w-full max-w-[1600px] rounded-2xl border border-slate-200 bg-white/95 shadow-[0_12px_36px_rgba(15,23,42,0.12)] backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/95 dark:shadow-black/30 sm:rounded-full">
+    <div className="sticky inset-x-0 top-0 z-50 w-full px-4 py-3 sm:px-6">
+      <nav className="mx-auto w-full max-w-[1440px] rounded-2xl border border-slate-200/60 bg-white/80 shadow-[0_12px_36px_rgba(15,23,42,0.08)] backdrop-blur-md dark:border-slate-800/60 dark:bg-slate-950/80 dark:shadow-black/30 sm:rounded-full">
         <div className="flex min-h-[68px] items-center justify-between gap-4 px-4 py-2 sm:px-5">
           <div className="flex shrink-0 items-center gap-3">
             <Link to="/admin" className="hover:opacity-90 transition-opacity">
@@ -72,6 +73,7 @@ const AdminNavbar = () => {
             </Link>
             <div className="ml-2 flex shrink-0 items-center gap-3 border-l border-slate-200 pl-4 dark:border-slate-700">
               <LanguageToggle />
+              <ThemeToggle />
               <div className="hidden max-w-40 truncate text-right text-sm font-semibold text-slate-700 dark:text-slate-100 2xl:block">{user?.name || user?.phone}</div>
               <button
                 type="button"
@@ -196,7 +198,7 @@ const AdminNavbar = () => {
           </Link>
           </nav>
           <div className="space-y-3 border-t border-slate-200 p-4 dark:border-slate-800">
-            <LanguageToggle />
+            <div className="flex items-center gap-2"><LanguageToggle /><ThemeToggle /></div>
             <button
               type="button"
               onClick={() => { setIsOpen(false); signOut(); }}

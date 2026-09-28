@@ -1,17 +1,17 @@
-import i18n from "../../../i18n.js";
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
-import { Menu, X, Building2, Calendar, Mail, CircleHelp, LogOut, UserRound, Heart } from 'lucide-react';
+import { useFavorites } from '../../context/FavoritesContext';
+import { Building2, CalendarDays, CircleHelp, Heart, LayoutDashboard, LogOut, Mail, Menu, UserRound, X } from 'lucide-react';
 import { LanguageToggle } from './LanguageToggle';
+import ThemeToggle from './ThemeToggle';
 import Footer from './Footer';
 import HelpModal from './HelpModal';
 import Logo from './Logo';
-import { useFavorites } from '../../context/FavoritesContext';
 
-const ClientLayout = () => {
+export const ClientLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
   const location = useLocation();
@@ -19,24 +19,22 @@ const ClientLayout = () => {
   const { isSignedIn, user, signOut } = useAuth();
   const { favoriteIds } = useFavorites();
   const isAuthPage = ['/sign-in', '/sign-up', '/reset-password'].includes(location.pathname);
+  const isAdmin = String(user?.role || user?.publicMetadata?.role || '').toLowerCase() === 'admin';
 
   const navLinks = [
     { path: '/apartments', label: t('nav.apartments', 'Apartments'), icon: Building2 },
-    { path: '/my-bookings', label: t('nav.myBookings', 'My Bookings'), icon: Calendar },
-    ...(isSignedIn ? [{ path: '/favorites', label: `${t('nav.saved')}${favoriteIds.length ? ` (${favoriteIds.length})` : ''}`, icon: Heart }] : []),
+    { path: '/my-bookings', label: t('nav.myBookings', 'My Bookings'), icon: CalendarDays },
+    { path: '/favorites', label: `${t('nav.saved', 'Saved')}${favoriteIds.length ? ` (${favoriteIds.length})` : ''}`, icon: Heart },
     { path: '/contact', label: t('nav.contact', 'Contact Us'), icon: Mail },
   ];
-
-  const isActive = (path) => location.pathname === path;
   const closeHelp = useCallback(() => setIsHelpOpen(false), []);
+  const isActive = (path) => location.pathname === path || (path !== '/' && location.pathname.startsWith(`${path}/`));
 
   useEffect(() => {
     if (!isOpen) return undefined;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') setIsOpen(false);
-    };
+    const handleKeyDown = (event) => { if (event.key === 'Escape') setIsOpen(false); };
     document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.body.style.overflow = previousOverflow;
@@ -44,189 +42,69 @@ const ClientLayout = () => {
     };
   }, [isOpen]);
 
+  const linkClass = (path) => `relative inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-[13px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052] ${isActive(path) ? 'bg-[#c6a052]/15 text-[#785910] dark:text-[#dfbe74]' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'}`;
+
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-slate-950">
-    {!isAuthPage && <header className="sticky top-0 z-50 w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900 transition-colors duration-200 dark:bg-[#020617] dark:text-slate-100">
+      {!isAuthPage && <header className="sticky top-0 z-50 w-full border-b border-slate-200/60 bg-white/80 shadow-sm backdrop-blur-md transition-colors dark:border-slate-800/60 dark:bg-slate-950/80">
+        <div className="mx-auto grid min-h-[72px] max-w-[1440px] grid-cols-[1fr_auto] items-center gap-3 px-4 sm:px-6 xl:grid-cols-[1fr_auto_1fr] xl:px-8">
+          <Link to="/" aria-label="Topline Luxury Apartments home" className="min-w-0 justify-self-start rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052]">
+            <Logo />
+          </Link>
 
-        {/* Brand / Logo */}
-        <Link to="/" className="font-extrabold tracking-tight text-slate-900 dark:text-white">
-          <Logo />
-        </Link>
+          <nav aria-label={t('Main navigation', 'Main navigation')} className="hidden items-center gap-1 xl:flex">
+            {navLinks.map(({ path, label, icon: Icon }) => <Link key={path} to={path} aria-current={isActive(path) ? 'page' : undefined} className={linkClass(path)}>
+              <Icon aria-hidden="true" className="h-4 w-4"/><span>{label}</span>
+              {isActive(path) && <span aria-hidden="true" className="absolute inset-x-4 -bottom-1 h-0.5 rounded-full bg-[#c6a052]"/>}
+            </Link>)}
+          </nav>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-1 bg-slate-100/80 dark:bg-slate-800/80 p-1 rounded-full border border-slate-200/60 dark:border-slate-700/60">
-          {navLinks.map((link) => {
-            const Icon = link.icon;
-            const active = isActive(link.path);
-            return (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`flex min-h-12 items-center gap-2 px-4 py-3 rounded-full text-base font-semibold transition-all duration-200 ${
-                  active
-                    ? 'bg-white dark:bg-slate-900 text-[#785910] dark:text-[#dfbe74] shadow-sm'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                <span>{link.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
+          <div className="hidden min-w-0 items-center justify-self-end gap-2 xl:flex">
+            <LanguageToggle />
+            <ThemeToggle />
+            <button type="button" onClick={() => setIsHelpOpen(true)} aria-label={t('accessibility.needHelp')} title={t('accessibility.needHelp')} className="inline-flex h-10 w-10 items-center justify-center rounded-full text-slate-600 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052] dark:text-slate-300 dark:hover:bg-slate-800">
+              <CircleHelp aria-hidden="true" className="h-5 w-5" />
+            </button>
+            {isSignedIn ? <div className="ml-1 flex min-w-0 items-center gap-2 border-l border-slate-200 pl-3 dark:border-slate-700">
+              {isAdmin && <Link to="/admin" className="rounded-full border border-[#c6a052]/40 bg-[#c6a052]/10 px-2.5 py-1.5 text-[11px] font-bold text-[#785910] dark:text-[#dfbe74]">Admin</Link>}
+              <span className="hidden max-w-28 truncate text-xs font-semibold text-slate-700 2xl:block dark:text-slate-200" title={user?.name || user?.fullName || user?.phone}>{user?.name || user?.fullName || user?.phone}</span>
+              <button type="button" onClick={signOut} className="inline-flex min-h-10 items-center gap-2 rounded-full border border-slate-200 px-3 text-xs font-semibold text-slate-700 transition-colors hover:border-rose-200 hover:bg-rose-50 hover:text-rose-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052] dark:border-slate-700 dark:text-slate-200 dark:hover:border-rose-900 dark:hover:bg-rose-950/40 dark:hover:text-rose-200"><LogOut aria-hidden="true" className="h-4 w-4"/><span>{t('nav.logout', 'Logout')}</span></button>
+            </div> : <Link to="/sign-in" className="inline-flex min-h-10 items-center rounded-full bg-[#c6a052] px-4 text-sm font-bold text-slate-950 shadow-sm transition-colors hover:bg-[#dfbe74] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052]">{t('Sign In', 'Sign In')}</Link>}
+          </div>
 
-        {/* Desktop Right Action Controls */}
-        <div className="hidden md:flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => setIsHelpOpen(true)}
-            aria-label={t('accessibility.needHelp')}
-            title={t('accessibility.needHelp')}
-            className="flex h-12 w-12 items-center justify-center rounded-full text-slate-700 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50 dark:text-slate-200 dark:hover:bg-slate-800"
-          >
-            <CircleHelp className="h-6 w-6" aria-hidden="true" />
-          </button>
-          <LanguageToggle />
-
-          {isSignedIn ? (
-            <div className="flex items-center gap-3 border-l border-slate-200 pl-3 dark:border-slate-700">
-              <div className="hidden lg:block text-right leading-tight">
-                <p className="max-w-36 truncate text-sm font-semibold text-slate-800 dark:text-slate-100">{user?.name || user?.phone}</p>
-                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{i18n.t('nav.account', 'Your account')}</p>
-              </div>
-              <button
-                type="button"
-                onClick={signOut}
-                className="group inline-flex min-h-11 items-center gap-2 rounded-full border border-slate-200/80 bg-white px-4 text-sm font-semibold text-slate-600 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-rose-200 hover:bg-rose-50 hover:text-rose-700 hover:shadow-md hover:shadow-rose-900/5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-500/30 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-300 dark:hover:border-rose-900/70 dark:hover:bg-rose-950/40 dark:hover:text-rose-300"
-              >
-                <LogOut className="h-4 w-4 text-slate-400 transition-colors group-hover:text-rose-600 dark:group-hover:text-rose-300" aria-hidden="true" />
-                <span>{i18n.t('nav.logout')}</span>
-              </button>
-            </div>
-          ) : (
-            <Link
-              to="/sign-in"
-              className="min-h-12 rounded-full bg-[#c6a052] px-5 py-3 text-base font-bold text-white shadow-md shadow-[#c6a052]/20 transition-all hover:bg-[#a68032] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50"
-            >{' '}{i18n.t("Sign In")}{' '}</Link>
-          )}
+          <div className="flex items-center gap-2 justify-self-end xl:hidden">
+            <LanguageToggle compact />
+            <ThemeToggle compact />
+            <button type="button" onClick={() => setIsOpen(true)} aria-expanded={isOpen} aria-label={t('Open navigation menu', 'Open navigation menu')} className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white/80 text-slate-700 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052] dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-200 dark:hover:bg-slate-800">
+              <Menu aria-hidden="true" className="h-5 w-5" />
+            </button>
+          </div>
         </div>
+      </header>}
 
-        {/* Mobile Action Cluster */}
-        <div className="flex items-center gap-2 md:hidden">
-          <LanguageToggle />
+      <main className="flex-grow"><Outlet /></main>
+      {!isAuthPage && <Footer />}
+      {isHelpOpen && <HelpModal onClose={closeHelp} />}
 
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            type="button"
-            aria-expanded={isOpen}
-            aria-label={i18n.t(isOpen ? 'Close menu' : 'Toggle Menu')}
-            className="flex h-12 w-12 items-center justify-center rounded-xl text-slate-700 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50 dark:text-slate-200 dark:hover:bg-slate-800"
-          >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile navigation drawer */}
-      {isOpen && createPortal(
-        <div className="fixed inset-0 z-[100] md:hidden">
-          <button
-            type="button"
-            aria-label={i18n.t('Close menu', 'Close menu')}
-            className="fixed inset-0 z-40 h-full w-full bg-slate-950/60 backdrop-blur-sm"
-            onClick={() => setIsOpen(false)}
-          />
-          <aside
-            role="dialog"
-            aria-modal="true"
-            aria-label={i18n.t('nav.menu', 'Navigation menu')}
-            className="fixed inset-y-0 right-0 z-50 flex w-[min(22rem,88vw)] flex-col overflow-hidden border-l border-slate-200 bg-white text-slate-900 shadow-2xl dark:border-slate-800 dark:bg-slate-900 dark:text-white rtl:right-auto rtl:left-0 rtl:border-l-0 rtl:border-r"
-          >
-            <div className="flex items-center justify-between border-b border-slate-100 bg-white px-5 py-4 dark:border-slate-800 dark:bg-slate-900">
-              <Link to="/" onClick={() => setIsOpen(false)} className="min-w-0"><Logo /></Link>
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                aria-label={i18n.t('Close menu', 'Close menu')}
-                className="flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/40 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-            {isSignedIn && (
-              <div className="mx-4 mt-4 flex items-center gap-3 rounded-2xl border border-[#c6a052] bg-[#c6a052]/70 p-4 dark:border-[#a68032]/60 dark:bg-[#080d1a]/30">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-[#785910] shadow-sm dark:bg-slate-800 dark:text-[#dfbe74]">
-                  <UserRound className="h-5 w-5" aria-hidden="true" />
-                </span>
-                <div className="min-w-0">
-                  <p className="text-xs font-medium text-slate-500 dark:text-slate-400">{i18n.t('nav.signedInAs', 'Signed in as')}</p>
-                  <p className="mt-1 truncate text-sm font-semibold text-slate-900 dark:text-white">{user?.name || user?.phone}</p>
-                </div>
-              </div>
-            )}
-            <nav className="flex-1 space-y-1 overflow-y-auto px-4 py-5">
-              {navLinks.map((link) => {
-                const Icon = link.icon;
-                const active = isActive(link.path);
-                return (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    onClick={() => setIsOpen(false)}
-                    className={`flex min-h-12 items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/40 ${
-                      active
-                        ? 'bg-[#c6a052] text-[#080d1a] dark:bg-[#080d1a]/60 dark:text-[#dfbe74]'
-                        : 'text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
-                    }`}
-                  >
-                    <Icon className="h-5 w-5" />
-                    <span>{link.label}</span>
-                  </Link>
-                );
-              })}
-              <button
-                type="button"
-                onClick={() => { setIsOpen(false); setIsHelpOpen(true); }}
-                className="flex min-h-12 w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/40 dark:text-slate-200 dark:hover:bg-slate-800"
-              >
-                <CircleHelp className="h-5 w-5" aria-hidden="true" />
-                <span>{t('accessibility.helpShort')}</span>
-              </button>
-            </nav>
-            <div className="space-y-4 border-t border-slate-100 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-              <LanguageToggle />
-              {isSignedIn ? (
-                <button
-                  type="button"
-                  onClick={() => { setIsOpen(false); signOut(); }}
-                  className="group flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition-all duration-200 hover:border-rose-200 hover:bg-rose-50 hover:text-rose-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-500/30 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-rose-900/70 dark:hover:bg-rose-950/40 dark:hover:text-rose-300"
-                >
-                  <LogOut className="h-4 w-4 text-slate-400 transition-colors group-hover:text-rose-600 dark:group-hover:text-rose-300" aria-hidden="true" />
-                  <span>{i18n.t('nav.logout')}</span>
-                </button>
-              ) : (
-                <Link
-                  to="/sign-in"
-                  onClick={() => setIsOpen(false)}
-                  className="flex min-h-12 items-center justify-center rounded-xl bg-[#c6a052] px-5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-[#a68032] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/40"
-                >
-                  {i18n.t('Sign In')}
-                </Link>
-              )}
-            </div>
-          </aside>
-        </div>,
-        document.body
-      )}
-    </header>}
-    <main className="flex-grow">
-      <Outlet />
-    </main>
-    {!isAuthPage && <Footer />}
-    {isHelpOpen && <HelpModal onClose={closeHelp} />}
+      {isOpen && createPortal(<div className="fixed inset-0 z-[100] xl:hidden" role="presentation">
+        <button type="button" aria-label={t('Close menu', 'Close menu')} className="absolute inset-0 bg-slate-950/50 backdrop-blur-sm" onClick={() => setIsOpen(false)} />
+        <aside role="dialog" aria-modal="true" aria-label={t('Main navigation', 'Main navigation')} className="absolute inset-y-0 right-0 flex w-[min(24rem,90vw)] flex-col border-l border-slate-200 bg-white text-slate-900 shadow-2xl dark:border-slate-800 dark:bg-slate-900 dark:text-white rtl:right-auto rtl:left-0 rtl:border-l-0 rtl:border-r">
+          <div className="flex min-h-[72px] items-center justify-between border-b border-slate-200 px-5 dark:border-slate-800">
+            <Link to="/" onClick={() => setIsOpen(false)} className="min-w-0"><Logo /></Link>
+            <button type="button" onClick={() => setIsOpen(false)} aria-label={t('Close menu', 'Close menu')} className="inline-flex h-10 w-10 items-center justify-center rounded-full text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052] dark:text-slate-300 dark:hover:bg-slate-800"><X aria-hidden="true" className="h-5 w-5"/></button>
+          </div>
+          {isSignedIn && <div className="mx-4 mt-4 flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800"><span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#c6a052]/15 text-[#785910] dark:text-[#dfbe74]">{isAdmin ? <LayoutDashboard className="h-5 w-5"/> : <UserRound className="h-5 w-5"/>}</span><div className="min-w-0 flex-1"><p className="text-xs text-slate-500 dark:text-slate-400">{isAdmin ? 'Administrator' : t('nav.account', 'Your account')}</p><p className="truncate text-sm font-semibold">{user?.name || user?.fullName || user?.phone}</p></div>{isAdmin && <span className="rounded-full bg-[#c6a052]/15 px-2.5 py-1 text-[11px] font-bold text-[#785910] dark:text-[#dfbe74]">Admin</span>}</div>}
+          <nav aria-label={t('Main navigation', 'Main navigation')} className="flex-1 space-y-1 overflow-y-auto p-4">
+            {navLinks.map(({ path, label, icon: Icon }) => <Link key={path} to={path} onClick={() => setIsOpen(false)} aria-current={isActive(path) ? 'page' : undefined} className={`flex min-h-12 items-center gap-3 rounded-xl px-4 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052] ${isActive(path) ? 'bg-[#c6a052]/15 text-[#785910] dark:text-[#dfbe74]' : 'text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'}`}><Icon aria-hidden="true" className="h-5 w-5"/><span>{label}</span></Link>)}
+            {isAdmin && <Link to="/admin" onClick={() => setIsOpen(false)} className="flex min-h-12 items-center gap-3 rounded-xl px-4 text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"><LayoutDashboard aria-hidden="true" className="h-5 w-5"/><span>{t('nav.adminDashboard', 'Admin dashboard')}</span></Link>}
+            <button type="button" onClick={() => { setIsOpen(false); setIsHelpOpen(true); }} className="flex min-h-12 w-full items-center gap-3 rounded-xl px-4 text-left text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"><CircleHelp aria-hidden="true" className="h-5 w-5"/><span>{t('accessibility.helpShort', 'Need Help?')}</span></button>
+          </nav>
+          <div className="space-y-3 border-t border-slate-200 p-4 dark:border-slate-800">
+            <div className="flex items-center gap-2"><LanguageToggle/><ThemeToggle/></div>
+            {isSignedIn ? <button type="button" onClick={() => { setIsOpen(false); signOut(); }} className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-slate-200 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"><LogOut aria-hidden="true" className="h-4 w-4"/>{t('nav.logout', 'Logout')}</button> : <Link to="/sign-in" onClick={() => setIsOpen(false)} className="flex min-h-12 items-center justify-center rounded-full bg-[#c6a052] text-sm font-bold text-slate-950 hover:bg-[#dfbe74]">{t('Sign In', 'Sign In')}</Link>}
+          </div>
+        </aside>
+      </div>, document.body)}
     </div>
   );
 };
-
-export { ClientLayout };
