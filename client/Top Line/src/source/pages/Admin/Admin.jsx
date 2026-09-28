@@ -8,6 +8,7 @@ import ApartmentForm from '../../components/admin/ApartmentForm';
 import { fetchApartments, deleteApartment } from '../../services/api';
 import OptimizedImage from '../../components/common/OptimizedImage';
 import { formatCurrency } from '../../utils/formatters';
+import { getFirstImage } from '../../utils/getImageUrl';
 
 export const Admin = () => {
   const [activeTab, setActiveTab] = useState('apartments'); // 'apartments' | 'bookings'
@@ -185,16 +186,12 @@ export const Admin = () => {
                     className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col hover:shadow-md transition"
                   >
                     <div className="h-48 bg-gray-100 relative">
-                      {apt.images && apt.images.length > 0 ? (
-                        <OptimizedImage
-                          src={apt.images[0]}
-                          alt={translateText(apt.title)}
-                          className="h-full w-full"
-                          imageClassName="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">{' '}{i18n.t("No Image")}{' '}</div>
-                      )}
+                      <OptimizedImage
+                        src={getFirstImage(apt)}
+                        alt={translateText(apt.title)}
+                        className="h-full w-full"
+                        imageClassName="h-full w-full object-cover"
+                      />
                       <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-md text-xs font-semibold text-gray-700 shadow-sm">
                         {translateText(apt.tower)}
                       </span>

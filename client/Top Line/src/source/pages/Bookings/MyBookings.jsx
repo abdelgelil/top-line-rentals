@@ -10,6 +10,7 @@ import { TableSkeleton } from '../../components/common/Skeletons';
 import { formatCurrency } from '../../utils/formatters';
 import toast from 'react-hot-toast';
 import { Calendar, Clock, Users, MapPin, ChevronRight, Home, MessageCircle, Info } from 'lucide-react';
+import { getFirstImage } from '../../utils/getImageUrl';
 
 export default function MyBookings() {
   const { user, isLoaded, isSignedIn } = useAuth();
@@ -173,7 +174,7 @@ export default function MyBookings() {
                 {/* Property Thumbnail */}
                 <div className="relative w-full md:w-40 h-32 md:h-32 shrink-0 overflow-hidden rounded-2xl shadow-lg">
                   <OptimizedImage
-                    src={booking.apartment?.images?.[0]}
+                    src={getFirstImage(booking.apartment)}
                     alt={translateText(booking.apartment?.title)}
                     className="h-full w-full"
                     imageClassName="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"

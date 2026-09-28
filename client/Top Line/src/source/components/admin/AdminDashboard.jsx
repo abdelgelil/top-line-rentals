@@ -15,6 +15,7 @@ import {
 import OptimizedImage from '../common/OptimizedImage';
 import { TableSkeleton } from '../common/Skeletons';
 import { formatCurrency } from '../../utils/formatters';
+import { getFirstImage } from '../../utils/getImageUrl';
 
 const ApartmentForm = lazy(() => import('./ApartmentForm'));
 const AdminSettings = lazy(() => import('./AdminSettings'));
@@ -462,7 +463,7 @@ const AdminDashboard = () => {
                   className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col justify-between"
                 >
                   <OptimizedImage
-                    src={apt.images?.[0]}
+                    src={getFirstImage(apt)}
                     alt={translateText(apt.title)}
                     className="h-48 w-full"
                     imageClassName="h-full w-full object-cover"

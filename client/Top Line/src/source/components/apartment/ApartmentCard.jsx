@@ -8,6 +8,7 @@ import { formatCurrency } from '../../utils/formatters';
 import { useAuth } from '../../context/AuthContext';
 import { useFavorites } from '../../context/FavoritesContext';
 import { useNavigate } from 'react-router-dom';
+import { getFirstImage } from '../../utils/getImageUrl';
 
 export const ApartmentCard = ({ unit, priority = false }) => {
   const apartmentId = unit._id || unit.id;
@@ -28,7 +29,7 @@ export const ApartmentCard = ({ unit, priority = false }) => {
       {/* Image Container */}
       <div className="relative h-64 overflow-hidden">
         <OptimizedImage
-          src={unit.images?.[0]}
+          src={getFirstImage(unit)}
           alt={translateText(unit.title || unit.name)}
           loading={priority ? 'eager' : 'lazy'}
           fetchPriority={priority ? 'high' : 'auto'}

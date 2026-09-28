@@ -23,6 +23,7 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { getFirstImage } from '../../utils/getImageUrl';
 
 const ImageLightbox = ({ images, initialIndex, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
@@ -189,8 +190,9 @@ export function ApartmentDetails({ currentUser: propUser }) {
     );
   }
 
-  const images = apartment.images || [];
-  const currentImg = images[activeImageIndex] || 'https://via.placeholder.com/800x600';
+  const images = Array.isArray(apartment.images) && apartment.images.length
+    ? apartment.images.map((image) => getFirstImage({ image }))
+    : [getFirstImage(apartment)];
 
   const openLightbox = (index) => {
     setIsLightboxOpen(true);
