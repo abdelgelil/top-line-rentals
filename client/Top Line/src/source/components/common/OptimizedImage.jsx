@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { DEFAULT_IMAGE_FALLBACK, getImageUrl } from '../../utils/getImageUrl';
 
 const optimizeImageUrl = (url, width = 1200) => {
@@ -54,7 +54,7 @@ const imageSrcSet = (url) => {
   return undefined;
 };
 
-const OptimizedImage = ({
+const ImageWithFallback = ({
   src,
   alt = '',
   className = '',
@@ -67,16 +67,11 @@ const OptimizedImage = ({
 }) => {
   const [loaded, setLoaded] = useState(false);
   const [sourceMode, setSourceMode] = useState('optimized');
-  const normalizedSrc = getImageUrl(src);
+  const normalizedSrc = src;
   const optimizedSrc = optimizeImageUrl(normalizedSrc, width);
   const imageSrc = sourceMode === 'fallback'
     ? DEFAULT_IMAGE_FALLBACK
     : sourceMode === 'original' ? normalizedSrc : optimizedSrc;
-
-  useEffect(() => {
-    setLoaded(false);
-    setSourceMode('optimized');
-  }, [src]);
 
   const handleError = () => {
     if (sourceMode === 'optimized' && optimizedSrc !== normalizedSrc) {
@@ -98,6 +93,7 @@ const OptimizedImage = ({
       )}
       {sourceMode !== 'failed' && (
         <img
+          key={imageSrc}
           src={imageSrc}
           srcSet={sourceMode === 'optimized' ? imageSrcSet(normalizedSrc) : undefined}
           sizes={sizes}
@@ -114,5 +110,9 @@ const OptimizedImage = ({
     </div>
   );
 };
+
+const OptimizedImage = (props) => (
+  <ImageWithFallback key={getImageUrl(props.src)} {...props} src={getImageUrl(props.src)} />
+);
 
 export default OptimizedImage;

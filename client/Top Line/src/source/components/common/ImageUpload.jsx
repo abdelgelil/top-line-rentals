@@ -1,6 +1,7 @@
 import i18n from "../../../i18n.js";
 import toast from 'react-hot-toast';
 import React, { useState } from 'react';
+import OptimizedImage from './OptimizedImage';
 
 export default function ImageUpload({ onImageUploaded }) {
   const [loading, setLoading] = useState(false);
@@ -52,7 +53,7 @@ export default function ImageUpload({ onImageUploaded }) {
 
       {preview && (
         <div className="mt-2">
-          <img src={preview} alt={i18n.t("Uploaded preview")} className="h-32 w-full object-cover rounded-lg border" />
+          <OptimizedImage src={preview} alt={i18n.t("Uploaded preview")} className="h-32 w-full rounded-lg border" imageClassName="h-full w-full object-cover" loading="eager" sizes="100vw" />
           <p className="text-xs text-green-600 mt-1">{i18n.t("âœ“ Cloudinary URL Generated")}</p>
         </div>
       )}
