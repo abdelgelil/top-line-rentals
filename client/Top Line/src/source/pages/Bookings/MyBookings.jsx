@@ -162,7 +162,7 @@ export default function MyBookings() {
         ) : null}
 
         {isLoaded && !loadingBookings && !error && bookings.length > 0 && <div className="grid grid-cols-1 gap-6">
-          {bookings.map((booking) => {
+          {bookings.map((booking, bookingIndex) => {
             const nights = calculateNights(booking.checkIn, booking.checkOut);
             const statusStyles = getStatusStyles(booking.status);
 
@@ -176,6 +176,10 @@ export default function MyBookings() {
                   <OptimizedImage
                     src={getFirstImage(booking.apartment)}
                     alt={translateText(booking.apartment?.title)}
+                    loading={bookingIndex === 0 ? 'eager' : 'lazy'}
+                    fetchPriority={bookingIndex === 0 ? 'high' : 'auto'}
+                    width={480}
+                    sizes="(min-width: 768px) 160px, calc(100vw - 4rem)"
                     className="h-full w-full"
                     imageClassName="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
