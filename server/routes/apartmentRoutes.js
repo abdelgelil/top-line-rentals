@@ -1,16 +1,44 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import Apartment from '../models/Apartment.js';
-import { uploadToCloudinary, deleteFromCloudinary } from '../config/cloudinary.js';
+import cloudinary, { deleteFromCloudinary } from '../config/cloudinary.js';
 import multer from 'multer';
 import { requireAuth, requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Configure Multer with In-Memory Storage
+// Stream uploads directly to Cloudinary instead of retaining every file buffer
+// in server memory while the complete multipart request is parsed.
+const cloudinaryStorage = {
+  _handleFile(req, file, callback) {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      { folder: 'topline_apartments', resource_type: 'auto' },
+      (error, result) => {
+        if (error) return callback(error);
+        callback(null, {
+          path: result.secure_url,
+          filename: result.public_id,
+          size: result.bytes,
+        });
+      }
+    );
+    file.stream.pipe(uploadStream);
+  },
+  _removeFile(req, file, callback) {
+    deleteFromCloudinary(file.path).then(() => callback(null), callback);
+  },
+};
+
 const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  storage: cloudinaryStorage,
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB per file
+    files: 10,
+  },
+  fileFilter: (req, file, callback) => {
+    if (file.mimetype.startsWith('image/')) return callback(null, true);
+    return callback(new multer.MulterError('LIMIT_UNEXPECTED_FILE', file.fieldname));
+  },
 });
 
 /* ==========================================================================
@@ -82,20 +110,7 @@ router.post('/', requireAuth, requireAdmin, upload.array('images', 10), async (r
       return res.status(400).json({ success: false, message: 'Apartment title is required' });
     }
 
-    // Process file streams to Cloudinary
-    let uploadedImageUrls = [];
-    if (req.files && req.files.length > 0) {
-      try {
-        const uploadPromises = req.files.map((file) => uploadToCloudinary(file.buffer));
-        uploadedImageUrls = await Promise.all(uploadPromises);
-      } catch (cloudinaryError) {
-        console.error('CLOUDINARY UPLOAD ERROR:', cloudinaryError);
-        return res.status(500).json({
-          success: false,
-          message: `Cloudinary Upload Error: ${cloudinaryError.message || 'Check Cloudinary environment variables'}`,
-        });
-      }
-    }
+    const uploadedImageUrls = (req.files || []).map((file) => file.path);
 
     // Safely parse retained images
     let parsedExisting = [];
@@ -173,16 +188,7 @@ router.put('/:id', requireAuth, requireAdmin, upload.array('images', 10), async 
 
     let newUploadedUrls = [];
     if (req.files && req.files.length > 0) {
-      try {
-        const uploadPromises = req.files.map((file) => uploadToCloudinary(file.buffer));
-        newUploadedUrls = await Promise.all(uploadPromises);
-      } catch (cloudinaryError) {
-        console.error('CLOUDINARY UPLOAD ERROR:', cloudinaryError);
-        return res.status(500).json({
-          success: false,
-          message: `Cloudinary Upload Error: ${cloudinaryError.message || 'Check Cloudinary environment variables'}`,
-        });
-      }
+      newUploadedUrls = req.files.map((file) => file.path);
     }
 
     let updatedImages = [];
