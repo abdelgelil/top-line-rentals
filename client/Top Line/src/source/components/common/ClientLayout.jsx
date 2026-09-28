@@ -42,12 +42,13 @@ export const ClientLayout = () => {
     };
   }, [isOpen]);
 
-  const linkClass = (path) => `relative inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-[13px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052] ${isActive(path) ? 'bg-[#c6a052]/15 text-[#785910] dark:text-[#dfbe74]' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'}`;
+  const linkClass = (path) => `relative inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-[13px] font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052] ${isActive(path) ? 'bg-[#c6a052]/12 text-[#785910] ring-1 ring-inset ring-[#c6a052]/20 dark:bg-[#c6a052]/15 dark:text-[#dfbe74] dark:ring-[#c6a052]/30' : 'text-slate-600 hover:bg-[#c6a052]/8 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-[#f9f8f5]'}`;
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900 transition-colors duration-200 dark:bg-[#020617] dark:text-slate-100">
-      {!isAuthPage && <header className="sticky top-0 z-50 w-full border-b border-slate-200/60 bg-white/80 shadow-sm backdrop-blur-md transition-colors dark:border-slate-800/60 dark:bg-slate-950/80">
-        <div className="mx-auto grid min-h-[72px] max-w-[1440px] grid-cols-[1fr_auto] items-center gap-3 px-4 sm:px-6 xl:grid-cols-[1fr_auto_1fr] xl:px-8">
+      {!isAuthPage && <header className="sticky top-0 z-50 w-full px-3 py-3 transition-colors sm:px-5">
+        <div className="mx-auto max-w-[1504px] rounded-2xl border border-slate-200/80 bg-white/90 shadow-[0_12px_36px_rgba(15,23,42,0.08)] backdrop-blur-xl dark:border-[#c6a052]/20 dark:bg-[#0b1325]/95 dark:shadow-[0_16px_40px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(223,190,116,0.08)] sm:rounded-full">
+          <div className="mx-auto grid min-h-[72px] max-w-[1440px] grid-cols-[1fr_auto] items-center gap-3 px-4 sm:px-6 xl:grid-cols-[1fr_auto_1fr] xl:px-8">
           <Link to="/" aria-label="Topline Luxury Apartments home" className="min-w-0 justify-self-start rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052]">
             <Logo />
           </Link>
@@ -78,6 +79,7 @@ export const ClientLayout = () => {
             <button type="button" onClick={() => setIsOpen(true)} aria-expanded={isOpen} aria-label={t('Open navigation menu', 'Open navigation menu')} className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white/80 text-slate-700 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052] dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-200 dark:hover:bg-slate-800">
               <Menu aria-hidden="true" className="h-5 w-5" />
             </button>
+          </div>
           </div>
         </div>
       </header>}

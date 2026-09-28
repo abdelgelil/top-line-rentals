@@ -30,13 +30,13 @@ const AdminNavbar = () => {
   const linkClass = ({ isActive }) =>
     `flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium transition-colors duration-200 ${
       isActive
-        ? 'bg-[#c6a052] text-[#080d1a] font-semibold shadow-sm dark:bg-[#c6a052]/20 dark:text-[#dfbe74]'
+        ? 'bg-[#c6a052]/12 text-[#785910] font-semibold shadow-sm ring-1 ring-inset ring-[#c6a052]/20 dark:bg-[#c6a052]/15 dark:text-[#dfbe74] dark:ring-[#c6a052]/30'
         : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
     }`;
 
   return (
-    <div className="sticky inset-x-0 top-0 z-50 w-full px-4 py-3 sm:px-6">
-      <nav className="mx-auto w-full max-w-[1440px] rounded-2xl border border-slate-200/60 bg-white/80 shadow-[0_12px_36px_rgba(15,23,42,0.08)] backdrop-blur-md dark:border-slate-800/60 dark:bg-slate-950/80 dark:shadow-black/30 sm:rounded-full">
+    <div className="sticky inset-x-0 top-0 z-50 w-full px-3 py-3 sm:px-5">
+      <nav className="mx-auto w-full max-w-[1504px] rounded-2xl border border-slate-200/80 bg-white/90 shadow-[0_12px_36px_rgba(15,23,42,0.08)] backdrop-blur-xl dark:border-[#c6a052]/20 dark:bg-[#0b1325]/95 dark:shadow-[0_16px_40px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(223,190,116,0.08)] sm:rounded-full">
         <div className="flex min-h-[68px] items-center justify-between gap-4 px-4 py-2 sm:px-5">
           <div className="flex shrink-0 items-center gap-3">
             <Link to="/admin" className="hover:opacity-90 transition-opacity">
@@ -78,9 +78,9 @@ const AdminNavbar = () => {
               <button
                 type="button"
                 onClick={signOut}
-                className="group inline-flex min-h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-slate-600 bg-slate-800/80 px-4 text-sm font-semibold text-slate-200 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-rose-400/50 hover:bg-rose-500/10 hover:text-rose-100 hover:shadow-md hover:shadow-black/10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-400/30"
+                className="group inline-flex min-h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-slate-200 bg-white/70 px-4 text-sm font-semibold text-slate-700 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-rose-300 hover:bg-rose-50 hover:text-rose-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-400/30 dark:border-[#c6a052]/25 dark:bg-[#080d1a]/70 dark:text-slate-200 dark:hover:border-rose-400/50 dark:hover:bg-rose-500/10 dark:hover:text-rose-100 dark:hover:shadow-black/10"
               >
-                <LogOut className="h-4 w-4 text-slate-400 transition-colors group-hover:text-rose-300" aria-hidden="true" />
+                <LogOut className="h-4 w-4 text-slate-500 transition-colors group-hover:text-rose-700 dark:text-slate-400 dark:group-hover:text-rose-300" aria-hidden="true" />
                 <span>{i18n.t('nav.logout')}</span>
               </button>
             </div>
@@ -202,9 +202,9 @@ const AdminNavbar = () => {
             <button
               type="button"
               onClick={() => { setIsOpen(false); signOut(); }}
-              className="group flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-slate-600 bg-slate-800/80 px-4 text-sm font-semibold text-slate-200 shadow-sm transition-all duration-200 hover:border-rose-400/50 hover:bg-rose-500/10 hover:text-rose-100 hover:shadow-md focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-400/30"
+              className="group flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white/70 px-4 text-sm font-semibold text-slate-700 shadow-sm transition-all duration-200 hover:border-rose-300 hover:bg-rose-50 hover:text-rose-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-400/30 dark:border-[#c6a052]/25 dark:bg-[#080d1a]/70 dark:text-slate-200 dark:hover:border-rose-400/50 dark:hover:bg-rose-500/10 dark:hover:text-rose-100"
             >
-              <LogOut className="h-4 w-4 text-slate-400 transition-colors group-hover:text-rose-300" aria-hidden="true" />
+              <LogOut className="h-4 w-4 text-slate-500 transition-colors group-hover:text-rose-700 dark:text-slate-400 dark:group-hover:text-rose-300" aria-hidden="true" />
               <span>{i18n.t('nav.logout')}</span>
             </button>
           </div>
