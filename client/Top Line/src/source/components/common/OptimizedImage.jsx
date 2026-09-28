@@ -38,21 +38,6 @@ const optimizeImageUrl = (url, width = 1200) => {
   return url;
 };
 
-const imageSrcSet = (url) => {
-  if (typeof url !== 'string') return undefined;
-  if (/res\.cloudinary\.com\//i.test(url) && url.includes('/upload/')) {
-    return [480, 768, 1024, 1440]
-      .map((width) => `${optimizeImageUrl(url, width)} ${width}w`)
-      .join(', ');
-  }
-  if (/images\.unsplash\.com\//i.test(url)) {
-    return [480, 768, 1024, 1440]
-      .map((width) => `${optimizeImageUrl(url, width)} ${width}w`)
-      .join(', ');
-  }
-  return undefined;
-};
-
 const OptimizedImage = ({
   src,
   alt = '',
@@ -98,7 +83,6 @@ const OptimizedImage = ({
       {sourceMode !== 'failed' && (
         <img
           src={imageSrc}
-          srcSet={sourceMode === 'optimized' ? imageSrcSet(normalizedSrc) : undefined}
           sizes={sizes}
           alt={alt}
           loading={loading}
