@@ -5,10 +5,16 @@ export const LanguageToggle = ({ compact = false }) => {
   const { i18n, t } = useTranslation();
   const isArabic = (i18n.resolvedLanguage || i18n.language || 'en').toLowerCase().startsWith('ar');
   const nextLanguage = isArabic ? 'en' : 'ar';
+  const changeLanguage = () => {
+    if (typeof i18n.changeLanguage !== 'function') return;
+    i18n.changeLanguage(nextLanguage).catch((error) => {
+      console.error('Failed to change language:', error);
+    });
+  };
 
   return (
     <button
-      onClick={() => i18n.changeLanguage(nextLanguage)}
+      onClick={changeLanguage}
       type="button"
       aria-label={t(isArabic ? 'language.switchToEnglish' : 'language.switchToArabic')}
       title={t(isArabic ? 'language.english' : 'language.arabic')}

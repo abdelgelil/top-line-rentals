@@ -1,12 +1,13 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
+import { I18nextProvider } from 'react-i18next';
+import i18n from './i18n';
 import { AuthProvider } from './source/context/AuthContext';
 import { FavoritesProvider } from './source/context/FavoritesContext';
 import { LanguageProvider } from './source/context/LanguageContext';
 import { ThemeProvider } from './source/context/ThemeContext';
 import './index.css';
-import './i18n';
 import App from './App.jsx';
 
 const initialTheme = (() => {
@@ -20,5 +21,19 @@ document.documentElement.classList.toggle('dark', initialTheme === 'dark');
 document.documentElement.style.colorScheme = initialTheme;
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode><ThemeProvider><BrowserRouter><LanguageProvider><AuthProvider><FavoritesProvider><App /></FavoritesProvider></AuthProvider></LanguageProvider></BrowserRouter></ThemeProvider></StrictMode>,
+  <StrictMode>
+    <I18nextProvider i18n={i18n}>
+      <ThemeProvider>
+        <BrowserRouter>
+          <LanguageProvider>
+            <AuthProvider>
+              <FavoritesProvider>
+                <App />
+              </FavoritesProvider>
+            </AuthProvider>
+          </LanguageProvider>
+        </BrowserRouter>
+      </ThemeProvider>
+    </I18nextProvider>
+  </StrictMode>,
 );
