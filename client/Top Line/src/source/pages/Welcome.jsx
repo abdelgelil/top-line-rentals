@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Building, KeyRound, MapPin, PhoneCall, ShieldCheck, Waves } from 'lucide-react';
 
-const HERO_IMAGE = 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=80';
-const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-400 focus-visible:ring-offset-slate-950';
+const HERO_IMAGE = '/welcome1.jpg';
+const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#dfbe74] focus-visible:ring-offset-[#080d1a]';
 
 function CtaPair({ t, variant = 'hero' }) {
   const isBanner = variant === 'banner';
   const bookClass = isBanner
-    ? 'bg-white text-blue-700 font-semibold hover:bg-blue-50'
-    : 'bg-blue-600 text-white shadow-blue-600/30 hover:bg-blue-700 hover:scale-105 motion-reduce:hover:scale-100';
+    ? 'bg-[#c6a052] text-[#080d1a] font-semibold hover:bg-[#dfbe74]'
+    : 'bg-[#c6a052] text-[#080d1a] shadow-amber-900/30 hover:bg-[#dfbe74] hover:scale-105 motion-reduce:hover:scale-100';
 
   return (
     <div className="flex flex-col gap-4 sm:flex-row">
@@ -51,7 +51,7 @@ export default function Welcome() {
   }, []);
 
   return (
-    <main className="bg-slate-50 text-slate-950 dark:bg-slate-950 dark:text-white">
+    <main className="bg-[#080d1a] text-[#f9f8f5]">
       <style>{`
         [data-reveal], [data-reveal-stagger] > * { opacity: 0; transform: translate3d(0, 24px, 0); transition: opacity 650ms ease, transform 650ms cubic-bezier(.2,.75,.25,1); }
         [data-reveal].welcome-revealed, [data-reveal-stagger].welcome-revealed > * { opacity: 1; transform: translate3d(0, 0, 0); }
@@ -60,14 +60,14 @@ export default function Welcome() {
         [data-reveal-stagger].welcome-revealed > :nth-child(3) { transition-delay: 180ms; }
         @media (prefers-reduced-motion: reduce) { [data-reveal], [data-reveal-stagger] > *, [data-reveal].welcome-revealed, [data-reveal-stagger].welcome-revealed > * { opacity: 1; transform: none; transition: none; } }
       `}</style>
-      <section className="relative isolate flex min-h-[90vh] items-center overflow-hidden bg-slate-950">
-        <img src={HERO_IMAGE} alt="" aria-hidden="true" className="absolute inset-0 -z-20 h-full w-full object-cover" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-slate-950/95 via-slate-950/90 to-blue-950/75" />
-        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-28 bg-gradient-to-b from-transparent via-slate-50/70 to-slate-50 dark:via-slate-950/70 dark:to-slate-950" />
+      <section className="relative isolate flex min-h-[90vh] items-center overflow-hidden bg-[#080d1a]">
+        <img src={HERO_IMAGE} alt="Mediterranean coastal apartments" className="absolute inset-0 -z-20 h-full w-full object-cover" fetchPriority="high" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#080d1a]/95 via-[#080d1a]/75 to-[#0b1325]/30" />
+        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-28 bg-gradient-to-b from-transparent via-[#080d1a]/70 to-[#080d1a]" />
         <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-24 lg:px-8">
           <div className="max-w-2xl" data-reveal>
             <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-semibold text-white shadow-lg backdrop-blur-md">{t('welcome.badge')}</span>
-            <h1 className="mt-6 text-4xl font-bold tracking-tight text-white drop-shadow-[0_3px_12px_rgba(0,0,0,0.8)] sm:text-5xl lg:text-6xl lg:leading-[1.1]">{t('welcome.headline')}</h1>
+            <h1 className="mt-6 font-[Playfair_Display,serif] text-4xl font-semibold tracking-tight text-white drop-shadow-[0_3px_12px_rgba(0,0,0,0.8)] sm:text-5xl lg:text-6xl lg:leading-[1.1]">{t('welcome.headline')}</h1>
             <p className="mt-6 max-w-xl text-lg font-medium leading-relaxed text-slate-200 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">{t('welcome.subtitle')}</p>
             <div className="mt-10"><CtaPair t={t} /></div>
           </div>

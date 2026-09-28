@@ -1,16 +1,10 @@
 import React from 'react';
-import logoMark from '../../../assets/Logo2Mark.png';
 
-const Logo = ({ className = '', showText = true }) => {
-  return (
-    <div className={`flex items-center gap-2 ${className}`}>
-      <img src={logoMark} alt="" aria-hidden="true" className="h-9 w-8 object-contain" />
-      
-      {showText && (
-        <span className="text-xl font-black tracking-tight text-slate-900 dark:text-white">Top<span className="text-blue-600 dark:text-blue-400">Line</span></span>
-      )}
-    </div>
-  );
-};
+const Logo = ({ className = '', showText = true }) => (
+  <span className={`inline-flex min-w-0 items-center gap-2.5 ${className}`}>
+    <img src="/logo1.jpg" alt="" aria-hidden="true" className="h-10 w-10 shrink-0 rounded-lg object-contain" />
+    {showText && <span className="max-w-[13rem] text-sm font-semibold leading-tight tracking-tight text-slate-900 dark:text-[#f9f8f5] sm:text-base">Topline Luxury Apartments</span>}
+  </span>
+);
 
 export default Logo;

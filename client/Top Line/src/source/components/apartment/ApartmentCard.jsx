@@ -25,7 +25,7 @@ export const ApartmentCard = ({ unit, priority = false }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all group flex flex-col">
+    <div className="group flex flex-col overflow-hidden rounded-2xl border border-[#1f2e4d] bg-[#0b1325] shadow-sm transition-all hover:-translate-y-1 hover:border-[#c6a052]/50 hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,.65)]">
       {/* Image Container */}
       <div className="relative h-64 overflow-hidden">
         <OptimizedImage
@@ -48,11 +48,11 @@ export const ApartmentCard = ({ unit, priority = false }) => {
         >
           <Heart className={`h-5 w-5 ${favorited ? 'fill-red-500' : ''}`} />
         </button>
-        <div className="absolute top-4 left-4 bg-slate-900/80 backdrop-blur-md border border-white/20 text-sky-400 font-bold px-3 py-1 rounded-full text-xs shadow-md">
+        <div className="absolute top-4 left-4 rounded-full border border-[#c6a052]/50 bg-[#080d1a]/85 px-3 py-1 text-xs font-bold text-[#dfbe74] shadow-md backdrop-blur-md">
           {formatCurrency(unit.pricePerNight || unit.price)}{' '}{i18n.t("/ night")}{' '}</div>
         <Link
           to={`/apartments/${apartmentId}`}
-          className="absolute bottom-4 left-4 inline-flex min-h-12 items-center gap-2 rounded-xl bg-blue-700 px-4 py-3 text-base font-bold text-white shadow-lg transition-colors hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-400/70"
+          className="absolute bottom-4 left-4 inline-flex min-h-12 items-center gap-2 rounded-full bg-[#c6a052] px-5 py-3 text-base font-bold text-[#080d1a] shadow-lg transition-colors hover:bg-[#dfbe74] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#dfbe74]/70"
         >
           <CalendarCheck className="h-5 w-5" aria-hidden="true" />
           {i18n.t('accessibility.quickBook')}
@@ -60,27 +60,27 @@ export const ApartmentCard = ({ unit, priority = false }) => {
       </div>
 
       {/* Card Body */}
-      <div className="p-6 flex flex-col justify-between flex-grow space-y-4">
+      <div className="flex flex-grow flex-col justify-between space-y-4 p-6 text-[#f9f8f5]">
         <div>
-          <span className="text-sm font-semibold text-blue-700 dark:text-blue-300 uppercase tracking-wider">
+          <span className="text-sm font-semibold uppercase tracking-wider text-[#dfbe74]">
             {translateText(unit.tower || 'Tower Residence')}
           </span>
-          <h3 className="text-xl font-bold text-slate-900 dark:text-white mt-1">
+          <h3 className="mt-1 text-xl font-semibold text-[#f9f8f5]">
             {translateText(unit.title || unit.name)}
           </h3>
-          <p className="text-base text-slate-700 dark:text-slate-200 mt-2 line-clamp-2">
+          <p className="mt-2 line-clamp-2 text-base text-[#d4cebf]">
             {translateText(unit.description || 'Luxury serviced suite with beach access.')}
           </p>
         </div>
 
         {/* Specs */}
-        <div className="flex items-center gap-4 text-base text-slate-700 dark:text-slate-200 border-t border-slate-100 dark:border-slate-800 pt-4">
+        <div className="flex items-center gap-4 border-t border-[#1f2e4d] pt-4 text-base text-[#d4cebf]">
           <div className="flex items-center gap-1.5">
-            <Users className="w-4 h-4 text-blue-500 dark:text-sky-400" />
+            <Users className="h-4 w-4 text-[#dfbe74]" />
             <span>{unit.guests || unit.maxGuests || 2}{' '}{i18n.t("Guests")}</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Bed className="w-4 h-4 text-blue-500 dark:text-sky-400" />
+            <Bed className="h-4 w-4 text-[#dfbe74]" />
             <span>{unit.bedrooms || 1}{' '}{i18n.t("Beds")}</span>
           </div>
         </div>
@@ -88,7 +88,7 @@ export const ApartmentCard = ({ unit, priority = false }) => {
         {/* Action Link to Apartment Details */}
         <Link
           to={`/apartments/${apartmentId}`}
-          className="mt-2 flex min-h-12 w-full items-center justify-center rounded-xl bg-slate-900 px-5 py-3 text-base font-bold text-white shadow-md transition-all hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:bg-blue-700 dark:hover:bg-blue-800"
+          className="mt-2 flex min-h-12 w-full items-center justify-center rounded-full border border-[#c6a052] bg-transparent px-5 py-3 text-base font-bold text-[#f9f8f5] transition-all hover:bg-[#c6a052] hover:text-[#080d1a] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#dfbe74]/50"
         >{' '}{i18n.t("View & Book Residence")}{' '}</Link>
       </div>
     </div>
