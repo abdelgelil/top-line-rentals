@@ -241,25 +241,6 @@ router.post('/', bookingActionLimiter, requireAuth, async (req, res) => {
       });
     }
 
-    // --- DATE OVERLAP VALIDATION ---
-    // A booking overlaps if (NewStart < ExistingEnd) AND (NewEnd > ExistingStart)
-    const overlappingBooking = await Booking.exists({
-      apartment: targetApartmentId,
-      status: { $in: ['confirmed', 'pending'] },
-      $and: [
-        { checkIn: { $lt: endDate } },
-        { checkOut: { $gt: startDate } },
-      ],
-    });
-
-    if (overlappingBooking) {
-      return res.status(409).json({
-        success: false,
-        message: 'This apartment is already reserved for the selected dates. Please choose different dates.',
-      });
-    }
-    // -------------------------------
-
     const apartmentDoc = await Apartment.findById(targetApartmentId);
     if (!apartmentDoc) {
       return res.status(404).json({ success: false, message: 'Apartment not found.' });
@@ -285,7 +266,46 @@ router.post('/', bookingActionLimiter, requireAuth, async (req, res) => {
       status: 'pending',
     };
 
-    const newBooking = await Booking.create(bookingPayload);
+    // MongoDB cannot enforce arbitrary date-range exclusion with a unique index.
+    // Updating the apartment in the same transaction forces concurrent booking
+    // attempts for that apartment to conflict. A transaction retry then checks
+    // the winning request's booking before trying its own insert.
+    const session = await mongoose.startSession();
+    let newBooking;
+    let datesUnavailable = false;
+    try {
+      await session.withTransaction(async () => {
+        await Apartment.updateOne(
+          { _id: targetApartmentId },
+          { $inc: { bookingVersion: 1 } },
+          { session }
+        );
+
+        const overlappingBooking = await Booking.exists({
+          apartment: targetApartmentId,
+          status: { $in: ['confirmed', 'pending'] },
+          checkIn: { $lt: endDate },
+          checkOut: { $gt: startDate },
+        }).session(session);
+
+        if (overlappingBooking) {
+          datesUnavailable = true;
+          return;
+        }
+
+        [newBooking] = await Booking.create([bookingPayload], { session });
+      });
+    } finally {
+      await session.endSession();
+    }
+
+    if (datesUnavailable) {
+      return res.status(409).json({
+        success: false,
+        message: 'This apartment is already reserved for the selected dates. Please choose different dates.',
+      });
+    }
+
     invalidateAnalyticsCache();
 
     return res.status(201).json({

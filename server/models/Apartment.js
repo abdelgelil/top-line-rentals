@@ -51,6 +51,11 @@ const apartmentSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
+    // Updated inside booking transactions to serialize reservations per apartment.
+    bookingVersion: {
+      type: Number,
+      default: 0,
+    },
     images: {
       type: [String],
       default: [],
