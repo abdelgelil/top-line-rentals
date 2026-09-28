@@ -60,7 +60,7 @@ function PasswordAuthForm({ registering }) {
       const { data } = await API.post(endpoint, body, { skipAuth: true });
       setAuthenticatedUser(data);
       toast.success(t('auth.welcome'));
-      navigate(data.user.role === 'admin' ? '/admin/analytics' : '/', { replace: true });
+      navigate(data.user.role === 'admin' ? '/admin/analytics' : '/apartments', { replace: true });
     } catch (error) { toast.error(error.response?.data?.message || t('auth.signInFailed')); }
     finally { setBusy(false); }
   };
