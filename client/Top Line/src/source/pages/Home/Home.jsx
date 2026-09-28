@@ -68,7 +68,7 @@ export const Home = () => {
     <div className="w-full min-h-screen bg-white pb-20 text-slate-900 dark:bg-slate-950 dark:text-white">
       <section className="container mx-auto max-w-7xl space-y-6 px-4 pb-10 pt-10 text-center sm:px-8 sm:pt-16 lg:px-12">
         <div className="mx-auto max-w-4xl space-y-4">
-          <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-2 text-sm font-bold text-blue-700 dark:text-blue-300"><span>{i18n.t('Luxury Coastal Living')}</span></div>
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#c6a052]/20 bg-[#c6a052]/10 px-4 py-2 text-sm font-bold text-[#785910] dark:text-[#dfbe74]"><span>{i18n.t('Luxury Coastal Living')}</span></div>
           <h1 className="text-3xl font-black tracking-tight text-slate-900 sm:text-5xl dark:text-white">{i18n.t('Find Your Perfect Residence in The Towers')}</h1>
           <p className="text-base leading-7 text-slate-600 sm:text-lg dark:text-slate-300">{i18n.t('Book fully serviced apartments with panoramic Mediterranean views and private beach access.')}</p>
         </div>
@@ -102,9 +102,9 @@ export const Home = () => {
               <button
                 key={tower}
                 onClick={() => setTowerFilter(tower)}
-                className={`min-h-12 px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+                className={`min-h-12 px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052] ${
                   towerFilter === tower
-                    ? 'bg-blue-600 text-white dark:bg-blue-600 dark:text-white shadow-lg shadow-blue-500/30'
+                    ? 'bg-[#c6a052] text-[#080d1a] dark:bg-[#c6a052] dark:text-white shadow-lg shadow-[#c6a052]/30'
                     : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
                 }`}
               >
@@ -160,9 +160,9 @@ export const Home = () => {
 
       {/* Perks Banner */}
       <section className="container mx-auto max-w-7xl px-4 pt-8 sm:px-8 lg:px-12">
-        <div className="backdrop-blur-2xl bg-slate-900 dark:bg-slate-900 text-white rounded-3xl p-8 sm:p-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center sm:text-left shadow-2xl border border-blue-500/20">
+        <div className="backdrop-blur-2xl bg-slate-900 dark:bg-slate-900 text-white rounded-3xl p-8 sm:p-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center sm:text-left shadow-2xl border border-[#c6a052]/20">
           <div className="space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center mx-auto sm:mx-0">
+            <div className="w-12 h-12 rounded-2xl bg-[#c6a052]/10 border border-[#c6a052]/20 text-[#dfbe74] flex items-center justify-center mx-auto sm:mx-0">
               <Waves className="w-6 h-6" />
             </div>
             <h4 className="text-lg font-bold text-white">{i18n.t("Panoramic Views")}</h4>
@@ -170,7 +170,7 @@ export const Home = () => {
           </div>
 
           <div className="space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center mx-auto sm:mx-0">
+            <div className="w-12 h-12 rounded-2xl bg-[#c6a052]/10 border border-[#c6a052]/20 text-[#dfbe74] flex items-center justify-center mx-auto sm:mx-0">
               <ShieldCheck className="w-6 h-6" />
             </div>
             <h4 className="text-lg font-bold text-white">{i18n.t("24/7 Concierge")}</h4>
@@ -178,7 +178,7 @@ export const Home = () => {
           </div>
 
           <div className="space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center mx-auto sm:mx-0">
+            <div className="w-12 h-12 rounded-2xl bg-[#c6a052]/10 border border-[#c6a052]/20 text-[#dfbe74] flex items-center justify-center mx-auto sm:mx-0">
               <Building2 className="w-6 h-6" />
             </div>
             <h4 className="text-lg font-bold text-white">{i18n.t("Prime Access")}</h4>

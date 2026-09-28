@@ -1,14 +1,14 @@
 import i18n from "../../../../i18n.js";
 import toast from 'react-hot-toast';
 import React, { useState, useEffect } from 'react';
-import { 
-  Mail, 
-  User, 
-  Phone, 
-  Clock, 
-  CheckCircle2, 
-  MessageSquare, 
-  ChevronRight, 
+import {
+  Mail,
+  User,
+  Phone,
+  Clock,
+  CheckCircle2,
+  MessageSquare,
+  ChevronRight,
   ArrowLeft,
   AlertCircle
 } from 'lucide-react';
@@ -53,7 +53,7 @@ export const AdminMessages = () => {
     return (
       <div className="flex items-center justify-center h-full text-slate-500">
         <div className="flex flex-col items-center gap-2">
-          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-4 border-[#c6a052] border-t-transparent rounded-full animate-spin" />
           <p>{i18n.t("Loading messages...")}</p>
         </div>
       </div>
@@ -62,15 +62,15 @@ export const AdminMessages = () => {
 
   return (
     <div className="flex h-full bg-slate-50 dark:bg-slate-950 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800">
-      
+
       {/* Left Sidebar: Message List */}
       <div className={`w-full lg:w-96 flex flex-col border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 ${selectedMessage ? 'hidden lg:flex' : 'flex'}`}>
         <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/50">
           <div className="flex items-center gap-2">
-            <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            <Mail className="w-5 h-5 text-[#785910] dark:text-[#dfbe74]" />
             <h2 className="font-bold text-slate-900 dark:text-white">{i18n.t("Inbox")}</h2>
           </div>
-          <span className="px-2 py-1 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-bold">
+          <span className="px-2 py-1 rounded-lg bg-[#c6a052] dark:bg-[#a68032]/30 text-[#785910] dark:text-[#dfbe74] text-xs font-bold">
             {messages.filter(m => !m.isRead).length}{' '}{i18n.t("Unread")}{' '}</span>
         </div>
 
@@ -83,21 +83,21 @@ export const AdminMessages = () => {
           ) : (
             <div className="divide-y divide-slate-100 dark:divide-slate-800">
               {messages.map((msg) => (
-                <div 
-                  key={msg._id} 
+                <div
+                  key={msg._id}
                   onClick={() => {
                     setSelectedMessage(msg);
                     if (!msg.isRead) handleMarkAsRead(msg._id);
                   }}
                   className={`p-4 cursor-pointer transition-all hover:bg-slate-50 dark:hover:bg-slate-800 ${
-                    selectedMessage?._id === msg._id 
-                      ? 'bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500' 
+                    selectedMessage?._id === msg._id
+                      ? 'bg-[#c6a052] dark:bg-[#a68032]/20 border-l-4 border-[#c6a052]'
                       : 'border-l-4 border-transparent'
-                  } ${!msg.isRead ? 'bg-blue-50/30 dark:bg-blue-900/10' : ''}`}
+                  } ${!msg.isRead ? 'bg-[#c6a052]/30 dark:bg-[#a68032]/10' : ''}`}
                 >
                   <div className="flex justify-between items-start mb-1">
                     <div className="flex items-center gap-2 min-w-0">
-                      <span className={`text-xs font-bold truncate ${!msg.isRead ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400'}`}>
+                      <span className={`text-xs font-bold truncate ${!msg.isRead ? 'text-[#785910] dark:text-[#dfbe74]' : 'text-slate-400'}`}>
                         {msg.subject}
                       </span>
                       {msg.type === 'cancellation_alert' && (
@@ -110,7 +110,7 @@ export const AdminMessages = () => {
                   </div>
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold text-slate-900 dark:text-white truncate">{msg.fullName}</p>
-                    {!msg.isRead && <div className="w-2 h-2 bg-blue-500 rounded-full" />}
+                    {!msg.isRead && <div className="w-2 h-2 bg-[#c6a052] rounded-full" />}
                   </div>
                   <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1 mt-1">
                     {msg.message}
@@ -127,14 +127,14 @@ export const AdminMessages = () => {
         {selectedMessage ? (
           <>
             <div className="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/50">
-              <button 
+              <button
                 onClick={() => setSelectedMessage(null)}
                 className="lg:hidden flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />{' '}{i18n.t("Back to Inbox")}{' '}</button>
               <div className="flex items-center gap-3 ml-auto">
                 <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                  selectedMessage.isRead ? 'bg-slate-100 dark:bg-slate-800 text-slate-500' : 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'
+                  selectedMessage.isRead ? 'bg-slate-100 dark:bg-slate-800 text-slate-500' : 'bg-[#c6a052] dark:bg-[#a68032]/30 text-[#785910] dark:text-[#dfbe74]'
                 }`}>
                   {i18n.t(selectedMessage.isRead ? 'Read' : 'New Message')}
                 </span>
@@ -144,14 +144,14 @@ export const AdminMessages = () => {
             <div className="flex-1 overflow-y-auto p-6 sm:p-10 space-y-8">
               {/* Sender Profile Card */}
               <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row gap-6 items-start sm:items-center">
-                <div className="w-16 h-16 rounded-2xl bg-blue-500 text-white flex items-center justify-center text-2xl font-black shadow-lg">
+                <div className="w-16 h-16 rounded-2xl bg-[#c6a052] text-[#080d1a] flex items-center justify-center text-2xl font-black shadow-lg">
                   {selectedMessage.fullName.charAt(0)}
                 </div>
                 <div className="flex-1 space-y-1">
                   <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
                     {selectedMessage.fullName}
                     {selectedMessage.userId && (
-                      <span className="px-2 py-0.5 text-[10px] bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded uppercase font-bold tracking-tighter">{' '}{i18n.t("Registered User")}{' '}</span>
+                      <span className="px-2 py-0.5 text-[10px] bg-[#c6a052] dark:bg-[#a68032]/30 text-[#785910] dark:text-[#dfbe74] rounded uppercase font-bold tracking-tighter">{' '}{i18n.t("Registered User")}{' '}</span>
                     )}
                   </h3>
                   <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-slate-400">

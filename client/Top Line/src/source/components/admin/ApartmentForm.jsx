@@ -157,7 +157,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
               onChange={handleChange}
               required
               placeholder={i18n.t("e.g. Luxury Sea View Suite")}
-              className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-[#c6a052] focus:outline-none"
             />
           </div>
 
@@ -169,7 +169,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
                 name="tower"
                 value={formData.tower}
                 onChange={handleChange}
-                className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-[#c6a052] focus:outline-none"
               >
                 <option value="Tower 1">{i18n.t("Tower 1")}</option>
                 <option value="Tower 2">{i18n.t("Tower 2")}</option>
@@ -185,7 +185,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
                 onChange={handleChange}
                 required
                 placeholder="150"
-                className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-[#c6a052] focus:outline-none"
               />
             </div>
           </div>
@@ -200,7 +200,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
                 value={formData.floor}
                 onChange={handleChange}
                 placeholder="5"
-                className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm focus:border-[#c6a052] focus:outline-none"
               />
             </div>
             <div>
@@ -211,7 +211,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
                 value={formData.bedrooms}
                 onChange={handleChange}
                 placeholder="1"
-                className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm focus:border-[#c6a052] focus:outline-none"
               />
             </div>
             <div>
@@ -222,7 +222,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
                 value={formData.bathrooms}
                 onChange={handleChange}
                 placeholder="1"
-                className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm focus:border-[#c6a052] focus:outline-none"
               />
             </div>
             <div>
@@ -233,7 +233,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
                 value={formData.guests}
                 onChange={handleChange}
                 placeholder="1"
-                className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm focus:border-[#c6a052] focus:outline-none"
               />
             </div>
           </div>
@@ -248,7 +248,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
                 value={formData.sizeSqM}
                 onChange={handleChange}
                 placeholder="120"
-                className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-[#c6a052] focus:outline-none"
               />
             </div>
             <div>
@@ -259,7 +259,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
                 value={formData.amenities}
                 onChange={handleChange}
                 placeholder={i18n.t("WiFi, Pool, Sea View")}
-                className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-[#c6a052] focus:outline-none"
               />
             </div>
           </div>
@@ -273,7 +273,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
               value={formData.description}
               onChange={handleChange}
               placeholder={i18n.t("Detailed description...")}
-              className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none resize-none"
+              className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-[#c6a052] focus:outline-none resize-none"
             />
           </div>
 
@@ -285,7 +285,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
               multiple
               accept="image/*"
               onChange={handleFileChange}
-              className="w-full text-xs text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              className="w-full text-xs text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-[#c6a052] file:text-[#785910] hover:file:bg-[#c6a052]"
             />
 
             {(existingImages.length > 0 || filePreviews.length > 0) && (
@@ -321,7 +321,7 @@ const ApartmentForm = ({ isOpen, onClose, onSubmit, initialData = null, pageMode
             <button
               type="submit"
               disabled={loading}
-              className="px-3 py-1.5 rounded-md bg-blue-600 text-xs font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+              className="px-3 py-1.5 rounded-md bg-[#c6a052] text-xs font-medium text-white hover:bg-[#dfbe74] disabled:opacity-50"
             >
               {i18n.t(loading ? 'Saving Apartment...' : (initialData ? 'Update Apartment' : 'Save Apartment'))}
             </button>

@@ -1,7 +1,10 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Building, KeyRound, MapPin, PhoneCall, ShieldCheck, Waves } from 'lucide-react';
+import { ArrowRight, Building, KeyRound, MapPin, PhoneCall, Search, ShieldCheck, Waves } from 'lucide-react';
+import { fetchApartments } from '../services/api';
+import { ApartmentCard } from '../components/apartment/ApartmentCard';
+import { ApartmentCardSkeleton } from '../components/common/Skeletons';
 
 const HERO_IMAGE = '/welcome1.jpg';
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#dfbe74] focus-visible:ring-offset-[#080d1a]';
@@ -38,6 +41,18 @@ const highlights = [
 
 export default function Welcome() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [featured, setFeatured] = useState([]);
+  const [loadingFeatured, setLoadingFeatured] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    fetchApartments().then((response) => {
+      const list = response?.data?.data || response?.data || response;
+      if (active) setFeatured(Array.isArray(list) ? list.slice(0, 3) : []);
+    }).catch(() => { if (active) setFeatured([]); }).finally(() => { if (active) setLoadingFeatured(false); });
+    return () => { active = false; };
+  }, []);
   useEffect(() => {
     const elements = document.querySelectorAll('[data-reveal], [data-reveal-stagger]');
     const observer = new IntersectionObserver((entries) => {
@@ -76,18 +91,36 @@ export default function Welcome() {
 
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-8" data-reveal>
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">{t('welcome.identityTitle')}</h2>
-          <p className="mt-4 text-lg leading-relaxed text-slate-600 dark:text-slate-300">{t('welcome.identitySubtitle')}</p>
+          <h2 className="text-3xl font-semibold tracking-tight text-[#f9f8f5] sm:text-4xl">{t('welcome.identityTitle')}</h2>
+          <p className="mt-4 text-lg leading-relaxed text-[#d4cebf]">{t('welcome.identitySubtitle')}</p>
         </div>
         <div className="mt-14 grid gap-8 md:grid-cols-3" data-reveal-stagger>
           {identityCards.map(({ icon: Icon, title, text }) => (
-            <article key={title} className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all hover:shadow-xl motion-reduce:transition-none dark:border-slate-800 dark:bg-slate-900">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-white"><Icon aria-hidden="true" className="h-6 w-6" /></div>
-              <h3 className="mt-6 text-xl font-semibold text-slate-900 dark:text-white">{t(title)}</h3>
-              <p className="mt-3 leading-relaxed text-slate-600 dark:text-slate-300">{t(text)}</p>
+            <article key={title} className="rounded-2xl border border-[#c6a052]/20 bg-[#0b1325] p-8 shadow-sm transition-all hover:border-[#c6a052]/50 hover:shadow-xl motion-reduce:transition-none">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#c6a052]/40 bg-[#c6a052]/10 text-[#dfbe74]"><Icon aria-hidden="true" className="h-6 w-6" /></div>
+              <h3 className="mt-6 text-xl font-semibold text-[#f9f8f5]">{t(title)}</h3>
+              <p className="mt-3 leading-relaxed text-[#d4cebf]">{t(text)}</p>
             </article>
           ))}
         </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-8" aria-label={t('Search apartments')}>
+        <form onSubmit={(event) => { event.preventDefault(); navigate('/apartments'); }} className="grid gap-4 rounded-2xl border border-[#c6a052]/30 bg-[#131b2e] p-4 shadow-[0_20px_50px_-30px_rgba(0,0,0,.8)] sm:grid-cols-[1fr_auto] sm:items-end sm:p-6">
+          <div className="text-sm font-semibold text-[#d4cebf]">
+            <p>{t('Where would you like to stay?', 'Where would you like to stay?')}</p>
+            <div className="mt-2 flex min-h-12 items-center gap-3 rounded-xl border border-[#1f2e4d] bg-[#080d1a] px-4 text-[#d4cebf]"><Search className="h-5 w-5 shrink-0 text-[#dfbe74]" aria-hidden="true" /><span>{t('Explore coastal residences in Alamein City', 'Explore coastal residences in Alamein City')}</span></div>
+          </div>
+          <button type="submit" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#c6a052] px-6 font-bold text-[#080d1a] transition-colors hover:bg-[#dfbe74]">{t('Search stays', 'Search stays')}<ArrowRight className="h-4 w-4" aria-hidden="true" /></button>
+        </form>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 pb-24 lg:px-8" aria-labelledby="welcome-featured-title">
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+          <div><p className="text-xs font-bold uppercase tracking-[0.16em] text-[#dfbe74]">{t('Curated stays', 'Curated stays')}</p><h2 id="welcome-featured-title" className="mt-2 text-3xl font-semibold text-[#f9f8f5]">{t('Featured residences', 'Featured residences')}</h2></div>
+          <Link to="/apartments" className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#c6a052]/50 px-5 text-sm font-semibold text-[#dfbe74] transition-colors hover:bg-[#dfbe74]/10">{t('View all apartments')}<ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+        </div>
+        {loadingFeatured ? <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"><ApartmentCardSkeleton count={3} /></div> : featured.length ? <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{featured.map((unit) => <ApartmentCard key={unit._id || unit.id} unit={unit} />)}</div> : <div className="rounded-2xl border border-dashed border-[#c6a052]/40 bg-[#0b1325] p-8 text-center text-[#d4cebf]">{t('Explore all available residences and find your ideal stay.', 'Explore all available residences and find your ideal stay.')}</div>}
       </section>
 
       <section className="mx-auto max-w-7xl px-6 pb-24 lg:px-8" data-reveal>
@@ -99,7 +132,7 @@ export default function Welcome() {
           <div className="mt-12 grid gap-6 md:grid-cols-3" data-reveal-stagger>
             {highlights.map(({ icon: Icon, title, text }) => (
               <article key={title} className="rounded-2xl border border-slate-700/60 bg-slate-800/80 p-6 sm:p-8">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-600 text-white"><Icon aria-hidden="true" className="h-6 w-6" /></div>
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#c6a052]/40 bg-[#c6a052]/10 text-[#dfbe74]"><Icon aria-hidden="true" className="h-6 w-6" /></div>
                 <h3 className="mt-6 text-xl font-semibold text-white">{t(title)}</h3>
                 <p className="mt-3 leading-relaxed text-slate-300">{t(text)}</p>
               </article>
@@ -109,11 +142,11 @@ export default function Welcome() {
       </section>
 
       <section className="mx-auto max-w-7xl px-6 pb-24 lg:px-8" data-reveal>
-        <div className="rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-white shadow-2xl sm:p-14">
+        <div className="rounded-3xl border border-[#c6a052]/40 bg-gradient-to-r from-[#152038] to-[#0b1325] p-8 text-white shadow-2xl sm:p-14">
           <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
             <div className="max-w-xl">
               <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">{t('welcome.bannerTitle')}</h2>
-              <p className="mt-4 text-lg text-blue-100">{t('welcome.bannerSubtitle')}</p>
+              <p className="mt-4 text-lg text-[#d4cebf]">{t('welcome.bannerSubtitle')}</p>
             </div>
             <CtaPair t={t} variant="banner" />
           </div>

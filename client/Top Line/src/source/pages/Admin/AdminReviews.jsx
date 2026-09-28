@@ -63,7 +63,7 @@ export default function AdminReviews() {
               </div>
               <p className="mt-3 whitespace-pre-wrap leading-relaxed text-slate-700 dark:text-slate-300">{review.comment}</p>
               <div className="mt-5 flex justify-end">
-                <button type="button" disabled={updatingId === review._id} onClick={() => updateApproval(review, !review.approved)} className={`min-h-10 rounded-lg px-4 text-sm font-semibold transition disabled:opacity-60 ${review.approved ? 'border border-slate-300 text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800' : 'bg-blue-700 text-white hover:bg-blue-800'}`}>
+                <button type="button" disabled={updatingId === review._id} onClick={() => updateApproval(review, !review.approved)} className={`min-h-10 rounded-lg px-4 text-sm font-semibold transition disabled:opacity-60 ${review.approved ? 'border border-slate-300 text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800' : 'bg-[#c6a052] text-[#080d1a] hover:bg-[#a68032]'}`}>
                   {updatingId === review._id ? i18n.t('Saving...') : review.approved ? i18n.t('Hide review') : i18n.t('Approve review')}
                 </button>
               </div>

@@ -34,20 +34,20 @@ const ClientNavbar = () => {
   const desktopLinkClass = ({ isActive }) =>
     `flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
       isActive
-        ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/20 font-semibold shadow-sm'
-        : 'text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-white/50 dark:hover:bg-slate-800/50'
+        ? 'text-[#785910] dark:text-[#dfbe74] bg-[#c6a052] dark:bg-[#c6a052]/20 font-semibold shadow-sm'
+        : 'text-slate-600 dark:text-slate-300 hover:text-[#785910] dark:hover:text-[#dfbe74] hover:bg-white/50 dark:hover:bg-slate-800/50'
     }`;
 
   const mobileLinkClass = ({ isActive }) =>
     `flex items-center gap-4 px-5 py-4 rounded-2xl text-lg font-semibold transition-all duration-300 ${
       isActive
-        ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/20 shadow-inner'
+        ? 'text-[#785910] dark:text-[#dfbe74] bg-[#c6a052] dark:bg-[#c6a052]/20 shadow-inner'
         : 'text-slate-700 dark:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800/60'
     }`;
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[100] px-4 py-4 pointer-events-none">
-      <nav className="max-w-7xl mx-auto pointer-events-auto bg-white/60 dark:bg-slate-900/60 backdrop-blur-2xl border border-blue-100/50 dark:border-blue-500/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] rounded-full px-6 py-2 transition-all duration-500 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.6)]">
+      <nav className="max-w-7xl mx-auto pointer-events-auto bg-white/60 dark:bg-slate-900/60 backdrop-blur-2xl border border-[#c6a052]/50 dark:border-[#c6a052]/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] rounded-full px-6 py-2 transition-all duration-500 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.6)]">
         <div className="flex items-center justify-between">
           <Link to="/" className="hover:opacity-90 transition-opacity">
             <Logo />
@@ -91,14 +91,14 @@ const ClientNavbar = () => {
               </NavLink>
             )}
 
-            <div className="flex items-center gap-3 pl-4 border-l border-blue-100/50 dark:border-blue-500/10">
+            <div className="flex items-center gap-3 pl-4 border-l border-[#c6a052]/50 dark:border-[#c6a052]/10">
               <LanguageToggle />
               {isSignedIn ? (
                 <button onClick={signOut} className="min-h-12 rounded-full px-3 text-sm font-semibold text-slate-700 dark:text-slate-200" aria-label={t('nav.logout')}>{t('nav.logout')}</button>
               ) : (
                 <Link
                   to="/sign-in"
-                  className="px-5 py-2 text-xs font-bold bg-gradient-to-r from-blue-600 via-blue-500 to-sky-400 text-white rounded-full shadow-lg shadow-blue-500/20 transition-all active:scale-95 hover:shadow-blue-500/40"
+                  className="px-5 py-2 text-xs font-bold bg-gradient-to-r from-[#c6a052] via-[#c6a052] to-[#dfbe74] text-white rounded-full shadow-lg shadow-[#c6a052]/20 transition-all active:scale-95 hover:shadow-[#c6a052]/40"
                 >
                   Sign In
                 </Link>
@@ -108,7 +108,7 @@ const ClientNavbar = () => {
 
           <button
             onClick={() => setIsOpen(true)}
-            className="md:hidden p-2 rounded-full bg-white/50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 z-50 transition-all active:scale-90 border border-white/50 dark:border-blue-500/10"
+            className="md:hidden p-2 rounded-full bg-white/50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 z-50 transition-all active:scale-90 border border-white/50 dark:border-[#c6a052]/10"
           >
             <Menu className="w-6 h-6" />
           </button>
@@ -134,7 +134,7 @@ const ClientNavbar = () => {
             to="/apartments"
             className={({ isActive }) => `flex min-h-12 items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors ${
               isActive
-                ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-semibold'
+                ? 'bg-[#c6a052] dark:bg-[#080d1a]/50 text-[#785910] dark:text-[#dfbe74] font-semibold'
                 : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}
             onClick={() => setIsOpen(false)}
@@ -149,7 +149,7 @@ const ClientNavbar = () => {
                 to="/admin"
                 className={({ isActive }) => `flex min-h-12 items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors ${
                   isActive
-                    ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-semibold'
+                    ? 'bg-[#c6a052] dark:bg-[#080d1a]/50 text-[#785910] dark:text-[#dfbe74] font-semibold'
                     : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                 }`}
                 onClick={() => setIsOpen(false)}
@@ -163,7 +163,7 @@ const ClientNavbar = () => {
                   to="/my-bookings"
                   className={({ isActive }) => `flex min-h-12 items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors ${
                     isActive
-                      ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-semibold'
+                      ? 'bg-[#c6a052] dark:bg-[#080d1a]/50 text-[#785910] dark:text-[#dfbe74] font-semibold'
                       : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                   onClick={() => setIsOpen(false)}
@@ -175,7 +175,7 @@ const ClientNavbar = () => {
                   to="/contact"
                   className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     isActive
-                      ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400'
+                      ? 'bg-[#c6a052] dark:bg-[#080d1a]/50 text-[#785910] dark:text-[#dfbe74]'
                       : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                   onClick={() => setIsOpen(false)}
@@ -189,7 +189,7 @@ const ClientNavbar = () => {
 
           {isSignedIn && <NavLink
             to="/favorites"
-            className={({ isActive }) => `flex min-h-12 items-center gap-3 px-5 py-4 rounded-2xl text-lg font-semibold transition-all duration-300 ${isActive ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/20 shadow-inner' : 'text-slate-700 dark:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800/60'}`}
+            className={({ isActive }) => `flex min-h-12 items-center gap-3 px-5 py-4 rounded-2xl text-lg font-semibold transition-all duration-300 ${isActive ? 'text-[#785910] dark:text-[#dfbe74] bg-[#c6a052] dark:bg-[#c6a052]/20 shadow-inner' : 'text-slate-700 dark:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800/60'}`}
             onClick={() => setIsOpen(false)}
           ><Heart className="w-4 h-4" /><span>{t('nav.saved')}{favoriteIds.length > 0 ? ` (${favoriteIds.length})` : ''}</span></NavLink>}
 
@@ -198,7 +198,7 @@ const ClientNavbar = () => {
               to="/contact"
               className={({ isActive }) => `flex min-h-12 items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors ${
                 isActive
-                  ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-semibold'
+                  ? 'bg-[#c6a052] dark:bg-[#080d1a]/50 text-[#785910] dark:text-[#dfbe74] font-semibold'
                   : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
               }`}
               onClick={() => setIsOpen(false)}
@@ -221,7 +221,7 @@ const ClientNavbar = () => {
                   <LanguageToggle />
                   <Link
                     to="/sign-in"
-                    className="block w-full rounded-xl bg-blue-600 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+                    className="block w-full rounded-xl bg-[#c6a052] py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#dfbe74]"
                     onClick={() => setIsOpen(false)}
                   >
                     Sign In

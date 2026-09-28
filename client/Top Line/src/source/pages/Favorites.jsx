@@ -32,7 +32,7 @@ export default function Favorites() {
           <div className="mx-auto flex max-w-xl flex-col items-center rounded-3xl border border-slate-200 bg-slate-50 px-6 py-14 text-center dark:border-slate-800 dark:bg-slate-900">
             <Heart className="mb-5 h-12 w-12 text-rose-400" aria-hidden="true" />
             <p className="mb-6 text-lg text-slate-600 dark:text-slate-300">{t('No saved properties yet. Explore our coastal stays and bookmark your favorites for quick access!')}</p>
-            <Link to="/apartments" className="rounded-xl bg-blue-700 px-5 py-3 font-bold text-white transition hover:bg-blue-800">{t('Explore Apartments')}</Link>
+            <Link to="/apartments" className="rounded-xl bg-[#c6a052] px-5 py-3 font-bold text-white transition hover:bg-[#a68032]">{t('Explore Apartments')}</Link>
           </div>
         )}
       </div>

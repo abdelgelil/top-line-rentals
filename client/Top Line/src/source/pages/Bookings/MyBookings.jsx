@@ -50,7 +50,7 @@ export default function MyBookings() {
       case 'confirmed':
         return 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30';
       case 'pending':
-        return 'bg-blue-500/10 text-blue-600 border-blue-500/30';
+        return 'bg-[#c6a052]/10 text-[#785910] border-[#c6a052]/30';
       case 'cancelled':
       case 'canceled':
         return 'bg-rose-500/10 text-rose-600 border-rose-500/30';
@@ -72,14 +72,14 @@ export default function MyBookings() {
       toast.custom((toastItem) => (
         <div className="w-[min(420px,calc(100vw-32px))] rounded-2xl border border-slate-700 bg-slate-900 p-5 text-slate-100 shadow-xl">
           <div className="flex items-start gap-3">
-            <Info className="mt-1 h-6 w-6 shrink-0 text-sky-400" />
+            <Info className="mt-1 h-6 w-6 shrink-0 text-[#dfbe74]" />
             <p className="text-base font-semibold leading-relaxed">{i18n.t('Are you sure you want to cancel this booking?')}</p>
           </div>
           <div className="mt-4 flex flex-col justify-end gap-2 sm:flex-row">
             <button
               type="button"
               onClick={() => answer(false, toastItem.id)}
-              className="min-h-12 rounded-lg border-2 border-slate-600 px-5 py-3 text-base font-semibold text-slate-100 hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50"
+              className="min-h-12 rounded-lg border-2 border-slate-600 px-5 py-3 text-base font-semibold text-slate-100 hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50"
             >
               {i18n.t('Keep Booking')}
             </button>
@@ -113,19 +113,19 @@ export default function MyBookings() {
 
   if (!isLoaded) return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#785910]"></div>
     </div>
   );
 
   if (!isSignedIn) return (
     <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="text-center space-y-6 p-12 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl rounded-3xl border border-blue-100/60 dark:border-blue-500/20 shadow-xl max-w-md">
-        <div className="w-20 h-20 bg-blue-100 dark:bg-blue-500/20 rounded-full flex items-center justify-center mx-auto">
-          <Home className="w-10 h-10 text-blue-600" />
+      <div className="text-center space-y-6 p-12 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl rounded-3xl border border-[#c6a052]/60 dark:border-[#c6a052]/20 shadow-xl max-w-md">
+        <div className="w-20 h-20 bg-[#c6a052] dark:bg-[#c6a052]/20 rounded-full flex items-center justify-center mx-auto">
+          <Home className="w-10 h-10 text-[#785910]" />
         </div>
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{i18n.t("Access Required")}</h2>
         <p className="text-slate-600 dark:text-slate-400">{i18n.t("Please sign in to view and manage your luxury property reservations.")}</p>
-        <Link className="block w-full py-3 bg-gradient-to-r from-blue-600 to-sky-500 text-white font-bold rounded-xl transition-all hover:shadow-lg hover:shadow-blue-500/30" to="/auth">{' '}{i18n.t("Sign In Now")}{' '}</Link>
+        <Link className="block w-full py-3 bg-gradient-to-r from-[#c6a052] to-[#dfbe74] text-white font-bold rounded-xl transition-all hover:shadow-lg hover:shadow-[#c6a052]/30" to="/auth">{' '}{i18n.t("Sign In Now")}{' '}</Link>
       </div>
     </div>
   );
@@ -133,13 +133,13 @@ export default function MyBookings() {
   return (
     <div className="relative min-h-screen w-full pb-20">
       {/* Ambient background glow */}
-      <div className="bg-blue-500/10 blur-[120px] fixed top-1/4 -left-20 w-96 h-96 rounded-full -z-10 pointer-events-none"></div>
-      <div className="bg-sky-500/10 blur-[120px] fixed bottom-1/4 -right-20 w-96 h-96 rounded-full -z-10 pointer-events-none"></div>
+      <div className="bg-[#c6a052]/10 blur-[120px] fixed top-1/4 -left-20 w-96 h-96 rounded-full -z-10 pointer-events-none"></div>
+      <div className="bg-[#dfbe74]/10 blur-[120px] fixed bottom-1/4 -right-20 w-96 h-96 rounded-full -z-10 pointer-events-none"></div>
 
       <div className="max-w-5xl mx-auto px-4 py-12 space-y-10">
         {/* Page Header */}
         <header className="text-center space-y-3">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-blue-500 to-sky-400 bg-clip-text text-transparent">{' '}{i18n.t("My Reservations")}{' '}</h1>
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-[#c6a052] via-[#c6a052] to-[#dfbe74] bg-clip-text text-transparent">{' '}{i18n.t("My Reservations")}{' '}</h1>
           <p className="text-slate-700 dark:text-slate-200 text-base md:text-lg max-w-2xl mx-auto">{' '}{i18n.t("Manage and track your active luxury apartment bookings and residency details.")}{' '}</p>
         </header>
 
@@ -169,7 +169,7 @@ export default function MyBookings() {
             return (
               <article 
                 key={booking._id} 
-                className="group relative bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-blue-100/60 dark:border-blue-500/20 shadow-xl shadow-blue-900/5 rounded-3xl p-4 sm:p-6 transition-all duration-300 hover:shadow-2xl hover:border-blue-300/60 flex flex-col md:flex-row gap-6 items-center md:items-start"
+                className="group relative bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-[#c6a052]/60 dark:border-[#c6a052]/20 shadow-xl shadow-[#a68032]/5 rounded-3xl p-4 sm:p-6 transition-all duration-300 hover:shadow-2xl hover:border-[#dfbe74]/60 flex flex-col md:flex-row gap-6 items-center md:items-start"
               >
                 {/* Property Thumbnail */}
                 <div className="relative w-full md:w-40 h-32 md:h-32 shrink-0 overflow-hidden rounded-2xl shadow-lg">
@@ -183,7 +183,7 @@ export default function MyBookings() {
                     className="h-full w-full"
                     imageClassName="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
-                  <div className="absolute top-2 left-2 px-2 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-md text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase">
+                  <div className="absolute top-2 left-2 px-2 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-md text-[10px] font-bold text-[#785910] dark:text-[#dfbe74] uppercase">
                     {translateText(booking.apartment?.tower || 'Residence')}
                   </div>
                 </div>
@@ -201,15 +201,15 @@ export default function MyBookings() {
                       </div>
                     </div>
                     <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${statusStyles}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${statusStyles.includes('emerald') ? 'bg-emerald-500' : statusStyles.includes('blue') ? 'bg-blue-500' : 'bg-rose-500'}`}></span>
+                      <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${statusStyles.includes('emerald') ? 'bg-emerald-500' : statusStyles.includes('blue') ? 'bg-[#c6a052]' : 'bg-rose-500'}`}></span>
                       {i18n.t(booking.status || 'Pending')}
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="flex items-center gap-3 p-3 rounded-2xl bg-blue-50/50 dark:bg-blue-500/5 border border-blue-100/50 dark:border-blue-500/10">
+                    <div className="flex items-center gap-3 p-3 rounded-2xl bg-[#c6a052]/50 dark:bg-[#c6a052]/5 border border-[#c6a052]/50 dark:border-[#c6a052]/10">
                       <div className="p-2 bg-white dark:bg-slate-800 rounded-lg shadow-sm">
-                        <Calendar className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                        <Calendar className="w-4 h-4 text-[#785910] dark:text-[#dfbe74]" />
                       </div>
                       <div className="flex flex-col">
                         <span className="text-sm text-slate-700 dark:text-slate-200 uppercase font-bold">{i18n.t("Dates")}</span>
@@ -221,9 +221,9 @@ export default function MyBookings() {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3 p-3 rounded-2xl bg-blue-50/50 dark:bg-blue-500/5 border border-blue-100/50 dark:border-blue-500/10">
+                    <div className="flex items-center gap-3 p-3 rounded-2xl bg-[#c6a052]/50 dark:bg-[#c6a052]/5 border border-[#c6a052]/50 dark:border-[#c6a052]/10">
                       <div className="p-2 bg-white dark:bg-slate-800 rounded-lg shadow-sm">
-                        <Clock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                        <Clock className="w-4 h-4 text-[#785910] dark:text-[#dfbe74]" />
                       </div>
                       <div className="flex flex-col">
                         <span className="text-sm text-slate-700 dark:text-slate-200 uppercase font-bold">{i18n.t("Duration")}</span>
@@ -233,9 +233,9 @@ export default function MyBookings() {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3 p-3 rounded-2xl bg-blue-50/50 dark:bg-blue-500/5 border border-blue-100/50 dark:border-blue-500/10">
+                    <div className="flex items-center gap-3 p-3 rounded-2xl bg-[#c6a052]/50 dark:bg-[#c6a052]/5 border border-[#c6a052]/50 dark:border-[#c6a052]/10">
                       <div className="p-2 bg-white dark:bg-slate-800 rounded-lg shadow-sm">
-                        <Users className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                        <Users className="w-4 h-4 text-[#785910] dark:text-[#dfbe74]" />
                       </div>
                       <div className="flex flex-col">
                         <span className="text-sm text-slate-700 dark:text-slate-200 uppercase font-bold">{i18n.t("Guests")}</span>
@@ -250,7 +250,7 @@ export default function MyBookings() {
                     <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                       <Link 
                         to={`/apartments/${booking.apartment?._id || booking.apartment?.id}`}
-                        className="flex min-h-12 items-center gap-2 rounded-xl bg-blue-50/80 px-5 py-3 text-base font-bold text-blue-800 transition-all hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:bg-slate-800 dark:text-blue-200 dark:hover:bg-slate-700 group/btn"
+                        className="flex min-h-12 items-center gap-2 rounded-xl bg-[#c6a052]/80 px-5 py-3 text-base font-bold text-[#a68032] transition-all hover:bg-[#dfbe74] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50 dark:bg-slate-800 dark:text-[#c6a052] dark:hover:bg-slate-700 group/btn"
                       >{' '}{i18n.t("View Details")}{' '}<ChevronRight className="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform" />
                       </Link>
                       <Link
@@ -262,7 +262,7 @@ export default function MyBookings() {
                       </Link>
                       <Link 
                         to="/contact" 
-                        className="flex min-h-12 items-center gap-2 rounded-xl px-5 py-3 text-base font-bold text-slate-700 transition-colors hover:text-blue-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:text-slate-200 dark:hover:text-blue-300"
+                        className="flex min-h-12 items-center gap-2 rounded-xl px-5 py-3 text-base font-bold text-slate-700 transition-colors hover:text-[#785910] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50 dark:text-slate-200 dark:hover:text-[#dfbe74]"
                       >
                         <MessageCircle className="w-3 h-3" />{' '}{i18n.t("Support")}{' '}</Link>
                     </div>
@@ -280,7 +280,7 @@ export default function MyBookings() {
                     )}
                     <div className="text-right">
                       <span className="text-sm text-slate-700 dark:text-slate-200 uppercase font-bold block">{i18n.t("Total Investment")}</span>
-                      <span className="text-2xl font-black text-blue-600 dark:text-sky-400">
+                      <span className="text-2xl font-black text-[#785910] dark:text-[#dfbe74]">
                         {formatCurrency(booking.totalPrice)}
                       </span>
                     </div>

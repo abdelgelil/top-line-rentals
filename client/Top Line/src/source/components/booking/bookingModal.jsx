@@ -175,7 +175,7 @@ export const BookingModal = ({ apartment, onClose }) => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full mt-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-500/25 transition-all text-sm disabled:opacity-50"
+          className="w-full mt-4 py-3 bg-[#c6a052] hover:bg-[#dfbe74] text-white font-bold rounded-xl shadow-lg shadow-[#c6a052]/25 transition-all text-sm disabled:opacity-50"
         >
           {loading ? 'Submitting Reservation...' : 'Confirm Reservation'}
         </button>

@@ -65,7 +65,7 @@ const ClientLayout = () => {
                 to={link.path}
                 className={`flex min-h-12 items-center gap-2 px-4 py-3 rounded-full text-base font-semibold transition-all duration-200 ${
                   active
-                    ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-sm'
+                    ? 'bg-white dark:bg-slate-900 text-[#785910] dark:text-[#dfbe74] shadow-sm'
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
@@ -83,7 +83,7 @@ const ClientLayout = () => {
             onClick={() => setIsHelpOpen(true)}
             aria-label={t('accessibility.needHelp')}
             title={t('accessibility.needHelp')}
-            className="flex h-12 w-12 items-center justify-center rounded-full text-slate-700 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:text-slate-200 dark:hover:bg-slate-800"
+            className="flex h-12 w-12 items-center justify-center rounded-full text-slate-700 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50 dark:text-slate-200 dark:hover:bg-slate-800"
           >
             <CircleHelp className="h-6 w-6" aria-hidden="true" />
           </button>
@@ -107,7 +107,7 @@ const ClientLayout = () => {
           ) : (
             <Link
               to="/sign-in"
-              className="min-h-12 rounded-full bg-blue-700 px-5 py-3 text-base font-bold text-white shadow-md shadow-blue-500/20 transition-all hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50"
+              className="min-h-12 rounded-full bg-[#c6a052] px-5 py-3 text-base font-bold text-white shadow-md shadow-[#c6a052]/20 transition-all hover:bg-[#a68032] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50"
             >{' '}{i18n.t("Sign In")}{' '}</Link>
           )}
         </div>
@@ -121,7 +121,7 @@ const ClientLayout = () => {
             type="button"
             aria-expanded={isOpen}
             aria-label={i18n.t(isOpen ? 'Close menu' : 'Toggle Menu')}
-            className="flex h-12 w-12 items-center justify-center rounded-xl text-slate-700 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:text-slate-200 dark:hover:bg-slate-800"
+            className="flex h-12 w-12 items-center justify-center rounded-xl text-slate-700 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50 dark:text-slate-200 dark:hover:bg-slate-800"
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -149,14 +149,14 @@ const ClientLayout = () => {
                 type="button"
                 onClick={() => setIsOpen(false)}
                 aria-label={i18n.t('Close menu', 'Close menu')}
-                className="flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/40 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
+                className="flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/40 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
             {isSignedIn && (
-              <div className="mx-4 mt-4 flex items-center gap-3 rounded-2xl border border-blue-100 bg-blue-50/70 p-4 dark:border-blue-900/60 dark:bg-blue-950/30">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-blue-700 shadow-sm dark:bg-slate-800 dark:text-blue-300">
+              <div className="mx-4 mt-4 flex items-center gap-3 rounded-2xl border border-[#c6a052] bg-[#c6a052]/70 p-4 dark:border-[#a68032]/60 dark:bg-[#080d1a]/30">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-[#785910] shadow-sm dark:bg-slate-800 dark:text-[#dfbe74]">
                   <UserRound className="h-5 w-5" aria-hidden="true" />
                 </span>
                 <div className="min-w-0">
@@ -174,9 +174,9 @@ const ClientLayout = () => {
                     key={link.path}
                     to={link.path}
                     onClick={() => setIsOpen(false)}
-                    className={`flex min-h-12 items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/40 ${
+                    className={`flex min-h-12 items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/40 ${
                       active
-                        ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300'
+                        ? 'bg-[#c6a052] text-[#080d1a] dark:bg-[#080d1a]/60 dark:text-[#dfbe74]'
                         : 'text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
                     }`}
                   >
@@ -188,7 +188,7 @@ const ClientLayout = () => {
               <button
                 type="button"
                 onClick={() => { setIsOpen(false); setIsHelpOpen(true); }}
-                className="flex min-h-12 w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/40 dark:text-slate-200 dark:hover:bg-slate-800"
+                className="flex min-h-12 w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/40 dark:text-slate-200 dark:hover:bg-slate-800"
               >
                 <CircleHelp className="h-5 w-5" aria-hidden="true" />
                 <span>{t('accessibility.helpShort')}</span>
@@ -209,7 +209,7 @@ const ClientLayout = () => {
                 <Link
                   to="/sign-in"
                   onClick={() => setIsOpen(false)}
-                  className="flex min-h-12 items-center justify-center rounded-xl bg-blue-700 px-5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/40"
+                  className="flex min-h-12 items-center justify-center rounded-xl bg-[#c6a052] px-5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-[#a68032] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/40"
                 >
                   {i18n.t('Sign In')}
                 </Link>

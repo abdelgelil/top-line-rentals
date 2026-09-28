@@ -48,12 +48,12 @@ export default function ImageUpload({ onImageUploaded }) {
         className="w-full text-sm border p-2 rounded-lg bg-transparent"
       />
 
-      {loading && <p className="text-xs text-blue-500">{i18n.t("Uploading to Cloudinary...")}</p>}
+      {loading && <p className="text-xs text-[#c6a052]">{i18n.t("Uploading to Cloudinary...")}</p>}
 
       {preview && (
         <div className="mt-2">
           <img src={preview} alt={i18n.t("Uploaded preview")} className="h-32 w-full object-cover rounded-lg border" />
-          <p className="text-xs text-green-600 mt-1">{i18n.t("✓ Cloudinary URL Generated")}</p>
+          <p className="text-xs text-green-600 mt-1">{i18n.t("âœ“ Cloudinary URL Generated")}</p>
         </div>
       )}
     </div>

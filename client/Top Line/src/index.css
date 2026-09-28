@@ -38,4 +38,14 @@ code, .counter { font-family: var(--mono); display: inline-flex; border-radius: 
 code { font-size: .875rem; line-height: 1.4; padding: .25rem .5rem; background: #f1f5f9; }
 
 ::selection { color: var(--color-midnight); background: var(--color-gilded); }
+[class~="bg-white"] { background-color: var(--color-pearl); }
+[class~="border-slate-200"] { border-color: rgba(198, 160, 82, .2); }
+[class~="bg-[#c6a052]"] { color: var(--color-midnight); }
+[class*="bg-[#c6a052]"].text-white,
+[class*="from-[#c6a052]"].text-white,
+button[class*="bg-[#c6a052]"],
+a[class*="bg-[#c6a052]"],
+button[class*="from-[#c6a052]"],
+a[class*="from-[#c6a052]"] { color: var(--color-midnight); }
+button, a { -webkit-tap-highlight-color: transparent; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }

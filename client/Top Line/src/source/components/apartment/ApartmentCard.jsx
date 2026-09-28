@@ -88,7 +88,7 @@ export const ApartmentCard = ({ unit, priority = false }) => {
         {/* Action Link to Apartment Details */}
         <Link
           to={`/apartments/${apartmentId}`}
-          className="mt-2 flex min-h-12 w-full items-center justify-center rounded-full border border-[#c6a052] bg-transparent px-5 py-3 text-base font-bold text-[#f9f8f5] transition-all hover:bg-[#c6a052] hover:text-[#080d1a] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#dfbe74]/50"
+          className="mt-2 flex min-h-12 w-full items-center justify-center rounded-full border border-[#c6a052] bg-transparent px-5 py-3 text-base font-bold text-[#f9f8f5] transition-all hover:bg-[#dfbe74] hover:text-[#080d1a] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#dfbe74]/50"
         >{' '}{i18n.t("View & Book Residence")}{' '}</Link>
       </div>
     </div>

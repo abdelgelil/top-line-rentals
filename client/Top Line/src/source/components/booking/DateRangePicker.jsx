@@ -98,7 +98,7 @@ export default function DateRangePicker({
             type="button"
             aria-label={i18n.t('booking.previousMonth')}
             onClick={() => setVisibleMonth((month) => new Date(month.getFullYear(), month.getMonth() - 1, 1))}
-            className="flex min-h-12 min-w-12 items-center justify-center rounded-xl text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-200 dark:hover:bg-slate-800"
+            className="flex min-h-12 min-w-12 items-center justify-center rounded-xl text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052] dark:text-slate-200 dark:hover:bg-slate-800"
           >
             <ChevronLeft className="h-5 w-5" aria-hidden="true" />
           </button>
@@ -107,7 +107,7 @@ export default function DateRangePicker({
             type="button"
             aria-label={i18n.t('booking.nextMonth')}
             onClick={() => setVisibleMonth((month) => new Date(month.getFullYear(), month.getMonth() + 1, 1))}
-            className="flex min-h-12 min-w-12 items-center justify-center rounded-xl text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-200 dark:hover:bg-slate-800"
+            className="flex min-h-12 min-w-12 items-center justify-center rounded-xl text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052] dark:text-slate-200 dark:hover:bg-slate-800"
           >
             <ChevronRight className="h-5 w-5" aria-hidden="true" />
           </button>
@@ -133,12 +133,12 @@ export default function DateRangePicker({
                   onClick={() => handleDateClick(dateKey)}
                   aria-label={date.toLocaleDateString(i18n.resolvedLanguage || i18n.language || 'en', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
                   aria-pressed={selected}
-                  className={`flex min-h-12 w-full items-center justify-center rounded-xl text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:text-slate-300 disabled:line-through dark:disabled:text-slate-600 ${
+                  className={`flex min-h-12 w-full items-center justify-center rounded-xl text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052] disabled:cursor-not-allowed disabled:text-slate-300 disabled:line-through dark:disabled:text-slate-600 ${
                     selected
-                      ? 'bg-blue-700 text-white shadow-sm'
+                      ? 'bg-[#c6a052] text-[#080d1a] shadow-sm'
                       : inRange
-                        ? 'bg-blue-100 text-blue-900 dark:bg-blue-900/50 dark:text-blue-100'
-                        : 'text-slate-800 hover:bg-blue-50 dark:text-slate-100 dark:hover:bg-slate-800'
+                        ? 'bg-[#c6a052] text-[#080d1a] dark:bg-[#a68032]/50 dark:text-[#c6a052]'
+                        : 'text-slate-800 hover:bg-[#dfbe74] dark:text-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
                   {date.getDate()}
@@ -150,7 +150,7 @@ export default function DateRangePicker({
 
         <div className="mt-3 flex flex-col gap-2 border-t border-slate-100 pt-3 text-sm text-slate-600 dark:border-slate-800 dark:text-slate-300 sm:flex-row sm:items-center sm:justify-between">
           <p className="flex items-center gap-2" aria-live="polite">
-            <CalendarDays className="h-4 w-4 shrink-0 text-blue-600" aria-hidden="true" />
+            <CalendarDays className="h-4 w-4 shrink-0 text-[#785910]" aria-hidden="true" />
             {loading
               ? i18n.t('booking.checkingAvailability')
               : checkIn && !checkOut
@@ -165,7 +165,7 @@ export default function DateRangePicker({
                 onCheckInChange('');
                 onCheckOutChange('');
               }}
-              className="min-h-12 rounded-lg px-3 text-left font-semibold text-blue-700 underline underline-offset-2 hover:text-blue-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-blue-300"
+              className="min-h-12 rounded-lg px-3 text-left font-semibold text-[#785910] underline underline-offset-2 hover:text-[#a68032] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052] dark:text-[#dfbe74]"
             >
               {i18n.t('booking.clearDates')}
             </button>
@@ -177,7 +177,7 @@ export default function DateRangePicker({
         <div className="rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm font-medium text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200" role="alert">
           <p>{loadError || selectionError}</p>
           {loadError && onRetry && (
-            <button type="button" onClick={onRetry} className="mt-2 min-h-12 rounded-lg px-3 font-bold underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
+            <button type="button" onClick={onRetry} className="mt-2 min-h-12 rounded-lg px-3 font-bold underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052]">
               {i18n.t('Try Again')}
             </button>
           )}

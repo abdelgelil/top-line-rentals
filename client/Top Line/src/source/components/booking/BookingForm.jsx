@@ -170,7 +170,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
       ) : !isSignedIn ? (
         <div className="p-6 space-y-4 text-center">
           <p className="text-base text-slate-700 dark:text-slate-200">{i18n.t("Sign in to reserve this apartment.")}</p>
-          <Link to="/sign-in" className="flex min-h-14 w-full items-center justify-center rounded-2xl bg-slate-900 px-5 py-4 text-base font-bold text-white transition-colors hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:bg-blue-700 dark:hover:bg-blue-800">{i18n.t("Sign In to Book")}</Link>
+          <Link to="/sign-in" className="flex min-h-14 w-full items-center justify-center rounded-2xl bg-slate-900 px-5 py-4 text-base font-bold text-white transition-colors hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50 dark:bg-[#c6a052] dark:hover:bg-[#a68032]">{i18n.t("Sign In to Book")}</Link>
         </div>
       ) : <form onSubmit={handleBooking} className="p-6 space-y-5">
         {error && (
@@ -190,7 +190,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
                 required
                 value={guestName}
                 onChange={(e) => setGuestName(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-4 focus:ring-blue-500/40 focus:border-blue-600 outline-none transition-all text-base min-h-12"
+                className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-4 focus:ring-[#c6a052]/40 focus:border-[#785910] outline-none transition-all text-base min-h-12"
                 placeholder={i18n.t("Enter full name")}
               />
             </div>
@@ -205,7 +205,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
                 type="email"
                 value={guestEmail}
                 onChange={(e) => setGuestEmail(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-4 focus:ring-blue-500/40 focus:border-blue-600 outline-none transition-all text-base min-h-12"
+                className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-4 focus:ring-[#c6a052]/40 focus:border-[#785910] outline-none transition-all text-base min-h-12"
                 placeholder={i18n.t("email@example.com")}
               />
             </div>
@@ -221,7 +221,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
                 required
                 value={guestPhone}
                 onChange={(e) => setGuestPhone(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-4 focus:ring-blue-500/40 focus:border-blue-600 outline-none transition-all text-base min-h-12"
+                className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-4 focus:ring-[#c6a052]/40 focus:border-[#785910] outline-none transition-all text-base min-h-12"
                 placeholder="+1 234 567 890"
               />
             </div>
@@ -249,13 +249,13 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
                 max={apartment?.guests || 10}
                 value={guests}
                 onChange={(e) => setGuests(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-4 focus:ring-blue-500/40 focus:border-blue-600 outline-none transition-all text-base min-h-12"
+                className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-4 focus:ring-[#c6a052]/40 focus:border-[#785910] outline-none transition-all text-base min-h-12"
               />
             </div>
           </div>
         </div>
 
-        <section className="space-y-3 rounded-2xl border border-blue-200 bg-blue-50/80 p-4 dark:border-blue-900 dark:bg-blue-950/30" aria-live="polite" aria-label={i18n.t('booking.priceBreakdown')}>
+        <section className="space-y-3 rounded-2xl border border-[#c6a052] bg-[#c6a052]/80 p-4 dark:border-[#a68032] dark:bg-[#080d1a]/30" aria-live="polite" aria-label={i18n.t('booking.priceBreakdown')}>
           <div className="flex items-center justify-between gap-4 text-base text-slate-700 dark:text-slate-200">
             <span>{i18n.t('booking.pricePerNight')}</span>
             <span className="font-semibold">{formatCurrency(pricePerNight)}</span>
@@ -264,7 +264,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
             <span>{i18n.t('booking.totalNights')}</span>
             <span className="font-semibold">{nightsCount} {i18n.t('booking.night', { count: nightsCount })}</span>
           </div>
-          <div className="flex items-center justify-between gap-4 border-t border-blue-200 pt-3 text-lg font-extrabold text-blue-800 dark:border-blue-900 dark:text-blue-200">
+          <div className="flex items-center justify-between gap-4 border-t border-[#c6a052] pt-3 text-lg font-extrabold text-[#a68032] dark:border-[#a68032] dark:text-[#c6a052]">
             <span>{i18n.t('booking.totalPrice')}</span>
             <span>{formatCurrency(totalPrice)}</span>
           </div>
@@ -273,7 +273,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
         <button 
           type="submit" 
           disabled={loading || !checkInDate || !checkOutDate || availabilityLoading || Boolean(availabilityError)}
-          className="min-h-14 w-full rounded-2xl bg-slate-900 px-5 py-4 text-base font-bold text-white transition-all hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:bg-blue-700 dark:hover:bg-blue-800 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg"
+          className="min-h-14 w-full rounded-2xl bg-slate-900 px-5 py-4 text-base font-bold text-white transition-all hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50 dark:bg-[#c6a052] dark:hover:bg-[#a68032] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg"
         >
           {loading ? (
             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

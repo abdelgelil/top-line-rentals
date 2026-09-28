@@ -22,7 +22,7 @@ const AdminSettings = lazy(() => import('./AdminSettings'));
 
 const PanelFallback = () => (
   <div className="flex items-center justify-center py-10 text-sm text-slate-500" role="status">
-    <span className="mr-3 h-5 w-5 animate-spin rounded-full border-2 border-blue-500/30 border-t-blue-500" />
+    <span className="mr-3 h-5 w-5 animate-spin rounded-full border-2 border-[#c6a052]/30 border-t-[#c6a052]" />
     {i18n.t('Loading session...')}
   </div>
 );
@@ -182,7 +182,7 @@ const AdminDashboard = () => {
           <button
             type="button"
             onClick={() => setShowAddAdminModal(true)}
-            className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+            className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#c6a052] px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#dfbe74] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052]"
           >
             <span aria-hidden="true">+</span>{i18n.t('Add New Admin')}
           </button>
@@ -193,7 +193,7 @@ const AdminDashboard = () => {
           <button
             type="button"
             onClick={() => navigate('/admin/analytics')}
-            className={`min-h-12 px-4 py-2 rounded-lg text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+            className={`min-h-12 px-4 py-2 rounded-lg text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052] ${
               activeTab === 'analytics'
                 ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
@@ -202,7 +202,7 @@ const AdminDashboard = () => {
           <button
             type="button"
             onClick={() => navigate('/admin/reservations')}
-            className={`min-h-12 px-4 py-2 rounded-lg text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+            className={`min-h-12 px-4 py-2 rounded-lg text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052] ${
               activeTab === 'bookings'
                 ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
@@ -212,7 +212,7 @@ const AdminDashboard = () => {
           <button
             type="button"
             onClick={() => navigate('/admin/apartments')}
-            className={`min-h-12 px-4 py-2 rounded-lg text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+            className={`min-h-12 px-4 py-2 rounded-lg text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052] ${
               activeTab === 'apartments'
                 ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
@@ -266,16 +266,16 @@ const AdminDashboard = () => {
                 </div>
 
                 <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                  <p className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">{' '}{i18n.t("Pending Review")}{' '}</p>
-                  <h3 className="text-3xl font-black text-blue-600 dark:text-blue-400 mt-2">
+                  <p className="text-xs font-semibold text-[#785910] dark:text-[#dfbe74] uppercase tracking-wider">{' '}{i18n.t("Pending Review")}{' '}</p>
+                  <h3 className="text-3xl font-black text-[#785910] dark:text-[#dfbe74] mt-2">
                     {analytics?.metrics?.pendingBookings ?? 0}
                   </h3>
                   <span className="text-xs text-slate-400">{i18n.t("Awaiting action")}</span>
                 </div>
 
                 <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                  <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">{' '}{i18n.t("Total Revenue")}{' '}</p>
-                  <h3 className="text-3xl font-black text-indigo-600 dark:text-indigo-400 mt-2">
+                  <p className="text-xs font-semibold text-[#785910] dark:text-[#dfbe74] uppercase tracking-wider">{' '}{i18n.t("Total Revenue")}{' '}</p>
+                  <h3 className="text-3xl font-black text-[#785910] dark:text-[#dfbe74] mt-2">
                     {formatCurrency(analytics?.metrics?.totalRevenue ?? 0)}
                   </h3>
                   <span className="text-xs text-slate-400">{i18n.t("Confirmed revenue")}</span>
@@ -372,7 +372,10 @@ const AdminDashboard = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-slate-900 dark:text-slate-100 font-medium">{b.guestEmail}</div>
-                          <div className="text-xs text-slate-500">{b.guestPhone || 'No phone provided'}</div>
+                          {b.guestPhone ? <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
+                            <a dir="ltr" href={`tel:${String(b.guestPhone).replace(/[^\d+]/g, '')}`} className="font-medium text-slate-600 underline decoration-[#c6a052]/50 underline-offset-2 hover:text-[#785910] dark:text-slate-300 dark:hover:text-[#dfbe74]">{b.guestPhone}</a>
+                            <a href={`https://wa.me/${String(b.guestPhone).replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" aria-label={`${i18n.t('Message guest on WhatsApp')}: ${b.guestName || b.guestPhone}`} className="rounded-full border border-[#c6a052]/40 px-2 py-1 font-semibold text-[#785910] transition-colors hover:bg-[#c6a052]/10 dark:text-[#dfbe74]">WhatsApp</a>
+                          </div> : <div className="text-xs text-slate-500">{i18n.t('No phone provided')}</div>}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="font-semibold text-slate-800 dark:text-slate-200">
@@ -398,7 +401,7 @@ const AdminDashboard = () => {
                                 ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
                                 : ['cancelled', 'canceled'].includes(b.status)
                                 ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
-                                : 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300'
+                                : 'bg-[#c6a052] text-[#080d1a] dark:bg-[#080d1a] dark:text-[#dfbe74]'
                             }`}
                           >
                             {i18n.t(b.status)}
@@ -419,7 +422,7 @@ const AdminDashboard = () => {
                                 >{' '}{i18n.t("Confirm")}{' '}</button>
                                 <button
                                   onClick={() => handleStatusChange(b._id, 'cancelled')}
-                                  className="px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors"
+                                  className="px-3 py-1.5 text-xs font-medium text-white bg-[#c6a052] hover:bg-[#dfbe74] rounded-lg shadow-sm transition-colors"
                                 >{' '}{i18n.t("Cancel")}{' '}</button>
                               </>
                             )}
@@ -482,7 +485,7 @@ const AdminDashboard = () => {
                     <button
                       type="button"
                       onClick={() => navigate(`/admin/apartments/${apt._id}/edit`)}
-                      className="inline-flex items-center gap-2 rounded-lg border border-blue-200 px-3 py-1.5 text-xs font-medium text-blue-700 hover:bg-blue-50 dark:border-blue-900 dark:text-blue-300 dark:hover:bg-blue-950/40"
+                      className="inline-flex items-center gap-2 rounded-lg border border-[#c6a052] px-3 py-1.5 text-xs font-medium text-[#785910] hover:bg-[#dfbe74] dark:border-[#a68032] dark:text-[#dfbe74] dark:hover:bg-[#080d1a]/40"
                       aria-label={`${i18n.t('Edit Apartment')}: ${apt.title}`}
                     ><Edit size={14} />{i18n.t('Edit')}</button>
                     <button

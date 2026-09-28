@@ -111,22 +111,22 @@ function App() {
       toastOptions={{
         duration: 3200,
         style: {
-          background: '#0f172a',
-          color: '#e2e8f0',
-          border: '1px solid rgba(148, 163, 184, 0.18)',
+          background: '#0b1325',
+          color: '#f9f8f5',
+          border: '1px solid rgba(198, 160, 82, 0.3)',
           borderRadius: '12px',
           padding: '10px 12px',
           fontSize: '13px',
           maxWidth: 'min(360px, calc(100vw - 32px))',
         },
-        iconTheme: { primary: '#60a5fa', secondary: '#0f172a' },
-        success: { iconTheme: { primary: '#38bdf8', secondary: '#0f172a' } },
+        iconTheme: { primary: '#c6a052', secondary: '#0b1325' },
+        success: { iconTheme: { primary: '#dfbe74', secondary: '#0b1325' } },
         error: { iconTheme: { primary: '#f87171', secondary: '#0f172a' } },
       }}
     />
     <Suspense fallback={(
       <div className="flex min-h-[50vh] items-center justify-center text-sm text-slate-500" role="status" aria-live="polite">
-        <span className="mr-3 h-5 w-5 animate-spin rounded-full border-2 border-blue-500/30 border-t-blue-500" />
+        <span className="mr-3 h-5 w-5 animate-spin rounded-full border-2 border-[#c6a052]/30 border-t-[#c6a052]" />
         {i18n.t("Loading session...")}
       </div>
     )}>

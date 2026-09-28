@@ -56,7 +56,7 @@ const HelpModal = ({ onClose }) => {
       >
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">
+            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#c6a052] text-[#080d1a] dark:bg-[#a68032]/50 dark:text-[#dfbe74]">
               <Phone className="h-7 w-7" aria-hidden="true" />
             </span>
             <h2 id="booking-help-title" className="text-2xl font-bold text-slate-900 dark:text-white sm:text-3xl">
@@ -68,20 +68,20 @@ const HelpModal = ({ onClose }) => {
             type="button"
             onClick={onClose}
             aria-label={t('accessibility.closeHelp')}
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-slate-600 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:text-slate-300 dark:hover:bg-slate-800"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-slate-600 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50 dark:text-slate-300 dark:hover:bg-slate-800"
           >
             <X className="h-6 w-6" />
           </button>
         </div>
 
         <div className="mt-6 grid gap-3 sm:grid-cols-3">
-          <a href={`tel:${SUPPORT_PHONE}`} className="flex min-h-14 items-center justify-center gap-2 rounded-xl bg-blue-700 px-4 py-3 text-center text-base font-bold text-white transition hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50">
+          <a href={`tel:${SUPPORT_PHONE}`} className="flex min-h-14 items-center justify-center gap-2 rounded-xl bg-[#c6a052] px-4 py-3 text-center text-base font-bold text-white transition hover:bg-[#a68032] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50">
             <Phone className="h-5 w-5" aria-hidden="true" /> {t('accessibility.callSupport')}
           </a>
-          <a href={`https://wa.me/${SUPPORT_PHONE.slice(1)}`} target="_blank" rel="noopener noreferrer" className="flex min-h-14 items-center justify-center gap-2 rounded-xl border-2 border-slate-300 px-4 py-3 text-center text-base font-bold text-slate-800 transition hover:border-blue-500 hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800">
+          <a href={`https://wa.me/${SUPPORT_PHONE.slice(1)}`} target="_blank" rel="noopener noreferrer" className="flex min-h-14 items-center justify-center gap-2 rounded-xl border-2 border-slate-300 px-4 py-3 text-center text-base font-bold text-slate-800 transition hover:border-[#c6a052] hover:bg-[#dfbe74] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800">
             <MessageCircle className="h-5 w-5" aria-hidden="true" /> {t('accessibility.whatsapp')}
           </a>
-          <a href={`sms:${SUPPORT_PHONE}?body=${callbackMessage}`} className="flex min-h-14 items-center justify-center gap-2 rounded-xl border-2 border-slate-300 px-4 py-3 text-center text-base font-bold text-slate-800 transition hover:border-blue-500 hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800">
+          <a href={`sms:${SUPPORT_PHONE}?body=${callbackMessage}`} className="flex min-h-14 items-center justify-center gap-2 rounded-xl border-2 border-slate-300 px-4 py-3 text-center text-base font-bold text-slate-800 transition hover:border-[#c6a052] hover:bg-[#dfbe74] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800">
             <MessageSquare className="h-5 w-5" aria-hidden="true" /> {t('accessibility.requestCallback')}
           </a>
         </div>
@@ -89,7 +89,7 @@ const HelpModal = ({ onClose }) => {
 
         <div className="mt-7 rounded-2xl bg-slate-50 p-5 dark:bg-slate-800/70">
           <h3 className="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-white">
-            <CalendarCheck className="h-5 w-5 text-blue-600 dark:text-blue-400" aria-hidden="true" />
+            <CalendarCheck className="h-5 w-5 text-[#785910] dark:text-[#dfbe74]" aria-hidden="true" />
             {t('accessibility.easyStepsTitle')}
           </h3>
           <ol className="mt-4 space-y-3 text-base leading-relaxed text-slate-700 dark:text-slate-200">

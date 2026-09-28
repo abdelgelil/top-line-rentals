@@ -30,7 +30,7 @@ export default function AdminEditApartment() {
   if (error || !apartment) return (
     <div className="mx-auto max-w-2xl px-4 py-12 text-center">
       <p className="mb-5 text-slate-600 dark:text-slate-300">{error || t('Apartment not found')}</p>
-      <Link to="/admin/apartments" className="rounded-xl bg-blue-700 px-5 py-3 font-bold text-white">{t('Back to Apartments')}</Link>
+      <Link to="/admin/apartments" className="rounded-xl bg-[#c6a052] px-5 py-3 font-bold text-white">{t('Back to Apartments')}</Link>
     </div>
   );
 

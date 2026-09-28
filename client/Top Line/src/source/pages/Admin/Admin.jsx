@@ -103,7 +103,7 @@ export const Admin = () => {
             {activeTab === 'apartments' && (
               <button
                 onClick={handleOpenCreateModal}
-                className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg font-medium transition shadow-sm"
+                className="flex items-center space-x-2 bg-[#c6a052] hover:bg-[#dfbe74] text-white px-4 py-2.5 rounded-lg font-medium transition shadow-sm"
               >
                 <Plus size={18} />
                 <span>{i18n.t("Add Apartment")}</span>
@@ -118,7 +118,7 @@ export const Admin = () => {
             onClick={() => setActiveTab('apartments')}
             className={`flex items-center space-x-2 py-4 px-4 font-medium text-sm border-b-2 transition ${
               activeTab === 'apartments'
-                ? 'border-blue-600 text-blue-600'
+                ? 'border-[#785910] text-[#785910]'
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -130,7 +130,7 @@ export const Admin = () => {
             onClick={() => setActiveTab('bookings')}
             className={`flex items-center space-x-2 py-4 px-4 font-medium text-sm border-b-2 transition ${
               activeTab === 'bookings'
-                ? 'border-blue-600 text-blue-600'
+                ? 'border-[#785910] text-[#785910]'
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -151,7 +151,7 @@ export const Admin = () => {
                   placeholder={i18n.t("Search title...")}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#c6a052]"
                 />
               </div>
 
@@ -160,7 +160,7 @@ export const Admin = () => {
                 <select
                   value={selectedTower}
                   onChange={(e) => setSelectedTower(e.target.value)}
-                  className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#c6a052]"
                 >
                   <option value="All">{i18n.t("All Towers")}</option>
                   <option value="Tower 1">{i18n.t("Tower 1")}</option>
@@ -200,7 +200,7 @@ export const Admin = () => {
                     <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
                       <div>
                         <h3 className="font-semibold text-lg text-gray-900 line-clamp-1">{translateText(apt.title)}</h3>
-                        <p className="text-blue-600 font-bold text-lg mt-1">
+                        <p className="text-[#785910] font-bold text-lg mt-1">
                           {formatCurrency(apt.pricePerNight || apt.price)}{' '}
                           <span className="text-xs text-gray-500 font-normal">{i18n.t("/ night")}</span>
                         </p>
@@ -222,7 +222,7 @@ export const Admin = () => {
                       <div className="flex items-center justify-end space-x-2 pt-3 border-t border-gray-100">
                         <button
                           onClick={() => handleOpenEditModal(apt)}
-                          className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition"
+                          className="p-2 text-gray-600 hover:text-[#785910] hover:bg-[#dfbe74] rounded-lg transition"
                           title={i18n.t("Edit Apartment")}
                         >
                           <Edit size={18} />

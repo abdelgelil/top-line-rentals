@@ -60,8 +60,8 @@ const english = {
   'Reservation Received!': 'Reservation Received!', 'Send a Message': 'Send a Message', 'Send Message': 'Send Message',
   'Message Sent!': 'Message Sent!', 'Something went wrong': 'Something went wrong', 'Subject': 'Subject', 'Message': 'Message',
   'Reservation Inquiry': 'Reservation Inquiry', 'Alamein City Compound Info': 'Alamein City Compound Info', 'Property Support': 'Property Support',
-  'Other': 'Other', 'About TopLine Luxury Apartments': 'About TopLine Luxury Apartments', 'Alamein City Expansion': 'Alamein City Expansion',
-  'TopLine Luxury Apartments offers carefully selected coastal homes for short stays and extended visits, with attentive service and a simple booking experience.': 'TopLine Luxury Apartments offers carefully selected coastal homes for short stays and extended visits, with attentive service and a simple booking experience.',
+  'Other': 'Other', 'About Topline Luxury Apartments': 'About Topline Luxury Apartments', 'Alamein City Expansion': 'Alamein City Expansion',
+  'Topline Luxury Apartments offers carefully selected coastal homes for short stays and extended visits, with attentive service and a simple booking experience.': 'Topline Luxury Apartments offers carefully selected coastal homes for short stays and extended visits, with attentive service and a simple booking experience.',
   'Quick Links': 'Quick Links', 'Home Overview': 'Home Overview', 'Available Units': 'Available Units', 'Property Management': 'Property Management',
   'Host Guarantee': 'Host Guarantee', 'Verified Listings': 'Verified Listings', 'Direct Owner Pricing': 'Direct Owner Pricing',
   'Instant Reservation': 'Instant Reservation', 'Contact & Support': 'Contact & Support', 'San Stefano Towers, Alexandria': 'San Stefano Towers, Alexandria',
@@ -161,8 +161,8 @@ const arabic = {
   'Reserve Now': 'احجز الآن', 'Confirm Reservation': 'تأكيد الحجز', 'Reservation Received!': 'تم استلام طلب الحجز!',
   'Send a Message': 'أرسل رسالة', 'Send Message': 'إرسال الرسالة', 'Message Sent!': 'تم إرسال الرسالة!', 'Something went wrong': 'حدث خطأ ما',
   'Subject': 'الموضوع', 'Message': 'الرسالة', 'Reservation Inquiry': 'استفسار عن حجز', 'Alamein City Compound Info': 'معلومات مجمع العلمين',
-  'Property Support': 'دعم العقار', 'Other': 'أخرى', 'About TopLine Luxury Apartments': 'عن TopLine Luxury Apartments', 'Alamein City Expansion': 'التوسع في مدينة العلمين',
-  'TopLine Luxury Apartments offers carefully selected coastal homes for short stays and extended visits, with attentive service and a simple booking experience.': 'تقدم TopLine Luxury Apartments منازل ساحلية مختارة بعناية للإقامات القصيرة والزيارات الطويلة، مع خدمة مميزة وتجربة حجز سهلة.',
+  'Property Support': 'دعم العقار', 'Other': 'أخرى', 'About Topline Luxury Apartments': 'عن Topline Luxury Apartments', 'Alamein City Expansion': 'التوسع في مدينة العلمين',
+  'Topline Luxury Apartments offers carefully selected coastal homes for short stays and extended visits, with attentive service and a simple booking experience.': 'تقدم Topline Luxury Apartments منازل ساحلية مختارة بعناية للإقامات القصيرة والزيارات الطويلة، مع خدمة مميزة وتجربة حجز سهلة.',
   'Quick Links': 'روابط سريعة', 'Home Overview': 'الصفحة الرئيسية', 'Available Units': 'الوحدات المتاحة', 'Property Management': 'إدارة العقارات',
   'Host Guarantee': 'ضمان المضيف', 'Verified Listings': 'وحدات موثقة', 'Direct Owner Pricing': 'أسعار مباشرة من المالك', 'Instant Reservation': 'حجز فوري',
   'Contact & Support': 'التواصل والدعم', 'San Stefano Towers, Alexandria': 'أبراج سان ستيفانو، الإسكندرية', 'All rights reserved.': 'جميع الحقوق محفوظة.',
@@ -238,9 +238,9 @@ Object.assign(arabic, {
   'Loading apartments...': 'جارٍ تحميل الشقق...', 'No Image': 'لا توجد صورة', 'Photos': 'الصور',
   'Please try again later or contact us via phone.': 'يرجى المحاولة لاحقاً أو التواصل معنا هاتفياً.',
   'Rentals': 'للتأجير', 'Reserve': 'احجز', 'Send Another Message': 'إرسال رسالة أخرى', 'Thank you,': 'شكراً لك،',
-  'Title *': 'العنوان *', 'TopLine': 'توب لاين',
-  'TopLine Luxury Apartments is a premier provider of luxury apartment listings and property management.': 'تُعد TopLine Luxury Apartments وجهة رائدة للشقق الفاخرة وإدارة العقارات.',
-  'TopLine Luxury Apartments. All rights reserved.': 'TopLine Luxury Apartments. جميع الحقوق محفوظة.', 'Tower': 'البرج', 'Tower:': 'البرج:',
+  'Title *': 'العنوان *', 'Topline': 'توب لاين',
+  'Topline Luxury Apartments is a premier provider of luxury apartment listings and property management.': 'تُعد Topline Luxury Apartments وجهة رائدة للشقق الفاخرة وإدارة العقارات.',
+  'Topline Luxury Apartments. All rights reserved.': 'Topline Luxury Apartments. جميع الحقوق محفوظة.', 'Tower': 'البرج', 'Tower:': 'البرج:',
   'We are proud to announce our expansion into the modern compound development in': 'يسعدنا الإعلان عن توسعنا إلى مشروع المجمع الحديث في',
   'confirmed': 'مؤكد', 'has been saved. Our team will contact you directly via phone or email shortly.': 'تم حفظ طلبك. سيتواصل معك فريقنا قريباً عبر الهاتف أو البريد الإلكتروني.',
   '✓ Cloudinary URL Generated': '✓ تم إنشاء رابط كلاوديناري',
@@ -293,7 +293,7 @@ resources.en.translation.auth = { signIn: 'Sign in', createAccount: 'Create acco
 resources.ar.translation.auth = { signIn: 'تسجيل الدخول', createAccount: 'إنشاء حساب', resetPassword: 'إعادة تعيين كلمة المرور', forgotPassword: 'هل نسيت كلمة المرور؟', username: 'اسم المستخدم', phone: 'رقم الهاتف', accountIdentifier: 'رقم الهاتف أو اسم المستخدم للحساب', email: 'البريد الإلكتروني', targetEmail: 'البريد الإلكتروني لاستلام رمز التعيين', emailOptional: 'البريد الإلكتروني (اختياري)', password: 'كلمة المرور', newPassword: 'كلمة المرور الجديدة', signupHint: 'أنشئ حسابك باستخدام اسم المستخدم ورقم الهاتف وكلمة المرور.', loginHint: 'سجل الدخول باستخدام رقم هاتفك وكلمة المرور.', phoneFormat: 'أدخل رمز الدولة، مثل ‎+201000000000.', pleaseWait: 'يرجى الانتظار…', resetEmailHint: 'أدخل رقم هاتف حسابك أو اسم المستخدم وأي بريد إلكتروني يمكننا إرسال رمز التعيين إليه.', resetCodeHint: 'أدخل الرمز المكوّن من ستة أرقام واختر كلمة مرور جديدة.', verificationCode: 'الرمز المكوّن من ستة أرقام', sendCode: 'إرسال الرمز', haveAccount: 'لديك حساب بالفعل؟', noAccount: 'جديد في توب لاين؟', signInFailed: 'تعذر تسجيل الدخول.', sendFailed: 'تعذر إرسال الرمز.', resetFailed: 'تعذرت إعادة تعيين كلمة المرور.', resetCodeSent: 'تم إرسال رمز التعيين إلى بريدك الإلكتروني.', passwordReset: 'تم تحديث كلمة المرور. يمكنك تسجيل الدخول الآن.', welcome: 'تم تسجيل الدخول.' };
 resources.en.translation.welcome = {
   badge: 'Premier Coastal & City Living',
-  headline: 'Experience Luxury Living & Effortless Stays with TopLine',
+  headline: 'Experience Luxury Living & Effortless Stays with Topline',
   subtitle: 'Fully serviced apartments with private beach access and panoramic views, ready for you from the moment you arrive.',
   bookNow: 'Book Now', contactUs: 'Contact Us',
   identityTitle: 'Settled in the Heart of Coastal Excellence',
@@ -305,7 +305,7 @@ resources.en.translation.welcome = {
   hospitalityTitle: 'Hospitality Standard',
   hospitalityText: '24/7 guest support, seamless check-in, and amenities we verify ourselves before every booking.',
   featuresTitle: 'What every stay includes',
-  featuresSubtitle: 'The details that make a TopLine apartment feel like a hotel suite and a home at once.',
+  featuresSubtitle: 'The details that make a Topline apartment feel like a hotel suite and a home at once.',
   viewsTitle: 'Prime Beach & Panoramic Views',
   viewsText: 'Private beach access and wide sea views from living rooms, balconies, and bedrooms.',
   checkinTitle: 'Instant & Secure Check-In',
@@ -366,12 +366,12 @@ resources.ar.translation.footer = {
 };
 resources.en.translation.location = {
   title: 'Visit our compound',
-  description: 'Find TopLine Luxury Apartments on the Mediterranean coast in Alamein City.',
+  description: 'Find Topline Luxury Apartments on the Mediterranean coast in Alamein City.',
   directions: 'Open location in Google Maps',
 };
 resources.ar.translation.location = {
   title: 'زر مجمعنا',
-  description: 'اعثر على TopLine Luxury Apartments على ساحل البحر المتوسط في مدينة العلمين.',
+  description: 'اعثر على Topline Luxury Apartments على ساحل البحر المتوسط في مدينة العلمين.',
   directions: 'افتح الموقع في خرائط Google',
 };
 resources.en.translation.accessibility = {

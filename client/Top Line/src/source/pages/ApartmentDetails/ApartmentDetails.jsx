@@ -90,7 +90,7 @@ const ImageLightbox = ({ images, initialIndex, onClose }) => {
             key={idx}
             onClick={() => setCurrentIndex(idx)}
             className={`relative w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
-              currentIndex === idx ? 'border-blue-500 scale-110' : 'border-transparent opacity-50 hover:opacity-100'
+              currentIndex === idx ? 'border-[#c6a052] scale-110' : 'border-transparent opacity-50 hover:opacity-100'
             }`}
           >
             <OptimizedImage src={img} className="h-full w-full" imageClassName="h-full w-full object-cover" alt={`Thumb ${idx}`} />
@@ -207,7 +207,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-slate-500 space-y-4">
-        <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+        <div className="w-10 h-10 border-4 border-[#785910] border-t-transparent rounded-full animate-spin" />
         <p className="font-medium">{i18n.t("Loading luxury details...")}</p>
       </div>
     );
@@ -236,11 +236,11 @@ export function ApartmentDetails({ currentUser: propUser }) {
         
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-            <span className="hover:text-blue-600 cursor-pointer transition-colors">{i18n.t("Apartments")}</span>
+            <span className="hover:text-[#785910] cursor-pointer transition-colors">{i18n.t("Apartments")}</span>
             <ChevronRight className="w-4 h-4" />
             <span className="text-slate-900 dark:text-white font-medium">{translateText(apartment.title)}</span>
           </div>
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 px-3 py-1 rounded-full">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#785910] dark:text-[#dfbe74] bg-[#c6a052] dark:bg-[#a68032]/30 px-3 py-1 rounded-full">
             <ShieldCheck className="w-3 h-3" />{' '}{i18n.t("Verified Listing")}{' '}</div>
         </div>
 
@@ -284,14 +284,14 @@ export function ApartmentDetails({ currentUser: propUser }) {
                     <button 
                       onClick={() => setActiveImageIndex(prev => (prev - 1 + images.length) % images.length)}
                       aria-label={i18n.t('Previous photo')}
-                      className="absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow-lg backdrop-blur-md transition-all hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/60 dark:bg-black/70 dark:text-white dark:hover:bg-black"
+                      className="absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow-lg backdrop-blur-md transition-all hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/60 dark:bg-black/70 dark:text-white dark:hover:bg-black"
                     >
                       <ChevronLeft className="w-6 h-6" />
                     </button>
                     <button 
                       onClick={() => setActiveImageIndex(prev => (prev + 1) % images.length)}
                       aria-label={i18n.t('Next photo')}
-                      className="absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow-lg backdrop-blur-md transition-all hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/60 dark:bg-black/70 dark:text-white dark:hover:bg-black"
+                      className="absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow-lg backdrop-blur-md transition-all hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/60 dark:bg-black/70 dark:text-white dark:hover:bg-black"
                     >
                       <ChevronRight className="w-6 h-6" />
                     </button>
@@ -303,7 +303,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
                   <div className="absolute bottom-6 right-6">
                     <button 
                       onClick={() => openLightbox(0)}
-                      className="flex min-h-12 items-center gap-2 rounded-full border border-white/20 bg-white/90 px-5 py-3 text-base font-bold text-slate-900 shadow-xl backdrop-blur-md transition-all hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/60 dark:bg-black/70 dark:text-white dark:hover:bg-black"
+                      className="flex min-h-12 items-center gap-2 rounded-full border border-white/20 bg-white/90 px-5 py-3 text-base font-bold text-slate-900 shadow-xl backdrop-blur-md transition-all hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/60 dark:bg-black/70 dark:text-white dark:hover:bg-black"
                     >
                       <ImageIcon className="w-4 h-4" />
                       <span>{i18n.t("View All")}{' '}{images.length}{' '}{i18n.t("Photos")}</span>
@@ -321,10 +321,10 @@ export function ApartmentDetails({ currentUser: propUser }) {
                       onClick={() => setActiveImageIndex(idx)}
                       aria-label={`${i18n.t('Go to photo')} ${idx + 1}`}
                       aria-current={activeImageIndex === idx ? 'true' : undefined}
-                      className="flex h-12 w-12 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50"
+                      className="flex h-12 w-12 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50"
                     >
                       <span className={`h-2 rounded-full transition-all duration-300 ${
-                        activeImageIndex === idx ? 'w-8 bg-blue-700' : 'w-2 bg-slate-500 dark:bg-slate-300'
+                        activeImageIndex === idx ? 'w-8 bg-[#c6a052]' : 'w-2 bg-slate-500 dark:bg-slate-300'
                       }`} />
                     </button>
                   ))}
@@ -335,14 +335,14 @@ export function ApartmentDetails({ currentUser: propUser }) {
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 text-sm font-bold uppercase tracking-widest">
+                  <div className="flex items-center gap-2 text-[#785910] dark:text-[#dfbe74] text-sm font-bold uppercase tracking-widest">
 
                   </div>
                   <h1 className="text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
                     {translateText(apartment.title)}
                   </h1>
                 </div>
-                <div className="flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-4 py-2 rounded-full text-sm font-bold shadow-sm">
+                <div className="flex items-center gap-2 bg-[#c6a052] dark:bg-[#a68032]/30 text-[#785910] dark:text-[#dfbe74] px-4 py-2 rounded-full text-sm font-bold shadow-sm">
                   <Star className="w-4 h-4 fill-current" />
                   <span>{i18n.t("Premium Luxury Listing")}</span>
                 </div>
@@ -356,7 +356,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
                   { icon: Bed, label: 'Type', value: i18n.t('Luxury Suite') },
                 ].map((stat, i) => (
                   <div key={i} className="flex items-center gap-3 p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
-                    <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400">
+                    <div className="p-2 rounded-lg bg-[#c6a052] dark:bg-[#a68032]/20 text-[#785910] dark:text-[#dfbe74]">
                       <stat.icon className="w-5 h-5" />
                     </div>
                     <div>
@@ -371,7 +371,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
             <div className="grid grid-cols-1 gap-12 pt-4">
               <section className="space-y-6">
                 <div className="flex items-center gap-3 text-slate-900 dark:text-white font-bold text-2xl">
-                  <div className="w-1 h-8 bg-blue-600 rounded-full" />
+                  <div className="w-1 h-8 bg-[#c6a052] rounded-full" />
                   <h2>{i18n.t("Property Overview")}</h2>
                 </div>
                 <p className="text-slate-600 dark:text-slate-300 leading-loose text-lg max-w-4xl">
@@ -382,11 +382,11 @@ export function ApartmentDetails({ currentUser: propUser }) {
               <section className="grid grid-cols-1 sm:grid-cols-2 gap-12 p-8 rounded-[2rem] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
                 <div className="space-y-6">
                   <h3 className="font-bold text-slate-900 dark:text-white text-xl flex items-center gap-2">
-                    <CheckCircle2 className="w-6 h-6 text-blue-600" />{' '}{i18n.t("Building Amenities")}{' '}</h3>
+                    <CheckCircle2 className="w-6 h-6 text-[#785910]" />{' '}{i18n.t("Building Amenities")}{' '}</h3>
                   <ul className="grid grid-cols-1 gap-4">
                     {['Infinity Pool', 'Fitness Center', '24/7 Concierge', 'Secure Parking', 'Private Beach Access', 'Spa & Wellness'].map((item) => (
                       <li key={item} className="flex items-center gap-3 text-slate-600 dark:text-slate-400 group cursor-default">
-                        <div className="w-2 h-2 rounded-full bg-blue-600 group-hover:scale-150 transition-transform" />
+                        <div className="w-2 h-2 rounded-full bg-[#c6a052] group-hover:scale-150 transition-transform" />
                       <span className="text-sm transition-colors group-hover:text-slate-900 dark:group-hover:text-white">{i18n.t(item)}</span>
                       </li>
                     ))}
@@ -394,11 +394,11 @@ export function ApartmentDetails({ currentUser: propUser }) {
                 </div>
                 <div className="space-y-6">
                   <h3 className="font-bold text-slate-900 dark:text-white text-xl flex items-center gap-2">
-                    <CheckCircle2 className="w-6 h-6 text-blue-600" />{' '}{i18n.t("House Rules")}{' '}</h3>
+                    <CheckCircle2 className="w-6 h-6 text-[#785910]" />{' '}{i18n.t("House Rules")}{' '}</h3>
                   <ul className="grid grid-cols-1 gap-4">
                     {['No Smoking Indoors', 'No Parties', 'Check-in after 2PM', 'Quiet hours 10PM-8AM', 'ID Required for Entry'].map((item) => (
                       <li key={item} className="flex items-center gap-3 text-slate-600 dark:text-slate-400 group cursor-default">
-                        <div className="w-2 h-2 rounded-full bg-blue-600 group-hover:scale-150 transition-transform" />
+                        <div className="w-2 h-2 rounded-full bg-[#c6a052] group-hover:scale-150 transition-transform" />
                       <span className="text-sm transition-colors group-hover:text-slate-900 dark:group-hover:text-white">{i18n.t(item)}</span>
                       </li>
                     ))}
@@ -407,7 +407,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
               </section>
             </div>
 
-            <section id="apartment-reviews" className="relative isolate scroll-mt-24 space-y-6 overflow-hidden rounded-[2rem] border border-blue-100 bg-gradient-to-br from-white via-blue-50/70 to-amber-50/60 p-5 shadow-xl shadow-blue-950/5 sm:p-8 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-blue-950/50 dark:shadow-black/20" aria-labelledby="apartment-reviews-title">
+            <section id="apartment-reviews" className="relative isolate scroll-mt-24 space-y-6 overflow-hidden rounded-[2rem] border border-[#c6a052] bg-gradient-to-br from-white via-[#c6a052]/70 to-amber-50/60 p-5 shadow-xl shadow-[#080d1a]/5 sm:p-8 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-[#080d1a]/50 dark:shadow-black/20" aria-labelledby="apartment-reviews-title">
               <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-20 -z-10 h-56 w-56 rounded-full bg-amber-300/15 blur-3xl dark:bg-amber-400/10" />
               <div className="flex flex-wrap items-end justify-between gap-3">
                 <div>
@@ -419,29 +419,29 @@ export function ApartmentDetails({ currentUser: propUser }) {
               </div>
 
               {eligibleBookings.length > 0 && (
-                <form onSubmit={handleReviewSubmit} className="space-y-5 rounded-2xl border border-blue-200 bg-white p-5 shadow-lg shadow-blue-950/5 sm:p-6 dark:border-blue-400/20 dark:bg-slate-800/80 dark:shadow-black/20">
+                <form onSubmit={handleReviewSubmit} className="space-y-5 rounded-2xl border border-[#c6a052] bg-white p-5 shadow-lg shadow-[#080d1a]/5 sm:p-6 dark:border-[#dfbe74]/20 dark:bg-slate-800/80 dark:shadow-black/20">
                   <div>
                     <h3 className="text-lg font-bold text-slate-900 dark:text-white">{i18n.t('Review your completed stay')}</h3>
                     <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{i18n.t('Your feedback helps future guests choose the right stay.')}</p>
                   </div>
                   <div className="flex items-center gap-1" role="radiogroup" aria-label={i18n.t('Rating')}>
                     {[1, 2, 3, 4, 5].map((rating) => (
-                      <button key={rating} type="button" role="radio" aria-checked={reviewRating === rating} aria-label={`${rating} ${i18n.t('stars')}`} onClick={() => setReviewRating(rating)} className="rounded-lg p-1.5 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                      <button key={rating} type="button" role="radio" aria-checked={reviewRating === rating} aria-label={`${rating} ${i18n.t('stars')}`} onClick={() => setReviewRating(rating)} className="rounded-lg p-1.5 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052]">
                         <Star className={`h-7 w-7 ${rating <= reviewRating ? 'fill-amber-400 text-amber-500 dark:text-amber-300' : 'text-slate-300 dark:text-slate-600'}`} />
                       </button>
                     ))}
                   </div>
                   <label htmlFor="review-comment" className="block text-sm font-medium text-slate-700 dark:text-slate-200">
                     {i18n.t('Your review')}
-                    <textarea id="review-comment" required minLength={5} maxLength={1000} value={reviewComment} onChange={(event) => setReviewComment(event.target.value)} rows={4} placeholder={i18n.t('Share the highlights of your stay...')} style={{ color: '#0f172a', WebkitTextFillColor: '#0f172a', caretColor: '#1d4ed8' }} className="mt-2 w-full resize-y rounded-xl border border-slate-300 bg-slate-50 p-4 text-base leading-relaxed text-slate-900 caret-blue-700 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 dark:border-slate-300 dark:bg-white dark:text-slate-900 dark:caret-blue-700 dark:placeholder:text-slate-500 dark:focus:border-blue-500 dark:focus:bg-white dark:focus:ring-blue-400/30" />
+                    <textarea id="review-comment" required minLength={5} maxLength={1000} value={reviewComment} onChange={(event) => setReviewComment(event.target.value)} rows={4} placeholder={i18n.t('Share the highlights of your stay...')} style={{ color: '#0f172a', WebkitTextFillColor: '#0f172a', caretColor: '#1d4ed8' }} className="mt-2 w-full resize-y rounded-xl border border-slate-300 bg-slate-50 p-4 text-base leading-relaxed text-slate-900 caret-[#785910] outline-none transition placeholder:text-slate-400 focus:border-[#c6a052] focus:bg-white focus:ring-4 focus:ring-[#c6a052] dark:border-slate-300 dark:bg-white dark:text-slate-900 dark:caret-[#785910] dark:placeholder:text-slate-500 dark:focus:border-[#c6a052] dark:focus:bg-white dark:focus:ring-[#dfbe74]/30" />
                   </label>
                   <p className="text-xs text-slate-500 dark:text-slate-400">{i18n.t('Reviews appear after admin approval.')}</p>
-                  <button disabled={reviewSubmitting || reviewComment.trim().length < 5} type="submit" className="min-h-12 rounded-xl bg-gradient-to-r from-blue-700 to-blue-600 px-6 font-bold text-white shadow-lg shadow-blue-700/20 transition hover:-translate-y-0.5 hover:from-blue-800 hover:to-blue-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-55">{reviewSubmitting ? i18n.t('Submitting...') : i18n.t('Submit review')}</button>
+                  <button disabled={reviewSubmitting || reviewComment.trim().length < 5} type="submit" className="min-h-12 rounded-xl bg-gradient-to-r from-[#c6a052] to-[#c6a052] px-6 font-bold text-white shadow-lg shadow-[#785910]/20 transition hover:-translate-y-0.5 hover:from-[#a68032] hover:to-[#c6a052] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#dfbe74] disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-55">{reviewSubmitting ? i18n.t('Submitting...') : i18n.t('Submit review')}</button>
                 </form>
               )}
-              {!currentUser?.id && <p className="text-sm text-slate-600 dark:text-slate-400"><Link to="/sign-in" className="font-semibold text-blue-700 hover:underline dark:text-blue-300">{i18n.t('Sign in')}</Link>{' '}{i18n.t('to review after a completed stay.')}</p>}
+              {!currentUser?.id && <p className="text-sm text-slate-600 dark:text-slate-400"><Link to="/sign-in" className="font-semibold text-[#785910] hover:underline dark:text-[#dfbe74]">{i18n.t('Sign in')}</Link>{' '}{i18n.t('to review after a completed stay.')}</p>}
               {reviewSubmitted && <p role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800 dark:border-emerald-400/20 dark:bg-emerald-950/40 dark:text-emerald-200">{i18n.t('Your review was submitted and will appear after approval.')}</p>}
-              {eligibilityLoading && currentUser?.id && <p role="status" className="rounded-xl border border-blue-200 bg-blue-50/80 px-4 py-3 text-sm text-blue-900 dark:border-blue-400/20 dark:bg-blue-950/40 dark:text-blue-100">{i18n.t('Checking whether you can review this stay...')}</p>}
+              {eligibilityLoading && currentUser?.id && <p role="status" className="rounded-xl border border-[#c6a052] bg-[#c6a052]/20 px-4 py-3 text-sm text-[#785910] dark:border-[#dfbe74]/20 dark:bg-[#080d1a]/40 dark:text-[#c6a052]">{i18n.t('Checking whether you can review this stay...')}</p>}
               {eligibilityError && <p role="alert" className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-800 dark:border-rose-400/20 dark:bg-rose-950/40 dark:text-rose-200">{eligibilityError} <button type="button" onClick={() => setEligibilityRetry((current) => current + 1)} className="ml-1 font-bold underline underline-offset-2">{i18n.t('Retry')}</button></p>}
               {eligibleBookings.length === 0 && currentUser?.id && !eligibilityLoading && !eligibilityError && <p className="rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-300">{i18n.t('Reviews are available after a confirmed stay is completed.')}</p>}
 
@@ -498,7 +498,7 @@ export function ApartmentDetails({ currentUser: propUser }) {
               bookingForm?.scrollIntoView({ behavior: 'smooth', block: 'start' });
               bookingForm?.focus({ preventScroll: true });
             }}
-            className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-lg bg-blue-700 px-4 text-sm font-semibold text-white transition-colors hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900"
+            className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-lg bg-[#c6a052] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#a68032] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6a052] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900"
           >
             {i18n.t('accessibility.bookStay')}
           </button>
