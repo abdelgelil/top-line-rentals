@@ -13,9 +13,11 @@ import {
   Info,
   MessageSquare,
   ExternalLink,
+  Facebook,
+  Instagram,
 } from 'lucide-react';
 import { sendContactMessage } from '../../services/api';
-import { COMPOUND_ADDRESS, COMPOUND_NAME, CONTACT_PHONE_DISPLAY, HOTLINE_PHONE_DISPLAY } from '../../constants/contactDetails';
+import { COMPOUND_ADDRESS, COMPOUND_NAME, CONTACT_PHONE_DISPLAY, HOTLINE_PHONE_DISPLAY, FACEBOOK_URL, INSTAGRAM_URL } from '../../constants/contactDetails';
 
 export const ContactUs = () => {
   const [formState, setFormState] = useState({
@@ -115,6 +117,12 @@ export const ContactUs = () => {
                 </div>
               </div>
             ))}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">{i18n.t('Follow us')}</span>
+            <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:border-[#c6a052] hover:text-[#785910] dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-200 dark:hover:border-[#dfbe74] dark:hover:text-[#dfbe74]"><Facebook className="h-4 w-4" />Facebook</a>
+            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:border-[#c6a052] hover:text-[#785910] dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-200 dark:hover:border-[#dfbe74] dark:hover:text-[#dfbe74]"><Instagram className="h-4 w-4" />Instagram</a>
           </div>
         </div>
 

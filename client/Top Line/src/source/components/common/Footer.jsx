@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Mail, Phone, MapPin, ShieldCheck } from 'lucide-react';
-import { COMPOUND_ADDRESS, COMPOUND_NAME, CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../../constants/contactDetails';
+import { Mail, Phone, MapPin, ShieldCheck, Facebook, Instagram } from 'lucide-react';
+import { COMPOUND_ADDRESS, COMPOUND_NAME, CONTACT_PHONE, CONTACT_PHONE_DISPLAY, FACEBOOK_URL, INSTAGRAM_URL } from '../../constants/contactDetails';
 import Logo from './Logo';
 
 const Footer = () => {
@@ -49,6 +49,10 @@ const Footer = () => {
           <div className="space-y-4">
             <h2 className="text-base font-semibold tracking-wide text-white">{t('footer.support')}</h2>
             <p className="text-sm leading-relaxed text-slate-400">{t('footer.supportNote')}</p>
+            <div className="flex items-center gap-3 pt-1">
+              <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-700 text-slate-300 transition-colors hover:border-[#dfbe74] hover:text-[#dfbe74]"><Facebook className="h-5 w-5" /></a>
+              <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-700 text-slate-300 transition-colors hover:border-[#dfbe74] hover:text-[#dfbe74]"><Instagram className="h-5 w-5" /></a>
+            </div>
           </div>
         </div>
 

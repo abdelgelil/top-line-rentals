@@ -66,14 +66,13 @@ export const Home = () => {
 
   return (
     <div className="w-full min-h-screen bg-white pb-20 text-slate-900 dark:bg-slate-950 dark:text-white">
-      <section className="container mx-auto max-w-7xl space-y-6 px-4 pb-10 pt-10 text-center sm:px-8 sm:pt-16 lg:px-12">
+      <section className="mx-auto w-full max-w-[1440px] space-y-6 px-4 pb-10 pt-10 text-center sm:px-8 sm:pt-16 lg:px-12">
         <div className="mx-auto max-w-4xl space-y-4">
           <div className="inline-flex items-center gap-2 rounded-full border border-[#c6a052]/20 bg-[#c6a052]/10 px-4 py-2 text-sm font-bold text-[#785910] dark:text-[#dfbe74]"><span>{i18n.t('Luxury Coastal Living')}</span></div>
           <h1 className="text-3xl font-black tracking-tight text-slate-900 sm:text-5xl dark:text-white">{i18n.t('Find Your Perfect Residence in The Towers')}</h1>
           <p className="text-base leading-7 text-slate-600 sm:text-lg dark:text-slate-300">{i18n.t('Book fully serviced apartments with panoramic Mediterranean views and private beach access.')}</p>
         </div>
-        <div className="rounded-3xl border border-slate-200 bg-white p-3 shadow-xl shadow-slate-900/5 dark:border-slate-800 dark:bg-slate-900">
-          <SearchFilterBar
+        <SearchFilterBar
             towerFilter={towerFilter}
             setTowerFilter={setTowerFilter}
             checkIn={checkIn}
@@ -85,8 +84,7 @@ export const Home = () => {
             selectedAmenities={selectedAmenities}
             setSelectedAmenities={setSelectedAmenities}
             onSearch={() => {}}
-          />
-        </div>
+        />
       </section>
 
       {/* Residences Grid Section */}
