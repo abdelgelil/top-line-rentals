@@ -117,6 +117,7 @@ export const createBooking = async (bookingData) => {
   invalidateBookingCache();
   return response;
 };
+export const fetchPaymentOptions = () => API.get('/bookings/payment-options', { skipAuth: true });
 export const fetchUserBookings = () => API.get('/bookings');
 export const fetchApartmentBookings = (apartmentId) =>
   API.get(`/bookings/apartment/${encodeURIComponent(apartmentId)}`, { skipAuth: true });

@@ -87,13 +87,13 @@ export const AdminBookings = () => {
                   <th className="p-4">{i18n.t("Customer Contact")}</th>
                   <th className="p-4">{i18n.t("Dates & Guests")}</th>
                   <th className="p-4">{i18n.t("Total Price")}</th>
-                  <th className="p-4">{i18n.t("Status")}</th>
+                  <th className="p-4">{i18n.t("Deposit / Status")}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
                 {filteredBookings.map((b) => {
                   const apartment = b.apartmentId || b.apartment || {};
-                  const user = b.userId || b.user || b.guestInfo || {};
+                  const user = b.guestInfo || b.userId || (typeof b.user === 'object' ? b.user : {}) || {};
 
                   return (
                     <tr key={b._id || b.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
@@ -120,17 +120,17 @@ export const AdminBookings = () => {
                         <div className="space-y-1">
                           <div className="flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
                             <User className="w-3.5 h-3.5 text-slate-400" />
-                            <span>{user.name || user.fullName || 'Guest'}</span>
+                            <span>{b.guestName || user.name || user.fullName || 'Guest'}</span>
                           </div>
                           <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                             <Phone className="w-3.5 h-3.5 text-slate-400" />
                             <a href={`tel:${user.phone || user.phoneNumber}`} className="hover:underline text-[#785910] dark:text-[#dfbe74] font-mono">
-                              {user.phone || user.phoneNumber || 'N/A'}
+                              {b.guestPhone || user.phone || user.phoneNumber || 'N/A'}
                             </a>
                           </div>
                           <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                             <Mail className="w-3.5 h-3.5 text-slate-400" />
-                            <span>{user.email || 'N/A'}</span>
+                            <span>{b.guestEmail || user.email || 'N/A'}</span>
                           </div>
                         </div>
                       </td>
@@ -151,6 +151,7 @@ export const AdminBookings = () => {
                         <span className="font-black text-slate-900 dark:text-white">
                           {b.totalPrice ? formatCurrency(b.totalPrice) : 'N/A'}
                         </span>
+                        <p className="mt-1 text-xs text-slate-500">{i18n.t('Deposit')}: {b.depositAmount != null ? formatCurrency(b.depositAmount) : '—'}</p>
                       </td>
 
                       {/* Status */}
@@ -172,6 +173,20 @@ export const AdminBookings = () => {
                             </span>
                           )}
                         </span>
+                        <div className="mt-2 max-w-48 text-xs text-slate-600 dark:text-slate-300">
+                          <p>{i18n.t(b.paymentMethod === 'vodafone_cash' ? 'Vodafone Cash' : 'InstaPay')} · {i18n.t(b.paymentStatus || 'No deposit details')}</p>
+                          {b.paymentReference && <p className="mt-1 break-all">{i18n.t('Reference')}: {b.paymentReference}</p>}
+                          {b.status !== 'confirmed' && b.paymentStatus === 'submitted' && (
+                            <button type="button" onClick={async () => {
+                              try {
+                                await apiServices.updateBookingStatus(b._id, 'confirmed');
+                                setBookings((items) => items.map((item) => item._id === b._id ? { ...item, status: 'confirmed', paymentStatus: 'verified' } : item));
+                              } catch (error) {
+                                console.error('Failed to verify deposit:', error);
+                              }
+                            }} className="mt-2 min-h-9 rounded-lg bg-emerald-600 px-3 py-1.5 font-bold text-white hover:bg-emerald-700">{i18n.t('Verify deposit & confirm')}</button>
+                          )}
+                        </div>
                       </td>
 
                     </tr>

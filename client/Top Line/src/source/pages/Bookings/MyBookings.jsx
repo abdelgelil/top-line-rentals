@@ -246,6 +246,16 @@ export default function MyBookings() {
                     </div>
                   </div>
 
+                  <section className="rounded-2xl border border-[#c6a052]/40 bg-[#c6a052]/10 p-4 dark:bg-[#c6a052]/5" aria-label={i18n.t('Payment plan')}>
+                    <div className="grid gap-3 sm:grid-cols-3">
+                      <div><p className="text-xs font-bold uppercase text-slate-600 dark:text-slate-300">{i18n.t('Deposit paid online')}</p><p className="mt-1 font-bold text-slate-900 dark:text-white">{formatCurrency(booking.depositAmount ?? 0)}</p></div>
+                      <div><p className="text-xs font-bold uppercase text-slate-600 dark:text-slate-300">{i18n.t('Remaining cash after your stay')}</p><p className="mt-1 font-bold text-slate-900 dark:text-white">{formatCurrency(booking.remainingAmount ?? Math.max(0, (booking.totalPrice || 0) - (booking.depositAmount || 0)))}</p></div>
+                      <div><p className="text-xs font-bold uppercase text-slate-600 dark:text-slate-300">{i18n.t('Deposit verification')}</p><p className="mt-1 font-bold capitalize text-slate-900 dark:text-white">{i18n.t(booking.paymentStatus || 'Pending')}</p></div>
+                    </div>
+                    <p className="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-200">{i18n.t('You sent the one-night deposit by')} {i18n.t(booking.paymentMethod === 'vodafone_cash' ? 'Vodafone Cash' : 'InstaPay')}{booking.paymentReference ? ` (${i18n.t('Reference')}: ${booking.paymentReference})` : ''}. {i18n.t('We will verify the transfer. Pay the remaining amount in cash after your stay is finished.')}</p>
+                    {booking.paymentStatus === 'submitted' && <p className="mt-2 text-sm font-semibold text-amber-800 dark:text-amber-200">{i18n.t('If you need help, contact support and share your booking details and transfer reference.')}</p>}
+                  </section>
+
                   <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
                     <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                       <Link 

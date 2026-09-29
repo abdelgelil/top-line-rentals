@@ -160,29 +160,29 @@ export const Home = () => {
 
       {/* Perks Banner */}
       <section className="container mx-auto max-w-7xl px-4 pt-8 sm:px-8 lg:px-12">
-        <div className="backdrop-blur-2xl bg-slate-900 dark:bg-slate-900 text-white rounded-3xl p-8 sm:p-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center sm:text-left shadow-2xl border border-[#c6a052]/20">
+        <div className="grid grid-cols-1 gap-8 rounded-2xl border border-[#e7dfd1] bg-[#f9f8f5] p-6 text-center text-[#080d1a] shadow-lg shadow-slate-900/5 sm:p-8 sm:text-left md:grid-cols-3 dark:border-[#1f2e4d] dark:bg-[#0b1325] dark:text-[#f9f8f5] dark:shadow-2xl">
           <div className="space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#c6a052]/10 border border-[#c6a052]/20 text-[#dfbe74] flex items-center justify-center mx-auto sm:mx-0">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-[#c6a052]/30 bg-[#c6a052]/10 text-[#a68032] sm:mx-0 dark:text-[#dfbe74]">
               <Waves className="w-6 h-6" />
             </div>
-            <h4 className="text-lg font-bold text-white">{i18n.t("Panoramic Views")}</h4>
-            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">{' '}{i18n.t("Every apartment features unobstructed Mediterranean horizons and private high-floor balconies.")}{' '}</p>
+            <h4 className="text-lg font-bold text-[#080d1a] dark:text-white">{i18n.t("Panoramic Views")}</h4>
+            <p className="text-xs leading-relaxed text-slate-600 sm:text-sm dark:text-slate-400">{' '}{i18n.t("Every apartment features unobstructed Mediterranean horizons and private high-floor balconies.")}{' '}</p>
           </div>
 
           <div className="space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#c6a052]/10 border border-[#c6a052]/20 text-[#dfbe74] flex items-center justify-center mx-auto sm:mx-0">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-[#c6a052]/30 bg-[#c6a052]/10 text-[#a68032] sm:mx-0 dark:text-[#dfbe74]">
               <ShieldCheck className="w-6 h-6" />
             </div>
-            <h4 className="text-lg font-bold text-white">{i18n.t("24/7 Concierge")}</h4>
-            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">{' '}{i18n.t("Enjoy private parking, round-the-clock security, and room service upon request.")}{' '}</p>
+            <h4 className="text-lg font-bold text-[#080d1a] dark:text-white">{i18n.t("24/7 Concierge")}</h4>
+            <p className="text-xs leading-relaxed text-slate-600 sm:text-sm dark:text-slate-400">{' '}{i18n.t("Enjoy private parking, round-the-clock security, and room service upon request.")}{' '}</p>
           </div>
 
           <div className="space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#c6a052]/10 border border-[#c6a052]/20 text-[#dfbe74] flex items-center justify-center mx-auto sm:mx-0">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-[#c6a052]/30 bg-[#c6a052]/10 text-[#a68032] sm:mx-0 dark:text-[#dfbe74]">
               <Building2 className="w-6 h-6" />
             </div>
-            <h4 className="text-lg font-bold text-white">{i18n.t("Prime Access")}</h4>
-            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">{' '}{i18n.t("Direct indoor elevator access to luxury shopping centers, cinema, and dining.")}{' '}</p>
+            <h4 className="text-lg font-bold text-[#080d1a] dark:text-white">{i18n.t("Prime Access")}</h4>
+            <p className="text-xs leading-relaxed text-slate-600 sm:text-sm dark:text-slate-400">{' '}{i18n.t("Direct indoor elevator access to luxury shopping centers, cinema, and dining.")}{' '}</p>
           </div>
         </div>
       </section>

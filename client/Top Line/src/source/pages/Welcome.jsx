@@ -129,7 +129,7 @@ export default function Welcome() {
         <form onSubmit={(event) => { event.preventDefault(); navigate('/apartments'); }} className="grid gap-4 rounded-2xl border border-[#a68032]/25 bg-white p-4 shadow-[0_20px_50px_-30px_rgba(15,23,42,0.24)] sm:grid-cols-[1fr_auto] sm:items-end sm:p-6 dark:border-[#c6a052]/30 dark:bg-[#131b2e] dark:shadow-[0_20px_50px_-30px_rgba(0,0,0,.8)]">
           <div className="text-sm font-semibold text-slate-700 dark:text-[#d4cebf]">
             <p>{t('Where would you like to stay?', 'Where would you like to stay?')}</p>
-            <div className="mt-2 flex min-h-12 items-center gap-3 rounded-xl border border-slate-200 bg-[#f8f5ed] px-4 text-slate-700 dark:border-[#1f2e4d] dark:bg-[#080d1a] dark:text-[#d4cebf]"><Search className="h-5 w-5 shrink-0 text-[#785910] dark:text-[#dfbe74]" aria-hidden="true" /><span>{t('Explore coastal residences in Alamein City', 'Explore coastal residences in Alamein City')}</span></div>
+            <div className="mt-2 flex min-h-12 items-center gap-3 rounded-xl border border-slate-200 bg-[#f8f5ed] px-4 text-slate-700 dark:border-[#1f2e4d] dark:bg-[#080d1a] dark:text-[#d4cebf]"><Search className="h-5 w-5 shrink-0 text-[#785910] dark:text-[#dfbe74]" aria-hidden="true" /><span>{t('Explore coastal residences in Alexandria', 'Explore coastal residences in Alexandria')}</span></div>
           </div>
           <button type="submit" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#c6a052] px-6 font-bold text-[#080d1a] transition-colors hover:bg-[#dfbe74]">{t('Search stays', 'Search stays')}<ArrowRight className="h-4 w-4" aria-hidden="true" /></button>
         </form>

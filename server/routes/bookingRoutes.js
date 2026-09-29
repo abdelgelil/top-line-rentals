@@ -24,6 +24,14 @@ const invalidateAnalyticsCache = () => {
   analyticsCache = null;
 };
 
+router.get('/payment-options', (_req, res) => res.json({
+  success: true,
+  data: {
+    vodafoneCashNumber: process.env.VODAFONE_CASH_NUMBER || '',
+    instapayAddress: process.env.INSTAPAY_ADDRESS || '',
+  },
+}));
+
 /* ==========================================================================
    GET /api/bookings/analytics - Fetch Admin Dashboard Analytics & VIP Clients
    ========================================================================== */
@@ -207,7 +215,8 @@ router.post('/', bookingActionLimiter, requireAuth, async (req, res) => {
       checkIn,
       checkOut,
       guests,
-      totalPrice,
+      paymentMethod,
+      paymentReference,
     } = req.body;
 
     const targetApartmentId = apartment || apartmentId;
@@ -248,10 +257,23 @@ router.post('/', bookingActionLimiter, requireAuth, async (req, res) => {
 
     const diffTime = Math.abs(endDate - startDate);
     const calculatedNights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    const calculatedTotalPrice =
-      totalPrice && !isNaN(Number(totalPrice))
-        ? Number(totalPrice)
-        : calculatedNights * (apartmentDoc.pricePerNight || apartmentDoc.price || 0);
+    if (!['vodafone_cash', 'instapay'].includes(paymentMethod)) {
+      return res.status(400).json({ success: false, message: 'Choose Vodafone Cash or InstaPay.' });
+    }
+    if (typeof paymentReference !== 'string' || !paymentReference.trim()) {
+      return res.status(400).json({ success: false, message: 'Enter the transfer reference after sending the deposit.' });
+    }
+    if (paymentMethod === 'vodafone_cash' && !process.env.VODAFONE_CASH_NUMBER) {
+      return res.status(503).json({ success: false, message: 'Vodafone Cash is not configured yet. Please contact support.' });
+    }
+    if (paymentMethod === 'instapay' && !process.env.INSTAPAY_ADDRESS) {
+      return res.status(503).json({ success: false, message: 'InstaPay is not configured yet. Please contact support.' });
+    }
+    const nightlyPrice = Number(apartmentDoc.pricePerNight || apartmentDoc.price || 0);
+    const calculatedTotalPrice = calculatedNights * nightlyPrice;
+    if (!nightlyPrice || !Number.isFinite(calculatedTotalPrice)) {
+      return res.status(400).json({ success: false, message: 'This apartment does not have a valid nightly price.' });
+    }
 
     const bookingPayload = {
       apartment: targetApartmentId,
@@ -263,6 +285,11 @@ router.post('/', bookingActionLimiter, requireAuth, async (req, res) => {
       checkOut: endDate,
       guests: Number(guests) || 1,
       totalPrice: calculatedTotalPrice,
+      depositAmount: Math.min(nightlyPrice, calculatedTotalPrice),
+      remainingAmount: Math.max(0, calculatedTotalPrice - nightlyPrice),
+      paymentMethod,
+      paymentReference: paymentReference.trim(),
+      paymentStatus: 'submitted',
       status: 'pending',
     };
 
@@ -335,7 +362,7 @@ router.get('/', requireAuth, async (req, res) => {
     }
 
     const bookings = await Booking.find(filter)
-      .select('guestName guestEmail guestPhone checkIn checkOut guests totalPrice status apartment user createdAt')
+      .select('guestName guestEmail guestPhone checkIn checkOut guests totalPrice depositAmount remainingAmount paymentMethod paymentReference paymentStatus status apartment user createdAt')
       .populate('apartment', 'title tower images')
       .sort({ createdAt: -1 })
       .lean();
@@ -361,6 +388,19 @@ router.patch('/:id/status', requireAuth, requireAdmin, async (req, res) => {
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ success: false, message: 'Invalid booking ID' });
+    }
+
+    if (!['pending', 'confirmed', 'cancelled', 'canceled'].includes(status)) {
+      return res.status(400).json({ success: false, message: 'Invalid booking status.' });
+    }
+    if (status === 'confirmed') {
+      const booking = await Booking.findById(id);
+      if (!booking) return res.status(404).json({ success: false, message: 'Booking not found' });
+      booking.status = 'confirmed';
+      booking.paymentStatus = 'verified';
+      await booking.save();
+      invalidateAnalyticsCache();
+      return res.json({ success: true, data: booking });
     }
 
     const updatedBooking = await Booking.findByIdAndUpdate(

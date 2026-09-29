@@ -187,6 +187,35 @@ const arabic = {
   'Invalid apartment selection.': 'اختيار الشقة غير صالح.', 'Failed to upload image to Cloudinary': 'تعذر رفع الصورة إلى كلاوديناري', 'English': 'English', 'العربية': 'العربية',
 };
 
+const paymentArabic = {
+  'Pay one night deposit': 'ادفع عربون ليلة واحدة',
+  'Send only one night now. Pay the remaining balance in cash after your stay is finished.': 'ادفع قيمة ليلة واحدة فقط الآن، وادفع المبلغ المتبقي نقدًا بعد انتهاء فترة الإقامة.',
+  'Vodafone Cash': 'فودافون كاش',
+  'InstaPay': 'إنستا باي',
+  'Deposit to send now': 'قيمة العربون المطلوب إرسالها الآن',
+  'Transfer to': 'حوّل إلى',
+  'Payment details are being set up. Please contact support.': 'يجري إعداد بيانات الدفع. يُرجى التواصل مع الدعم.',
+  'Send exactly the one-night deposit using the selected method.': 'أرسل قيمة عربون ليلة واحدة بالضبط باستخدام طريقة الدفع المختارة.',
+  'Copy the transaction reference from your payment confirmation.': 'انسخ الرقم المرجعي للمعاملة من تأكيد الدفع.',
+  'Enter the reference below. We will verify it and update your reservation.': 'أدخل الرقم المرجعي أدناه. سنراجع التحويل ونحدّث حالة حجزك.',
+  'Pay the remaining balance in cash after your stay is finished.': 'ادفع المبلغ المتبقي نقدًا بعد انتهاء فترة الإقامة.',
+  'Transfer reference': 'الرقم المرجعي للتحويل',
+  'Enter the transaction ID or reference': 'أدخل رقم المعاملة أو الرقم المرجعي',
+  'The selected payment method is not available yet. Please contact support or choose the other method.': 'طريقة الدفع المختارة غير متاحة حاليًا. يُرجى التواصل مع الدعم أو اختيار الطريقة الأخرى.',
+  'Payment details are being set up. Please contact support before booking.': 'يجري إعداد بيانات الدفع. يُرجى التواصل مع الدعم قبل إتمام الحجز.',
+  'Submit deposit & reserve': 'أرسل بيانات العربون وأكمل الحجز',
+  'Deposit paid online': 'العربون المدفوع إلكترونيًا',
+  'Remaining cash after your stay': 'المبلغ المتبقي نقدًا بعد الإقامة',
+  'Deposit verification': 'حالة التحقق من العربون',
+  'You sent the one-night deposit by': 'لقد أرسلت عربون ليلة واحدة عبر',
+  'We will verify the transfer. Pay the remaining amount in cash after your stay is finished.': 'سنتحقق من التحويل. ادفع المبلغ المتبقي نقدًا بعد انتهاء فترة الإقامة.',
+  'If you need help, contact support and share your booking details and transfer reference.': 'إذا احتجت إلى مساعدة، فتواصل مع الدعم وأرسل تفاصيل حجزك والرقم المرجعي للتحويل.',
+  'Reference': 'الرقم المرجعي',
+  'submitted': 'قيد المراجعة',
+  'verified': 'تم التحقق',
+  'rejected': 'مرفوض',
+};
+
 const homeKeys = {
   home: 'Home', apartments: 'Apartments', adminPortal: 'Admin Portal', bookNow: 'Book Now', tagline: 'Luxury Coastal Living',
   heroTitle: 'Find Your Perfect Residence in The Towers',
@@ -288,7 +317,7 @@ const flatArabic = Object.fromEntries(Object.entries(arabic));
 const flatEnglish = Object.fromEntries(Object.entries(english));
 const resources = {
   en: { translation: { ...flatEnglish, ...Object.fromEntries(Object.entries(homeKeys).map(([k,v]) => [k,v])), nav: { home: 'Home', apartments: 'Apartments', myBookings: 'My Bookings', saved: 'Saved', adminDashboard: 'Admin Dashboard', addApartment: 'Add Apartment', logout: 'Logout', language: 'Language', contact: 'Contact Us' }, common: { search: 'Search', filter: 'Filter', price: 'Price', details: 'View Details', bookNow: 'Book Now', status: 'Status', actions: 'Actions' } } },
-  ar: { translation: { ...flatArabic, ...Object.fromEntries(Object.entries(homeKeys).map(([k,v]) => [k,flatArabic[v] || v])), nav: { home: 'الرئيسية', apartments: 'الشقق', myBookings: 'حجوزاتي', saved: 'المحفوظات', adminDashboard: 'لوحة الإدارة', addApartment: 'إضافة شقة', logout: 'تسجيل الخروج', language: 'اللغة', contact: 'اتصل بنا' }, common: { search: 'بحث', filter: 'تصفية', price: 'السعر', details: 'عرض التفاصيل', bookNow: 'احجز الآن', status: 'الحالة', actions: 'الإجراءات' } } }
+  ar: { translation: { ...flatArabic, ...paymentArabic, ...Object.fromEntries(Object.entries(homeKeys).map(([k,v]) => [k,flatArabic[v] || v])), nav: { home: 'الرئيسية', apartments: 'الشقق', myBookings: 'حجوزاتي', saved: 'المحفوظات', adminDashboard: 'لوحة الإدارة', addApartment: 'إضافة شقة', logout: 'تسجيل الخروج', language: 'اللغة', contact: 'اتصل بنا' }, common: { search: 'بحث', filter: 'تصفية', price: 'السعر', details: 'عرض التفاصيل', bookNow: 'احجز الآن', status: 'الحالة', actions: 'الإجراءات' } } }
 };
 
 resources.en.translation.auth = { signIn: 'Sign in', createAccount: 'Create account', resetPassword: 'Reset password', forgotPassword: 'Forgot password?', username: 'Username', phone: 'Phone number', accountIdentifier: 'Account phone number or username', email: 'Email address', targetEmail: 'Email address to receive the reset code', emailOptional: 'Email address (optional)', password: 'Password', newPassword: 'New password', signupHint: 'Create your account with a username, phone number, and password.', loginHint: 'Sign in with your phone number and password.', phoneFormat: 'Include your country code, for example +201000000000.', pleaseWait: 'Please wait…', resetEmailHint: 'Enter your account phone number or username and any email address where we can send your reset code.', resetCodeHint: 'Enter the six-digit code sent to your email and choose a new password.', verificationCode: 'Six-digit code', sendCode: 'Send code', haveAccount: 'Already have an account?', noAccount: 'New to Top Line?', signInFailed: 'Could not sign in.', sendFailed: 'Could not send the code.', resetFailed: 'Could not reset your password.', resetCodeSent: 'A reset code has been sent to your email address.', passwordReset: 'Password updated successfully. You can now log in.', welcome: 'You are signed in.' };

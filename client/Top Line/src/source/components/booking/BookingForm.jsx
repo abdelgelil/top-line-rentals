@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { createBooking, fetchApartmentBookings } from "../../services/api";
+import { createBooking, fetchApartmentBookings, fetchPaymentOptions } from "../../services/api";
 import { formatCurrency } from '../../utils/formatters';
 import DateRangePicker, { dateRangeOverlaps, hasBookedNight } from './DateRangePicker';
 import { Users, Phone, Mail, User, CreditCard } from "lucide-react";
@@ -30,6 +30,9 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
     currentUser?.primaryEmailAddress?.emailAddress || currentUser?.email || ''
   );
   const [guestPhone, setGuestPhone] = useState(currentUser?.phone || '');
+  const [paymentOptions, setPaymentOptions] = useState({ vodafoneCashNumber: '', instapayAddress: '' });
+  const [paymentMethod, setPaymentMethod] = useState('vodafone_cash');
+  const [paymentReference, setPaymentReference] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const apartmentId = apartment?._id || apartment?.id;
@@ -57,6 +60,16 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
       });
     return () => { active = false; };
   }, [apartmentId]);
+
+  useEffect(() => {
+    let active = true;
+    fetchPaymentOptions().then(({ data }) => {
+      if (!active) return;
+      const options = data?.data || {};
+      setPaymentOptions(options);
+    }).catch(() => {});
+    return () => { active = false; };
+  }, []);
 
   const availabilityLoading = availability.apartmentId !== apartmentId || availability.loading;
   const availabilityError = availability.apartmentId === apartmentId ? availability.error : '';
@@ -110,6 +123,15 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
       setError(availabilityError || i18n.t('booking.checkingAvailability'));
       return;
     }
+    const recipient = paymentMethod === 'vodafone_cash' ? paymentOptions.vodafoneCashNumber : paymentOptions.instapayAddress;
+    if (!recipient) {
+      setError(i18n.t('This payment method is not available yet. Please contact support.'));
+      return;
+    }
+    if (!paymentReference.trim()) {
+      setError(i18n.t('Enter the transfer reference after sending the deposit.'));
+      return;
+    }
     if (hasBookedNight(checkInDate, bookedRanges) || dateRangeOverlaps(checkInDate, checkOutDate, bookedRanges)) {
       setError(i18n.t('booking.datesUnavailable'));
       return;
@@ -127,14 +149,15 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
         checkIn: start.toISOString(),
         checkOut: end.toISOString(),
         guests: Number(guests),
-        totalPrice: Number(totalPrice),
+        paymentMethod,
+        paymentReference: paymentReference.trim(),
       };
 
       const response = await createBooking(payload);
 
       if (response.data.success) {
         if (onSuccess) onSuccess(response.data.data);
-        toast.success(i18n.t('Your reservation is saved!'));
+        toast.success(i18n.t('Deposit details submitted. Your reservation is pending verification.'));
       }
     } catch (err) {
       console.error('Booking submission failed:', err);
@@ -270,9 +293,40 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
           </div>
         </section>
 
+        <section className="space-y-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/60" aria-labelledby="deposit-heading">
+          <div>
+            <h3 id="deposit-heading" className="font-bold text-slate-900 dark:text-white">{i18n.t('Pay one night deposit')}</h3>
+            <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">{i18n.t('Send only one night now. Pay the remaining balance in cash after your stay is finished.')}</p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {[
+              { id: 'vodafone_cash', label: 'Vodafone Cash' },
+              { id: 'instapay', label: 'InstaPay' },
+            ].map((method) => (
+              <label key={method.id} className={`flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border p-3 transition-colors ${paymentMethod === method.id ? 'border-[#a68032] bg-[#c6a052]/15' : 'border-slate-200 hover:border-[#c6a052]/60 dark:border-slate-700'}`}>
+                <input type="radio" name="deposit-payment-method" value={method.id} checked={paymentMethod === method.id} onChange={() => setPaymentMethod(method.id)} />
+                <span className="font-semibold text-slate-800 dark:text-slate-100">{method.label}</span>
+              </label>
+            ))}
+          </div>
+          <div className="rounded-xl bg-white p-3 text-sm text-slate-700 dark:bg-slate-900 dark:text-slate-200">
+            <p className="font-semibold">{i18n.t('Deposit to send now')}: <span className="text-[#785910] dark:text-[#dfbe74]">{formatCurrency(pricePerNight)}</span></p>
+            <p className="mt-1">{i18n.t('Transfer to')}: <span className="font-bold">{(paymentMethod === 'vodafone_cash' ? paymentOptions.vodafoneCashNumber : paymentOptions.instapayAddress) || i18n.t('Payment details are being set up. Please contact support.')}</span></p>
+          </div>
+          <ol className="list-decimal space-y-1 pl-5 text-sm leading-5 text-slate-600 dark:text-slate-300">
+            <li>{i18n.t('Send exactly the one-night deposit using the selected method.')}</li>
+            <li>{i18n.t('Copy the transaction reference from your payment confirmation.')}</li>
+            <li>{i18n.t('Enter the reference below. We will verify it and update your reservation.')}</li>
+            <li>{i18n.t('Pay the remaining balance in cash after your stay is finished.')}</li>
+          </ol>
+          <label htmlFor="booking-payment-reference" className="block text-sm font-semibold text-slate-700 dark:text-slate-200">{i18n.t('Transfer reference')}</label>
+          <input id="booking-payment-reference" required maxLength={120} value={paymentReference} onChange={(e) => setPaymentReference(e.target.value)} placeholder={i18n.t('Enter the transaction ID or reference')} className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none focus:ring-4 focus:ring-[#c6a052]/30 dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
+          {!(paymentMethod === 'vodafone_cash' ? paymentOptions.vodafoneCashNumber : paymentOptions.instapayAddress) && <p role="status" className="text-sm text-amber-800 dark:text-amber-200">{i18n.t('The selected payment method is not available yet. Please contact support or choose the other method.')}</p>}
+        </section>
+
         <button 
           type="submit" 
-          disabled={loading || !checkInDate || !checkOutDate || availabilityLoading || Boolean(availabilityError)}
+          disabled={loading || !checkInDate || !checkOutDate || availabilityLoading || Boolean(availabilityError) || !(paymentMethod === 'vodafone_cash' ? paymentOptions.vodafoneCashNumber : paymentOptions.instapayAddress) || !paymentReference.trim()}
           className="min-h-14 w-full rounded-2xl bg-slate-900 px-5 py-4 text-base font-bold !text-white transition-all hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50 dark:bg-[#c6a052] dark:!text-slate-950 dark:hover:bg-[#a68032] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg"
         >
           {loading ? (
@@ -280,7 +334,7 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
           ) : (
             <>
               <CreditCard className="w-4 h-4" />
-              <span>{i18n.t("Reserve Now")}</span>
+              <span>{i18n.t("Submit deposit & reserve")}</span>
             </>
           )}
         </button>
