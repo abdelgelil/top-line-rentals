@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../context/AuthContext';
 import { ArrowRight, Building, KeyRound, MapPin, Phone, PhoneCall, Search, ShieldCheck, Waves } from 'lucide-react';
 import { fetchApartments } from '../services/api';
 import { ApartmentCard } from '../components/apartment/ApartmentCard';
@@ -12,6 +13,7 @@ const HERO_IMAGE = '/welcome1.jpg';
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#dfbe74] focus-visible:ring-offset-[#080d1a]';
 
 function CtaPair({ t, variant = 'hero' }) {
+  const { isSignedIn } = useAuth();
   const isBanner = variant === 'banner';
   const bookClass = isBanner
     ? 'bg-[#c6a052] text-[#080d1a] font-semibold hover:bg-[#dfbe74]'
@@ -22,7 +24,7 @@ function CtaPair({ t, variant = 'hero' }) {
 
   return (
     <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
-      <Link to="/sign-in" className={`inline-flex min-h-12 w-full items-center justify-center rounded-full px-6 py-3 text-sm font-semibold shadow-xl transition-all motion-reduce:transition-none sm:w-auto sm:px-8 sm:py-4 sm:text-base ${bookClass} ${focusRing}`}>
+      <Link to={isSignedIn ? '/apartments' : '/sign-in'} className={`inline-flex min-h-12 w-full items-center justify-center rounded-full px-6 py-3 text-sm font-semibold shadow-xl transition-all motion-reduce:transition-none sm:w-auto sm:px-8 sm:py-4 sm:text-base ${bookClass} ${focusRing}`}>
         {t('welcome.bookNow')}
       </Link>
       <Link to="/contact" className={`inline-flex min-h-12 w-full items-center justify-center rounded-full border px-6 py-3 text-sm font-semibold backdrop-blur-md transition-all motion-reduce:transition-none sm:w-auto sm:px-8 sm:py-4 sm:text-base ${contactClass} ${focusRing}`}>
