@@ -216,7 +216,6 @@ router.post('/', bookingActionLimiter, requireAuth, async (req, res) => {
       checkOut,
       guests,
       paymentMethod,
-      paymentReference,
     } = req.body;
 
     const targetApartmentId = apartment || apartmentId;
@@ -260,15 +259,6 @@ router.post('/', bookingActionLimiter, requireAuth, async (req, res) => {
     if (!['vodafone_cash', 'instapay'].includes(paymentMethod)) {
       return res.status(400).json({ success: false, message: 'Choose Vodafone Cash or InstaPay.' });
     }
-    if (typeof paymentReference !== 'string' || !paymentReference.trim()) {
-      return res.status(400).json({ success: false, message: 'Enter the transfer reference after sending the deposit.' });
-    }
-    if (paymentMethod === 'vodafone_cash' && !process.env.VODAFONE_CASH_NUMBER) {
-      return res.status(503).json({ success: false, message: 'Vodafone Cash is not configured yet. Please contact support.' });
-    }
-    if (paymentMethod === 'instapay' && !process.env.INSTAPAY_ADDRESS) {
-      return res.status(503).json({ success: false, message: 'InstaPay is not configured yet. Please contact support.' });
-    }
     const nightlyPrice = Number(apartmentDoc.pricePerNight || apartmentDoc.price || 0);
     const calculatedTotalPrice = calculatedNights * nightlyPrice;
     if (!nightlyPrice || !Number.isFinite(calculatedTotalPrice)) {
@@ -288,8 +278,8 @@ router.post('/', bookingActionLimiter, requireAuth, async (req, res) => {
       depositAmount: Math.min(nightlyPrice, calculatedTotalPrice),
       remainingAmount: Math.max(0, calculatedTotalPrice - nightlyPrice),
       paymentMethod,
-      paymentReference: paymentReference.trim(),
-      paymentStatus: 'submitted',
+      paymentReference: '',
+      paymentStatus: 'awaiting_whatsapp',
       status: 'pending',
     };
 

@@ -7,6 +7,7 @@ import { createBooking, fetchApartmentBookings, fetchPaymentOptions } from "../.
 import { formatCurrency } from '../../utils/formatters';
 import DateRangePicker, { dateRangeOverlaps, hasBookedNight } from './DateRangePicker';
 import { Users, Phone, Mail, User, CreditCard } from "lucide-react";
+import { CONTACT_PHONE } from '../../constants/contactDetails';
 
 const getStayNights = (checkIn, checkOut) => {
   if (!checkIn || !checkOut) return 0;
@@ -32,7 +33,6 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
   const [guestPhone, setGuestPhone] = useState(currentUser?.phone || '');
   const [paymentOptions, setPaymentOptions] = useState({ vodafoneCashNumber: '', instapayAddress: '' });
   const [paymentMethod, setPaymentMethod] = useState('vodafone_cash');
-  const [paymentReference, setPaymentReference] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const apartmentId = apartment?._id || apartment?.id;
@@ -123,15 +123,6 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
       setError(availabilityError || i18n.t('booking.checkingAvailability'));
       return;
     }
-    const recipient = paymentMethod === 'vodafone_cash' ? paymentOptions.vodafoneCashNumber : paymentOptions.instapayAddress;
-    if (!recipient) {
-      setError(i18n.t('This payment method is not available yet. Please contact support.'));
-      return;
-    }
-    if (!paymentReference.trim()) {
-      setError(i18n.t('Enter the transfer reference after sending the deposit.'));
-      return;
-    }
     if (hasBookedNight(checkInDate, bookedRanges) || dateRangeOverlaps(checkInDate, checkOutDate, bookedRanges)) {
       setError(i18n.t('booking.datesUnavailable'));
       return;
@@ -150,14 +141,23 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
         checkOut: end.toISOString(),
         guests: Number(guests),
         paymentMethod,
-        paymentReference: paymentReference.trim(),
       };
 
       const response = await createBooking(payload);
 
       if (response.data.success) {
-        if (onSuccess) onSuccess(response.data.data);
-        toast.success(i18n.t('Deposit details submitted. Your reservation is pending verification.'));
+        const booking = response.data.data;
+        if (onSuccess) onSuccess(booking);
+        const message = [
+          i18n.t('Hello, I have submitted my reservation and deposit.'),
+          `${i18n.t('Booking ID')}: ${booking._id}`,
+          `${i18n.t('Apartment')}: ${apartment?.title || i18n.t('Your selected apartment')}`,
+          `${i18n.t('Deposit payment method')}: ${i18n.t(paymentMethod === 'vodafone_cash' ? 'Vodafone Cash' : 'InstaPay')}`,
+          `${i18n.t('Deposit amount')}: ${formatCurrency(booking.depositAmount)}`,
+          i18n.t('I will attach my payment screenshot in this WhatsApp chat. Please confirm my reservation after receiving it.'),
+        ].join('\n');
+        toast.success(i18n.t('Opening WhatsApp with your payment proof...'));
+        window.location.assign(`https://wa.me/${CONTACT_PHONE.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`);
       }
     } catch (err) {
       console.error('Booking submission failed:', err);
@@ -315,18 +315,17 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
           </div>
           <ol className="list-decimal space-y-1 pl-5 text-sm leading-5 text-slate-600 dark:text-slate-300">
             <li>{i18n.t('Send exactly the one-night deposit using the selected method.')}</li>
-            <li>{i18n.t('Copy the transaction reference from your payment confirmation.')}</li>
-            <li>{i18n.t('Enter the reference below. We will verify it and update your reservation.')}</li>
+            <li>{i18n.t('After paying, take a screenshot of the successful payment confirmation.')}</li>
+            <li>{i18n.t('Submit your reservation. WhatsApp will open with your booking details.')}</li>
+            <li>{i18n.t('Attach the screenshot in the WhatsApp chat and tap Send. Your reservation stays pending until we receive it.')}</li>
             <li>{i18n.t('Pay the remaining balance in cash after your stay is finished.')}</li>
           </ol>
-          <label htmlFor="booking-payment-reference" className="block text-sm font-semibold text-slate-700 dark:text-slate-200">{i18n.t('Transfer reference')}</label>
-          <input id="booking-payment-reference" required maxLength={120} value={paymentReference} onChange={(e) => setPaymentReference(e.target.value)} placeholder={i18n.t('Enter the transaction ID or reference')} className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none focus:ring-4 focus:ring-[#c6a052]/30 dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
-          {!(paymentMethod === 'vodafone_cash' ? paymentOptions.vodafoneCashNumber : paymentOptions.instapayAddress) && <p role="status" className="text-sm text-amber-800 dark:text-amber-200">{i18n.t('The selected payment method is not available yet. Please contact support or choose the other method.')}</p>}
+          {!(paymentMethod === 'vodafone_cash' ? paymentOptions.vodafoneCashNumber : paymentOptions.instapayAddress) && <p role="status" className="text-sm text-amber-800 dark:text-amber-200">{i18n.t('Payment account details are not configured yet. You can still submit your reservation; contact support for deposit instructions.')}</p>}
         </section>
 
         <button 
           type="submit" 
-          disabled={loading || !checkInDate || !checkOutDate || availabilityLoading || Boolean(availabilityError) || !(paymentMethod === 'vodafone_cash' ? paymentOptions.vodafoneCashNumber : paymentOptions.instapayAddress) || !paymentReference.trim()}
+          disabled={loading || !checkInDate || !checkOutDate || availabilityLoading || Boolean(availabilityError)}
           className="min-h-14 w-full rounded-2xl bg-slate-900 px-5 py-4 text-base font-bold !text-white transition-all hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c6a052]/50 dark:bg-[#c6a052] dark:!text-slate-950 dark:hover:bg-[#a68032] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg"
         >
           {loading ? (

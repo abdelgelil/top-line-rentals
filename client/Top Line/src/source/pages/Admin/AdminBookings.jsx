@@ -65,6 +65,10 @@ export const AdminBookings = () => {
         </div>
       </div>
 
+      <p className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-100">
+        {i18n.t('Reservations remain pending until you receive the payment screenshot in WhatsApp. Confirm only after checking the WhatsApp chat.')}
+      </p>
+
       {/* Bookings Table */}
       {loading ? (
         <div className="space-y-4">
@@ -176,7 +180,7 @@ export const AdminBookings = () => {
                         <div className="mt-2 max-w-48 text-xs text-slate-600 dark:text-slate-300">
                           <p>{i18n.t(b.paymentMethod === 'vodafone_cash' ? 'Vodafone Cash' : 'InstaPay')} · {i18n.t(b.paymentStatus || 'No deposit details')}</p>
                           {b.paymentReference && <p className="mt-1 break-all">{i18n.t('Reference')}: {b.paymentReference}</p>}
-                          {b.status !== 'confirmed' && b.paymentStatus === 'submitted' && (
+                          {b.status !== 'confirmed' && ['awaiting_whatsapp', 'submitted'].includes(b.paymentStatus) && (
                             <button type="button" onClick={async () => {
                               try {
                                 await apiServices.updateBookingStatus(b._id, 'confirmed');
@@ -184,7 +188,7 @@ export const AdminBookings = () => {
                               } catch (error) {
                                 console.error('Failed to verify deposit:', error);
                               }
-                            }} className="mt-2 min-h-9 rounded-lg bg-emerald-600 px-3 py-1.5 font-bold text-white hover:bg-emerald-700">{i18n.t('Verify deposit & confirm')}</button>
+                            }} className="mt-2 min-h-9 rounded-lg bg-emerald-600 px-3 py-1.5 font-bold text-white hover:bg-emerald-700">{i18n.t('Screenshot received on WhatsApp — confirm booking')}</button>
                           )}
                         </div>
                       </td>

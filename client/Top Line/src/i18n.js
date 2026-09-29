@@ -214,6 +214,23 @@ const paymentArabic = {
   'submitted': 'قيد المراجعة',
   'verified': 'تم التحقق',
   'rejected': 'مرفوض',
+  'Take a screenshot of the successful payment confirmation.': 'التقط صورة شاشة لتأكيد نجاح عملية الدفع.',
+  'Upload the screenshot below, then submit your reservation.': 'ارفع صورة الشاشة أدناه، ثم أرسل طلب الحجز.',
+  'After paying, take a screenshot of the successful payment confirmation.': 'بعد الدفع، التقط صورة شاشة لتأكيد نجاح عملية الدفع.',
+  'Submit your reservation. WhatsApp will open with your booking details.': 'أرسل طلب الحجز، وسيُفتح واتساب متضمنًا تفاصيل حجزك.',
+  'Attach the screenshot in the WhatsApp chat and tap Send. Your reservation stays pending until we receive it.': 'أرفق صورة الشاشة في محادثة واتساب واضغط على إرسال. سيظل حجزك معلّقًا حتى نستلمها.',
+  'I will attach my payment screenshot in this WhatsApp chat. Please confirm my reservation after receiving it.': 'سأرفق صورة إثبات الدفع في محادثة واتساب هذه. يُرجى تأكيد حجزي بعد استلامها.',
+  'Payment account details are not configured yet. You can still submit your reservation; contact support for deposit instructions.': 'لم تُضبط بيانات حساب الدفع بعد. يمكنك إرسال طلب الحجز، ويُرجى التواصل مع الدعم لمعرفة تعليمات دفع العربون.',
+  'Hello, I have submitted my reservation and deposit.': 'مرحبًا، أرسلت طلب الحجز والعربون.',
+  'Booking ID': 'رقم الحجز',
+  'Deposit payment method': 'طريقة دفع العربون',
+  'Deposit amount': 'قيمة العربون',
+  'Please review my payment screenshot and confirm my reservation.': 'يُرجى مراجعة صورة إثبات الدفع وتأكيد حجزي.',
+  'Opening WhatsApp with your payment proof...': 'جارٍ فتح واتساب مع إثبات الدفع...',
+  'awaiting_whatsapp': 'بانتظار استلام الصورة عبر واتساب',
+  'Reservations remain pending until you receive the payment screenshot in WhatsApp. Confirm only after checking the WhatsApp chat.': 'تظل الحجوزات معلّقة حتى تستلم صورة الدفع عبر واتساب. لا تؤكد الحجز إلا بعد التحقق من وصول الصورة في المحادثة.',
+  'Screenshot received on WhatsApp — confirm booking': 'تم استلام الصورة عبر واتساب — أكّد الحجز',
+  'Your reservation is pending. It will be confirmed after the admin receives your screenshot in WhatsApp.': 'حجزك معلّق، وسيتم تأكيده بعد استلام المشرف للصورة عبر واتساب.',
 };
 
 const homeKeys = {

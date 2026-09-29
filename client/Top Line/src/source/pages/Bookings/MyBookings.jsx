@@ -253,7 +253,7 @@ export default function MyBookings() {
                       <div><p className="text-xs font-bold uppercase text-slate-600 dark:text-slate-300">{i18n.t('Deposit verification')}</p><p className="mt-1 font-bold capitalize text-slate-900 dark:text-white">{i18n.t(booking.paymentStatus || 'Pending')}</p></div>
                     </div>
                     <p className="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-200">{i18n.t('You sent the one-night deposit by')} {i18n.t(booking.paymentMethod === 'vodafone_cash' ? 'Vodafone Cash' : 'InstaPay')}{booking.paymentReference ? ` (${i18n.t('Reference')}: ${booking.paymentReference})` : ''}. {i18n.t('We will verify the transfer. Pay the remaining amount in cash after your stay is finished.')}</p>
-                    {booking.paymentStatus === 'submitted' && <p className="mt-2 text-sm font-semibold text-amber-800 dark:text-amber-200">{i18n.t('If you need help, contact support and share your booking details and transfer reference.')}</p>}
+                    {booking.paymentStatus === 'awaiting_whatsapp' && <p className="mt-2 text-sm font-semibold text-amber-800 dark:text-amber-200">{i18n.t('Your reservation is pending. It will be confirmed after the admin receives your screenshot in WhatsApp.')}</p>}
                   </section>
 
                   <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">

@@ -49,8 +49,8 @@ const bookingSchema = new mongoose.Schema(
     depositAmount: { type: Number, required: true, min: 0 },
     remainingAmount: { type: Number, required: true, min: 0 },
     paymentMethod: { type: String, enum: ['vodafone_cash', 'instapay'], required: true },
-    paymentReference: { type: String, required: true, trim: true, maxlength: 120 },
-    paymentStatus: { type: String, enum: ['submitted', 'verified', 'rejected'], default: 'submitted' },
+    paymentReference: { type: String, default: '', trim: true, maxlength: 120 },
+    paymentStatus: { type: String, enum: ['awaiting_whatsapp', 'submitted', 'verified', 'rejected'], default: 'awaiting_whatsapp' },
     status: {
       type: String,
       enum: ['pending', 'confirmed', 'cancelled', 'canceled'],
