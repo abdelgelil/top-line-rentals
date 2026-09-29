@@ -42,6 +42,7 @@ export const AdminMessages = () => {
     try {
       await markMessageAsRead(id);
       setMessages(prev => prev.map(m => m._id === id ? { ...m, isRead: true } : m));
+      window.dispatchEvent(new Event('admin-messages-updated'));
       toast.success(i18n.t('Message marked as read.'));
     } catch (err) {
       console.error('Error marking as read:', err);
@@ -155,7 +156,7 @@ export const AdminMessages = () => {
                     )}
                   </h3>
                   <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
-                    <span className="flex items-center gap-1"><Mail className="w-3 h-3" /> {selectedMessage.email}</span>
+                    <span className="flex items-center gap-1"><Mail className="w-3 h-3" /> {selectedMessage.email || '—'}</span>
                     <span className="flex items-center gap-1"><Phone className="w-3 h-3" /> {selectedMessage.phone}</span>
                     <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {new Date(selectedMessage.createdAt).toLocaleString()}</span>
                   </div>

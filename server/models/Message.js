@@ -7,7 +7,7 @@ const messageSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true
+    default: ''
   },
   phone: {
     type: String,

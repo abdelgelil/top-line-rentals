@@ -169,7 +169,8 @@ export const sendContactMessage = (formData) =>
     invalidateCache('admin:messages');
     return response;
   });
-export const fetchMessages = () => cachedGet('admin:messages', () => API.get('/messages'));
+export const fetchMessages = ({ refresh = false } = {}) =>
+  refresh ? API.get('/messages') : cachedGet('admin:messages', () => API.get('/messages'));
 export const markMessageAsRead = async (id) => {
   const response = await API.patch(`/messages/${id}/read`);
   invalidateCache('admin:messages');

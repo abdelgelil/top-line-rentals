@@ -143,13 +143,12 @@ export const ContactUs = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{i18n.t("Email Address")}</label>
+                  <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{i18n.t("Email Address")} ({i18n.t("Optional")})</label>
                   <input
                     type="email"
                     name="email"
                     value={formState.email}
                     onChange={handleInputChange}
-                    required
                     className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#c6a052] focus:border-transparent outline-none transition-all"
                     placeholder={i18n.t("john@example.com")}
                   />

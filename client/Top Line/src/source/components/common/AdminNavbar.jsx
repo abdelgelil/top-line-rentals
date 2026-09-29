@@ -1,17 +1,49 @@
 import i18n from "../../../i18n.js";
 import { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { Building2, LayoutDashboard, ShieldCheck, CalendarCheck, Mail, Menu, X, ExternalLink, LogOut, UserRound, Star } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Logo from './Logo';
 import { LanguageToggle } from './LanguageToggle';
 import ThemeToggle from './ThemeToggle';
+import { fetchMessages } from '../../services/api';
 
 const AdminNavbar = () => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [unreadMessages, setUnreadMessages] = useState(0);
   const { user, signOut } = useAuth();
+  const location = useLocation();
+
+  useEffect(() => {
+    let active = true;
+    const loadUnreadCount = async () => {
+      try {
+        const response = await fetchMessages({ refresh: true });
+        const messages = response?.data?.data || [];
+        if (active) setUnreadMessages(messages.filter((message) => !message.isRead).length);
+      } catch {
+        // Keep the last known count if the inbox is temporarily unavailable.
+      }
+    };
+    loadUnreadCount();
+    const intervalId = window.setInterval(loadUnreadCount, 30_000);
+    window.addEventListener('focus', loadUnreadCount);
+    window.addEventListener('admin-messages-updated', loadUnreadCount);
+    return () => {
+      active = false;
+      window.clearInterval(intervalId);
+      window.removeEventListener('focus', loadUnreadCount);
+      window.removeEventListener('admin-messages-updated', loadUnreadCount);
+    };
+  }, [location.pathname]);
+
+  const unreadBadge = unreadMessages > 0 && (
+    <span className="ms-auto inline-flex min-w-5 items-center justify-center rounded-full bg-rose-600 px-1.5 py-0.5 text-[11px] font-bold leading-none text-white" aria-label={`${unreadMessages} unread messages`}>
+      {unreadMessages > 99 ? '99+' : unreadMessages}
+    </span>
+  );
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -69,6 +101,7 @@ const AdminNavbar = () => {
             <NavLink to="/admin/messages" className={linkClass}>
               <Mail className="w-4 h-4" />
               <span>{i18n.t('Messages')}</span>
+              {unreadBadge}
             </NavLink>
             <NavLink to="/admin/reviews" className={linkClass}>
               <Star className="w-4 h-4" />
@@ -174,6 +207,7 @@ const AdminNavbar = () => {
           >
             <Mail className="w-4 h-4" />
             <span>{i18n.t('Messages')}</span>
+            {unreadBadge}
           </NavLink>
           <NavLink
             to="/admin/reviews"

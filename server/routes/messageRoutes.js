@@ -8,18 +8,19 @@ const router = express.Router();
 // Create a new contact message
 router.post('/', async (req, res) => {
   try {
-    const { fullName, email, phone, subject, message } = req.body;
+    const { fullName, phone, subject, message } = req.body;
+    const emailAddress = String(req.body.email || '').trim().toLowerCase();
 
     // Check if the sender is a registered user to link their account
     let userId = null;
-    const user = email ? await User.findOne({ email: email.toLowerCase() }) : null;
+    const user = emailAddress ? await User.findOne({ email: emailAddress }) : null;
     if (user) {
       userId = user._id;
     }
 
     const newMessage = new Message({
       fullName,
-      email: email.toLowerCase(),
+      email: emailAddress,
       phone,
       subject,
       message,
