@@ -148,12 +148,13 @@ const BookingForm = ({ apartment, currentUser, onSuccess }) => {
       if (response.data.success) {
         const booking = response.data.data;
         if (onSuccess) onSuccess(booking);
+        const depositAmount = Number(booking.depositAmount ?? Math.min(pricePerNight, totalPrice));
         const message = [
           i18n.t('Hello, I have submitted my reservation and deposit.'),
           `${i18n.t('Booking ID')}: ${booking._id}`,
           `${i18n.t('Apartment')}: ${apartment?.title || i18n.t('Your selected apartment')}`,
           `${i18n.t('Deposit payment method')}: ${i18n.t(paymentMethod === 'vodafone_cash' ? 'Vodafone Cash' : 'InstaPay')}`,
-          `${i18n.t('Deposit amount')}: ${formatCurrency(booking.depositAmount)}`,
+          `DEPOSIT: ${formatCurrency(depositAmount)}`,
           i18n.t('I will attach my payment screenshot in this WhatsApp chat. Please confirm my reservation after receiving it.'),
         ].join('\n');
         toast.success(i18n.t('Opening WhatsApp with your payment proof...'));
